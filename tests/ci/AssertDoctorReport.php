@@ -95,7 +95,7 @@ for ($argument = 2; $argument < $argc; $argument++) {
 		sort($expectedFailures);
 		sort($actualFailures);
 
-		if (count($actualFailures) !== count($expectedFailures) || array_diff($actualFailures, $expectedFailures) !== array() || array_diff($expectedFailures, $actualFailures) !== array()) {
+		if (count($actualFailures) !== count($expectedFailures) || count(array_diff($actualFailures, $expectedFailures)) !== 0 || count(array_diff($expectedFailures, $actualFailures)) !== 0) {
 			fwrite(STDERR, 'Expected failing checks [' . implode(', ', $expectedFailures) . '], got [' . implode(', ', $actualFailures) . '].' . PHP_EOL);
 			exit(1);
 		}
