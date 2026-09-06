@@ -10,7 +10,24 @@
  +-------------------------------------------------------------------------+
 */
 
-chdir('../../../');
+$invokedPath = isset($argv[0]) ? (string) $argv[0] : __FILE__;
+
+if ($invokedPath === '' || $invokedPath[0] !== DIRECTORY_SEPARATOR) {
+	$invokedPath = getcwd() . DIRECTORY_SEPARATOR . $invokedPath;
+}
+
+$cactiBase = dirname($invokedPath, 4);
+
+if (!is_file($cactiBase . '/include/cli_check.php')) {
+	$cactiBase = dirname(__DIR__, 3);
+}
+
+if (!is_file($cactiBase . '/include/cli_check.php')) {
+	fwrite(STDERR, 'Unable to locate the Cacti installation. Install Doctor as plugins/doctor.' . PHP_EOL);
+	exit(2);
+}
+
+chdir($cactiBase);
 include_once('./include/cli_check.php');
 include_once('./plugins/doctor/doctor_functions.php');
 

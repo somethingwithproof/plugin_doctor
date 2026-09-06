@@ -5,11 +5,13 @@ Cacti Doctor is an administrator tool for diagnosing Cacti installations and app
 The initial release checks:
 
 - Cacti and PHP version compatibility
-- required PHP extensions
-- database connectivity and core tables
+- required and recommended PHP extensions
+- PHP memory, execution-time, and timezone configuration
+- database connectivity, supported server version, UTF-8 configuration, timezone tables, and core tables
 - writable cache, log, and RRA directories
-- the configured RRDtool executable
-- main poller freshness
+- configuration-file permission safety and Cacti log writability/size
+- configured PHP CLI, RRDtool, Net-SNMP, and conditional Spine executables, including prerequisite versions where applicable
+- poller type, interval, and main-poller freshness
 
 Diagnostics never modify the installation. Repairs use a fixed allow-list, require an authenticated administrator action in the web UI or `--yes` on the CLI, reject paths outside the Cacti installation, refuse symbolic links, and write an entry to the Cacti log.
 
@@ -33,7 +35,7 @@ The command exits with status `1` when any diagnostic fails and status `2` when 
 
 ## Repair policy
 
-Version 0.1.0 includes one narrow repair: create missing Cacti runtime directories and add owner read/write/execute bits without removing existing permissions. It does not change ownership, follow symbolic links, run shell commands, rewrite configuration, or mutate Cacti application data.
+Version 0.2.0 includes one narrow repair: create missing Cacti runtime directories and add owner read/write/execute bits without removing existing permissions. It does not change ownership, follow symbolic links, run shell commands, rewrite configuration, or mutate Cacti application data.
 
 Future repairs should remain individually reviewable and must include a diagnostic, an allow-listed repair handler, confirmation, audit logging, and tests.
 

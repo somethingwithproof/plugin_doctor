@@ -70,8 +70,8 @@ foreach ($results as $result) {
 		$repair  = (string) $result['repair'];
 		form_start('doctor.php', 'doctor_repair_' . str_replace('.', '_', (string) $result['id']));
 		print "<input type='hidden' name='action' value='repair'>";
-		print "<input type='hidden' name='repair_id' value='" . html_escape_attr($repair) . "'>";
-		print "<button class='ui-button ui-corner-all ui-widget' type='submit' title='" . html_escape_attr($repairs[$repair]['description']) . "'>" . html_escape($repairs[$repair]['label']) . '</button>';
+		print "<input type='hidden' name='repair_id' value='" . doctor_html_escape_attr($repair) . "'>";
+		print "<button class='ui-button ui-corner-all ui-widget' type='submit' title='" . doctor_html_escape_attr($repairs[$repair]['description']) . "'>" . html_escape($repairs[$repair]['label']) . '</button>';
 		form_end(false);
 	} else {
 		print '&mdash;';
