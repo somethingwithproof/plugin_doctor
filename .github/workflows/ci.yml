@@ -39,30 +39,20 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: ['8.1', '8.2', '8.3', '8.4']
+        php: ['8.2', '8.3', '8.4']
 
     steps:
       - uses: actions/checkout@v5
-        with:
-          repository: Cacti/cacti
-          ref: 1.2.x
-          path: cacti
-
-      - uses: actions/checkout@v5
-        with:
-          path: cacti/plugins/doctor
 
       - uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
           coverage: none
-          tools: pest:2.36.0
 
       - run: composer install --prefer-dist --no-progress
-        working-directory: cacti
 
       - name: Run unit tests
-        run: pest --no-configuration cacti/plugins/doctor/tests
+        run: composer test
 
   cacti-integration:
     name: ${{ matrix.name }}

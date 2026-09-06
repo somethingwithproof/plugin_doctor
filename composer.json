@@ -1,0 +1,21 @@
+{
+    "name": "cacti/plugin-doctor",
+    "description": "Development dependencies for the Cacti Doctor plugin",
+    "type": "cacti-plugin",
+    "license": "GPL-2.0-or-later",
+    "require-dev": {
+        "pestphp/pest": "^2.36"
+    },
+    "scripts": {
+        "test": "pest --no-configuration tests --display-warnings"
+    },
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        },
+        "platform": {
+            "php": "8.2.0"
+        },
+        "sort-packages": true
+    }
+}
