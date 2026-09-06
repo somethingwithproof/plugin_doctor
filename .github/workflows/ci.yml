@@ -22,7 +22,7 @@ jobs:
         php: ['5.4', '5.6', '7.0', '7.1', '7.4', '8.0', '8.1', '8.2', '8.3', '8.4']
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - uses: shivammathur/setup-php@v2
         with:
@@ -42,13 +42,13 @@ jobs:
         php: ['8.1', '8.2', '8.3', '8.4']
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           repository: Cacti/cacti
           ref: 1.2.x
           path: cacti
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           path: cacti/plugins/doctor
 
@@ -56,13 +56,13 @@ jobs:
         with:
           php-version: ${{ matrix.php }}
           coverage: none
+          tools: pest:2.36.0
 
       - run: composer install --prefer-dist --no-progress
         working-directory: cacti
 
       - name: Run unit tests
-        run: include/vendor/bin/pest plugins/doctor/tests
-        working-directory: cacti
+        run: pest --no-configuration cacti/plugins/doctor/tests
 
   cacti-integration:
     name: ${{ matrix.name }}
@@ -112,9 +112,9 @@ jobs:
             baseline_exit: '0'
             baseline_failures: ''
             rrdtool_status: pass
-          - name: Cacti develop / PHP 8.1 / MariaDB / cmd.php
+          - name: Cacti develop / PHP 8.2 / MariaDB / cmd.php
             cacti_ref: develop
-            php: '8.1'
+            php: '8.2'
             database_image: mariadb:10.11
             poller_type: '1'
             baseline_exit: '1'
@@ -146,13 +146,13 @@ jobs:
           --health-retries=12
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           repository: Cacti/cacti
           ref: ${{ matrix.cacti_ref }}
           path: cacti
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           path: cacti/plugins/doctor
 
@@ -168,6 +168,7 @@ jobs:
           POLLER_TYPE: ${{ matrix.poller_type }}
         run: |
           sudo apt-get update
+          sudo apt-get --fix-broken install -y
           PACKAGES=(default-mysql-client rrdtool snmp)
           if [ "$POLLER_TYPE" = '2' ]; then
             PACKAGES+=(cacti-spine)
@@ -326,7 +327,7 @@ jobs:
 
       - name: Upload diagnostic reports after failure
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: doctor-reports-${{ strategy.job-index }}
           path: cacti/doctor-*.json
