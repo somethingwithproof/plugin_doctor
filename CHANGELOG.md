@@ -6,6 +6,8 @@
 - Select the PHP prerequisite floor from the installed Cacti branch.
 - Warn when PHP is below the recommended maintained security baseline.
 - Add CI syntax coverage for legacy PHP without lowering the Cacti 1.3.x requirement.
+- Validate the complete diagnostic JSON contract and reject unexpected failures in integration jobs.
+- Exercise real Spine discovery, controlled prerequisite failures, recovery, repair confirmation, and the full plugin lifecycle in CI.
 
 ## 0.2.0 - 2026-09-06
 

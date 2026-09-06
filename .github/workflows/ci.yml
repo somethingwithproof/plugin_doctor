@@ -4,10 +4,18 @@ on:
   push:
   pull_request:
 
+permissions:
+  contents: read
+
+concurrency:
+  group: doctor-ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   runtime-syntax:
     name: PHP ${{ matrix.php }} syntax
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     strategy:
       fail-fast: false
       matrix:
@@ -27,6 +35,7 @@ jobs:
   unit-tests:
     name: Unit tests on PHP ${{ matrix.php }}
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     strategy:
       fail-fast: false
       matrix:
@@ -58,6 +67,7 @@ jobs:
   cacti-integration:
     name: ${{ matrix.name }}
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     strategy:
       fail-fast: false
       matrix:
@@ -67,36 +77,57 @@ jobs:
             php: '5.4'
             database_image: mariadb:10.5
             poller_type: '1'
+            baseline_exit: '0'
+            baseline_failures: ''
+            rrdtool_status: pass
           - name: Cacti 1.2.20 / PHP 7.0 / MySQL / cmd.php
             cacti_ref: release/1.2.20
             php: '7.0'
             database_image: mysql:5.7
             poller_type: '1'
+            baseline_exit: '0'
+            baseline_failures: ''
+            rrdtool_status: pass
           - name: Cacti 1.2.20 / PHP 7.4 / MariaDB / Spine
             cacti_ref: release/1.2.20
             php: '7.4'
             database_image: mariadb:10.11
             poller_type: '2'
+            baseline_exit: '0'
+            baseline_failures: ''
+            rrdtool_status: pass
           - name: Cacti 1.2.x / PHP 8.1 / MariaDB / cmd.php
             cacti_ref: 1.2.x
             php: '8.1'
             database_image: mariadb:10.11
             poller_type: '1'
+            baseline_exit: '0'
+            baseline_failures: ''
+            rrdtool_status: pass
           - name: Cacti 1.2.x / PHP 8.4 / MySQL / Spine
             cacti_ref: 1.2.x
             php: '8.4'
             database_image: mysql:8.0
             poller_type: '2'
+            baseline_exit: '0'
+            baseline_failures: ''
+            rrdtool_status: pass
           - name: Cacti develop / PHP 8.1 / MariaDB / cmd.php
             cacti_ref: develop
             php: '8.1'
             database_image: mariadb:10.11
             poller_type: '1'
+            baseline_exit: '1'
+            baseline_failures: binary.rrdtool
+            rrdtool_status: fail
           - name: Cacti develop / PHP 8.4 / MySQL / Spine
             cacti_ref: develop
             php: '8.4'
             database_image: mysql:8.0
             poller_type: '2'
+            baseline_exit: '1'
+            baseline_failures: binary.rrdtool
+            rrdtool_status: fail
 
     services:
       database:
@@ -133,9 +164,15 @@ jobs:
           ini-values: memory_limit=256M, max_execution_time=60, date.timezone=UTC
 
       - name: Install system prerequisites
+        env:
+          POLLER_TYPE: ${{ matrix.poller_type }}
         run: |
           sudo apt-get update
-          sudo apt-get install -y default-mysql-client rrdtool snmp
+          PACKAGES=(default-mysql-client rrdtool snmp)
+          if [ "$POLLER_TYPE" = '2' ]; then
+            PACKAGES+=(cacti-spine)
+          fi
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends "${PACKAGES[@]}"
 
       - name: Install Cacti Composer dependencies when required
         run: |
@@ -148,8 +185,9 @@ jobs:
         run: |
           cp include/config.php.dist include/config.php
           sed -i "s/\$database_hostname[[:space:]]*= 'localhost'/\$database_hostname = '127.0.0.1'/" include/config.php
+          mysql -h127.0.0.1 -uroot -pcactiroot -e "ALTER DATABASE cacti CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
           mysql -h127.0.0.1 -uroot -pcactiroot cacti < cacti.sql
-          mysql -h127.0.0.1 -uroot -pcactiroot -e "GRANT SELECT ON mysql.time_zone_name TO 'cactiuser'@'%'; FLUSH PRIVILEGES;"
+          mysql -h127.0.0.1 -uroot -pcactiroot -e "INSERT INTO mysql.time_zone (Use_leap_seconds) VALUES ('N'); SET @doctor_timezone_id=LAST_INSERT_ID(); INSERT INTO mysql.time_zone_name (Name, Time_zone_id) VALUES ('Doctor/UTC', @doctor_timezone_id); GRANT SELECT ON mysql.time_zone_name TO 'cactiuser'@'%'; FLUSH PRIVILEGES;"
         working-directory: cacti
 
       - name: Configure diagnostic paths and poller
@@ -157,7 +195,15 @@ jobs:
           POLLER_TYPE: ${{ matrix.poller_type }}
         run: |
           PHP_PATH="$(command -v php)"
-          mysql -h127.0.0.1 -ucactiuser -pcactiuser cacti -e "REPLACE INTO settings (name, value) VALUES ('path_php_binary', '${PHP_PATH}'), ('path_rrdtool', '/usr/bin/rrdtool'), ('path_snmpget', '/usr/bin/snmpget'), ('path_snmpwalk', '/usr/bin/snmpwalk'), ('path_spine', '/usr/bin/true'), ('poller_type', '${POLLER_TYPE}'), ('poller_interval', '300'), ('poller_lastrun_1', UNIX_TIMESTAMP());"
+          SPINE_PATH=''
+          if [ "$POLLER_TYPE" = '2' ]; then
+            SPINE_PATH="$(command -v spine)"
+            "$SPINE_PATH" --version
+          fi
+          mkdir -p cache log rra
+          touch log/cacti.log
+          mysql -h127.0.0.1 -ucactiuser -pcactiuser cacti -e "REPLACE INTO settings (name, value) VALUES ('path_php_binary', '${PHP_PATH}'), ('path_rrdtool', '/usr/bin/rrdtool'), ('path_snmpget', '/usr/bin/snmpget'), ('path_snmpwalk', '/usr/bin/snmpwalk'), ('path_spine', '${SPINE_PATH}'), ('path_cactilog', '${GITHUB_WORKSPACE}/cacti/log/cacti.log'), ('poller_type', '${POLLER_TYPE}'), ('poller_interval', '300'), ('poller_lastrun_1', UNIX_TIMESTAMP());"
+        working-directory: cacti
 
       - name: Register and enable Doctor
         run: |
@@ -179,19 +225,109 @@ jobs:
           test "$ENABLED" -eq 1
           test "$DISABLED_HOOKS" -eq 0
 
-      - name: Run Doctor CLI smoke test
+      - name: Run and validate baseline Doctor report
+        env:
+          BASELINE_EXIT: ${{ matrix.baseline_exit }}
+          BASELINE_FAILURES: ${{ matrix.baseline_failures }}
+          RRDTOOL_STATUS: ${{ matrix.rrdtool_status }}
         run: |
           set +e
-          php plugins/doctor/cli/doctor.php --json > doctor-results.json
+          php plugins/doctor/cli/doctor.php --json > doctor-baseline.json
           DOCTOR_EXIT=$?
           set -e
-          test "$DOCTOR_EXIT" -le 1
-          # shellcheck disable=SC2016
-          php -r '$data = json_decode(file_get_contents("doctor-results.json"), true); if (!is_array($data) || count($data["checks"]) < 20) { exit(1); } $ids = array(); foreach ($data["checks"] as $check) { $ids[] = $check["id"]; } foreach (array("php.version", "php.cli_extensions", "database.version", "database.timezone", "binary.rrdtool", "poller.freshness") as $required) { if (!in_array($required, $ids, true)) { exit(2); } }'
+          test "$DOCTOR_EXIT" -eq "$BASELINE_EXIT"
+          php plugins/doctor/tests/ci/AssertDoctorReport.php doctor-baseline.json \
+            "--failures=${BASELINE_FAILURES}" \
+            cacti.version=pass php.version=pass php.extensions=pass php.cli_extensions=pass \
+            database.connection=pass database.version=pass database.charset=pass \
+            database.timezone=pass database.core_tables=pass filesystem.runtime_directories=pass \
+            binary.php_binary=pass "binary.rrdtool=${RRDTOOL_STATUS}" \
+            binary.snmpget=pass binary.snmpwalk=pass poller.configuration=pass poller.freshness=pass
         working-directory: cacti
 
-      - name: Confirm PHP prerequisite passes
+      - name: Verify controlled failures and recovery
+        env:
+          BASELINE_EXIT: ${{ matrix.baseline_exit }}
+          BASELINE_FAILURES: ${{ matrix.baseline_failures }}
+          RRDTOOL_STATUS: ${{ matrix.rrdtool_status }}
         run: |
-          # shellcheck disable=SC2016
-          php -r '$data = json_decode(file_get_contents("doctor-results.json"), true); foreach ($data["checks"] as $check) { if ($check["id"] === "php.version") { echo $check["detail"], PHP_EOL; exit($check["status"] === "pass" ? 0 : 1); } } exit(2);'
+          mysql -h127.0.0.1 -ucactiuser -pcactiuser cacti -e "UPDATE settings SET value='/doctor/does-not-exist' WHERE name='path_snmpwalk'; UPDATE settings SET value=UNIX_TIMESTAMP() - 7200 WHERE name='poller_lastrun_1';"
+          set +e
+          php plugins/doctor/cli/doctor.php --json > doctor-negative.json
+          DOCTOR_EXIT=$?
+          set -e
+          test "$DOCTOR_EXIT" -eq 1
+          FAILURES='binary.snmpwalk,poller.freshness'
+          if [ -n "$BASELINE_FAILURES" ]; then
+            FAILURES="${BASELINE_FAILURES},${FAILURES}"
+          fi
+          php plugins/doctor/tests/ci/AssertDoctorReport.php doctor-negative.json \
+            "--failures=${FAILURES}" binary.snmpwalk=fail poller.freshness=fail
+
+          mysql -h127.0.0.1 -ucactiuser -pcactiuser cacti -e "UPDATE settings SET value='/usr/bin/snmpwalk' WHERE name='path_snmpwalk'; UPDATE settings SET value=UNIX_TIMESTAMP() WHERE name='poller_lastrun_1';"
+          set +e
+          php plugins/doctor/cli/doctor.php --json > doctor-recovered.json
+          DOCTOR_EXIT=$?
+          set -e
+          test "$DOCTOR_EXIT" -eq "$BASELINE_EXIT"
+          php plugins/doctor/tests/ci/AssertDoctorReport.php doctor-recovered.json \
+            "--failures=${BASELINE_FAILURES}" "binary.rrdtool=${RRDTOOL_STATUS}" \
+            binary.snmpwalk=pass poller.freshness=pass
         working-directory: cacti
+
+      - name: Verify repair confirmation and outcome
+        run: |
+          set +e
+          php plugins/doctor/cli/doctor.php --repair=runtime_directories --json > doctor-unconfirmed-repair.json
+          REPAIR_EXIT=$?
+          set -e
+          test "$REPAIR_EXIT" -eq 2
+
+          chmod u-w cache
+          set +e
+          php plugins/doctor/cli/doctor.php --json > doctor-before-repair.json
+          DOCTOR_EXIT=$?
+          set -e
+          test "$DOCTOR_EXIT" -eq 1
+          php plugins/doctor/tests/ci/AssertDoctorReport.php doctor-before-repair.json filesystem.runtime_directories=fail
+
+          php plugins/doctor/cli/doctor.php --repair=runtime_directories --yes --json > doctor-repair.json
+          # shellcheck disable=SC2016
+          php -r '$data=json_decode(file_get_contents("doctor-repair.json"), true); exit(is_array($data) && $data["id"] === "repair.runtime_directories" && $data["status"] === "pass" ? 0 : 1);'
+          test -w cache
+        working-directory: cacti
+
+      - name: Verify disable, enable, uninstall, and reinstall lifecycle
+        run: |
+          if [ -f cli/plugin_manage.php ]; then
+            php cli/plugin_manage.php --plugin=doctor --disable
+          else
+            php -r "chdir('${GITHUB_WORKSPACE}/cacti'); include './include/cli_check.php'; api_plugin_disable('doctor');"
+          fi
+          test "$(mysql -N -h127.0.0.1 -ucactiuser -pcactiuser cacti -e "SELECT COUNT(*) FROM plugin_config WHERE directory='doctor' AND status=1;")" -eq 0
+
+          if [ -f cli/plugin_manage.php ]; then
+            php cli/plugin_manage.php --plugin=doctor --enable
+            php cli/plugin_manage.php --plugin=doctor --uninstall
+          else
+            php -r "chdir('${GITHUB_WORKSPACE}/cacti'); include './include/cli_check.php'; api_plugin_enable('doctor'); api_plugin_uninstall('doctor');"
+          fi
+          test "$(mysql -N -h127.0.0.1 -ucactiuser -pcactiuser cacti -e "SELECT COUNT(*) FROM plugin_config WHERE directory='doctor';")" -eq 0
+          test "$(mysql -N -h127.0.0.1 -ucactiuser -pcactiuser cacti -e "SELECT COUNT(*) FROM plugin_hooks WHERE name='doctor';")" -eq 0
+          test "$(mysql -N -h127.0.0.1 -ucactiuser -pcactiuser cacti -e "SELECT COUNT(*) FROM plugin_realms WHERE plugin='doctor';")" -eq 0
+
+          if [ -f cli/plugin_manage.php ]; then
+            php cli/plugin_manage.php --plugin=doctor --install --enable
+          else
+            php -r "chdir('${GITHUB_WORKSPACE}/cacti'); include './include/cli_check.php'; api_plugin_install('doctor'); api_plugin_enable('doctor');"
+          fi
+          test "$(mysql -N -h127.0.0.1 -ucactiuser -pcactiuser cacti -e "SELECT COUNT(*) FROM plugin_config WHERE directory='doctor' AND status=1;")" -eq 1
+        working-directory: cacti
+
+      - name: Upload diagnostic reports after failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: doctor-reports-${{ strategy.job-index }}
+          path: cacti/doctor-*.json
+          if-no-files-found: ignore

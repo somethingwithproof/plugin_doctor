@@ -51,7 +51,9 @@ PHP versions below 8.2 trigger a security-baseline warning. Administrators shoul
 
 ## Compatibility testing
 
-GitHub Actions parses every PHP file on PHP 5.4, 5.6, 7.0, 7.1, 7.4, and 8.0 through 8.4. It runs unit tests on PHP 8.1 through 8.4 and exercises plugin registration plus the complete CLI diagnostic report across Cacti 1.2.20, the current 1.2.x branch, and `develop`, using both MySQL and MariaDB and both cmd.php and Spine configurations.
+GitHub Actions parses every PHP file on PHP 5.4, 5.6, 7.0, 7.1, 7.4, and 8.0 through 8.4. It runs unit tests on PHP 8.1 through 8.4 and exercises plugin registration plus the complete CLI diagnostic report across Cacti 1.2.20, the current 1.2.x branch, and `develop`, using both MySQL and MariaDB and both cmd.php and packaged Spine configurations.
+
+Integration jobs validate the report schema, unique check IDs, summary totals, expected statuses, and the exact set of failures. They also inject broken binary and stale-poller settings, verify recovery, enforce repair confirmation, verify the repair outcome, and cover disable, enable, uninstall, and reinstall operations. Diagnostic JSON is retained as an Actions artifact when a job fails.
 
 ## License
 
