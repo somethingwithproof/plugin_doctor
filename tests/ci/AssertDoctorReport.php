@@ -83,7 +83,7 @@ foreach ($actualSummary as $status => $count) {
 for ($argument = 2; $argument < $argc; $argument++) {
 	if (strpos($argv[$argument], '--failures=') === 0) {
 		$expectedFailures = substr($argv[$argument], strlen('--failures='));
-		$expectedFailures = $expectedFailures === '' ? array() : explode(',', $expectedFailures);
+		$expectedFailures = $expectedFailures === false || $expectedFailures === '' ? array() : explode(',', $expectedFailures);
 		$actualFailures   = array();
 
 		foreach ($checksById as $id => $check) {
