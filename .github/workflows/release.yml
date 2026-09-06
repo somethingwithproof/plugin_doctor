@@ -1,0 +1,188 @@
+name: Release
+run-name: Release Cacti Doctor v${{ inputs.version }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Exact SemVer from INFO (without the v prefix)
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: doctor-release
+  cancel-in-progress: false
+
+jobs:
+  ci:
+    name: Full release qualification
+    uses: ./.github/workflows/ci.yml
+
+  publish:
+    name: Publish SemVer release
+    needs: ci
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      attestations: write
+      contents: write
+      id-token: write
+    environment: release
+
+    steps:
+      - name: Require the default branch
+        env:
+          DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+        run: |
+          test "$GITHUB_REF_TYPE" = 'branch'
+          test "$GITHUB_REF_NAME" = "$DEFAULT_BRANCH"
+
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Verify tested commit belongs to the default branch
+        env:
+          DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+        run: git merge-base --is-ancestor "$GITHUB_SHA" "origin/${DEFAULT_BRANCH}"
+
+      - uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # v2
+        with:
+          php-version: '8.2'
+          coverage: none
+
+      - name: Validate tag and release metadata
+        env:
+          RELEASE_VERSION: ${{ inputs.version }}
+        run: php scripts/release.php validate "v${RELEASE_VERSION}"
+
+      - name: Build release archives
+        env:
+          RELEASE_VERSION: ${{ inputs.version }}
+        run: scripts/build-release.sh "v${RELEASE_VERSION}" dist
+
+      - name: Inspect release archives
+        run: |
+          VERSION="$(php scripts/release.php version)"
+          tests/ci/AssertReleasePackage.sh "${VERSION}" dist
+
+      - name: Create checksums and release notes
+        run: |
+          VERSION="$(php scripts/release.php version)"
+          cd dist
+          sha256sum "doctor-${VERSION}.tar.gz" "doctor-${VERSION}.zip" > "doctor-${VERSION}.sha256"
+          cd ..
+          php scripts/release.php notes > dist/release-notes.md
+
+      - name: Refuse an existing GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_VERSION: ${{ inputs.version }}
+        run: |
+          set -o pipefail
+          RELEASE_MATCH="$(gh api --paginate "repos/${GITHUB_REPOSITORY}/releases?per_page=100" | \
+            jq -s -r --arg tag "v${RELEASE_VERSION}" -f scripts/release-state.jq)"
+          IFS=$'\t' read -r RELEASE_STATE _ <<< "$RELEASE_MATCH"
+          if [ "$RELEASE_STATE" != 'missing' ]; then
+            echo "GitHub release v${RELEASE_VERSION} already exists." >&2
+            exit 1
+          fi
+
+      - name: Reserve exact release tag
+        id: reserve-tag
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_VERSION: ${{ inputs.version }}
+        run: |
+          if gh api --method POST "repos/${GITHUB_REPOSITORY}/git/refs" \
+            --field "ref=refs/tags/v${RELEASE_VERSION}" \
+            --field "sha=${GITHUB_SHA}"; then
+            echo 'created=true' >> "$GITHUB_OUTPUT"
+            echo "Reserved tag v${RELEASE_VERSION} at ${GITHUB_SHA}."
+          else
+            EXISTING_SHA="$(gh api "repos/${GITHUB_REPOSITORY}/git/ref/tags/v${RELEASE_VERSION}" --jq '.object.sha')"
+            if [ "$EXISTING_SHA" != "$GITHUB_SHA" ]; then
+              echo 'created=false' >> "$GITHUB_OUTPUT"
+              echo "Tag v${RELEASE_VERSION} already exists at ${EXISTING_SHA}, not the tested commit ${GITHUB_SHA}." >&2
+              exit 1
+            fi
+            echo 'created=false' >> "$GITHUB_OUTPUT"
+            echo "Adopting orphan tag v${RELEASE_VERSION} at the tested commit."
+          fi
+
+      - name: Create draft release and upload assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_VERSION: ${{ inputs.version }}
+        run: |
+          VERSION="$(php scripts/release.php version)"
+          RELEASE_FLAGS=()
+          if [[ "$VERSION" == *-* ]]; then
+            RELEASE_FLAGS+=(--prerelease)
+          fi
+          gh release create "v${RELEASE_VERSION}" \
+            "dist/doctor-${VERSION}.tar.gz" \
+            "dist/doctor-${VERSION}.zip" \
+            "dist/doctor-${VERSION}.sha256" \
+            --draft \
+            --verify-tag \
+            --title "Cacti Doctor ${VERSION}" \
+            --notes-file dist/release-notes.md \
+            "${RELEASE_FLAGS[@]}"
+
+      - name: Verify draft release assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_VERSION: ${{ inputs.version }}
+        run: |
+          EXPECTED_ASSETS="doctor-${RELEASE_VERSION}.sha256 doctor-${RELEASE_VERSION}.tar.gz doctor-${RELEASE_VERSION}.zip"
+          ACTUAL_ASSETS="$(gh release view "v${RELEASE_VERSION}" --json assets --jq 'if all(.assets[]; .state == "uploaded") then [.assets[].name] | sort | join(" ") else "asset upload incomplete" end')"
+          test "$ACTUAL_ASSETS" = "$EXPECTED_ASSETS"
+
+      - name: Attest verified release archives
+        uses: actions/attest-build-provenance@977bb373ede98d70efdf65b84cb5f73e068dcc2a # v3
+        with:
+          subject-path: |
+            dist/doctor-${{ inputs.version }}.tar.gz
+            dist/doctor-${{ inputs.version }}.zip
+            dist/doctor-${{ inputs.version }}.sha256
+
+      - name: Publish verified release
+        id: publish-release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_VERSION: ${{ inputs.version }}
+        run: |
+          gh release edit "v${RELEASE_VERSION}" --draft=false
+          echo 'published=true' >> "$GITHUB_OUTPUT"
+
+      - name: Remove an incomplete release and its reserved tag
+        if: ${{ (failure() || cancelled()) && steps.reserve-tag.outputs.created == 'true' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_VERSION: ${{ inputs.version }}
+        run: |
+          set -o pipefail
+          RELEASE_MATCH="$(gh api --paginate "repos/${GITHUB_REPOSITORY}/releases?per_page=100" | \
+            jq -s -r --arg tag "v${RELEASE_VERSION}" -f scripts/release-state.jq)"
+          IFS=$'\t' read -r RELEASE_STATE RELEASE_ID <<< "$RELEASE_MATCH"
+          case "$RELEASE_STATE" in
+            draft)
+              gh api --method DELETE "repos/${GITHUB_REPOSITORY}/releases/${RELEASE_ID}"
+              gh api --method DELETE "repos/${GITHUB_REPOSITORY}/git/refs/tags/v${RELEASE_VERSION}"
+              ;;
+            missing)
+              gh api --method DELETE "repos/${GITHUB_REPOSITORY}/git/refs/tags/v${RELEASE_VERSION}"
+              ;;
+            published)
+              echo "Release v${RELEASE_VERSION} is public; preserving its release and tag."
+              ;;
+            *)
+              echo "Unable to classify release v${RELEASE_VERSION}: ${RELEASE_STATE}" >&2
+              exit 1
+              ;;
+          esac

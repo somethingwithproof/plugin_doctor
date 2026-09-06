@@ -55,6 +55,10 @@ GitHub Actions parses every PHP file on PHP 5.4, 5.6, 7.0, 7.1, 7.4, and 8.0 thr
 
 Integration jobs validate the report schema, unique check IDs, summary totals, expected statuses, and the exact set of failures. They also inject broken binary and stale-poller settings, verify recovery, enforce repair confirmation, verify the repair outcome, and cover disable, enable, uninstall, and reinstall operations. Diagnostic JSON is retained as an Actions artifact when a job fails.
 
+## Releases
+
+Cacti Doctor follows Semantic Versioning. Maintainers publish through the GitHub **Release** workflow, which creates a tag and release only after the complete compatibility matrix passes. GitHub releases include install-ready ZIP and TAR archives rooted at `doctor/`, SHA-256 checksums, provenance attestations, and notes taken from the matching changelog entry. See [RELEASING.md](RELEASING.md) for the version policy and release procedure.
+
 ## License
 
 GPL-2.0-or-later. See `LICENSE`.

@@ -1,7 +1,10 @@
 name: CI
 
 on:
+  workflow_call:
   push:
+    branches:
+      - '**'
   pull_request:
 
 permissions:
@@ -22,9 +25,9 @@ jobs:
         php: ['5.4', '5.6', '7.0', '7.1', '7.4', '8.0', '8.1', '8.2', '8.3', '8.4']
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
 
-      - uses: shivammathur/setup-php@v2
+      - uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # v2
         with:
           php-version: ${{ matrix.php }}
           coverage: none
@@ -42,9 +45,9 @@ jobs:
         php: ['8.2', '8.3', '8.4']
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
 
-      - uses: shivammathur/setup-php@v2
+      - uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # v2
         with:
           php-version: ${{ matrix.php }}
           coverage: none
@@ -53,6 +56,39 @@ jobs:
 
       - name: Run unit tests
         run: composer test
+
+  release-package:
+    name: Release package contract
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+
+      - uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # v2
+        with:
+          php-version: '8.2'
+          coverage: none
+
+      - name: Validate SemVer metadata
+        run: tests/ci/AssertReleaseProcess.sh
+
+      - name: Build and inspect installable archives
+        run: |
+          VERSION="$(php scripts/release.php version)"
+          scripts/build-release.sh "v${VERSION}" dist
+          tests/ci/AssertReleasePackage.sh "${VERSION}" dist
+
+  shell-quality:
+    name: Shell script quality
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+
+      - name: Run ShellCheck
+        run: shellcheck -x scripts/*.sh tests/ci/*.sh
 
   cacti-integration:
     name: ${{ matrix.name }}
@@ -70,6 +106,7 @@ jobs:
             baseline_exit: '0'
             baseline_failures: ''
             rrdtool_status: pass
+            package_install: true
           - name: Cacti 1.2.20 / PHP 7.0 / MySQL / cmd.php
             cacti_ref: release/1.2.20
             php: '7.0'
@@ -136,22 +173,37 @@ jobs:
           --health-retries=12
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
           repository: Cacti/cacti
           ref: ${{ matrix.cacti_ref }}
           path: cacti
 
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
-          path: cacti/plugins/doctor
+          path: doctor-source
 
-      - uses: shivammathur/setup-php@v2
+      - uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # v2
         with:
           php-version: ${{ matrix.php }}
           coverage: none
           extensions: curl, gd, gmp, intl, ldap, mbstring, openssl, pcntl, pdo_mysql, posix, sockets, xml, zlib
           ini-values: memory_limit=256M, max_execution_time=60, date.timezone=UTC
+
+      - name: Install Doctor plugin payload
+        env:
+          PACKAGE_INSTALL: ${{ matrix.package_install }}
+        run: |
+          mkdir -p cacti/plugins
+          if [ "$PACKAGE_INSTALL" = 'true' ]; then
+            VERSION="$(php doctor-source/scripts/release.php version)"
+            doctor-source/scripts/build-release.sh "v${VERSION}" "${RUNNER_TEMP}/doctor-dist"
+            tar -xzf "${RUNNER_TEMP}/doctor-dist/doctor-${VERSION}.tar.gz" -C cacti/plugins
+          else
+            mkdir cacti/plugins/doctor
+            git -C doctor-source archive HEAD | tar -x -C cacti/plugins/doctor
+          fi
+          test -f doctor-source/tests/ci/AssertDoctorReport.php
 
       - name: Install system prerequisites
         env:
@@ -227,7 +279,7 @@ jobs:
           DOCTOR_EXIT=$?
           set -e
           test "$DOCTOR_EXIT" -eq "$BASELINE_EXIT"
-          php plugins/doctor/tests/ci/AssertDoctorReport.php doctor-baseline.json \
+          php ../doctor-source/tests/ci/AssertDoctorReport.php doctor-baseline.json \
             "--failures=${BASELINE_FAILURES}" \
             cacti.version=pass php.version=pass php.extensions=pass php.cli_extensions=pass \
             database.connection=pass database.version=pass database.charset=pass \
@@ -252,7 +304,7 @@ jobs:
           if [ -n "$BASELINE_FAILURES" ]; then
             FAILURES="${BASELINE_FAILURES},${FAILURES}"
           fi
-          php plugins/doctor/tests/ci/AssertDoctorReport.php doctor-negative.json \
+          php ../doctor-source/tests/ci/AssertDoctorReport.php doctor-negative.json \
             "--failures=${FAILURES}" binary.snmpwalk=fail poller.freshness=fail
 
           mysql -h127.0.0.1 -ucactiuser -pcactiuser cacti -e "UPDATE settings SET value='/usr/bin/snmpwalk' WHERE name='path_snmpwalk'; UPDATE settings SET value=UNIX_TIMESTAMP() WHERE name='poller_lastrun_1';"
@@ -261,7 +313,7 @@ jobs:
           DOCTOR_EXIT=$?
           set -e
           test "$DOCTOR_EXIT" -eq "$BASELINE_EXIT"
-          php plugins/doctor/tests/ci/AssertDoctorReport.php doctor-recovered.json \
+          php ../doctor-source/tests/ci/AssertDoctorReport.php doctor-recovered.json \
             "--failures=${BASELINE_FAILURES}" "binary.rrdtool=${RRDTOOL_STATUS}" \
             binary.snmpwalk=pass poller.freshness=pass
         working-directory: cacti
@@ -280,7 +332,7 @@ jobs:
           DOCTOR_EXIT=$?
           set -e
           test "$DOCTOR_EXIT" -eq 1
-          php plugins/doctor/tests/ci/AssertDoctorReport.php doctor-before-repair.json filesystem.runtime_directories=fail
+          php ../doctor-source/tests/ci/AssertDoctorReport.php doctor-before-repair.json filesystem.runtime_directories=fail
 
           php plugins/doctor/cli/doctor.php --repair=runtime_directories --yes --json > doctor-repair.json
           # shellcheck disable=SC2016
@@ -317,7 +369,7 @@ jobs:
 
       - name: Upload diagnostic reports after failure
         if: failure()
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5
         with:
           name: doctor-reports-${{ strategy.job-index }}
           path: cacti/doctor-*.json
