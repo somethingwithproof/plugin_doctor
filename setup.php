@@ -10,29 +10,29 @@
  +-------------------------------------------------------------------------+
 */
 
-function plugin_doctor_install(): void {
+function plugin_doctor_install() {
 	api_plugin_register_hook('doctor', 'config_arrays', 'doctor_config_arrays', 'setup.php');
 	api_plugin_register_hook('doctor', 'draw_navigation_text', 'doctor_draw_navigation_text', 'setup.php');
 	api_plugin_register_hook('doctor', 'is_console_page', 'doctor_is_console_page', 'setup.php');
 	api_plugin_register_realm('doctor', 'doctor.php', __('Cacti Doctor', 'doctor'), 1);
 }
 
-function plugin_doctor_uninstall(): void {
+function plugin_doctor_uninstall() {
 	// Doctor stores no database state, so uninstall is intentionally non-destructive.
 }
 
-function plugin_doctor_check_config(): bool {
+function plugin_doctor_check_config() {
 	return true;
 }
 
-function plugin_doctor_upgrade(): bool {
+function plugin_doctor_upgrade() {
 	return false;
 }
 
 /**
  * @return array<string,string>
  */
-function plugin_doctor_version(): array {
+function plugin_doctor_version() {
 	global $config;
 
 	$info = parse_ini_file($config['base_path'] . '/plugins/doctor/INFO', true);
@@ -40,7 +40,7 @@ function plugin_doctor_version(): array {
 	return is_array($info) && isset($info['info']) ? $info['info'] : [];
 }
 
-function doctor_config_arrays(): void {
+function doctor_config_arrays() {
 	global $menu;
 
 	$menu[__('Utilities')]['plugins/doctor/doctor.php'] = __('Cacti Doctor', 'doctor');
@@ -54,7 +54,7 @@ function doctor_config_arrays(): void {
  * @param array<string,array<string,mixed>> $nav
  * @return array<string,array<string,mixed>>
  */
-function doctor_draw_navigation_text(array $nav): array {
+function doctor_draw_navigation_text($nav) {
 	$nav['doctor.php:'] = [
 		'title'   => __('Cacti Doctor', 'doctor'),
 		'mapping' => 'index.php:',
@@ -65,6 +65,6 @@ function doctor_draw_navigation_text(array $nav): array {
 	return $nav;
 }
 
-function doctor_is_console_page(string $url): bool {
+function doctor_is_console_page($url) {
 	return strpos($url, 'doctor.php') !== false;
 }

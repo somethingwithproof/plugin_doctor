@@ -15,10 +15,11 @@
  *
  * @return array<int,array<string,mixed>>
  */
-function doctor_run_checks(): array {
+function doctor_run_checks() {
 	$results   = [];
 	$results[] = doctor_check_cacti_version();
 	$results[] = doctor_check_php_version();
+	$results[] = doctor_check_php_security_baseline();
 	$results[] = doctor_check_php_extensions();
 	$results[] = doctor_check_cli_php_extensions();
 	$results[] = doctor_check_optional_php_extensions();
@@ -41,7 +42,7 @@ function doctor_run_checks(): array {
 /**
  * @return array<string,mixed>
  */
-function doctor_result(string $id, string $category, string $status, string $summary, string $detail, string $repair = ''): array {
+function doctor_result($id, $category, $status, $summary, $detail, $repair = '') {
 	return [
 		'id'         => $id,
 		'category'   => $category,
@@ -53,7 +54,7 @@ function doctor_result(string $id, string $category, string $status, string $sum
 	];
 }
 
-function doctor_html_escape_attr(string $value): string {
+function doctor_html_escape_attr($value) {
 	if (function_exists('html_escape_attr')) {
 		return html_escape_attr($value);
 	}
@@ -61,8 +62,21 @@ function doctor_html_escape_attr(string $value): string {
 	return htmlspecialchars($value, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 }
 
+function doctor_parent_directory($path, $levels) {
+	while ($levels > 0) {
+		$path = dirname($path);
+		$levels--;
+	}
+
+	return $path;
+}
+
+function doctor_php_minimum_version() {
+	return defined('CACTI_VERSION') && version_compare((string) CACTI_VERSION, '1.3.0', '>=') ? '8.1.0' : '5.4.0';
+}
+
 /** @return array<string,mixed> */
-function doctor_check_cacti_version(): array {
+function doctor_check_cacti_version() {
 	$version = defined('CACTI_VERSION') ? (string) CACTI_VERSION : 'unknown';
 	$status  = $version !== 'unknown' && version_compare($version, '1.2.20', '>=') ? 'pass' : 'fail';
 
@@ -70,14 +84,23 @@ function doctor_check_cacti_version(): array {
 }
 
 /** @return array<string,mixed> */
-function doctor_check_php_version(): array {
-	$status = version_compare(PHP_VERSION, '8.1.0', '>=') ? 'pass' : 'fail';
+function doctor_check_php_version() {
+	$minimum = doctor_php_minimum_version();
+	$status  = version_compare(PHP_VERSION, $minimum, '>=') ? 'pass' : 'fail';
 
-	return doctor_result('php.version', 'PHP', $status, 'Supported PHP version', 'Detected PHP ' . PHP_VERSION . '; Cacti Doctor requires PHP 8.1 or newer.');
+	return doctor_result('php.version', 'PHP', $status, 'Supported PHP version', 'Detected PHP ' . PHP_VERSION . '; this Cacti branch requires PHP ' . $minimum . ' or newer.');
+}
+
+function doctor_check_php_security_baseline() {
+	if (version_compare(PHP_VERSION, '8.2.0', '<')) {
+		return doctor_result('php.security_baseline', 'Security', 'warn', 'PHP security baseline', 'This legacy PHP version is below Doctor\'s recommended PHP 8.2 security baseline. Confirm that your operating-system vendor still supplies security patches and plan an upgrade.');
+	}
+
+	return doctor_result('php.security_baseline', 'Security', 'pass', 'PHP security baseline', 'PHP meets Doctor\'s recommended PHP 8.2 or newer security baseline.');
 }
 
 /** @return array<string,mixed> */
-function doctor_check_php_extensions(): array {
+function doctor_check_php_extensions() {
 	$required = doctor_required_php_extensions();
 	$missing  = [];
 	$context  = PHP_SAPI === 'cli' ? 'current CLI' : 'web';
@@ -96,7 +119,7 @@ function doctor_check_php_extensions(): array {
 }
 
 /** @return array<int,string> */
-function doctor_required_php_extensions(bool $cli = false): array {
+function doctor_required_php_extensions($cli = false) {
 	$required = [
 		'ctype', 'date', 'filter', 'gd', 'gmp', 'hash', 'json',
 		'ldap', 'mbstring', 'openssl', 'pcre', 'PDO', 'pdo_mysql',
@@ -121,7 +144,7 @@ function doctor_required_php_extensions(bool $cli = false): array {
 }
 
 /** @return array<string,mixed> */
-function doctor_check_cli_php_extensions(): array {
+function doctor_check_cli_php_extensions() {
 	$path = (string) read_config_option('path_php_binary', true);
 
 	if ($path === '' || !is_file($path) || !is_executable($path)) {
@@ -157,7 +180,7 @@ function doctor_check_cli_php_extensions(): array {
 }
 
 /** @return array<string,mixed> */
-function doctor_check_optional_php_extensions(): array {
+function doctor_check_optional_php_extensions() {
 	$missing = [];
 
 	foreach (['gettext', 'snmp'] as $extension) {
@@ -178,7 +201,7 @@ function doctor_check_optional_php_extensions(): array {
 }
 
 /** @return array<string,mixed> */
-function doctor_check_php_configuration(): array {
+function doctor_check_php_configuration() {
 	$memoryRaw = (string) ini_get('memory_limit');
 	$memory    = doctor_ini_bytes($memoryRaw);
 	$execution = (int) ini_get('max_execution_time');
@@ -206,7 +229,7 @@ function doctor_check_php_configuration(): array {
 	return doctor_result('php.configuration', 'Prerequisites', 'pass', 'PHP runtime configuration', $detail);
 }
 
-function doctor_ini_bytes(string $value): int {
+function doctor_ini_bytes($value) {
 	$value = trim($value);
 
 	if ($value === '' || $value === '-1') {
@@ -232,10 +255,10 @@ function doctor_ini_bytes(string $value): int {
 }
 
 /** @return array<string,mixed> */
-function doctor_check_database(): array {
+function doctor_check_database() {
 	try {
 		$answer = db_fetch_cell('SELECT 1');
-	} catch (Throwable $error) {
+	} catch (Exception $error) {
 		return doctor_result('database.connection', 'Database', 'fail', 'Database connection', 'Query failed: ' . $error->getMessage());
 	}
 
@@ -245,7 +268,7 @@ function doctor_check_database(): array {
 /**
  * @return array{server:string,version:string,raw:string}
  */
-function doctor_database_identity(string $raw): array {
+function doctor_database_identity($raw) {
 	$server  = stripos($raw, 'MariaDB') !== false ? 'MariaDB' : 'MySQL';
 	$version = 'unknown';
 
@@ -259,7 +282,7 @@ function doctor_database_identity(string $raw): array {
 }
 
 /** @return array<string,mixed> */
-function doctor_check_database_version(): array {
+function doctor_check_database_version() {
 	$raw      = (string) db_fetch_cell('SELECT VERSION()', '', false);
 	$identity = doctor_database_identity($raw);
 	$is13     = defined('CACTI_VERSION') && version_compare((string) CACTI_VERSION, '1.3.0', '>=');
@@ -271,7 +294,7 @@ function doctor_check_database_version(): array {
 }
 
 /** @return array<string,mixed> */
-function doctor_check_database_charset(): array {
+function doctor_check_database_charset() {
 	$charset   = (string) db_fetch_cell('SELECT @@character_set_database', '', false);
 	$collation = (string) db_fetch_cell('SELECT @@collation_database', '', false);
 	$status    = strtolower($charset) === 'utf8mb4' ? 'pass' : 'fail';
@@ -281,7 +304,7 @@ function doctor_check_database_charset(): array {
 }
 
 /** @return array<string,mixed> */
-function doctor_check_database_timezone_support(): array {
+function doctor_check_database_timezone_support() {
 	$count = db_fetch_cell('SELECT COUNT(*) FROM mysql.time_zone_name', '', false);
 
 	if ($count === false || $count === null || $count === '') {
@@ -295,7 +318,7 @@ function doctor_check_database_timezone_support(): array {
 }
 
 /** @return array<string,mixed> */
-function doctor_check_core_tables(): array {
+function doctor_check_core_tables() {
 	$required = ['settings', 'host', 'data_template_data', 'poller'];
 	$missing  = [];
 
@@ -314,8 +337,8 @@ function doctor_check_core_tables(): array {
 /**
  * @return array<string,string>
  */
-function doctor_runtime_directories(): array {
-	$base = defined('CACTI_PATH_BASE') ? (string) CACTI_PATH_BASE : dirname(__DIR__, 2);
+function doctor_runtime_directories() {
+	$base = defined('CACTI_PATH_BASE') ? (string) CACTI_PATH_BASE : doctor_parent_directory(__DIR__, 2);
 
 	return [
 		'cache' => $base . '/cache',
@@ -325,7 +348,7 @@ function doctor_runtime_directories(): array {
 }
 
 /** @return array<string,mixed> */
-function doctor_check_runtime_directories(): array {
+function doctor_check_runtime_directories() {
 	$problems = [];
 
 	foreach (doctor_runtime_directories() as $name => $path) {
@@ -344,8 +367,8 @@ function doctor_check_runtime_directories(): array {
 }
 
 /** @return array<string,mixed> */
-function doctor_check_config_file_security(): array {
-	$base   = defined('CACTI_PATH_BASE') ? (string) CACTI_PATH_BASE : dirname(__DIR__, 2);
+function doctor_check_config_file_security() {
+	$base   = defined('CACTI_PATH_BASE') ? (string) CACTI_PATH_BASE : doctor_parent_directory(__DIR__, 2);
 	$path   = $base . '/include/config.php';
 	$mode   = @fileperms($path);
 
@@ -369,8 +392,8 @@ function doctor_check_config_file_security(): array {
 }
 
 /** @return array<string,mixed> */
-function doctor_check_cacti_log(): array {
-	$base = defined('CACTI_PATH_BASE') ? (string) CACTI_PATH_BASE : dirname(__DIR__, 2);
+function doctor_check_cacti_log() {
+	$base = defined('CACTI_PATH_BASE') ? (string) CACTI_PATH_BASE : doctor_parent_directory(__DIR__, 2);
 	$path = (string) read_config_option('path_cactilog', true);
 	$path = $path !== '' ? $path : $base . '/log/cacti.log';
 
@@ -398,10 +421,10 @@ function doctor_check_cacti_log(): array {
 /**
  * @return array<int,array<string,mixed>>
  */
-function doctor_check_required_binaries(): array {
+function doctor_check_required_binaries() {
 	$is13 = defined('CACTI_VERSION') && version_compare((string) CACTI_VERSION, '1.3.0', '>=');
 	$binaries = [
-		'path_php_binary' => ['label' => 'PHP CLI', 'argument' => '-v', 'pattern' => '/PHP\s+([0-9]+\.[0-9]+(?:\.[0-9]+)?)/i', 'minimum' => '8.1.0'],
+		'path_php_binary' => ['label' => 'PHP CLI', 'argument' => '-v', 'pattern' => '/PHP\s+([0-9]+\.[0-9]+(?:\.[0-9]+)?)/i', 'minimum' => doctor_php_minimum_version()],
 		'path_rrdtool'    => ['label' => 'RRDtool', 'argument' => '--version', 'pattern' => '/RRDtool\s+([0-9]+\.[0-9]+(?:\.[0-9]+)?)/i', 'minimum' => $is13 ? '1.8.0' : '1.4.0'],
 		'path_snmpget'    => ['label' => 'Net-SNMP snmpget', 'argument' => '-V', 'pattern' => '/NET-SNMP version:\s*([0-9]+\.[0-9]+(?:\.[0-9]+)?)/i', 'minimum' => $is13 ? '5.8.0' : '5.5.0'],
 		'path_snmpwalk'   => ['label' => 'Net-SNMP snmpwalk', 'argument' => '-V', 'pattern' => '/NET-SNMP version:\s*([0-9]+\.[0-9]+(?:\.[0-9]+)?)/i', 'minimum' => $is13 ? '5.8.0' : '5.5.0']
@@ -438,7 +461,7 @@ function doctor_check_required_binaries(): array {
 	return $results;
 }
 
-function doctor_probe_binary_version(string $path, string $argument, string $pattern): ?string {
+function doctor_probe_binary_version($path, $argument, $pattern) {
 	if (!function_exists('shell_exec') || (function_exists('is_function_enabled') && !is_function_enabled('shell_exec'))) {
 		return null;
 	}
@@ -458,7 +481,7 @@ function doctor_probe_binary_version(string $path, string $argument, string $pat
 }
 
 /** @return array<string,mixed> */
-function doctor_check_poller_configuration(): array {
+function doctor_check_poller_configuration() {
 	$type     = (string) read_config_option('poller_type', true);
 	$interval = (int) read_config_option('poller_interval', true);
 	$problems = [];
@@ -479,7 +502,7 @@ function doctor_check_poller_configuration(): array {
 }
 
 /** @return array<string,mixed> */
-function doctor_check_poller_freshness(): array {
+function doctor_check_poller_freshness() {
 	$lastRun = (int) read_config_option('poller_lastrun_1', true);
 	$interval = (int) read_config_option('poller_interval', true);
 	$interval = $interval > 0 ? $interval : 300;
@@ -499,7 +522,7 @@ function doctor_check_poller_freshness(): array {
 /**
  * @return array<string,array<string,string>>
  */
-function doctor_available_repairs(): array {
+function doctor_available_repairs() {
 	return [
 		'runtime_directories' => [
 			'label'       => 'Repair runtime directories',
@@ -513,7 +536,7 @@ function doctor_available_repairs(): array {
  *
  * @return array<string,mixed>
  */
-function doctor_run_repair(string $repair): array {
+function doctor_run_repair($repair) {
 	if (!isset(doctor_available_repairs()[$repair])) {
 		return doctor_result('repair.' . $repair, 'Repair', 'fail', 'Unknown repair', 'The requested repair is not allow-listed.');
 	}
@@ -526,8 +549,8 @@ function doctor_run_repair(string $repair): array {
 }
 
 /** @return array<string,mixed> */
-function doctor_repair_runtime_directories(): array {
-	$base = realpath(defined('CACTI_PATH_BASE') ? (string) CACTI_PATH_BASE : dirname(__DIR__, 2));
+function doctor_repair_runtime_directories() {
+	$base = realpath(defined('CACTI_PATH_BASE') ? (string) CACTI_PATH_BASE : doctor_parent_directory(__DIR__, 2));
 
 	if ($base === false) {
 		return doctor_result('repair.runtime_directories', 'Repair', 'fail', 'Repair runtime directories', 'The Cacti base directory cannot be resolved.');
@@ -572,11 +595,11 @@ function doctor_repair_runtime_directories(): array {
  * @param array<int,array<string,mixed>> $results
  * @return array<string,int>
  */
-function doctor_result_counts(array $results): array {
+function doctor_result_counts($results) {
 	$counts = ['pass' => 0, 'warn' => 0, 'fail' => 0];
 
 	foreach ($results as $result) {
-		$status = (string) ($result['status'] ?? 'fail');
+		$status = isset($result['status']) ? (string) $result['status'] : 'fail';
 		if (isset($counts[$status])) {
 			$counts[$status]++;
 		}

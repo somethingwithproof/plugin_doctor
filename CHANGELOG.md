@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.3.0 - 2026-09-06
+
+- Support PHP 5.4-compatible parsing for legacy Cacti 1.2.x diagnostics.
+- Select the PHP prerequisite floor from the installed Cacti branch.
+- Warn when PHP is below the recommended maintained security baseline.
+- Add CI syntax coverage for legacy PHP without lowering the Cacti 1.3.x requirement.
+
 ## 0.2.0 - 2026-09-06
 
 - Align prerequisite checks with Cacti's installer requirements.

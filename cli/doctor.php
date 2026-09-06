@@ -16,10 +16,10 @@ if ($invokedPath === '' || $invokedPath[0] !== DIRECTORY_SEPARATOR) {
 	$invokedPath = getcwd() . DIRECTORY_SEPARATOR . $invokedPath;
 }
 
-$cactiBase = dirname($invokedPath, 4);
+$cactiBase = dirname(dirname(dirname(dirname($invokedPath))));
 
 if (!is_file($cactiBase . '/include/cli_check.php')) {
-	$cactiBase = dirname(__DIR__, 3);
+	$cactiBase = dirname(dirname(dirname(__DIR__)));
 }
 
 if (!is_file($cactiBase . '/include/cli_check.php')) {
