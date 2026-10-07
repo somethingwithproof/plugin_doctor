@@ -46,8 +46,11 @@ Future repairs should remain individually reviewable and must include a diagnost
 ## Requirements
 
 - Cacti 1.2.20 or newer
-- PHP 5.4 or newer for Cacti 1.2.x
-- PHP 8.1 or newer for Cacti 1.3.x
+- PHP 5.4 or newer for Cacti 1.2.20 (the plugin's own code is PHP 5.4 compatible)
+- PHP 8.2 or newer for the current Cacti 1.2.x branch (its `composer.json` requires `>=8.2`)
+- PHP 8.3 or newer for Cacti `develop` (1.3), whose `composer.json` requires `^8.3`
+
+CI runs Cacti 1.2.20 on PHP 5.4, 7.0 and 7.4, Cacti 1.2.x on PHP 8.2 and 8.4, and Cacti `develop` on PHP 8.3 and 8.4. The PHP 8.2 and 8.4 rows for 1.2.x are the minimum and newest tested versions, not a statement about PHP 8.3.
 
 PHP versions below 8.2 trigger a security-baseline warning. Administrators should verify operating-system vendor support and upgrade legacy installations as soon as practical.
 
