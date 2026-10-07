@@ -1,5 +1,7 @@
 # Cacti Doctor
 
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/somethingwithproof/plugin_doctor/badge)](https://scorecard.dev/viewer/?uri=github.com/somethingwithproof/plugin_doctor)
+
 Cacti Doctor is an administrator tool for diagnosing Cacti installations and applying small, explicitly selected repairs.
 
 Its production files intentionally use PHP 5.4-compatible syntax so administrators can diagnose legacy Cacti 1.2.x systems before upgrading them. Legacy PHP receives a prominent security warning; compatibility is not an endorsement of running unsupported software.
