@@ -48,6 +48,7 @@ function doctor_run_checks() {
 	$results[] = doctor_check_poller_output();
 	$results[] = doctor_check_remote_pollers();
 	$results[] = doctor_check_boost();
+	$results[] = doctor_check_devices();
 
 	return $results;
 }
@@ -1153,6 +1154,74 @@ function doctor_check_recent_log_errors() {
 	}
 
 	return doctor_evaluate_log_lines(doctor_read_log_tail($path));
+}
+
+/**
+ * A few down devices is routine; more than half suggests the poller host or
+ * its network rather than the devices themselves.
+ *
+ * @param array<string,mixed> $counts
+ * @param array<int,array<string,string>>|false $offenders
+ * @return array<string,mixed>
+ */
+function doctor_evaluate_devices($counts, $offenders) {
+	$total      = (int) $counts['total'];
+	$down       = (int) $counts['down'];
+	$recovering = (int) $counts['recovering'];
+
+	if ($total === 0) {
+		return doctor_result('devices.health', 'Devices', 'pass', 'Device availability', 'No enabled devices are configured.');
+	}
+
+	if ($down === 0 && $recovering === 0) {
+		return doctor_result('devices.health', 'Devices', 'pass', 'Device availability', 'All ' . $total . ' enabled devices are up.');
+	}
+
+	$detail = $down . ' of ' . $total . ' enabled devices are down and ' . $recovering . ' recovering.';
+	$listed = [];
+
+	if (!is_array($offenders)) {
+		$detail   .= ' The down devices could not be listed.';
+		$offenders = [];
+	}
+
+	foreach ($offenders as $device) {
+		$entry = $device['description'] . ' (' . $device['hostname'] . ')';
+
+		if ((int) $device['failed'] > 0) {
+			$entry .= ' down since ' . date('Y-m-d H:i', (int) $device['failed']);
+		}
+
+		if ($device['status_last_error'] !== '') {
+			$entry .= ': ' . $device['status_last_error'];
+		}
+
+		$listed[] = $entry;
+	}
+
+	if ($listed !== []) {
+		$detail .= ' Longest down: ' . implode('; ', $listed) . '.';
+	}
+
+	if ($total >= 4 && $down * 2 > $total) {
+		return doctor_result('devices.health', 'Devices', 'fail', 'Device availability', $detail . ' With most devices down, check the poller host\'s network and SNMP settings first.');
+	}
+
+	return doctor_result('devices.health', 'Devices', 'warn', 'Device availability', $detail);
+}
+
+/** @return array<string,mixed> */
+function doctor_check_devices() {
+	$counts = db_fetch_assoc("SELECT COUNT(*) AS total, SUM(status = 1) AS down, SUM(status = 2) AS recovering FROM host WHERE disabled = '' AND deleted = ''", false);
+
+	if (!is_array($counts) || !isset($counts[0])) {
+		return doctor_result('devices.health', 'Devices', 'warn', 'Device availability', 'Doctor could not read device status from the host table.');
+	}
+
+	// Outages without a recorded failure time sort last so they cannot crowd out dated ones.
+	$offenders = db_fetch_assoc("SELECT description, hostname, UNIX_TIMESTAMP(status_fail_date) AS failed, status_last_error FROM host WHERE disabled = '' AND deleted = '' AND status = 1 ORDER BY COALESCE(UNIX_TIMESTAMP(status_fail_date), 0) <= 0, status_fail_date, id LIMIT 3", false);
+
+	return doctor_evaluate_devices($counts[0], $offenders);
 }
 
 /**
