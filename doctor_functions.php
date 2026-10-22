@@ -1305,7 +1305,8 @@ function doctor_poller_bottom() {
 
 	// Recording the start here stops the next poller cycle from launching a second run.
 	set_config_option('doctor_last_run', (string) $now);
-	exec_background($php, '-q ' . cacti_escapeshellarg($config['base_path'] . '/plugins/doctor/cli/doctor.php') . ' --scheduled');
+	// The binary passed doctor_binary_execution_refusal() and the script path is fixed and escaped.
+	exec_background($php, '-q ' . cacti_escapeshellarg($config['base_path'] . '/plugins/doctor/cli/doctor.php') . ' --scheduled'); // nosemgrep: php.lang.security.exec-use.exec-use
 }
 
 /**
