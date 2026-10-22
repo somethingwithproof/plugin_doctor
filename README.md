@@ -30,6 +30,7 @@ Cacti problems usually surface as symptoms: empty graphs, a poller that stopped,
 | Filesystem | Writable cache, log, and RRA directories; free space for RRD files; active data sources with no RRD file; `include/config.php` not world-readable; Cacti log writable and not oversized |
 | Binaries | PHP CLI, RRDtool, `snmpget`, `snmpwalk`, and Spine when it is the configured poller, including versions where Cacti states one |
 | Log | Errors among the most recent Cacti log lines, with the most frequent message |
+| Devices | Enabled devices that are down or recovering, the three down longest with their last error, and a failure when most devices are down at once |
 | Poller | Poller type and interval, time since the main poller last completed, run time against the interval, poller output that never reached an RRD file, remote pollers that stopped reporting, a stalled Boost, and a Spine configuration that points at a different database |
 
 Every check has a stable ID, such as `database.timezone` or `binary.rrdtool`, so scripts can key on individual results.

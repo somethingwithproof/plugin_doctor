@@ -248,7 +248,7 @@ jobs:
             binary.snmpget=pass binary.snmpwalk=pass poller.configuration=pass poller.freshness=pass \
             cacti.schema_version=pass cacti.plugin_files=pass poller.runtime=pass \
             poller.output_backlog=pass poller.remote=pass poller.boost=pass \
-            database.clock=pass database.innodb=pass filesystem.disk_space=pass
+            database.clock=pass database.innodb=pass filesystem.disk_space=pass devices.health=pass
         working-directory: cacti
 
       - name: Verify controlled failures and recovery

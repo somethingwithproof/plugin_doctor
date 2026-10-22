@@ -888,3 +888,45 @@ test('the poller hook will not launch a misnamed PHP binary', function () {
 
 	expect($GLOBALS['doctor_test_spawned'])->toBe([]);
 });
+
+test('down devices warn and are listed oldest first', function () {
+	$offenders = [
+		['description' => 'Core router', 'hostname' => '10.0.0.1', 'failed' => '1700000000', 'status_last_error' => 'SNMP timeout'],
+		['description' => 'Edge switch', 'hostname' => '10.0.0.2', 'failed' => '1700003600', 'status_last_error' => '']
+	];
+
+	$result = doctor_evaluate_devices(['total' => '40', 'down' => '2', 'recovering' => '1'], $offenders);
+
+	expect($result['id'])->toBe('devices.health')
+		->and($result['status'])->toBe('warn')
+		->and($result['detail'])->toContain('2 of 40')
+		->and($result['detail'])->toContain('1 recovering')
+		->and($result['detail'])->toContain('Core router (10.0.0.1)')
+		->and($result['detail'])->toContain('SNMP timeout');
+});
+
+test('more than half of the devices down fails as a wider outage', function () {
+	expect(doctor_evaluate_devices(['total' => '10', 'down' => '6', 'recovering' => '0'], [])['status'])->toBe('fail')
+		->and(doctor_evaluate_devices(['total' => '2', 'down' => '2', 'recovering' => '0'], [])['status'])->toBe('warn');
+});
+
+test('all devices up or none configured passes', function () {
+	expect(doctor_evaluate_devices(['total' => '40', 'down' => '0', 'recovering' => '0'], [])['status'])->toBe('pass')
+		->and(doctor_evaluate_devices(['total' => '0', 'down' => null, 'recovering' => null], [])['status'])->toBe('pass');
+});
+
+test('the device check counts only enabled devices that are not deleted', function () {
+	$GLOBALS['doctor_test_rows'] = [
+		"SELECT COUNT(*) AS total, SUM(status = 1) AS down, SUM(status = 2) AS recovering FROM host WHERE disabled = '' AND deleted = ''" => [
+			['total' => '3', 'down' => '1', 'recovering' => '0']
+		],
+		"SELECT description, hostname, UNIX_TIMESTAMP(status_fail_date) AS failed, status_last_error FROM host WHERE disabled = '' AND deleted = '' AND status = 1 ORDER BY status_fail_date LIMIT 3" => [
+			['description' => 'Printer', 'hostname' => 'printer01', 'failed' => '0', 'status_last_error' => '']
+		]
+	];
+
+	$result = doctor_check_devices();
+
+	expect($result['status'])->toBe('warn')
+		->and($result['detail'])->toContain('Printer (printer01)');
+});
