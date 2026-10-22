@@ -7,6 +7,7 @@
 - Require PHP 8.3 for Cacti 1.3 and take the RRDtool floor from Cacti's supported versions, so RRDtool 1.7 passes on develop.
 - Warn instead of failing below the database versions Cacti recommends (MariaDB 10.11 or MySQL 8.4 on 1.3, 5.6 on 1.2), and below Net-SNMP 5.9 on 1.3 only.
 - Accept every poller interval Cacti offers, including 15 seconds.
+- Detect an unfinished upgrade, enabled plugins with missing files, poller runs that outlast the interval, stale poller output, and remote pollers that stopped reporting.
 - Report an unset `date.timezone` and use Cacti's 400M (800M before PHP 7) memory recommendation.
 - Measure poller freshness from the last completed run instead of the last start.
 - Follow the configured log file and Cacti 1.3 path overrides for runtime directories.

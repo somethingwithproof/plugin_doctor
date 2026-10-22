@@ -22,13 +22,13 @@ Cacti problems usually surface as symptoms: empty graphs, a poller that stopped,
 | Area | Checks |
 |---|---|
 | Doctor | Whether Doctor itself runs as root, which would make permission checks describe the wrong account |
-| Cacti and PHP | Cacti version, PHP version for the installed Cacti branch, PHP security baseline |
+| Cacti and PHP | Cacti version, an upgrade the installer never finished, enabled plugins whose files are missing, PHP version for the installed Cacti branch, PHP security baseline |
 | PHP extensions | Required extensions in the web PHP and in the CLI PHP the poller uses, plus recommended features |
 | PHP configuration | `memory_limit`, `max_execution_time`, and `date.timezone`, using Cacti's own recommendations |
 | Database | Connectivity, server version against Cacti's recommendation, UTF-8 character set, timezone tables, core tables |
 | Filesystem | Writable cache, log, and RRA directories; `include/config.php` not world-readable; Cacti log writable and not oversized |
 | Binaries | PHP CLI, RRDtool, `snmpget`, `snmpwalk`, and Spine when it is the configured poller, including versions where Cacti states one |
-| Poller | Poller type and interval, and the time since the main poller last completed a run |
+| Poller | Poller type and interval, time since the main poller last completed, run time against the interval, poller output that never reached an RRD file, and remote pollers that stopped reporting |
 
 Every check has a stable ID, such as `database.timezone` or `binary.rrdtool`, so scripts can key on individual results.
 

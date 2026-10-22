@@ -384,3 +384,129 @@ test('an old Net-SNMP passes on Cacti 1.2 because that branch documents no minim
 		->and($results[2]['status'])->toBe('pass')
 		->and($results[2]['detail'])->toContain('Detected version 5.4.2');
 });
+
+test('a database schema behind the installed code fails', function () {
+	$result = doctor_evaluate_schema_version('1.2.24', '1.2.25');
+
+	expect($result['id'])->toBe('cacti.schema_version')
+		->and($result['status'])->toBe('fail')
+		->and($result['detail'])->toContain('1.2.24')
+		->and($result['detail'])->toContain('install/');
+});
+
+test('a database schema matching the code passes, ignoring development build suffixes', function () {
+	expect(doctor_evaluate_schema_version('1.2.25', '1.2.25')['status'])->toBe('pass')
+		->and(doctor_evaluate_schema_version('1.3.0', '1.3.0.99.1593739325')['status'])->toBe('pass');
+});
+
+test('an installation the installer never finished fails', function () {
+	$result = doctor_evaluate_schema_version('new_install', '1.2.25');
+
+	expect($result['status'])->toBe('fail')
+		->and($result['detail'])->toContain('installer');
+});
+
+test('a database schema newer than the code warns', function () {
+	expect(doctor_evaluate_schema_version('1.2.26', '1.2.25')['status'])->toBe('warn');
+});
+
+test('an unreadable version table fails', function () {
+	expect(doctor_evaluate_schema_version('', '1.2.25')['status'])->toBe('fail');
+});
+
+test('the schema check reads the version table', function () {
+	$GLOBALS['doctor_test_cells'] = ['SELECT cacti FROM version LIMIT 1' => 'new_install'];
+
+	expect(doctor_check_schema_version()['status'])->toBe('fail');
+});
+
+test('a poller run longer than the interval fails', function () {
+	expect(doctor_evaluate_poller_runtime(310.5, 300)['status'])->toBe('fail')
+		->and(doctor_evaluate_poller_runtime(250.0, 300)['status'])->toBe('warn')
+		->and(doctor_evaluate_poller_runtime(120.0, 300)['status'])->toBe('pass')
+		->and(doctor_evaluate_poller_runtime(0.0, 300)['status'])->toBe('pass');
+});
+
+test('the poller runtime comes from the last completed main-poller run', function () {
+	$GLOBALS['doctor_test_settings'] = ['poller_interval' => '60'];
+	$GLOBALS['doctor_test_cells']    = ['SELECT total_time FROM poller WHERE id = 1' => '75.2'];
+
+	$result = doctor_check_poller_runtime();
+
+	expect($result['id'])->toBe('poller.runtime')
+		->and($result['status'])->toBe('fail')
+		->and($result['detail'])->toContain('75.2');
+});
+
+test('poller output older than two intervals warns', function () {
+	$GLOBALS['doctor_test_settings'] = ['poller_interval' => '300'];
+	$GLOBALS['doctor_test_cells']    = ['SELECT COUNT(*) FROM poller_output WHERE time < FROM_UNIXTIME(UNIX_TIMESTAMP() - ?)' => '42'];
+
+	$result = doctor_check_poller_output();
+
+	expect($result['id'])->toBe('poller.output_backlog')
+		->and($result['status'])->toBe('warn')
+		->and($result['detail'])->toContain('42');
+});
+
+test('an empty poller output table passes', function () {
+	$GLOBALS['doctor_test_settings'] = ['poller_interval' => '300'];
+	$GLOBALS['doctor_test_cells']    = ['SELECT COUNT(*) FROM poller_output WHERE time < FROM_UNIXTIME(UNIX_TIMESTAMP() - ?)' => '0'];
+
+	expect(doctor_check_poller_output()['status'])->toBe('pass');
+});
+
+test('an enabled remote poller that stopped reporting fails', function () {
+	$now     = 1000000;
+	$pollers = [
+		['id' => '2', 'name' => 'Edge', 'last_update' => (string) ($now - 60)],
+		['id' => '3', 'name' => 'Branch', 'last_update' => (string) ($now - 7200)]
+	];
+
+	$result = doctor_evaluate_remote_pollers($pollers, 300, $now);
+
+	expect($result['id'])->toBe('poller.remote')
+		->and($result['status'])->toBe('fail')
+		->and($result['detail'])->toContain('Branch')
+		->and($result['detail'])->not->toContain('Edge');
+});
+
+test('no remote pollers passes', function () {
+	expect(doctor_evaluate_remote_pollers([], 300, time())['status'])->toBe('pass');
+});
+
+test('remote pollers come from enabled poller rows other than the main poller', function () {
+	$GLOBALS['doctor_test_settings'] = ['poller_interval' => '300'];
+	$GLOBALS['doctor_test_rows']     = [
+		"SELECT id, name, UNIX_TIMESTAMP(last_update) AS last_update FROM poller WHERE id > 1 AND disabled = ''" => [
+			['id' => '2', 'name' => 'Never', 'last_update' => '0']
+		]
+	];
+
+	expect(doctor_check_remote_pollers()['status'])->toBe('fail');
+});
+
+test('an enabled plugin whose files are missing fails', function () {
+	$base = doctor_test_directory();
+	mkdir($base . '/plugins/present', 0700, true);
+	touch($base . '/plugins/present/setup.php');
+	$GLOBALS['doctor_test_rows'] = [
+		'SELECT directory FROM plugin_config WHERE status = 1' => [['directory' => 'present'], ['directory' => 'removed']]
+	];
+
+	$result = doctor_check_plugin_files($base);
+
+	expect($result['id'])->toBe('cacti.plugin_files')
+		->and($result['status'])->toBe('fail')
+		->and($result['detail'])->toContain('removed')
+		->and($result['detail'])->not->toContain('present');
+});
+
+test('enabled plugins with their files present pass', function () {
+	$base = doctor_test_directory();
+	mkdir($base . '/plugins/present', 0700, true);
+	touch($base . '/plugins/present/setup.php');
+	$GLOBALS['doctor_test_rows'] = ['SELECT directory FROM plugin_config WHERE status = 1' => [['directory' => 'present']]];
+
+	expect(doctor_check_plugin_files($base)['status'])->toBe('pass');
+});
