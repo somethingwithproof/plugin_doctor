@@ -84,6 +84,20 @@ function doctor_php_minimum_version($cactiVersion = null) {
 	return doctor_is_cacti_13($cactiVersion) ? '8.3.0' : '5.4.0';
 }
 
+// Cacti only warns below these, from the version row in utilities_get_mysql_recommendations().
+function doctor_database_recommended_version($server, $cactiVersion = null) {
+	if (!doctor_is_cacti_13($cactiVersion)) {
+		return '5.6.0';
+	}
+
+	return $server === 'MariaDB' ? '10.11.0' : '8.4.0';
+}
+
+// Cacti 1.2.20, the oldest supported release, documents no Net-SNMP version.
+function doctor_snmp_recommended_version($cactiVersion = null) {
+	return doctor_is_cacti_13($cactiVersion) ? '5.9.0' : '';
+}
+
 /**
  * Cacti lists every RRDtool release it can drive in $rrdtool_versions, oldest
  * first. The fallbacks match the first entry on 1.2.x and develop.
@@ -386,10 +400,14 @@ function doctor_database_identity($raw) {
 function doctor_check_database_version() {
 	$raw      = (string) db_fetch_cell('SELECT VERSION()', '', false);
 	$identity = doctor_database_identity($raw);
-	$is13     = doctor_is_cacti_13();
-	$minimum  = $is13 ? ($identity['server'] === 'MariaDB' ? '10.2.0' : '8.0.0') : '5.6.0';
-	$status   = $identity['version'] !== 'unknown' && version_compare($identity['version'], $minimum, '>=') ? 'pass' : 'fail';
-	$detail   = $identity['server'] . ' ' . $identity['version'] . ' detected; this Cacti branch requires ' . $identity['server'] . ' ' . $minimum . ' or newer.';
+	$minimum  = doctor_database_recommended_version($identity['server']);
+
+	if ($identity['version'] === 'unknown') {
+		return doctor_result('database.version', 'Prerequisites', 'fail', 'Supported database server', 'Doctor could not determine the database server version from ' . $raw . '.');
+	}
+
+	$status = version_compare($identity['version'], $minimum, '>=') ? 'pass' : 'warn';
+	$detail = $identity['server'] . ' ' . $identity['version'] . ' detected; this Cacti branch recommends ' . $identity['server'] . ' ' . $minimum . ' or newer.';
 
 	return doctor_result('database.version', 'Prerequisites', $status, 'Supported database server', $detail);
 }
@@ -561,12 +579,12 @@ function doctor_check_cacti_log() {
  */
 function doctor_check_required_binaries($privileged = null) {
 	$privileged = $privileged === null ? doctor_running_as_root() : $privileged;
-	$is13       = doctor_is_cacti_13();
+	$snmp       = doctor_snmp_recommended_version();
 	$binaries = [
 		'path_php_binary' => ['label' => 'PHP CLI', 'argument' => '-v', 'pattern' => '/PHP\s+([0-9]+\.[0-9]+(?:\.[0-9]+)?)/i', 'minimum' => doctor_php_minimum_version()],
 		'path_rrdtool'    => ['label' => 'RRDtool', 'argument' => '--version', 'pattern' => '/RRDtool\s+([0-9]+\.[0-9]+(?:\.[0-9]+)?)/i', 'minimum' => doctor_rrdtool_minimum_version()],
-		'path_snmpget'    => ['label' => 'Net-SNMP snmpget', 'argument' => '-V', 'pattern' => '/NET-SNMP version:\s*([0-9]+\.[0-9]+(?:\.[0-9]+)?)/i', 'minimum' => $is13 ? '5.8.0' : '5.5.0'],
-		'path_snmpwalk'   => ['label' => 'Net-SNMP snmpwalk', 'argument' => '-V', 'pattern' => '/NET-SNMP version:\s*([0-9]+\.[0-9]+(?:\.[0-9]+)?)/i', 'minimum' => $is13 ? '5.8.0' : '5.5.0']
+		'path_snmpget'    => ['label' => 'Net-SNMP snmpget', 'argument' => '-V', 'pattern' => '/NET-SNMP version:\s*([0-9]+\.[0-9]+(?:\.[0-9]+)?)/i', 'minimum' => $snmp, 'below' => 'warn'],
+		'path_snmpwalk'   => ['label' => 'Net-SNMP snmpwalk', 'argument' => '-V', 'pattern' => '/NET-SNMP version:\s*([0-9]+\.[0-9]+(?:\.[0-9]+)?)/i', 'minimum' => $snmp, 'below' => 'warn']
 	];
 
 	if ((string) read_config_option('poller_type', true) === '2') {
@@ -590,9 +608,12 @@ function doctor_check_required_binaries($privileged = null) {
 			} elseif ($version === null) {
 				$status  = 'warn';
 				$detail .= ' Doctor could not determine its version.';
+			} elseif ($specification['minimum'] === '') {
+				$detail .= ' Detected version ' . $version . '.';
 			} elseif (version_compare($version, $specification['minimum'], '<')) {
-				$status  = 'fail';
-				$detail .= ' Detected version ' . $version . '; version ' . $specification['minimum'] . ' or newer is required.';
+				$below   = isset($specification['below']) ? $specification['below'] : 'fail';
+				$status  = $below;
+				$detail .= ' Detected version ' . $version . '; version ' . $specification['minimum'] . ' or newer is ' . ($below === 'warn' ? 'recommended.' : 'required.');
 			} else {
 				$detail .= ' Detected version ' . $version . '; minimum is ' . $specification['minimum'] . '.';
 			}
