@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.5.0 - 2026-10-22
+
+- Run the checks on a schedule after the poller, log every status change, and email alerts through Cacti's mailer.
+- Add `--format=nagios` and `--format=prometheus` CLI output for external monitoring.
+- Add `--bundle=PATH` to write a private support bundle with secrets masked.
+- Remove Doctor's settings on uninstall.
+
 ## 0.4.0 - 2026-10-21
 
 - Execute configured binaries only when their file names match the expected program, and never as root; warn instead of running anything else.

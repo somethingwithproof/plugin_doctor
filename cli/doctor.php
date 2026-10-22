@@ -31,11 +31,41 @@ chdir($cactiBase);
 include_once('./include/cli_check.php');
 include_once('./plugins/doctor/doctor_functions.php');
 
-$options = getopt('', ['json', 'repair:', 'yes', 'help']);
+$options = getopt('', ['json', 'format:', 'bundle:', 'scheduled', 'repair:', 'yes', 'help']);
 
 if (isset($options['help'])) {
-	print 'Usage: php plugins/doctor/cli/doctor.php [--json] [--repair=REPAIR_ID --yes]' . PHP_EOL;
+	print 'Usage: php plugins/doctor/cli/doctor.php [--json | --format=text|json|nagios|prometheus]' . PHP_EOL;
+	print '       php plugins/doctor/cli/doctor.php --bundle=PATH' . PHP_EOL;
+	print '       php plugins/doctor/cli/doctor.php --repair=REPAIR_ID --yes' . PHP_EOL;
 	print 'Available repairs: ' . implode(', ', array_keys(doctor_available_repairs())) . PHP_EOL;
+	exit(0);
+}
+
+$format = isset($options['json']) ? 'json' : (isset($options['format']) ? (string) $options['format'] : 'text');
+
+if (!in_array($format, ['text', 'json', 'nagios', 'prometheus'], true)) {
+	fwrite(STDERR, 'Unknown format ' . $format . '. Use text, json, nagios, or prometheus.' . PHP_EOL);
+	exit(2);
+}
+
+if (isset($options['scheduled'])) {
+	$changes = doctor_run_scheduled(doctor_run_checks(), time());
+	print count($changes) . ' checks changed status.' . PHP_EOL;
+	exit(0);
+}
+
+if (isset($options['bundle'])) {
+	$logPath = (string) read_config_option('path_cactilog', true);
+	$logPath = $logPath !== '' ? $logPath : $cactiBase . '/log/cacti.log';
+	$bundle  = doctor_build_bundle(doctor_run_checks(), doctor_bundle_context(), doctor_read_log_tail($logPath, 200));
+	$error   = doctor_write_bundle((string) $options['bundle'], $bundle);
+
+	if ($error !== '') {
+		fwrite(STDERR, $error . PHP_EOL);
+		exit(1);
+	}
+
+	print 'Wrote ' . $options['bundle'] . '. Review it before sharing; values after password, secret, token, and community names are masked.' . PHP_EOL;
 	exit(0);
 }
 
@@ -48,7 +78,7 @@ if (isset($options['repair'])) {
 	$repairResult = doctor_run_repair((string) $options['repair']);
 	cacti_log('Doctor CLI repair ' . $options['repair'] . ': ' . $repairResult['status'] . ' - ' . $repairResult['detail'], false, 'DOCTOR');
 
-	if (isset($options['json'])) {
+	if ($format === 'json') {
 		print json_encode($repairResult, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES) . PHP_EOL;
 	} else {
 		print strtoupper((string) $repairResult['status']) . ' ' . $repairResult['summary'] . ': ' . $repairResult['detail'] . PHP_EOL;
@@ -59,7 +89,18 @@ if (isset($options['repair'])) {
 
 $results = doctor_run_checks();
 
-if (isset($options['json'])) {
+if ($format === 'nagios') {
+	$nagios = doctor_format_nagios($results);
+	print $nagios['text'] . PHP_EOL;
+	exit($nagios['code']);
+}
+
+if ($format === 'prometheus') {
+	print doctor_format_prometheus($results, time());
+	exit(0);
+}
+
+if ($format === 'json') {
 	print json_encode(['summary' => doctor_result_counts($results), 'checks' => $results], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES) . PHP_EOL;
 } else {
 	foreach ($results as $result) {

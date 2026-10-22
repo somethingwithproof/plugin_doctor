@@ -74,9 +74,32 @@ Text output prints one line per check with its status, category, summary, and de
 
 Cacti raises `memory_limit` for every CLI script, so the PHP runtime configuration check is only meaningful on the web page.
 
+## Scheduled checks and alerts
+
+Under **Configuration > Settings > Doctor**, turn on **Run Checks on a Schedule** and pick an interval from 15 minutes to a day. After each poller cycle that falls due, Doctor runs every check in a background process, so the poller's own run time is unaffected.
+
+Each run records every check's status. When a check starts or stops failing, Doctor writes the change to the Cacti log and, if **Alert Email Addresses** is set, emails those addresses through Cacti's mail settings. **Alert on Warnings** adds changes into and out of warnings. The first run only records a baseline.
+
+## Monitoring integration
+
+```console
+php plugins/doctor/cli/doctor.php --format=nagios
+php plugins/doctor/cli/doctor.php --format=prometheus > /var/lib/node_exporter/textfile/cacti_doctor.prom
+```
+
+`--format=nagios` prints one status line with performance data and exits `0` (OK), `1` (WARNING), or `2` (CRITICAL), so Nagios, Icinga, or any compatible system can run it directly. `--format=prometheus` writes the Prometheus text format for node_exporter's textfile collector: `cacti_doctor_check_status` per check (0 pass, 1 warn, 2 fail), `cacti_doctor_checks` per status, and `cacti_doctor_last_run_timestamp_seconds`.
+
+## Support bundle
+
+```console
+php plugins/doctor/cli/doctor.php --bundle=/tmp/cacti-doctor.txt
+```
+
+The bundle is a single text file with the Doctor, Cacti, PHP, OS, and database versions, poller and Boost statistics, the full report, and the last 200 lines of the Cacti log. Values that follow password, secret, token, community, and key names are masked. Doctor creates the file readable only by its owner and refuses to overwrite an existing file. Review it before posting it anywhere.
+
 ## Repair policy
 
-Version 0.4.0 includes one repair, `runtime_directories`. It creates missing Cacti runtime directories and adds owner read, write, and execute bits without removing existing permissions.
+Doctor includes one repair, `runtime_directories`. It creates missing Cacti runtime directories and adds owner read, write, and execute bits without removing existing permissions.
 
 It targets `$cache_path`, `$log_path`, and `$rra_path` on Cacti 1.3, or the installation's `cache`, `log`, and `rra` directories otherwise. It skips directories that are already writable, refuses directories outside the Cacti installation (such as a log directory under `/var/log`), refuses symbolic links, and refuses to run as root. It never follows `path_cactilog`, so a log file configured inside a code directory cannot redirect the repair there. The diagnostic still checks the configured log file's directory on every release.
 
