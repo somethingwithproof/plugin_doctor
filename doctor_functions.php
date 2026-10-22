@@ -1296,7 +1296,7 @@ function doctor_poller_bottom() {
 	}
 
 	$php     = (string) read_config_option('path_php_binary', true);
-	$refusal = doctor_binary_execution_refusal('path_php_binary', $php, false);
+	$refusal = doctor_binary_execution_refusal('path_php_binary', $php, doctor_running_as_root());
 
 	if ($refusal !== '') {
 		cacti_log('Doctor scheduled checks skipped: ' . $refusal, false, 'DOCTOR');
@@ -1425,8 +1425,8 @@ function doctor_build_bundle($results, $context, $logLines) {
 }
 
 /**
- * Creates the file exclusively and restricts it to the owner before writing,
- * so a bundle never replaces an existing file or becomes readable by others.
+ * Creates the file exclusively and readable only by its owner, so a bundle
+ * never replaces an existing file or becomes readable by others.
  *
  * @return string Empty on success, otherwise the reason it failed.
  */
@@ -1435,13 +1435,23 @@ function doctor_write_bundle($path, $contents) {
 		return 'Refusing to overwrite ' . $path . '.';
 	}
 
+	// The umask makes the file private from the moment it exists.
+	$umask  = umask(0077);
 	$handle = @fopen($path, 'x');
+	umask($umask);
 
 	if ($handle === false) {
 		return 'Cannot create ' . $path . '.';
 	}
 
-	chmod($path, 0600);
+	$stat = fstat($handle);
+
+	if ($stat === false || ($stat['mode'] & 0077) !== 0) {
+		fclose($handle);
+
+		return 'Could not make ' . $path . ' private.';
+	}
+
 	$written = fwrite($handle, $contents);
 	fclose($handle);
 

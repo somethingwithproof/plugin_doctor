@@ -11,15 +11,17 @@
 */
 
 function plugin_doctor_install() {
-	doctor_register_hooks();
+	doctor_setup_hooks();
 	api_plugin_register_realm('doctor', 'doctor.php', __('Cacti Doctor', 'doctor'), 1);
 }
 
 /**
  * Registration is idempotent, so enabling or upgrading the plugin can call it
- * again to add hooks introduced by a newer version.
+ * again to add hooks introduced by a newer version. Cacti 1.2.x and later
+ * reject registration from a function whose name lacks install, upgrade, or
+ * setup.
  */
-function doctor_register_hooks($enable = false) {
+function doctor_setup_hooks($enable = false) {
 	api_plugin_register_hook('doctor', 'config_arrays', 'doctor_config_arrays', 'setup.php', $enable);
 	api_plugin_register_hook('doctor', 'config_settings', 'doctor_config_settings', 'setup.php', $enable);
 	api_plugin_register_hook('doctor', 'draw_navigation_text', 'doctor_draw_navigation_text', 'setup.php', $enable);
@@ -32,7 +34,7 @@ function plugin_doctor_uninstall() {
 }
 
 function plugin_doctor_check_config() {
-	doctor_register_hooks();
+	doctor_setup_hooks();
 
 	return true;
 }
@@ -60,7 +62,7 @@ function doctor_config_arrays() {
 	$version = isset($info['version']) ? $info['version'] : '';
 
 	if ($version !== '' && read_config_option('doctor_hooks_version') !== $version) {
-		doctor_register_hooks(true);
+		doctor_setup_hooks(true);
 		set_config_option('doctor_hooks_version', $version);
 	}
 
