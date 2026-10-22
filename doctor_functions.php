@@ -1161,7 +1161,7 @@ function doctor_check_recent_log_errors() {
  * its network rather than the devices themselves.
  *
  * @param array<string,mixed> $counts
- * @param array<int,array<string,string>> $offenders
+ * @param array<int,array<string,string>>|false $offenders
  * @return array<string,mixed>
  */
 function doctor_evaluate_devices($counts, $offenders) {
@@ -1179,6 +1179,11 @@ function doctor_evaluate_devices($counts, $offenders) {
 
 	$detail = $down . ' of ' . $total . ' enabled devices are down and ' . $recovering . ' recovering.';
 	$listed = [];
+
+	if (!is_array($offenders)) {
+		$detail   .= ' The down devices could not be listed.';
+		$offenders = [];
+	}
 
 	foreach ($offenders as $device) {
 		$entry = $device['description'] . ' (' . $device['hostname'] . ')';
@@ -1207,11 +1212,16 @@ function doctor_evaluate_devices($counts, $offenders) {
 
 /** @return array<string,mixed> */
 function doctor_check_devices() {
-	$counts    = db_fetch_assoc("SELECT COUNT(*) AS total, SUM(status = 1) AS down, SUM(status = 2) AS recovering FROM host WHERE disabled = '' AND deleted = ''", false);
-	$offenders = db_fetch_assoc("SELECT description, hostname, UNIX_TIMESTAMP(status_fail_date) AS failed, status_last_error FROM host WHERE disabled = '' AND deleted = '' AND status = 1 ORDER BY status_fail_date LIMIT 3", false);
-	$counts    = is_array($counts) && isset($counts[0]) ? $counts[0] : ['total' => 0, 'down' => 0, 'recovering' => 0];
+	$counts = db_fetch_assoc("SELECT COUNT(*) AS total, SUM(status = 1) AS down, SUM(status = 2) AS recovering FROM host WHERE disabled = '' AND deleted = ''", false);
 
-	return doctor_evaluate_devices($counts, is_array($offenders) ? $offenders : []);
+	if (!is_array($counts) || !isset($counts[0])) {
+		return doctor_result('devices.health', 'Devices', 'warn', 'Device availability', 'Doctor could not read device status from the host table.');
+	}
+
+	// Outages without a recorded failure time sort last so they cannot crowd out dated ones.
+	$offenders = db_fetch_assoc("SELECT description, hostname, UNIX_TIMESTAMP(status_fail_date) AS failed, status_last_error FROM host WHERE disabled = '' AND deleted = '' AND status = 1 ORDER BY COALESCE(UNIX_TIMESTAMP(status_fail_date), 0) <= 0, status_fail_date, id LIMIT 3", false);
+
+	return doctor_evaluate_devices($counts[0], $offenders);
 }
 
 /**

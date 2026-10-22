@@ -920,7 +920,7 @@ test('the device check counts only enabled devices that are not deleted', functi
 		"SELECT COUNT(*) AS total, SUM(status = 1) AS down, SUM(status = 2) AS recovering FROM host WHERE disabled = '' AND deleted = ''" => [
 			['total' => '3', 'down' => '1', 'recovering' => '0']
 		],
-		"SELECT description, hostname, UNIX_TIMESTAMP(status_fail_date) AS failed, status_last_error FROM host WHERE disabled = '' AND deleted = '' AND status = 1 ORDER BY status_fail_date LIMIT 3" => [
+		"SELECT description, hostname, UNIX_TIMESTAMP(status_fail_date) AS failed, status_last_error FROM host WHERE disabled = '' AND deleted = '' AND status = 1 ORDER BY COALESCE(UNIX_TIMESTAMP(status_fail_date), 0) <= 0, status_fail_date, id LIMIT 3" => [
 			['description' => 'Printer', 'hostname' => 'printer01', 'failed' => '0', 'status_last_error' => '']
 		]
 	];
@@ -929,4 +929,20 @@ test('the device check counts only enabled devices that are not deleted', functi
 
 	expect($result['status'])->toBe('warn')
 		->and($result['detail'])->toContain('Printer (printer01)');
+});
+
+test('a failed device count query does not pass as an empty installation', function () {
+	$GLOBALS['doctor_test_rows'] = [];
+
+	$result = doctor_check_devices();
+
+	expect($result['status'])->toBe('warn')
+		->and($result['detail'])->toContain('could not read');
+});
+
+test('a failed offender query is reported instead of silently omitted', function () {
+	$result = doctor_evaluate_devices(['total' => '5', 'down' => '1', 'recovering' => '0'], false);
+
+	expect($result['status'])->toBe('warn')
+		->and($result['detail'])->toContain('could not be listed');
 });
