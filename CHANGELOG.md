@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.4.0 - 2026-10-21
+
+- Execute configured binaries only when their file names match the expected program, and never as root; warn instead of running anything else.
+- Warn when Doctor runs as root and refuse repairs in that case.
+- Require PHP 8.3 for Cacti 1.3 and take the RRDtool floor from Cacti's supported versions, so RRDtool 1.7 passes on develop.
+- Accept every poller interval Cacti offers, including 15 seconds.
+- Report an unset `date.timezone` and use Cacti's 400M (800M before PHP 7) memory recommendation.
+- Measure poller freshness from the last completed run instead of the last start.
+- Follow the configured log file and Cacti 1.3 path overrides for runtime directories.
+- Keep PHP startup warnings from breaking the CLI extension check.
+- Warn when `include/config.php` is world-readable.
+- Verify that each repaired runtime directory is a writable directory before reporting success.
+- Limit the runtime-directory repair to Cacti's own cache, log, and RRA directories, and skip ones that are already writable.
+
 ## 0.3.0 - 2026-09-06
 
 - Support PHP 5.4-compatible parsing for legacy Cacti 1.2.x diagnostics.
