@@ -510,3 +510,203 @@ test('enabled plugins with their files present pass', function () {
 
 	expect(doctor_check_plugin_files($base)['status'])->toBe('pass');
 });
+
+test('Boost that has not flushed within two intervals fails', function () {
+	$now = 1000000;
+
+	$result = doctor_evaluate_boost(true, 100, 50000, $now - 7300, 60, $now);
+
+	expect($result['id'])->toBe('poller.boost')
+		->and($result['status'])->toBe('fail')
+		->and($result['detail'])->toContain('7300')
+		->and(doctor_evaluate_boost(true, 100, 50000, $now - 7200, 60, $now)['status'])->toBe('pass');
+});
+
+test('Boost backlog above the maximum record count warns', function () {
+	$now = 1000000;
+
+	expect(doctor_evaluate_boost(true, 60000, 50000, $now - 600, 60, $now)['status'])->toBe('warn');
+});
+
+test('Boost accepts the date string Cacti may store as the last run time', function () {
+	$now = strtotime('2026-10-22 12:00:00');
+
+	expect(doctor_evaluate_boost(true, 10, 50000, '2026-10-22 11:30:00', 60, $now)['status'])->toBe('pass');
+});
+
+test('disabled Boost passes', function () {
+	expect(doctor_evaluate_boost(false, 999999, 1, 0, 60, time())['status'])->toBe('pass');
+});
+
+test('the Boost check reads Cacti settings and the boost table', function () {
+	$GLOBALS['doctor_test_settings'] = [
+		'boost_rrd_update_enable'      => 'on',
+		'boost_rrd_update_max_records' => '1000',
+		'boost_rrd_update_interval'    => '30',
+		'boost_last_run_time'          => (string) (time() - 60)
+	];
+	$GLOBALS['doctor_test_cells'] = ['SELECT COUNT(*) FROM poller_output_boost' => '5000'];
+
+	expect(doctor_check_boost()['status'])->toBe('warn');
+});
+
+test('active data sources without an RRD file warn with a sample', function () {
+	$rra = doctor_test_directory();
+	touch($rra . '/present_1.rrd');
+	$GLOBALS['doctor_test_rows'] = [
+		"SELECT local_data_id, data_source_path FROM data_template_data WHERE local_data_id > 0 AND active = 'on' AND data_source_path != ''" => [
+			['local_data_id' => '1', 'data_source_path' => '<path_rra>/present_1.rrd'],
+			['local_data_id' => '2', 'data_source_path' => '<path_rra>/missing_2.rrd']
+		]
+	];
+
+	$result = doctor_check_rrd_files($rra);
+
+	expect($result['id'])->toBe('filesystem.rrd_files')
+		->and($result['status'])->toBe('warn')
+		->and($result['detail'])->toContain('1 of 2')
+		->and($result['detail'])->toContain('missing_2.rrd')
+		->and($result['detail'])->not->toContain('present_1.rrd');
+});
+
+test('all RRD files present passes', function () {
+	$rra = doctor_test_directory();
+	touch($rra . '/present_1.rrd');
+	$GLOBALS['doctor_test_rows'] = [
+		"SELECT local_data_id, data_source_path FROM data_template_data WHERE local_data_id > 0 AND active = 'on' AND data_source_path != ''" => [
+			['local_data_id' => '1', 'data_source_path' => '<path_rra>/present_1.rrd']
+		]
+	];
+
+	expect(doctor_check_rrd_files($rra)['status'])->toBe('pass');
+});
+
+test('disk space thresholds warn below 10 percent and fail below 2 percent', function () {
+	expect(doctor_evaluate_disk_space(50, 100, '/rra')['status'])->toBe('pass')
+		->and(doctor_evaluate_disk_space(5, 100, '/rra')['status'])->toBe('warn')
+		->and(doctor_evaluate_disk_space(1, 100, '/rra')['status'])->toBe('fail')
+		->and(doctor_evaluate_disk_space(false, false, '/rra')['status'])->toBe('warn');
+});
+
+test('the disk space check measures the RRA directory', function () {
+	$result = doctor_check_disk_space(doctor_test_directory());
+
+	expect($result['id'])->toBe('filesystem.disk_space')
+		->and($result['status'])->not->toBe('');
+});
+
+test('database and PHP clocks that drift apart warn and then fail', function () {
+	expect(doctor_evaluate_clock(1000, 1002)['status'])->toBe('pass')
+		->and(doctor_evaluate_clock(1000, 1030)['status'])->toBe('warn')
+		->and(doctor_evaluate_clock(1000, 1200)['status'])->toBe('fail')
+		->and(doctor_evaluate_clock(false, 1000)['status'])->toBe('warn');
+});
+
+test('the clock check compares the database time with PHP', function () {
+	$GLOBALS['doctor_test_cells'] = ['SELECT UNIX_TIMESTAMP()' => (string) (time() - 600)];
+
+	$result = doctor_check_clock();
+
+	expect($result['id'])->toBe('database.clock')
+		->and($result['status'])->toBe('fail');
+});
+
+test('the Spine check is skipped when cmd.php polls', function () {
+	$GLOBALS['doctor_test_settings'] = ['poller_type' => '1'];
+
+	expect(doctor_check_spine_config('cacti', 'cactiuser')['status'])->toBe('pass');
+});
+
+test('a Spine configuration pointing at another database warns without revealing the password', function () {
+	$directory = doctor_test_directory();
+	$path      = $directory . '/spine.conf';
+	file_put_contents($path, "# comment\nDB_Host  localhost\nDB_Database  other\nDB_User cactiuser\nDB_Pass s3cret\n");
+	chmod($path, 0600);
+	$GLOBALS['doctor_test_settings'] = ['poller_type' => '2', 'path_spine_config' => $path];
+
+	$result = doctor_check_spine_config('cacti', 'cactiuser');
+
+	expect($result['id'])->toBe('poller.spine_config')
+		->and($result['status'])->toBe('warn')
+		->and($result['detail'])->toContain('DB_Database')
+		->and($result['detail'])->not->toContain('s3cret');
+});
+
+test('a matching private Spine configuration passes', function () {
+	$directory = doctor_test_directory();
+	$path      = $directory . '/spine.conf';
+	file_put_contents($path, "DB_Host localhost\nDB_Database cacti\nDB_User cactiuser\nDB_Pass x\n");
+	chmod($path, 0600);
+	$GLOBALS['doctor_test_settings'] = ['poller_type' => '2', 'path_spine_config' => $path];
+
+	expect(doctor_check_spine_config('cacti', 'cactiuser')['status'])->toBe('pass');
+});
+
+test('a world-readable Spine configuration warns because it holds the database password', function () {
+	$directory = doctor_test_directory();
+	$path      = $directory . '/spine.conf';
+	file_put_contents($path, "DB_Database cacti\nDB_User cactiuser\n");
+	chmod($path, 0644);
+	$GLOBALS['doctor_test_settings'] = ['poller_type' => '2', 'path_spine_config' => $path];
+
+	expect(doctor_check_spine_config('cacti', 'cactiuser')['status'])->toBe('warn');
+});
+
+test('an unreadable Spine configuration fails', function () {
+	$GLOBALS['doctor_test_settings'] = ['poller_type' => '2', 'path_spine_config' => '/doctor/does-not-exist/spine.conf'];
+
+	expect(doctor_check_spine_config('cacti', 'cactiuser')['status'])->toBe('fail');
+});
+
+test('InnoDB settings Cacti flags as errors warn when off', function () {
+	$result = doctor_evaluate_innodb(['innodb_file_per_table' => 'OFF', 'innodb_doublewrite' => 'ON']);
+
+	expect($result['id'])->toBe('database.innodb')
+		->and($result['status'])->toBe('warn')
+		->and($result['detail'])->toContain('innodb_file_per_table');
+});
+
+test('newer InnoDB doublewrite modes count as enabled', function () {
+	expect(doctor_evaluate_innodb(['innodb_file_per_table' => 'ON', 'innodb_doublewrite' => 'DETECT_AND_RECOVER'])['status'])->toBe('pass')
+		->and(doctor_evaluate_innodb(['innodb_file_per_table' => '1', 'innodb_doublewrite' => 'fast'])['status'])->toBe('pass');
+});
+
+test('the InnoDB check reads global variables', function () {
+	$GLOBALS['doctor_test_rows'] = [
+		"SHOW GLOBAL VARIABLES WHERE Variable_name IN ('innodb_file_per_table', 'innodb_doublewrite')" => [
+			['Variable_name' => 'innodb_file_per_table', 'Value' => 'ON'],
+			['Variable_name' => 'innodb_doublewrite', 'Value' => 'OFF']
+		]
+	];
+
+	expect(doctor_check_innodb()['status'])->toBe('warn');
+});
+
+test('recent log errors warn and name the most frequent message', function () {
+	$lines = [
+		'2026-10-22 10:00:00 - SYSTEM STATS: Time:1.2',
+		'2026-10-22 10:00:01 - CMDPHP ERROR: SNMP timeout on Device[12]',
+		'2026-10-22 10:05:01 - CMDPHP ERROR: SNMP timeout on Device[14]',
+		'2026-10-22 10:05:02 - DBCALL SQL Error: Table poller_item is full'
+	];
+
+	$result = doctor_evaluate_log_lines($lines);
+
+	expect($result['id'])->toBe('logging.recent_errors')
+		->and($result['status'])->toBe('warn')
+		->and($result['detail'])->toContain('3 of the last 4')
+		->and($result['detail'])->toContain('SNMP timeout on Device[#]');
+});
+
+test('a log without errors passes', function () {
+	expect(doctor_evaluate_log_lines(['2026-10-22 10:00:00 - SYSTEM STATS: Time:1.2'])['status'])->toBe('pass');
+});
+
+test('only the tail of the log is read', function () {
+	$directory = doctor_test_directory();
+	$path      = $directory . '/cacti.log';
+	file_put_contents($path, str_repeat("2026-10-22 09:00:00 - CMDPHP ERROR: old\n", 50) . str_repeat("2026-10-22 10:00:00 - SYSTEM STATS: ok\n", 20));
+
+	expect(doctor_read_log_tail($path, 20))->toHaveCount(20)
+		->and(doctor_read_log_tail($path, 20)[0])->toContain('STATS');
+});

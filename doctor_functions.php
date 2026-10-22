@@ -30,17 +30,24 @@ function doctor_run_checks() {
 	$results[] = doctor_check_database_version();
 	$results[] = doctor_check_database_charset();
 	$results[] = doctor_check_database_timezone_support();
+	$results[] = doctor_check_clock();
+	$results[] = doctor_check_innodb();
 	$results[] = doctor_check_core_tables();
 	$results[] = doctor_check_plugin_files();
 	$results[] = doctor_check_runtime_directories();
+	$results[] = doctor_check_disk_space();
+	$results[] = doctor_check_rrd_files();
 	$results[] = doctor_check_config_file_security();
 	$results[] = doctor_check_cacti_log();
+	$results[] = doctor_check_recent_log_errors();
 	$results   = array_merge($results, doctor_check_required_binaries());
 	$results[] = doctor_check_poller_configuration();
+	$results[] = doctor_check_spine_config();
 	$results[] = doctor_check_poller_freshness();
 	$results[] = doctor_check_poller_runtime();
 	$results[] = doctor_check_poller_output();
 	$results[] = doctor_check_remote_pollers();
+	$results[] = doctor_check_boost();
 
 	return $results;
 }
@@ -862,6 +869,292 @@ function doctor_check_plugin_files($base = null) {
 	}
 
 	return doctor_result('cacti.plugin_files', 'Cacti', 'pass', 'Enabled plugin files', 'Every enabled plugin has its setup.php in place.');
+}
+
+/**
+ * Boost stores the last run as a timestamp or, on some releases, a date string.
+ *
+ * @return array<string,mixed>
+ */
+function doctor_evaluate_boost($enabled, $rows, $maxRecords, $lastRun, $intervalMinutes, $now) {
+	if (!$enabled) {
+		return doctor_result('poller.boost', 'Poller', 'pass', 'Boost RRD updates', 'Boost is disabled, so the poller writes RRD files directly.');
+	}
+
+	$lastRun = is_numeric($lastRun) ? (int) $lastRun : (int) strtotime((string) $lastRun);
+	$window  = max(1, (int) $intervalMinutes) * 60 * 2;
+
+	if ($lastRun <= 0) {
+		return doctor_result('poller.boost', 'Poller', 'warn', 'Boost RRD updates', 'Boost is enabled but has no recorded run. This can be expected before its first flush.');
+	}
+
+	$age = max(0, $now - $lastRun);
+
+	if ($age > $window) {
+		return doctor_result('poller.boost', 'Poller', 'fail', 'Boost RRD updates', 'Boost last flushed ' . $age . ' seconds ago, more than twice its ' . (int) $intervalMinutes . '-minute interval. Graphs stop updating until it runs; check the Cacti log for BOOST errors.');
+	}
+
+	if ($maxRecords > 0 && $rows > $maxRecords) {
+		return doctor_result('poller.boost', 'Poller', 'warn', 'Boost RRD updates', 'poller_output_boost holds ' . $rows . ' rows, above the ' . $maxRecords . '-row limit that forces a flush. Boost is falling behind.');
+	}
+
+	return doctor_result('poller.boost', 'Poller', 'pass', 'Boost RRD updates', 'Boost last flushed ' . $age . ' seconds ago with ' . $rows . ' rows waiting.');
+}
+
+/** @return array<string,mixed> */
+function doctor_check_boost() {
+	$enabled = (string) read_config_option('boost_rrd_update_enable', true) === 'on';
+	$rows    = $enabled ? (int) db_fetch_cell('SELECT COUNT(*) FROM poller_output_boost', '', false) : 0;
+
+	return doctor_evaluate_boost(
+		$enabled,
+		$rows,
+		(int) read_config_option('boost_rrd_update_max_records', true),
+		read_config_option('boost_last_run_time', true),
+		(int) read_config_option('boost_rrd_update_interval', true),
+		time()
+	);
+}
+
+/** @return array<string,mixed> */
+function doctor_check_rrd_files($rra = null) {
+	$rra     = $rra === null ? doctor_repair_directories()['rra'] : $rra;
+	$sources = db_fetch_assoc("SELECT local_data_id, data_source_path FROM data_template_data WHERE local_data_id > 0 AND active = 'on' AND data_source_path != ''", false);
+	$sources = is_array($sources) ? $sources : [];
+	$missing = [];
+
+	foreach ($sources as $source) {
+		$path = str_replace('<path_rra>', $rra, $source['data_source_path']);
+
+		if (!file_exists($path)) {
+			$missing[] = $path;
+		}
+	}
+
+	if ($missing !== []) {
+		return doctor_result('filesystem.rrd_files', 'Filesystem', 'warn', 'RRD files', count($missing) . ' of ' . count($sources) . ' active data sources have no RRD file, for example ' . implode(', ', array_slice($missing, 0, 3)) . '. New data sources get one after their first poll; otherwise check the RRA directory and its permissions.');
+	}
+
+	return doctor_result('filesystem.rrd_files', 'Filesystem', 'pass', 'RRD files', 'All ' . count($sources) . ' active data sources have an RRD file.');
+}
+
+/** @return array<string,mixed> */
+function doctor_evaluate_disk_space($free, $total, $path) {
+	if ($free === false || $total === false || $total <= 0) {
+		return doctor_result('filesystem.disk_space', 'Filesystem', 'warn', 'RRA disk space', 'Doctor could not measure free space for ' . $path . '.');
+	}
+
+	$percent = $free / $total * 100;
+	$detail  = round($percent, 1) . '% (' . round($free / 1073741824, 1) . ' GiB) free on the file system holding ' . $path . '.';
+
+	if ($percent < 2) {
+		return doctor_result('filesystem.disk_space', 'Filesystem', 'fail', 'RRA disk space', $detail . ' RRD updates fail silently when the disk fills.');
+	}
+
+	if ($percent < 10) {
+		return doctor_result('filesystem.disk_space', 'Filesystem', 'warn', 'RRA disk space', $detail);
+	}
+
+	return doctor_result('filesystem.disk_space', 'Filesystem', 'pass', 'RRA disk space', $detail);
+}
+
+/** @return array<string,mixed> */
+function doctor_check_disk_space($directory = null) {
+	$directory = $directory === null ? doctor_repair_directories()['rra'] : $directory;
+
+	return doctor_evaluate_disk_space(@disk_free_space($directory), @disk_total_space($directory), $directory);
+}
+
+/**
+ * UNIX_TIMESTAMP() ignores time zones, so any gap is real clock drift between
+ * the database host and the poller host.
+ *
+ * @return array<string,mixed>
+ */
+function doctor_evaluate_clock($databaseTime, $phpTime) {
+	if ($databaseTime === false || (int) $databaseTime <= 0) {
+		return doctor_result('database.clock', 'Database', 'warn', 'Database clock', 'Doctor could not read the database clock.');
+	}
+
+	$drift  = abs((int) $phpTime - (int) $databaseTime);
+	$detail = 'The database and PHP clocks differ by ' . $drift . ' seconds.';
+
+	if ($drift > 60) {
+		return doctor_result('database.clock', 'Database', 'fail', 'Database clock', $detail . ' Poll timestamps will be misaligned; synchronise both hosts with NTP.');
+	}
+
+	if ($drift > 5) {
+		return doctor_result('database.clock', 'Database', 'warn', 'Database clock', $detail . ' Synchronise both hosts with NTP.');
+	}
+
+	return doctor_result('database.clock', 'Database', 'pass', 'Database clock', $detail);
+}
+
+/** @return array<string,mixed> */
+function doctor_check_clock() {
+	return doctor_evaluate_clock(db_fetch_cell('SELECT UNIX_TIMESTAMP()', '', false), time());
+}
+
+/**
+ * Spine reads its own spine.conf rather than Cacti's config.php, so the two
+ * can silently point at different databases.
+ *
+ * @return array<string,mixed>
+ */
+function doctor_check_spine_config($database = null, $user = null) {
+	global $database_default, $database_username;
+
+	if ((string) read_config_option('poller_type', true) !== '2') {
+		return doctor_result('poller.spine_config', 'Poller', 'pass', 'Spine configuration', 'Spine is not the configured poller.');
+	}
+
+	$database = $database === null ? (string) $database_default : $database;
+	$user     = $user === null ? (string) $database_username : $user;
+	$path     = (string) read_config_option('path_spine_config', true);
+
+	if ($path === '') {
+		return doctor_result('poller.spine_config', 'Poller', 'warn', 'Spine configuration', 'path_spine_config is not set, so Spine uses its compiled-in search path and Doctor cannot verify which file it reads.');
+	}
+
+	$contents = is_file($path) && is_readable($path) ? @file_get_contents($path) : false;
+
+	if ($contents === false) {
+		return doctor_result('poller.spine_config', 'Poller', 'fail', 'Spine configuration', 'The Spine configuration file is missing or unreadable: ' . $path . '.');
+	}
+
+	$settings = [];
+
+	foreach (preg_split('/\r?\n/', $contents) as $line) {
+		if (preg_match('/^\s*(DB_Database|DB_User)\s+(\S+)/', $line, $matches)) {
+			$settings[$matches[1]] = $matches[2];
+		}
+	}
+
+	$problems = [];
+
+	if (isset($settings['DB_Database']) && $settings['DB_Database'] !== $database) {
+		$problems[] = 'DB_Database is ' . $settings['DB_Database'] . ' but Cacti uses ' . $database;
+	}
+
+	if (isset($settings['DB_User']) && $settings['DB_User'] !== $user) {
+		$problems[] = 'DB_User is ' . $settings['DB_User'] . ' but Cacti uses ' . $user;
+	}
+
+	$mode = fileperms($path);
+	if ($mode !== false && ($mode & 0004)) {
+		$problems[] = 'the file is world-readable and holds the database password';
+	}
+
+	if ($problems !== []) {
+		return doctor_result('poller.spine_config', 'Poller', 'warn', 'Spine configuration', $path . ': ' . implode('; ', $problems) . '.');
+	}
+
+	return doctor_result('poller.spine_config', 'Poller', 'pass', 'Spine configuration', $path . ' uses the same database and user as Cacti.');
+}
+
+/**
+ * @param array<string,string> $variables
+ * @return array<string,mixed>
+ */
+function doctor_evaluate_innodb($variables) {
+	$enabled  = ['ON', '1', 'DETECT_AND_RECOVER', 'FAST'];
+	$disabled = [];
+
+	foreach (['innodb_file_per_table', 'innodb_doublewrite'] as $name) {
+		if (isset($variables[$name]) && !in_array(strtoupper((string) $variables[$name]), $enabled, true)) {
+			$disabled[] = $name . ' is ' . $variables[$name];
+		}
+	}
+
+	if ($disabled !== []) {
+		return doctor_result('database.innodb', 'Database', 'warn', 'InnoDB safety settings', implode('; ', $disabled) . '. Cacti recommends ON; doublewrite may stay off only on ZFS or similar journaling storage.');
+	}
+
+	return doctor_result('database.innodb', 'Database', 'pass', 'InnoDB safety settings', 'innodb_file_per_table and innodb_doublewrite are enabled.');
+}
+
+/** @return array<string,mixed> */
+function doctor_check_innodb() {
+	$rows      = db_fetch_assoc("SHOW GLOBAL VARIABLES WHERE Variable_name IN ('innodb_file_per_table', 'innodb_doublewrite')", false);
+	$variables = [];
+
+	foreach ((is_array($rows) ? $rows : []) as $row) {
+		$variables[$row['Variable_name']] = $row['Value'];
+	}
+
+	return doctor_evaluate_innodb($variables);
+}
+
+/**
+ * Reads at most $bytes from the end of the file so a multi-gigabyte log
+ * cannot exhaust memory.
+ *
+ * @return array<int,string>
+ */
+function doctor_read_log_tail($path, $maxLines = 1000, $bytes = 2097152) {
+	$size   = @filesize($path);
+	$handle = $size !== false ? @fopen($path, 'rb') : false;
+
+	if ($handle === false) {
+		return [];
+	}
+
+	if ($size > $bytes) {
+		fseek($handle, -$bytes, SEEK_END);
+	}
+
+	$contents = stream_get_contents($handle);
+	fclose($handle);
+
+	$lines = preg_split('/\r?\n/', trim((string) $contents));
+
+	// A partial first line is likely when the read starts mid-file.
+	if ($size > $bytes) {
+		array_shift($lines);
+	}
+
+	return array_values(array_slice(array_filter($lines, 'strlen'), -$maxLines));
+}
+
+/**
+ * @param array<int,string> $lines
+ * @return array<string,mixed>
+ */
+function doctor_evaluate_log_lines($lines) {
+	$messages = [];
+	$errors   = 0;
+
+	foreach ($lines as $line) {
+		if (!preg_match('/\bERROR\b|\bFATAL\b|SQL Error/', $line)) {
+			continue;
+		}
+
+		$errors++;
+		$message = preg_replace('/^.*? - /', '', $line, 1);
+		$message = preg_replace('/[0-9]+/', '#', $message);
+		$messages[$message] = isset($messages[$message]) ? $messages[$message] + 1 : 1;
+	}
+
+	if ($errors === 0) {
+		return doctor_result('logging.recent_errors', 'Logging', 'pass', 'Recent log errors', 'None of the last ' . count($lines) . ' log lines report an error.');
+	}
+
+	arsort($messages);
+	$top = key($messages);
+
+	return doctor_result('logging.recent_errors', 'Logging', 'warn', 'Recent log errors', $errors . ' of the last ' . count($lines) . ' log lines report an error. Most frequent (' . current($messages) . 'x): ' . substr($top, 0, 200));
+}
+
+/** @return array<string,mixed> */
+function doctor_check_recent_log_errors() {
+	$path = (string) read_config_option('path_cactilog', true);
+	$path = $path !== '' ? $path : doctor_base_path() . '/log/cacti.log';
+
+	if (!is_file($path) || !is_readable($path)) {
+		return doctor_result('logging.recent_errors', 'Logging', 'pass', 'Recent log errors', 'The Cacti log is not readable; see the Cacti log file check.');
+	}
+
+	return doctor_evaluate_log_lines(doctor_read_log_tail($path));
 }
 
 /**
