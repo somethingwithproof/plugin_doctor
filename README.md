@@ -1,8 +1,9 @@
-<p align="center">
-	<img src="images/doctor_logo.svg" width="360" alt="A cactus in a white coat with a stethoscope examining a cactus patient on a gurney">
-</p>
-
-<h1 align="center">Cacti Doctor</h1>
+<h1 align="center">
+	<picture>
+		<source media="(prefers-color-scheme: dark)" srcset="images/doctor_logo_dark.png">
+		<img src="images/doctor_logo.png" width="360" alt="Cacti Doctor: a cactus wearing a stethoscope. Diagnose. Fix. Monitor.">
+	</picture>
+</h1>
 
 <p align="center">
 	<a href="https://github.com/somethingwithproof/plugin_doctor/actions/workflows/ci.yml"><img src="https://github.com/somethingwithproof/plugin_doctor/actions/workflows/ci.yml/badge.svg?branch=develop" alt="CI"></a>
