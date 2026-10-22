@@ -15,9 +15,10 @@ The initial release checks:
 - writable cache, log, and RRA directories
 - configuration-file permission safety and Cacti log writability/size
 - configured PHP CLI, RRDtool, Net-SNMP, and conditional Spine executables, including prerequisite versions where applicable
-- poller type, interval, and main-poller freshness
+- poller type, interval, and the time since the main poller last completed
+- whether Doctor itself is running as root
 
-Diagnostics never modify the installation. Repairs use a fixed allow-list, require an authenticated administrator action in the web UI or `--yes` on the CLI, reject paths outside the Cacti installation, refuse symbolic links, and write an entry to the Cacti log.
+Diagnostics never modify the installation. Doctor only executes a configured binary when its file name matches the expected program (`php`, `rrdtool`, `snmpget`, or `snmpwalk`), because anyone who can write the settings table could otherwise choose what Doctor runs. A binary with any other name is reported as a warning and is not run. Cacti 1.2.x applies a similar rule to `path_php_binary`. Repairs use a fixed allow-list, require an authenticated administrator action in the web UI or `--yes` on the CLI, reject paths outside the Cacti installation, refuse symbolic links, and write an entry to the Cacti log.
 
 ## Installation
 
@@ -37,9 +38,11 @@ php plugins/doctor/cli/doctor.php --repair=runtime_directories --yes
 
 The command exits with status `1` when any diagnostic fails and status `2` when a repair was requested without confirmation.
 
+Run the CLI as the Cacti poller user, not root. As root, permission checks describe root instead of the web server or poller account, so Doctor reports a warning, skips executing configured binaries, and refuses repairs. Cacti raises `memory_limit` for every CLI script, so the PHP runtime configuration check is only meaningful on the web page.
+
 ## Repair policy
 
-Version 0.3.0 includes one narrow repair: create missing Cacti runtime directories and add owner read/write/execute bits without removing existing permissions. It does not change ownership, follow symbolic links, run shell commands, rewrite configuration, or mutate Cacti application data.
+Version 0.4.0 includes one narrow repair: create missing Cacti runtime directories and add owner read/write/execute bits without removing existing permissions. It does not change ownership, follow symbolic links, run shell commands, rewrite configuration, or mutate Cacti application data. It skips directories that are already writable, refuses directories outside the Cacti installation, such as a log directory under `/var/log`, and refuses to run as root. The repair targets `$cache_path`, `$log_path`, and `$rra_path` on Cacti 1.3, or the installation's `cache`, `log`, and `rra` directories otherwise. It never follows `path_cactilog`, so a log file configured inside a code directory cannot redirect the repair there. The diagnostic does check the configured log file's directory on every release.
 
 Future repairs should remain individually reviewable and must include a diagnostic, an allow-listed repair handler, confirmation, audit logging, and tests.
 
