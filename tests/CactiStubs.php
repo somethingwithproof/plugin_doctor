@@ -2,12 +2,14 @@
 
 /*
  * Minimal stand-ins for the Cacti functions Doctor calls, so checks can run
- * outside a Cacti installation. Tests set $GLOBALS['doctor_test_settings']
- * and $GLOBALS['doctor_test_cells'] to control what Cacti would return.
+ * outside a Cacti installation. Tests set $GLOBALS['doctor_test_settings'],
+ * $GLOBALS['doctor_test_cells'], and $GLOBALS['doctor_test_rows'] to control
+ * what Cacti would return.
  */
 
 $GLOBALS['doctor_test_settings'] = [];
 $GLOBALS['doctor_test_cells']    = [];
+$GLOBALS['doctor_test_rows']     = [];
 
 if (!function_exists('read_config_option')) {
 	function read_config_option($name, $force = false) {
@@ -30,6 +32,18 @@ if (!function_exists('cacti_sizeof')) {
 if (!function_exists('db_fetch_cell')) {
 	function db_fetch_cell($sql, $col_name = '', $log = true) {
 		return isset($GLOBALS['doctor_test_cells'][$sql]) ? $GLOBALS['doctor_test_cells'][$sql] : false;
+	}
+}
+
+if (!function_exists('db_fetch_cell_prepared')) {
+	function db_fetch_cell_prepared($sql, $params = [], $col_name = '', $log = true) {
+		return isset($GLOBALS['doctor_test_cells'][$sql]) ? $GLOBALS['doctor_test_cells'][$sql] : false;
+	}
+}
+
+if (!function_exists('db_fetch_assoc')) {
+	function db_fetch_assoc($sql, $log = true) {
+		return isset($GLOBALS['doctor_test_rows'][$sql]) ? $GLOBALS['doctor_test_rows'][$sql] : [];
 	}
 }
 

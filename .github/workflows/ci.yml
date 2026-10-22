@@ -204,6 +204,8 @@ jobs:
           mkdir -p cache log rra
           touch log/cacti.log
           mysql -h127.0.0.1 -ucactiuser cacti -e "REPLACE INTO settings (name, value) VALUES ('path_php_binary', '${PHP_PATH}'), ('path_rrdtool', '/usr/bin/rrdtool'), ('path_snmpget', '/usr/bin/snmpget'), ('path_snmpwalk', '/usr/bin/snmpwalk'), ('path_spine', '${SPINE_PATH}'), ('path_cactilog', '${GITHUB_WORKSPACE}/cacti/log/cacti.log'), ('poller_type', '${POLLER_TYPE}'), ('poller_interval', '300'), ('poller_lastrun_1', UNIX_TIMESTAMP()); UPDATE poller SET last_update=NOW() WHERE id=1;"
+          # cacti.sql ships with version 'new_install'; record the version the installer would write.
+          php -r "chdir('${GITHUB_WORKSPACE}/cacti'); include './include/cli_check.php'; db_execute_prepared('UPDATE version SET cacti = ?', array(CACTI_VERSION));"
         working-directory: cacti
 
       - name: Register and enable Doctor
@@ -243,7 +245,9 @@ jobs:
             database.connection=pass database.version=pass database.charset=pass \
             database.timezone=pass database.core_tables=pass filesystem.runtime_directories=pass \
             binary.php_binary=pass "binary.rrdtool=${RRDTOOL_STATUS}" \
-            binary.snmpget=pass binary.snmpwalk=pass poller.configuration=pass poller.freshness=pass
+            binary.snmpget=pass binary.snmpwalk=pass poller.configuration=pass poller.freshness=pass \
+            cacti.schema_version=pass cacti.plugin_files=pass poller.runtime=pass \
+            poller.output_backlog=pass poller.remote=pass
         working-directory: cacti
 
       - name: Verify controlled failures and recovery
@@ -252,20 +256,22 @@ jobs:
           BASELINE_FAILURES: ${{ matrix.baseline_failures }}
           RRDTOOL_STATUS: ${{ matrix.rrdtool_status }}
         run: |
-          mysql -h127.0.0.1 -ucactiuser cacti -e "UPDATE settings SET value='/doctor/does-not-exist' WHERE name='path_snmpwalk'; UPDATE poller SET last_update=NOW() - INTERVAL 2 HOUR WHERE id=1;"
+          SCHEMA_VERSION="$(mysql -N -h127.0.0.1 -ucactiuser cacti -e "SELECT cacti FROM version LIMIT 1;")"
+          mysql -h127.0.0.1 -ucactiuser cacti -e "UPDATE settings SET value='/doctor/does-not-exist' WHERE name='path_snmpwalk'; UPDATE poller SET last_update=NOW() - INTERVAL 2 HOUR WHERE id=1; UPDATE version SET cacti='1.0.0'; INSERT INTO plugin_config (directory, name, status) VALUES ('doctor_missing', 'Missing plugin', 1);"
           set +e
           php plugins/doctor/cli/doctor.php --json > doctor-negative.json
           DOCTOR_EXIT=$?
           set -e
           test "$DOCTOR_EXIT" -eq 1
-          FAILURES='binary.snmpwalk,poller.freshness'
+          FAILURES='binary.snmpwalk,poller.freshness,cacti.schema_version,cacti.plugin_files'
           if [ -n "$BASELINE_FAILURES" ]; then
             FAILURES="${BASELINE_FAILURES},${FAILURES}"
           fi
           php plugins/doctor/tests/ci/AssertDoctorReport.php doctor-negative.json \
-            "--failures=${FAILURES}" binary.snmpwalk=fail poller.freshness=fail
+            "--failures=${FAILURES}" binary.snmpwalk=fail poller.freshness=fail \
+            cacti.schema_version=fail cacti.plugin_files=fail
 
-          mysql -h127.0.0.1 -ucactiuser cacti -e "UPDATE settings SET value='/usr/bin/snmpwalk' WHERE name='path_snmpwalk'; UPDATE poller SET last_update=NOW() WHERE id=1;"
+          mysql -h127.0.0.1 -ucactiuser cacti -e "UPDATE settings SET value='/usr/bin/snmpwalk' WHERE name='path_snmpwalk'; UPDATE poller SET last_update=NOW() WHERE id=1; UPDATE version SET cacti='${SCHEMA_VERSION}'; DELETE FROM plugin_config WHERE directory='doctor_missing';"
           set +e
           php plugins/doctor/cli/doctor.php --json > doctor-recovered.json
           DOCTOR_EXIT=$?
@@ -273,7 +279,7 @@ jobs:
           test "$DOCTOR_EXIT" -eq "$BASELINE_EXIT"
           php plugins/doctor/tests/ci/AssertDoctorReport.php doctor-recovered.json \
             "--failures=${BASELINE_FAILURES}" "binary.rrdtool=${RRDTOOL_STATUS}" \
-            binary.snmpwalk=pass poller.freshness=pass
+            binary.snmpwalk=pass poller.freshness=pass cacti.schema_version=pass cacti.plugin_files=pass
         working-directory: cacti
 
       - name: Verify repair confirmation and outcome

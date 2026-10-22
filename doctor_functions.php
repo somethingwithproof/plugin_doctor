@@ -19,6 +19,7 @@ function doctor_run_checks() {
 	$results   = [];
 	$results[] = doctor_check_privileges(doctor_running_as_root());
 	$results[] = doctor_check_cacti_version();
+	$results[] = doctor_check_schema_version();
 	$results[] = doctor_check_php_version();
 	$results[] = doctor_check_php_security_baseline();
 	$results[] = doctor_check_php_extensions();
@@ -30,12 +31,16 @@ function doctor_run_checks() {
 	$results[] = doctor_check_database_charset();
 	$results[] = doctor_check_database_timezone_support();
 	$results[] = doctor_check_core_tables();
+	$results[] = doctor_check_plugin_files();
 	$results[] = doctor_check_runtime_directories();
 	$results[] = doctor_check_config_file_security();
 	$results[] = doctor_check_cacti_log();
 	$results   = array_merge($results, doctor_check_required_binaries());
 	$results[] = doctor_check_poller_configuration();
 	$results[] = doctor_check_poller_freshness();
+	$results[] = doctor_check_poller_runtime();
+	$results[] = doctor_check_poller_output();
+	$results[] = doctor_check_remote_pollers();
 
 	return $results;
 }
@@ -704,6 +709,159 @@ function doctor_check_poller_freshness() {
 	$detail    = 'Last completed run was ' . $age . ' seconds ago; failure threshold is ' . $threshold . ' seconds.';
 
 	return doctor_result('poller.freshness', 'Poller', $status, 'Main poller freshness', $detail);
+}
+
+function doctor_poller_interval() {
+	$interval = (int) read_config_option('poller_interval', true);
+
+	return $interval > 0 ? $interval : 300;
+}
+
+function doctor_short_version($version) {
+	return implode('.', array_slice(explode('.', (string) $version), 0, 3));
+}
+
+/**
+ * Copying in new code without running the installer leaves the schema behind,
+ * and Cacti then redirects every web request to install/. Only the first three
+ * version parts are compared because develop builds append a build stamp.
+ *
+ * @return array<string,mixed>
+ */
+function doctor_evaluate_schema_version($databaseVersion, $codeVersion) {
+	$databaseVersion = trim((string) $databaseVersion);
+	$database        = doctor_short_version($databaseVersion);
+	$code            = doctor_short_version($codeVersion);
+
+	if ($databaseVersion === '') {
+		return doctor_result('cacti.schema_version', 'Cacti', 'fail', 'Database schema version', 'The version table is empty or unreadable, so the schema version is unknown.');
+	}
+
+	if ($databaseVersion === 'new_install') {
+		return doctor_result('cacti.schema_version', 'Cacti', 'fail', 'Database schema version', 'The version table still reads new_install, so the installer never finished. Open install/ in a browser to complete it.');
+	}
+
+	$order = version_compare($database, $code);
+
+	if ($order < 0) {
+		return doctor_result('cacti.schema_version', 'Cacti', 'fail', 'Database schema version', 'The database schema is at ' . $database . ' but the installed code is ' . $code . '. Open install/ in a browser to finish the upgrade.');
+	}
+
+	if ($order > 0) {
+		return doctor_result('cacti.schema_version', 'Cacti', 'warn', 'Database schema version', 'The database schema (' . $database . ') is newer than the installed code (' . $code . '). The code may have been rolled back.');
+	}
+
+	return doctor_result('cacti.schema_version', 'Cacti', 'pass', 'Database schema version', 'The database schema (' . $database . ') matches the installed code.');
+}
+
+/** @return array<string,mixed> */
+function doctor_check_schema_version() {
+	$database = (string) db_fetch_cell('SELECT cacti FROM version LIMIT 1', '', false);
+
+	return doctor_evaluate_schema_version($database, defined('CACTI_VERSION') ? (string) CACTI_VERSION : '');
+}
+
+/** @return array<string,mixed> */
+function doctor_evaluate_poller_runtime($runtime, $interval) {
+	if ($runtime <= 0) {
+		return doctor_result('poller.runtime', 'Poller', 'pass', 'Main poller run time', 'No completed run time is recorded yet.');
+	}
+
+	$detail = 'The last main-poller run took ' . round($runtime, 1) . ' seconds of the ' . $interval . '-second interval.';
+
+	if ($runtime >= $interval) {
+		return doctor_result('poller.runtime', 'Poller', 'fail', 'Main poller run time', $detail . ' Runs that outlast the interval overlap and lose data; add poller processes or threads, or use Spine.');
+	}
+
+	if ($runtime >= $interval * 0.8) {
+		return doctor_result('poller.runtime', 'Poller', 'warn', 'Main poller run time', $detail . ' Little headroom remains before polls overlap.');
+	}
+
+	return doctor_result('poller.runtime', 'Poller', 'pass', 'Main poller run time', $detail);
+}
+
+/** @return array<string,mixed> */
+function doctor_check_poller_runtime() {
+	$runtime = (float) db_fetch_cell('SELECT total_time FROM poller WHERE id = 1', '', false);
+
+	return doctor_evaluate_poller_runtime($runtime, doctor_poller_interval());
+}
+
+/**
+ * Rows are expected while a poll is running, so only rows older than two
+ * intervals count. They are results that never reached an RRD file.
+ *
+ * @return array<string,mixed>
+ */
+function doctor_check_poller_output() {
+	$interval = doctor_poller_interval();
+	$stale    = (int) db_fetch_cell_prepared('SELECT COUNT(*) FROM poller_output WHERE time < FROM_UNIXTIME(UNIX_TIMESTAMP() - ?)', [$interval * 2], '', false);
+
+	if ($stale > 0) {
+		return doctor_result('poller.output_backlog', 'Poller', 'warn', 'Unprocessed poller output', $stale . ' poller_output rows are older than two polling intervals and were never written to RRD files. Check the Cacti log for "Poller Output Table not Empty" and confirm max_heap_table_size is large enough.');
+	}
+
+	return doctor_result('poller.output_backlog', 'Poller', 'pass', 'Unprocessed poller output', 'No stale rows remain in poller_output.');
+}
+
+/**
+ * @param array<int,array<string,string>> $pollers
+ * @return array<string,mixed>
+ */
+function doctor_evaluate_remote_pollers($pollers, $interval, $now) {
+	if (!cacti_sizeof($pollers)) {
+		return doctor_result('poller.remote', 'Poller', 'pass', 'Remote pollers', 'No remote pollers are enabled.');
+	}
+
+	$threshold = max(900, $interval * 3);
+	$stale     = [];
+
+	foreach ($pollers as $poller) {
+		$lastUpdate = (int) $poller['last_update'];
+
+		if ($lastUpdate <= 0) {
+			$stale[] = $poller['name'] . ' (ID ' . $poller['id'] . ') has never reported';
+		} elseif ($now - $lastUpdate > $threshold) {
+			$stale[] = $poller['name'] . ' (ID ' . $poller['id'] . ') last reported ' . ($now - $lastUpdate) . ' seconds ago';
+		}
+	}
+
+	if ($stale !== []) {
+		return doctor_result('poller.remote', 'Poller', 'fail', 'Remote pollers', implode('; ', $stale) . '. The failure threshold is ' . $threshold . ' seconds.');
+	}
+
+	return doctor_result('poller.remote', 'Poller', 'pass', 'Remote pollers', cacti_sizeof($pollers) . ' enabled remote pollers reported within ' . $threshold . ' seconds.');
+}
+
+/** @return array<string,mixed> */
+function doctor_check_remote_pollers() {
+	$pollers = db_fetch_assoc("SELECT id, name, UNIX_TIMESTAMP(last_update) AS last_update FROM poller WHERE id > 1 AND disabled = ''", false);
+
+	return doctor_evaluate_remote_pollers(is_array($pollers) ? $pollers : [], doctor_poller_interval(), time());
+}
+
+/** @return array<string,mixed> */
+function doctor_check_plugin_files($base = null) {
+	if ($base !== null) {
+		$plugins = $base . '/plugins';
+	} else {
+		$plugins = defined('CACTI_PATH_PLUGINS') ? (string) CACTI_PATH_PLUGINS : doctor_base_path() . '/plugins';
+	}
+
+	$rows    = db_fetch_assoc('SELECT directory FROM plugin_config WHERE status = 1', false);
+	$missing = [];
+
+	foreach ((is_array($rows) ? $rows : []) as $row) {
+		if (!is_file($plugins . '/' . $row['directory'] . '/setup.php')) {
+			$missing[] = $row['directory'];
+		}
+	}
+
+	if ($missing !== []) {
+		return doctor_result('cacti.plugin_files', 'Cacti', 'fail', 'Enabled plugin files', 'Enabled plugins are missing from ' . $plugins . ': ' . implode(', ', $missing) . '. Restore their files or disable them in Plugin Management.');
+	}
+
+	return doctor_result('cacti.plugin_files', 'Cacti', 'pass', 'Enabled plugin files', 'Every enabled plugin has its setup.php in place.');
 }
 
 /**
