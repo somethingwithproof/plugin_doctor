@@ -73,6 +73,18 @@ function doctor_config_arrays() {
 	}
 }
 
+/** @return array<string,string> */
+function doctor_threshold_setting($name, $description, $default) {
+	return [
+		'friendly_name' => $name,
+		'description'   => $description,
+		'method'        => 'textbox',
+		'default'       => $default,
+		'max_length'    => '5',
+		'size'          => '5'
+	];
+}
+
 function doctor_config_settings() {
 	global $tabs, $settings;
 
@@ -119,54 +131,12 @@ function doctor_config_settings() {
 			'friendly_name' => __('Thresholds', 'doctor'),
 			'method'        => 'spacer'
 		],
-		'doctor_poller_warn_percent' => [
-			'friendly_name' => __('Poller Run Time Warning (%)', 'doctor'),
-			'description'   => __('Warn when the last main-poller run used this share of the polling interval. Runs that reach 100% always fail.', 'doctor'),
-			'method'        => 'textbox',
-			'default'       => '80',
-			'max_length'    => '5',
-			'size'          => '5'
-		],
-		'doctor_disk_warn_percent' => [
-			'friendly_name' => __('RRA Disk Free Warning (%)', 'doctor'),
-			'description'   => __('Warn when free space on the RRA file system drops below this percentage.', 'doctor'),
-			'method'        => 'textbox',
-			'default'       => '10',
-			'max_length'    => '5',
-			'size'          => '5'
-		],
-		'doctor_disk_fail_percent' => [
-			'friendly_name' => __('RRA Disk Free Failure (%)', 'doctor'),
-			'description'   => __('Fail when free space on the RRA file system drops below this percentage.', 'doctor'),
-			'method'        => 'textbox',
-			'default'       => '2',
-			'max_length'    => '5',
-			'size'          => '5'
-		],
-		'doctor_clock_warn_seconds' => [
-			'friendly_name' => __('Clock Drift Warning (seconds)', 'doctor'),
-			'description'   => __('Warn when the database and PHP clocks differ by more than this.', 'doctor'),
-			'method'        => 'textbox',
-			'default'       => '5',
-			'max_length'    => '5',
-			'size'          => '5'
-		],
-		'doctor_clock_fail_seconds' => [
-			'friendly_name' => __('Clock Drift Failure (seconds)', 'doctor'),
-			'description'   => __('Fail when the database and PHP clocks differ by more than this.', 'doctor'),
-			'method'        => 'textbox',
-			'default'       => '60',
-			'max_length'    => '5',
-			'size'          => '5'
-		],
-		'doctor_log_warn_mb' => [
-			'friendly_name' => __('Cacti Log Size Warning (MB)', 'doctor'),
-			'description'   => __('Warn when the Cacti log grows beyond this size, which usually means log rotation is not running.', 'doctor'),
-			'method'        => 'textbox',
-			'default'       => '100',
-			'max_length'    => '5',
-			'size'          => '5'
-		]
+		'doctor_poller_warn_percent' => doctor_threshold_setting(__('Poller Run Time Warning (%)', 'doctor'), __('Warn when the last main-poller run used this share of the polling interval. Runs that reach 100% always fail.', 'doctor'), '80'),
+		'doctor_disk_warn_percent'   => doctor_threshold_setting(__('RRA Disk Free Warning (%)', 'doctor'), __('Warn when free space on the RRA file system drops below this percentage.', 'doctor'), '10'),
+		'doctor_disk_fail_percent'   => doctor_threshold_setting(__('RRA Disk Free Failure (%)', 'doctor'), __('Fail when free space on the RRA file system drops below this percentage.', 'doctor'), '2'),
+		'doctor_clock_warn_seconds'  => doctor_threshold_setting(__('Clock Drift Warning (seconds)', 'doctor'), __('Warn when the database and PHP clocks differ by more than this.', 'doctor'), '5'),
+		'doctor_clock_fail_seconds'  => doctor_threshold_setting(__('Clock Drift Failure (seconds)', 'doctor'), __('Fail when the database and PHP clocks differ by more than this.', 'doctor'), '60'),
+		'doctor_log_warn_mb'         => doctor_threshold_setting(__('Cacti Log Size Warning (MB)', 'doctor'), __('Warn when the Cacti log grows beyond this size, which usually means log rotation is not running.', 'doctor'), '100')
 	];
 }
 
