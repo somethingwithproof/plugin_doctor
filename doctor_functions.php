@@ -169,7 +169,21 @@ function doctor_required_php_extensions($cli = false) {
 }
 
 function doctor_running_as_root() {
-	return function_exists('posix_geteuid') && posix_geteuid() === 0;
+	$windows = defined('CACTI_SERVER_OS') ? CACTI_SERVER_OS === 'win32' : DIRECTORY_SEPARATOR === '\\';
+
+	return doctor_effective_user_is_root(function_exists('posix_geteuid') ? posix_geteuid() : null, $windows);
+}
+
+/**
+ * Windows has no root account. Elsewhere an undeterminable user is treated as
+ * root so a missing posix extension cannot unlock binary execution or repairs.
+ */
+function doctor_effective_user_is_root($euid, $windows) {
+	if ($windows) {
+		return false;
+	}
+
+	return $euid === null || $euid === 0;
 }
 
 function doctor_shell_exec_available() {

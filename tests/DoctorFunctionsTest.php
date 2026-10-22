@@ -337,3 +337,10 @@ test('versioned binary names are recognized and PHP CGI or FPM binaries are not 
 		->and(doctor_binary_execution_refusal('path_php_binary', '/usr/sbin/php-fpm8.2', false))->not->toBe('')
 		->and(doctor_binary_execution_refusal('path_php_binary', '/usr/bin/php-cgi', false))->not->toBe('');
 });
+
+test('an unknown effective user on Unix is treated as root', function () {
+	expect(doctor_effective_user_is_root(null, false))->toBeTrue()
+		->and(doctor_effective_user_is_root(0, false))->toBeTrue()
+		->and(doctor_effective_user_is_root(1000, false))->toBeFalse()
+		->and(doctor_effective_user_is_root(null, true))->toBeFalse();
+});
