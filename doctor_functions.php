@@ -1156,6 +1156,322 @@ function doctor_check_recent_log_errors() {
 }
 
 /**
+ * Check states are stored as id=status pairs in one setting so scheduled
+ * runs need no table of their own.
+ *
+ * @param array<int,array<string,mixed>> $results
+ */
+function doctor_state_encode($results) {
+	$pairs = [];
+
+	foreach ($results as $result) {
+		$pairs[] = $result['id'] . '=' . $result['status'];
+	}
+
+	return implode(';', $pairs);
+}
+
+/** @return array<string,string> */
+function doctor_state_decode($text) {
+	$state = [];
+
+	foreach (explode(';', (string) $text) as $pair) {
+		$parts = explode('=', $pair, 2);
+
+		if (count($parts) === 2 && $parts[0] !== '') {
+			$state[$parts[0]] = $parts[1];
+		}
+	}
+
+	return $state;
+}
+
+/**
+ * The first run only records a baseline. Without $includeWarnings, only
+ * changes into or out of a failure are reported.
+ *
+ * @param array<string,string> $previous
+ * @param array<int,array<string,mixed>> $results
+ * @return array<int,array<string,string>>
+ */
+function doctor_state_changes($previous, $results, $includeWarnings) {
+	if ($previous === []) {
+		return [];
+	}
+
+	$changes = [];
+
+	foreach ($results as $result) {
+		$to   = (string) $result['status'];
+		$from = isset($previous[$result['id']]) ? $previous[$result['id']] : 'new';
+
+		if ($from === $to || ($from === 'new' && $to === 'pass')) {
+			continue;
+		}
+
+		if (!$includeWarnings && $from !== 'fail' && $to !== 'fail') {
+			continue;
+		}
+
+		$changes[] = [
+			'id'      => (string) $result['id'],
+			'summary' => (string) $result['summary'],
+			'from'    => $from,
+			'to'      => $to,
+			'detail'  => (string) $result['detail']
+		];
+	}
+
+	return $changes;
+}
+
+/**
+ * @param array<int,array<string,string>> $changes
+ * @param array<string,int> $counts
+ * @return array{subject:string,body:string}
+ */
+function doctor_alert_message($changes, $counts, $host) {
+	$subject = 'Cacti Doctor on ' . $host . ': ' . $counts['fail'] . ' failed, ' . $counts['warn'] . ' warnings';
+	$lines   = [count($changes) . ' Cacti Doctor checks changed status on ' . $host . '.', ''];
+
+	foreach ($changes as $change) {
+		$lines[] = $change['summary'] . ': ' . strtoupper($change['from']) . ' -> ' . strtoupper($change['to']);
+		$lines[] = '  ' . $change['detail'];
+	}
+
+	$lines[] = '';
+	$lines[] = 'Totals: ' . $counts['pass'] . ' passed, ' . $counts['warn'] . ' warnings, ' . $counts['fail'] . ' failed.';
+
+	return ['subject' => $subject, 'body' => implode("\n", $lines) . "\n"];
+}
+
+function doctor_schedule_due($lastRun, $intervalMinutes, $now) {
+	return (int) $lastRun <= 0 || $now - (int) $lastRun >= max(1, (int) $intervalMinutes) * 60;
+}
+
+/**
+ * @param array<int,array<string,mixed>> $results
+ * @return array<int,array<string,string>>
+ */
+function doctor_run_scheduled($results, $now) {
+	$previous = doctor_state_decode(read_config_option('doctor_state', true));
+	$changes  = doctor_state_changes($previous, $results, (string) read_config_option('doctor_alert_warnings', true) === 'on');
+
+	set_config_option('doctor_state', doctor_state_encode($results));
+	set_config_option('doctor_last_run', (string) $now);
+
+	foreach ($changes as $change) {
+		cacti_log('Doctor check ' . $change['id'] . ' changed from ' . $change['from'] . ' to ' . $change['to'] . ': ' . $change['detail'], false, 'DOCTOR');
+	}
+
+	$recipients = trim((string) read_config_option('doctor_alert_emails', true));
+
+	if ($changes !== [] && $recipients !== '') {
+		$alert = doctor_alert_message($changes, doctor_result_counts($results), php_uname('n'));
+		$error = send_mail($recipients, '', $alert['subject'], $alert['body']);
+
+		if ($error !== '') {
+			cacti_log('Doctor could not send the alert email: ' . $error, false, 'DOCTOR');
+		}
+	}
+
+	return $changes;
+}
+
+/**
+ * Runs from the poller_bottom hook. The checks run in a background CLI
+ * process so they never extend the poller's own run time.
+ */
+function doctor_poller_bottom() {
+	global $config;
+
+	if ((string) read_config_option('doctor_schedule_enabled', true) !== 'on') {
+		return;
+	}
+
+	$now = time();
+
+	if (!doctor_schedule_due(read_config_option('doctor_last_run', true), read_config_option('doctor_schedule_interval', true), $now)) {
+		return;
+	}
+
+	$php     = (string) read_config_option('path_php_binary', true);
+	$refusal = doctor_binary_execution_refusal('path_php_binary', $php, false);
+
+	if ($refusal !== '') {
+		cacti_log('Doctor scheduled checks skipped: ' . $refusal, false, 'DOCTOR');
+		return;
+	}
+
+	// Recording the start here stops the next poller cycle from launching a second run.
+	set_config_option('doctor_last_run', (string) $now);
+	exec_background($php, '-q ' . cacti_escapeshellarg($config['base_path'] . '/plugins/doctor/cli/doctor.php') . ' --scheduled');
+}
+
+/**
+ * @param array<int,array<string,mixed>> $results
+ * @return array{text:string,code:int}
+ */
+function doctor_format_nagios($results) {
+	$counts = doctor_result_counts($results);
+	$failed = [];
+	$warned = [];
+
+	foreach ($results as $result) {
+		if ($result['status'] === 'fail') {
+			$failed[] = $result['id'];
+		} elseif ($result['status'] === 'warn') {
+			$warned[] = $result['id'];
+		}
+	}
+
+	if ($failed !== []) {
+		$state = 'CRITICAL';
+		$code  = 2;
+	} elseif ($warned !== []) {
+		$state = 'WARNING';
+		$code  = 1;
+	} else {
+		$state = 'OK';
+		$code  = 0;
+	}
+
+	$parts = [];
+
+	if ($failed !== []) {
+		$parts[] = count($failed) . ' failed: ' . implode(', ', $failed);
+	}
+
+	if ($warned !== []) {
+		$parts[] = count($warned) . ' warnings: ' . implode(', ', $warned);
+	}
+
+	$summary = $parts !== [] ? implode('; ', $parts) : count($results) . ' checks passed';
+	$perf    = 'pass=' . $counts['pass'] . ' warn=' . $counts['warn'] . ' fail=' . $counts['fail'];
+
+	return ['text' => 'DOCTOR ' . $state . ' - ' . $summary . ' | ' . $perf, 'code' => $code];
+}
+
+function doctor_prometheus_label($value) {
+	return str_replace(['\\', '"', "\n"], ['\\\\', '\\"', '\\n'], (string) $value);
+}
+
+/**
+ * Prometheus text exposition for the node_exporter textfile collector.
+ * Check status is 0 for pass, 1 for warn, and 2 for fail.
+ *
+ * @param array<int,array<string,mixed>> $results
+ */
+function doctor_format_prometheus($results, $now) {
+	$levels = ['pass' => 0, 'warn' => 1, 'fail' => 2];
+	$lines  = [
+		'# HELP cacti_doctor_check_status Cacti Doctor check status: 0 pass, 1 warn, 2 fail.',
+		'# TYPE cacti_doctor_check_status gauge'
+	];
+
+	foreach ($results as $result) {
+		$lines[] = 'cacti_doctor_check_status{id="' . doctor_prometheus_label($result['id']) . '",category="' . doctor_prometheus_label($result['category']) . '"} ' . $levels[$result['status']];
+	}
+
+	$lines[] = '# HELP cacti_doctor_checks Number of Cacti Doctor checks by status.';
+	$lines[] = '# TYPE cacti_doctor_checks gauge';
+
+	foreach (doctor_result_counts($results) as $status => $count) {
+		$lines[] = 'cacti_doctor_checks{status="' . $status . '"} ' . $count;
+	}
+
+	$lines[] = '# HELP cacti_doctor_last_run_timestamp_seconds When the checks ran.';
+	$lines[] = '# TYPE cacti_doctor_last_run_timestamp_seconds gauge';
+	$lines[] = 'cacti_doctor_last_run_timestamp_seconds ' . (int) $now;
+
+	return implode("\n", $lines) . "\n";
+}
+
+/**
+ * Masks values that follow password, secret, token, or SNMP community and
+ * key names, so a support bundle can be shared publicly.
+ */
+function doctor_redact($text) {
+	return preg_replace('/(\w*(?:password|passwd|pass|secret|token|community|auth_?key|priv_?key))\b(\s*[=:]\s*|\s+)([\'"]?)[^\s\'";]+/i', '$1$2$3[redacted]', (string) $text);
+}
+
+/**
+ * @param array<int,array<string,mixed>> $results
+ * @param array<string,string> $context
+ * @param array<int,string> $logLines
+ */
+function doctor_build_bundle($results, $context, $logLines) {
+	$lines = ['Cacti Doctor support bundle', 'Generated: ' . date('Y-m-d H:i:s T'), '', '== Environment'];
+
+	foreach ($context as $name => $value) {
+		$lines[] = $name . ': ' . $value;
+	}
+
+	$lines[] = '';
+	$lines[] = '== Report';
+
+	foreach ($results as $result) {
+		$lines[] = str_pad(strtoupper((string) $result['status']), 5) . ' [' . $result['category'] . '] ' . $result['summary'] . ' - ' . $result['detail'];
+	}
+
+	$lines[] = '';
+	$lines[] = '== Cacti log (last ' . count($logLines) . ' lines)';
+
+	foreach ($logLines as $line) {
+		$lines[] = $line;
+	}
+
+	return doctor_redact(implode("\n", $lines)) . "\n";
+}
+
+/**
+ * Creates the file exclusively and restricts it to the owner before writing,
+ * so a bundle never replaces an existing file or becomes readable by others.
+ *
+ * @return string Empty on success, otherwise the reason it failed.
+ */
+function doctor_write_bundle($path, $contents) {
+	if (file_exists($path)) {
+		return 'Refusing to overwrite ' . $path . '.';
+	}
+
+	$handle = @fopen($path, 'x');
+
+	if ($handle === false) {
+		return 'Cannot create ' . $path . '.';
+	}
+
+	chmod($path, 0600);
+	$written = fwrite($handle, $contents);
+	fclose($handle);
+
+	return $written === strlen($contents) ? '' : 'Writing ' . $path . ' failed.';
+}
+
+/** @return array<string,string> */
+function doctor_bundle_context() {
+	$context = [
+		'Doctor'   => (string) doctor_plugin_version(),
+		'Cacti'    => defined('CACTI_VERSION') ? (string) CACTI_VERSION : 'unknown',
+		'PHP'      => PHP_VERSION . ' (' . PHP_SAPI . ')',
+		'OS'       => php_uname('s') . ' ' . php_uname('r'),
+		'Database' => (string) db_fetch_cell('SELECT VERSION()', '', false)
+	];
+
+	foreach (['stats_poller', 'stats_boost', 'poller_type', 'poller_interval', 'boost_rrd_update_enable'] as $setting) {
+		$context[$setting] = (string) read_config_option($setting, true);
+	}
+
+	return $context;
+}
+
+function doctor_plugin_version() {
+	$info = @parse_ini_file(__DIR__ . '/INFO', true);
+
+	return is_array($info) && isset($info['info']['version']) ? $info['info']['version'] : 'unknown';
+}
+
+/**
  * @return array<string,array<string,string>>
  */
 function doctor_available_repairs() {

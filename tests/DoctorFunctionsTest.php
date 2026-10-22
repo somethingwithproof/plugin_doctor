@@ -710,3 +710,181 @@ test('only the tail of the log is read', function () {
 	expect(doctor_read_log_tail($path, 20))->toHaveCount(20)
 		->and(doctor_read_log_tail($path, 20)[0])->toContain('STATS');
 });
+
+test('check states survive a round trip through the stored setting', function () {
+	$results = [
+		doctor_result('poller.runtime', 'Poller', 'pass', 'Runtime', 'ok'),
+		doctor_result('database.clock', 'Database', 'fail', 'Clock', 'drift')
+	];
+
+	expect(doctor_state_decode(doctor_state_encode($results)))->toBe(['poller.runtime' => 'pass', 'database.clock' => 'fail']);
+});
+
+test('only status changes are reported, and the first run sets a baseline', function () {
+	$results = [
+		doctor_result('a', 'Test', 'fail', 'A', 'broke'),
+		doctor_result('b', 'Test', 'pass', 'B', 'fine'),
+		doctor_result('c', 'Test', 'warn', 'C', 'odd')
+	];
+
+	$changes = doctor_state_changes(['a' => 'pass', 'b' => 'pass', 'c' => 'pass'], $results, true);
+
+	expect(array_column($changes, 'id'))->toBe(['a', 'c'])
+		->and($changes[0]['from'])->toBe('pass')
+		->and($changes[0]['to'])->toBe('fail')
+		->and(doctor_state_changes([], $results, true))->toBe([]);
+});
+
+test('warning changes are left out unless requested', function () {
+	$results = [doctor_result('c', 'Test', 'warn', 'C', 'odd'), doctor_result('d', 'Test', 'pass', 'D', 'recovered')];
+
+	expect(array_column(doctor_state_changes(['c' => 'pass', 'd' => 'fail'], $results, false), 'id'))->toBe(['d']);
+});
+
+test('a new check that is not passing counts as a change', function () {
+	$results = [doctor_result('new.check', 'Test', 'fail', 'New', 'broken')];
+
+	expect(doctor_state_changes(['other' => 'pass'], $results, false)[0]['from'])->toBe('new');
+});
+
+test('the alert names every change and the totals', function () {
+	$changes = [['id' => 'a', 'summary' => 'Alpha', 'from' => 'pass', 'to' => 'fail', 'detail' => 'It broke.']];
+
+	$alert = doctor_alert_message($changes, ['pass' => 30, 'warn' => 2, 'fail' => 1], 'cacti01');
+
+	expect($alert['subject'])->toContain('cacti01')
+		->and($alert['subject'])->toContain('1 failed')
+		->and($alert['body'])->toContain('Alpha: PASS -> FAIL')
+		->and($alert['body'])->toContain('It broke.');
+});
+
+test('a scheduled run is due once the interval has passed', function () {
+	expect(doctor_schedule_due(0, 60, 1000))->toBeTrue()
+		->and(doctor_schedule_due(1000, 60, 1000 + 3599))->toBeFalse()
+		->and(doctor_schedule_due(1000, 60, 1000 + 3600))->toBeTrue();
+});
+
+test('Nagios output reports the worst status with its exit code', function () {
+	$results = [
+		doctor_result('a', 'Test', 'pass', 'A', ''),
+		doctor_result('b', 'Test', 'warn', 'B', ''),
+		doctor_result('c', 'Test', 'fail', 'C', '')
+	];
+
+	$nagios = doctor_format_nagios($results);
+
+	expect($nagios['code'])->toBe(2)
+		->and($nagios['text'])->toStartWith('DOCTOR CRITICAL')
+		->and($nagios['text'])->toContain('c')
+		->and($nagios['text'])->toContain('| pass=1 warn=1 fail=1')
+		->and(doctor_format_nagios([doctor_result('a', 'Test', 'warn', 'A', '')])['code'])->toBe(1)
+		->and(doctor_format_nagios([doctor_result('a', 'Test', 'pass', 'A', '')])['text'])->toStartWith('DOCTOR OK');
+});
+
+test('Prometheus output exposes one gauge per check and the totals', function () {
+	$results = [
+		doctor_result('poller.runtime', 'Poller', 'warn', 'Runtime', ''),
+		doctor_result('database.clock', 'Database', 'pass', 'Clock', '')
+	];
+
+	$text = doctor_format_prometheus($results, 1700000000);
+
+	expect($text)->toContain('# TYPE cacti_doctor_check_status gauge')
+		->and($text)->toContain('cacti_doctor_check_status{id="poller.runtime",category="Poller"} 1')
+		->and($text)->toContain('cacti_doctor_check_status{id="database.clock",category="Database"} 0')
+		->and($text)->toContain('cacti_doctor_checks{status="warn"} 1')
+		->and($text)->toContain('cacti_doctor_last_run_timestamp_seconds 1700000000');
+});
+
+test('secrets are redacted from bundle text', function () {
+	$text = doctor_redact("DB_Pass s3cret\n\$database_password = 'hunter2';\nSNMP community=public01 host=1.2.3.4\npassword: abc\ntoken=xyz");
+
+	expect($text)->not->toContain('s3cret')
+		->and($text)->not->toContain('hunter2')
+		->and($text)->not->toContain('public01')
+		->and($text)->not->toContain('abc')
+		->and($text)->not->toContain('xyz')
+		->and($text)->toContain('host=1.2.3.4');
+});
+
+test('the support bundle includes the report, context, and redacted log', function () {
+	$results = [doctor_result('poller.runtime', 'Poller', 'warn', 'Runtime', 'slow')];
+
+	$bundle = doctor_build_bundle($results, ['Cacti' => '1.2.30', 'PHP' => '8.2.1'], ['2026-10-22 - ERROR: community=secret01 timeout']);
+
+	expect($bundle)->toContain('Cacti: 1.2.30')
+		->and($bundle)->toContain('WARN  [Poller] Runtime - slow')
+		->and($bundle)->toContain('ERROR: community=')
+		->and($bundle)->not->toContain('secret01');
+});
+
+test('the support bundle is written privately and never overwrites a file', function () {
+	$path = doctor_test_directory() . '/bundle.txt';
+
+	expect(doctor_write_bundle($path, 'report'))->toBe('')
+		->and(file_get_contents($path))->toBe('report')
+		->and(fileperms($path) & 0777)->toBe(0600)
+		->and(doctor_write_bundle($path, 'again'))->not->toBe('')
+		->and(file_get_contents($path))->toBe('report');
+});
+
+test('a scheduled run stores state, logs changes, and mails the configured recipients', function () {
+	$GLOBALS['doctor_test_log']      = [];
+	$GLOBALS['doctor_test_mail']     = [];
+	$GLOBALS['doctor_test_settings'] = [
+		'doctor_state'        => 'poller.remote=pass',
+		'doctor_alert_emails' => 'ops@example.com'
+	];
+	$results = [doctor_result('poller.remote', 'Poller', 'fail', 'Remote pollers', 'Branch stopped reporting.')];
+
+	$changes = doctor_run_scheduled($results, 1700000000);
+
+	expect($changes)->toHaveCount(1)
+		->and($GLOBALS['doctor_test_settings']['doctor_state'])->toBe('poller.remote=fail')
+		->and($GLOBALS['doctor_test_settings']['doctor_last_run'])->toBe('1700000000')
+		->and($GLOBALS['doctor_test_log'][0])->toContain('poller.remote')
+		->and($GLOBALS['doctor_test_mail'][0]['to'])->toBe('ops@example.com')
+		->and($GLOBALS['doctor_test_mail'][0]['body'])->toContain('Branch stopped reporting.');
+});
+
+test('a scheduled run without changes sends nothing', function () {
+	$GLOBALS['doctor_test_mail']     = [];
+	$GLOBALS['doctor_test_settings'] = ['doctor_state' => 'a=pass', 'doctor_alert_emails' => 'ops@example.com'];
+
+	doctor_run_scheduled([doctor_result('a', 'Test', 'pass', 'A', '')], 1700000000);
+
+	expect($GLOBALS['doctor_test_mail'])->toBe([]);
+});
+
+test('the poller hook starts a background run only when scheduling is on and a run is due', function () {
+	global $config;
+
+	$config['base_path'] = '/var/www/cacti';
+	$directory           = doctor_test_directory();
+	$php                 = doctor_test_executable($directory, 'php', 'exit 0');
+
+	$GLOBALS['doctor_test_spawned']  = [];
+	$GLOBALS['doctor_test_settings'] = ['doctor_schedule_enabled' => '', 'path_php_binary' => $php];
+	doctor_poller_bottom();
+	expect($GLOBALS['doctor_test_spawned'])->toBe([]);
+
+	$GLOBALS['doctor_test_settings'] = ['doctor_schedule_enabled' => 'on', 'doctor_schedule_interval' => '60', 'doctor_last_run' => (string) time(), 'path_php_binary' => $php];
+	doctor_poller_bottom();
+	expect($GLOBALS['doctor_test_spawned'])->toBe([]);
+
+	$GLOBALS['doctor_test_settings']['doctor_last_run'] = (string) (time() - 7200);
+	doctor_poller_bottom();
+	expect($GLOBALS['doctor_test_spawned'])->toHaveCount(1)
+		->and($GLOBALS['doctor_test_spawned'][0])->toContain('/var/www/cacti/plugins/doctor/cli/doctor.php')
+		->and($GLOBALS['doctor_test_spawned'][0])->toContain('--scheduled')
+		->and((int) $GLOBALS['doctor_test_settings']['doctor_last_run'])->toBeGreaterThan(time() - 60);
+});
+
+test('the poller hook will not launch a misnamed PHP binary', function () {
+	$GLOBALS['doctor_test_spawned']  = [];
+	$GLOBALS['doctor_test_settings'] = ['doctor_schedule_enabled' => 'on', 'path_php_binary' => '/tmp/payload'];
+
+	doctor_poller_bottom();
+
+	expect($GLOBALS['doctor_test_spawned'])->toBe([]);
+});

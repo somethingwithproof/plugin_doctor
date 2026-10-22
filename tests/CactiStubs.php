@@ -10,6 +10,9 @@
 $GLOBALS['doctor_test_settings'] = [];
 $GLOBALS['doctor_test_cells']    = [];
 $GLOBALS['doctor_test_rows']     = [];
+$GLOBALS['doctor_test_log']      = [];
+$GLOBALS['doctor_test_mail']     = [];
+$GLOBALS['doctor_test_spawned']  = [];
 
 if (!function_exists('read_config_option')) {
 	function read_config_option($name, $force = false) {
@@ -44,6 +47,34 @@ if (!function_exists('db_fetch_cell_prepared')) {
 if (!function_exists('db_fetch_assoc')) {
 	function db_fetch_assoc($sql, $log = true) {
 		return isset($GLOBALS['doctor_test_rows'][$sql]) ? $GLOBALS['doctor_test_rows'][$sql] : [];
+	}
+}
+
+if (!function_exists('set_config_option')) {
+	function set_config_option($name, $value) {
+		$GLOBALS['doctor_test_settings'][$name] = $value;
+	}
+}
+
+if (!function_exists('cacti_log')) {
+	function cacti_log($string, $output = false, $environ = 'CMDPHP', $level = '') {
+		$GLOBALS['doctor_test_log'][] = $environ . ': ' . $string;
+
+		return true;
+	}
+}
+
+if (!function_exists('send_mail')) {
+	function send_mail($to, $from, $subject, $body, $attachments = '', $headers = '', $html = false) {
+		$GLOBALS['doctor_test_mail'][] = ['to' => $to, 'subject' => $subject, 'body' => $body];
+
+		return '';
+	}
+}
+
+if (!function_exists('exec_background')) {
+	function exec_background($filename, $args = '', $redirect_args = '') {
+		$GLOBALS['doctor_test_spawned'][] = $filename . ' ' . $args;
 	}
 }
 

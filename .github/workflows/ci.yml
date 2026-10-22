@@ -223,7 +223,7 @@ jobs:
           REALMS="$(mysql -N -h127.0.0.1 -ucactiuser cacti -e "SELECT COUNT(*) FROM plugin_realms WHERE plugin='doctor' AND file='doctor.php';")"
           ENABLED="$(mysql -N -h127.0.0.1 -ucactiuser cacti -e "SELECT COUNT(*) FROM plugin_config WHERE directory='doctor' AND status=1;")"
           DISABLED_HOOKS="$(mysql -N -h127.0.0.1 -ucactiuser cacti -e "SELECT COUNT(*) FROM plugin_hooks WHERE name='doctor' AND status<>1;")"
-          test "$HOOKS" -eq 3
+          test "$HOOKS" -eq 5
           test "$REALMS" -eq 1
           test "$ENABLED" -eq 1
           test "$DISABLED_HOOKS" -eq 0
@@ -283,6 +283,38 @@ jobs:
             binary.snmpwalk=pass poller.freshness=pass cacti.schema_version=pass cacti.plugin_files=pass
         working-directory: cacti
 
+      - name: Verify monitoring output, support bundle, and scheduled alerts
+        run: |
+          set +e
+          php plugins/doctor/cli/doctor.php --format=nagios > doctor-nagios.txt
+          NAGIOS_EXIT=$?
+          set -e
+          cat doctor-nagios.txt
+          grep -Eq '^DOCTOR (OK|WARNING) - .* \| pass=[0-9]+ warn=[0-9]+ fail=0$' doctor-nagios.txt
+          test "$NAGIOS_EXIT" -le 1
+
+          php plugins/doctor/cli/doctor.php --format=prometheus > doctor.prom
+          grep -q '^cacti_doctor_check_status{id="poller.freshness",category="Poller"} 0$' doctor.prom
+          grep -q '^cacti_doctor_checks{status="fail"} 0$' doctor.prom
+
+          php plugins/doctor/cli/doctor.php --bundle="$RUNNER_TEMP/doctor-bundle.txt"
+          test "$(stat -c %a "$RUNNER_TEMP/doctor-bundle.txt")" = '600'
+          grep -q '^== Report$' "$RUNNER_TEMP/doctor-bundle.txt"
+          if php plugins/doctor/cli/doctor.php --bundle="$RUNNER_TEMP/doctor-bundle.txt"; then
+            echo 'The bundle overwrote an existing file.' >&2
+            exit 1
+          fi
+
+          mysql -h127.0.0.1 -ucactiuser cacti -e "DELETE FROM settings WHERE name='doctor_state';"
+          php plugins/doctor/cli/doctor.php --scheduled | grep -q '^0 checks changed status.$'
+          mysql -h127.0.0.1 -ucactiuser cacti -e "UPDATE settings SET value='/doctor/does-not-exist' WHERE name='path_snmpwalk';"
+          php plugins/doctor/cli/doctor.php --scheduled | grep -q '^1 checks changed status.$'
+          grep -q 'Doctor check binary.snmpwalk changed from pass to fail' log/cacti.log
+          mysql -h127.0.0.1 -ucactiuser cacti -e "UPDATE settings SET value='/usr/bin/snmpwalk' WHERE name='path_snmpwalk';"
+          php plugins/doctor/cli/doctor.php --scheduled | grep -q '^1 checks changed status.$'
+          test "$(mysql -N -h127.0.0.1 -ucactiuser cacti -e "SELECT COUNT(*) FROM settings WHERE name='doctor_state' AND value LIKE '%binary.snmpwalk=pass%';")" -eq 1
+        working-directory: cacti
+
       - name: Verify repair confirmation and outcome
         run: |
           set +e
@@ -323,6 +355,7 @@ jobs:
           test "$(mysql -N -h127.0.0.1 -ucactiuser cacti -e "SELECT COUNT(*) FROM plugin_config WHERE directory='doctor';")" -eq 0
           test "$(mysql -N -h127.0.0.1 -ucactiuser cacti -e "SELECT COUNT(*) FROM plugin_hooks WHERE name='doctor';")" -eq 0
           test "$(mysql -N -h127.0.0.1 -ucactiuser cacti -e "SELECT COUNT(*) FROM plugin_realms WHERE plugin='doctor';")" -eq 0
+          test "$(mysql -N -h127.0.0.1 -ucactiuser cacti -e "SELECT COUNT(*) FROM settings WHERE name LIKE 'doctor\\_%';")" -eq 0
 
           if [ -f cli/plugin_manage.php ]; then
             php cli/plugin_manage.php --plugin=doctor --install --enable
