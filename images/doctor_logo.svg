@@ -1,0 +1,114 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300" role="img" aria-labelledby="title">
+	<title id="title">Cacti Doctor: a cactus doctor with a stethoscope examining a cactus patient on a gurney</title>
+	<defs>
+		<linearGradient id="skin" x1="0" y1="0" x2="1" y2="0.35">
+			<stop offset="0" stop-color="#b1e356"/>
+			<stop offset="0.6" stop-color="#008800"/>
+			<stop offset="1" stop-color="#006800"/>
+		</linearGradient>
+		<linearGradient id="skinLying" x1="0" y1="0" x2="0.2" y2="1">
+			<stop offset="0" stop-color="#b1e356"/>
+			<stop offset="0.6" stop-color="#008800"/>
+			<stop offset="1" stop-color="#006800"/>
+		</linearGradient>
+		<linearGradient id="coat" x1="0" y1="0" x2="1" y2="0">
+			<stop offset="0" stop-color="#ffffff"/>
+			<stop offset="1" stop-color="#d9e2e8"/>
+		</linearGradient>
+		<radialGradient id="mirror" cx="0.35" cy="0.35" r="0.7">
+			<stop offset="0" stop-color="#ffffff"/>
+			<stop offset="1" stop-color="#9aa7b0"/>
+		</radialGradient>
+	</defs>
+
+	<ellipse cx="200" cy="284" rx="185" ry="10" fill="#000000" opacity="0.12"/>
+
+	<!-- Gurney -->
+	<g stroke="#155104" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+		<line x1="222" y1="214" x2="214" y2="268" stroke="#6b7a85"/>
+		<line x1="362" y1="214" x2="370" y2="268" stroke="#6b7a85"/>
+		<line x1="214" y1="244" x2="370" y2="244" stroke="#6b7a85"/>
+		<circle cx="214" cy="272" r="8" fill="#3c4650"/>
+		<circle cx="370" cy="272" r="8" fill="#3c4650"/>
+		<rect x="196" y="200" width="188" height="16" rx="6" fill="#8fd3f4"/>
+		<line x1="384" y1="208" x2="394" y2="186" stroke="#6b7a85"/>
+	</g>
+
+	<!-- Patient lying on the gurney -->
+	<g stroke="#155104" stroke-width="3.5" stroke-linejoin="round">
+		<path d="M262 170 C262 150 262 140 262 132 C262 118 284 118 284 132 L284 170 Z" fill="url(#skinLying)"/>
+		<path d="M312 170 C312 158 312 148 312 142 C312 130 332 130 332 142 L332 170 Z" fill="url(#skinLying)"/>
+		<rect x="206" y="160" width="168" height="42" rx="21" fill="url(#skinLying)"/>
+	</g>
+	<g stroke="#006800" stroke-width="1.5" opacity="0.55" fill="none">
+		<path d="M220 172 H360"/>
+		<path d="M220 184 H360"/>
+		<path d="M220 194 H356"/>
+	</g>
+	<!-- Patient face: worried eyes, thermometer, bandage -->
+	<g stroke="#155104" stroke-width="2.5" stroke-linecap="round" fill="none">
+		<path d="M340 170 q5 -4 10 0"/>
+		<path d="M354 172 q4 -4 8 0"/>
+		<path d="M343 188 q6 -4 12 0"/>
+	</g>
+	<circle cx="345" cy="175" r="2.5" fill="#155104"/>
+	<circle cx="358" cy="176" r="2.5" fill="#155104"/>
+	<g transform="rotate(-20 356 186)">
+		<rect x="356" y="183" width="30" height="6" rx="3" fill="#ffffff" stroke="#155104" stroke-width="2"/>
+		<circle cx="386" cy="186" r="4" fill="#e53935" stroke="#155104" stroke-width="2"/>
+	</g>
+	<g transform="rotate(-30 273 146)">
+		<rect x="259" y="140" width="28" height="12" rx="4" fill="#f5d6a8" stroke="#155104" stroke-width="2"/>
+		<path d="M269 142 v8 M273 142 v8 M277 142 v8" stroke="#c9a46f" stroke-width="1.5"/>
+	</g>
+
+	<!-- Heartbeat over the patient -->
+	<polyline points="226,112 256,112 264,96 274,128 284,104 290,112 330,112" fill="none" stroke="#e53935" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+	<path d="M342 104 c-6 -10 -20 -4 -14 6 l14 12 l14 -12 c6 -10 -8 -16 -14 -6 Z" fill="#e53935" stroke="#155104" stroke-width="2"/>
+
+	<!-- Doctor cactus -->
+	<g stroke="#155104" stroke-width="3.5" stroke-linejoin="round">
+		<path d="M66 150 C40 150 34 130 34 104 C34 88 54 88 54 104 C54 120 56 128 72 128 Z" fill="url(#skin)"/>
+		<path d="M140 156 C170 156 196 158 214 168 C224 174 216 188 206 182 C190 172 168 176 140 178 Z" fill="url(#skin)"/>
+		<path d="M64 270 L64 72 C64 30 140 30 140 72 L140 270 Z" fill="url(#skin)"/>
+	</g>
+	<g stroke="#006800" stroke-width="1.5" opacity="0.55" fill="none">
+		<path d="M84 52 V150"/>
+		<path d="M102 44 V150"/>
+		<path d="M120 52 V150"/>
+	</g>
+	<path d="M74 70 C74 54 82 44 90 40 C84 52 82 64 82 160 L74 160 Z" fill="#ffffff" opacity="0.35"/>
+
+	<!-- White coat -->
+	<path d="M60 168 L144 168 L148 272 L56 272 Z" fill="url(#coat)" stroke="#155104" stroke-width="3.5" stroke-linejoin="round"/>
+	<path d="M102 168 L102 272" stroke="#9aa7b0" stroke-width="2"/>
+	<path d="M76 168 L102 200 L128 168" fill="none" stroke="#9aa7b0" stroke-width="2.5" stroke-linejoin="round"/>
+	<rect x="112" y="212" width="20" height="16" rx="2" fill="#ffffff" stroke="#9aa7b0" stroke-width="2"/>
+	<path d="M117 212 v-6 M123 212 v-8" stroke="#1e88e5" stroke-width="3" stroke-linecap="round"/>
+	<g transform="translate(78 218)">
+		<rect x="-6" y="-2" width="12" height="4" fill="#e53935"/>
+		<rect x="-2" y="-6" width="4" height="12" fill="#e53935"/>
+	</g>
+
+	<!-- Head mirror -->
+	<path d="M66 70 Q102 58 138 70" fill="none" stroke="#3c4650" stroke-width="4"/>
+	<circle cx="102" cy="58" r="13" fill="url(#mirror)" stroke="#3c4650" stroke-width="3"/>
+	<circle cx="102" cy="58" r="3" fill="#3c4650"/>
+
+	<!-- Doctor face -->
+	<ellipse cx="88" cy="96" rx="5" ry="6.5" fill="#ffffff" stroke="#155104" stroke-width="2"/>
+	<ellipse cx="114" cy="96" rx="5" ry="6.5" fill="#ffffff" stroke="#155104" stroke-width="2"/>
+	<circle cx="90" cy="98" r="2.8" fill="#155104"/>
+	<circle cx="116" cy="98" r="2.8" fill="#155104"/>
+	<path d="M84 84 q5 -4 10 0 M108 84 q5 -4 10 0" stroke="#155104" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+	<path d="M90 114 q12 10 24 0" stroke="#155104" stroke-width="3" fill="none" stroke-linecap="round"/>
+
+	<!-- Stethoscope draped over the shoulders, chest piece on the patient -->
+	<g fill="none" stroke="#3c4650" stroke-width="4" stroke-linecap="round">
+		<path d="M76 138 C76 160 96 168 102 168 C110 168 128 160 128 138"/>
+		<path d="M102 168 C110 190 140 180 168 172 C190 166 206 172 222 178"/>
+	</g>
+	<circle cx="76" cy="136" r="4" fill="#3c4650"/>
+	<circle cx="128" cy="136" r="4" fill="#3c4650"/>
+	<circle cx="226" cy="180" r="9" fill="url(#mirror)" stroke="#3c4650" stroke-width="3"/>
+</svg>
