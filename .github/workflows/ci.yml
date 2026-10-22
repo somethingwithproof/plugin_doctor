@@ -22,9 +22,9 @@ jobs:
         php: ['5.4', '5.6', '7.0', '7.1', '7.4', '8.0', '8.1', '8.2', '8.3', '8.4']
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
 
-      - uses: shivammathur/setup-php@v2
+      - uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962 # 2.40.0
         with:
           php-version: ${{ matrix.php }}
           coverage: none
@@ -42,9 +42,9 @@ jobs:
         php: ['8.2', '8.3', '8.4']
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
 
-      - uses: shivammathur/setup-php@v2
+      - uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962 # 2.40.0
         with:
           php-version: ${{ matrix.php }}
           coverage: none
@@ -107,17 +107,17 @@ jobs:
             php: '8.3'
             database_image: mariadb:10.11
             poller_type: '1'
-            baseline_exit: '1'
-            baseline_failures: binary.rrdtool
-            rrdtool_status: fail
+            baseline_exit: '0'
+            baseline_failures: ''
+            rrdtool_status: pass
           - name: Cacti develop / PHP 8.4 / MySQL / Spine
             cacti_ref: develop
             php: '8.4'
             database_image: mysql:8.0
             poller_type: '2'
-            baseline_exit: '1'
-            baseline_failures: binary.rrdtool
-            rrdtool_status: fail
+            baseline_exit: '0'
+            baseline_failures: ''
+            rrdtool_status: pass
 
     services:
       database:
@@ -136,17 +136,17 @@ jobs:
           --health-retries=12
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
         with:
           repository: Cacti/cacti
           ref: ${{ matrix.cacti_ref }}
           path: cacti
 
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
         with:
           path: cacti/plugins/doctor
 
-      - uses: shivammathur/setup-php@v2
+      - uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962 # 2.40.0
         with:
           php-version: ${{ matrix.php }}
           coverage: none
@@ -193,7 +193,7 @@ jobs:
           fi
           mkdir -p cache log rra
           touch log/cacti.log
-          mysql -h127.0.0.1 -ucactiuser -pcactiuser cacti -e "REPLACE INTO settings (name, value) VALUES ('path_php_binary', '${PHP_PATH}'), ('path_rrdtool', '/usr/bin/rrdtool'), ('path_snmpget', '/usr/bin/snmpget'), ('path_snmpwalk', '/usr/bin/snmpwalk'), ('path_spine', '${SPINE_PATH}'), ('path_cactilog', '${GITHUB_WORKSPACE}/cacti/log/cacti.log'), ('poller_type', '${POLLER_TYPE}'), ('poller_interval', '300'), ('poller_lastrun_1', UNIX_TIMESTAMP());"
+          mysql -h127.0.0.1 -ucactiuser -pcactiuser cacti -e "REPLACE INTO settings (name, value) VALUES ('path_php_binary', '${PHP_PATH}'), ('path_rrdtool', '/usr/bin/rrdtool'), ('path_snmpget', '/usr/bin/snmpget'), ('path_snmpwalk', '/usr/bin/snmpwalk'), ('path_spine', '${SPINE_PATH}'), ('path_cactilog', '${GITHUB_WORKSPACE}/cacti/log/cacti.log'), ('poller_type', '${POLLER_TYPE}'), ('poller_interval', '300'), ('poller_lastrun_1', UNIX_TIMESTAMP()); UPDATE poller SET last_update=NOW() WHERE id=1;"
         working-directory: cacti
 
       - name: Register and enable Doctor
@@ -242,7 +242,7 @@ jobs:
           BASELINE_FAILURES: ${{ matrix.baseline_failures }}
           RRDTOOL_STATUS: ${{ matrix.rrdtool_status }}
         run: |
-          mysql -h127.0.0.1 -ucactiuser -pcactiuser cacti -e "UPDATE settings SET value='/doctor/does-not-exist' WHERE name='path_snmpwalk'; UPDATE settings SET value=UNIX_TIMESTAMP() - 7200 WHERE name='poller_lastrun_1';"
+          mysql -h127.0.0.1 -ucactiuser -pcactiuser cacti -e "UPDATE settings SET value='/doctor/does-not-exist' WHERE name='path_snmpwalk'; UPDATE poller SET last_update=NOW() - INTERVAL 2 HOUR WHERE id=1;"
           set +e
           php plugins/doctor/cli/doctor.php --json > doctor-negative.json
           DOCTOR_EXIT=$?
@@ -255,7 +255,7 @@ jobs:
           php plugins/doctor/tests/ci/AssertDoctorReport.php doctor-negative.json \
             "--failures=${FAILURES}" binary.snmpwalk=fail poller.freshness=fail
 
-          mysql -h127.0.0.1 -ucactiuser -pcactiuser cacti -e "UPDATE settings SET value='/usr/bin/snmpwalk' WHERE name='path_snmpwalk'; UPDATE settings SET value=UNIX_TIMESTAMP() WHERE name='poller_lastrun_1';"
+          mysql -h127.0.0.1 -ucactiuser -pcactiuser cacti -e "UPDATE settings SET value='/usr/bin/snmpwalk' WHERE name='path_snmpwalk'; UPDATE poller SET last_update=NOW() WHERE id=1;"
           set +e
           php plugins/doctor/cli/doctor.php --json > doctor-recovered.json
           DOCTOR_EXIT=$?
@@ -317,7 +317,7 @@ jobs:
 
       - name: Upload diagnostic reports after failure
         if: failure()
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
         with:
           name: doctor-reports-${{ strategy.job-index }}
           path: cacti/doctor-*.json

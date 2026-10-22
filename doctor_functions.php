@@ -17,6 +17,7 @@
  */
 function doctor_run_checks() {
 	$results   = [];
+	$results[] = doctor_check_privileges(doctor_running_as_root());
 	$results[] = doctor_check_cacti_version();
 	$results[] = doctor_check_php_version();
 	$results[] = doctor_check_php_security_baseline();
@@ -71,8 +72,32 @@ function doctor_parent_directory($path, $levels) {
 	return $path;
 }
 
-function doctor_php_minimum_version() {
-	return defined('CACTI_VERSION') && version_compare((string) CACTI_VERSION, '1.3.0', '>=') ? '8.1.0' : '5.4.0';
+function doctor_is_cacti_13($cactiVersion = null) {
+	if ($cactiVersion === null) {
+		$cactiVersion = defined('CACTI_VERSION') ? (string) CACTI_VERSION : '';
+	}
+
+	return $cactiVersion !== '' && version_compare($cactiVersion, '1.3.0', '>=');
+}
+
+function doctor_php_minimum_version($cactiVersion = null) {
+	return doctor_is_cacti_13($cactiVersion) ? '8.3.0' : '5.4.0';
+}
+
+/**
+ * Cacti lists every RRDtool release it can drive in $rrdtool_versions, oldest
+ * first. The fallbacks match the first entry on 1.2.x and develop.
+ */
+function doctor_rrdtool_minimum_version($cactiVersion = null) {
+	global $rrdtool_versions;
+
+	if (isset($rrdtool_versions) && is_array($rrdtool_versions) && cacti_sizeof($rrdtool_versions)) {
+		$versions = array_keys($rrdtool_versions);
+
+		return (string) $versions[0];
+	}
+
+	return doctor_is_cacti_13($cactiVersion) ? '1.5.0' : '1.3.0';
 }
 
 /** @return array<string,mixed> */
@@ -126,14 +151,14 @@ function doctor_required_php_extensions($cli = false) {
 		'session', 'simplexml', 'sockets', 'spl', 'standard', 'xml', 'zlib'
 	];
 
-	if (defined('CACTI_VERSION') && version_compare((string) CACTI_VERSION, '1.3.0', '>=')) {
+	if (doctor_is_cacti_13()) {
 		$required[] = 'curl';
 		$required[] = 'intl';
 	}
 
 	if (defined('CACTI_SERVER_OS') && CACTI_SERVER_OS === 'unix') {
 		$required[] = 'posix';
-		if ($cli && defined('CACTI_VERSION') && version_compare((string) CACTI_VERSION, '1.3.0', '>=')) {
+		if ($cli && doctor_is_cacti_13()) {
 			$required[] = 'pcntl';
 		}
 	} elseif (defined('CACTI_SERVER_OS') && CACTI_SERVER_OS === 'win32') {
@@ -143,20 +168,73 @@ function doctor_required_php_extensions($cli = false) {
 	return $required;
 }
 
+function doctor_running_as_root() {
+	return function_exists('posix_geteuid') && posix_geteuid() === 0;
+}
+
+function doctor_shell_exec_available() {
+	return function_exists('shell_exec') && (!function_exists('is_function_enabled') || is_function_enabled('shell_exec'));
+}
+
+/**
+ * Explain why Doctor will not execute a binary named in the settings table,
+ * or return an empty string when it may.
+ *
+ * Anyone who can write the settings table could otherwise choose what Doctor
+ * runs, and the CLI is often started as root. Cacti 1.2.x applies a similar
+ * file-name rule to path_php_binary. php-cgi and php-fpm are excluded because
+ * they do not accept -r.
+ */
+function doctor_binary_execution_refusal($option, $path, $privileged) {
+	$names = [
+		'path_php_binary' => '/^php(?:-win)?[0-9.]*(?:\.exe)?$/i',
+		'path_rrdtool'    => '/^rrdtool(?:-?[0-9.]+)?(?:\.exe)?$/i',
+		'path_snmpget'    => '/^snmpget(?:-?[0-9.]+)?(?:\.exe)?$/i',
+		'path_snmpwalk'   => '/^snmpwalk(?:-?[0-9.]+)?(?:\.exe)?$/i'
+	];
+
+	if ($privileged) {
+		return 'Doctor does not execute configured binaries while running as root.';
+	}
+
+	if (!isset($names[$option]) || !preg_match($names[$option], basename($path))) {
+		return 'The file name ' . basename($path) . ' is not expected for ' . $option . ', so Doctor did not execute it.';
+	}
+
+	return '';
+}
+
 /** @return array<string,mixed> */
-function doctor_check_cli_php_extensions() {
-	$path = (string) read_config_option('path_php_binary', true);
+function doctor_check_privileges($privileged) {
+	if ($privileged) {
+		return doctor_result('doctor.privileges', 'Doctor', 'warn', 'Doctor privileges', 'Doctor is running as root, so permission checks describe root rather than the web server or poller account, configured binaries are not executed, and repairs are refused. Run Doctor as the Cacti poller user.');
+	}
+
+	return doctor_result('doctor.privileges', 'Doctor', 'pass', 'Doctor privileges', 'Doctor is running without root privileges.');
+}
+
+/** @return array<string,mixed> */
+function doctor_check_cli_php_extensions($privileged = null) {
+	$privileged = $privileged === null ? doctor_running_as_root() : $privileged;
+	$path       = (string) read_config_option('path_php_binary', true);
 
 	if ($path === '' || !is_file($path) || !is_executable($path)) {
 		return doctor_result('php.cli_extensions', 'Prerequisites', 'fail', 'Required CLI PHP extensions', 'The configured PHP CLI executable is unavailable, so its extensions cannot be checked.');
 	}
 
-	if (!function_exists('shell_exec') || (function_exists('is_function_enabled') && !is_function_enabled('shell_exec'))) {
+	$refusal = doctor_binary_execution_refusal('path_php_binary', $path, $privileged);
+
+	if ($refusal !== '') {
+		return doctor_result('php.cli_extensions', 'Prerequisites', 'warn', 'Required CLI PHP extensions', $refusal);
+	}
+
+	if (!doctor_shell_exec_available()) {
 		return doctor_result('php.cli_extensions', 'Prerequisites', 'warn', 'Required CLI PHP extensions', 'shell_exec() is disabled, so Doctor cannot compare the CLI PHP extensions with Cacti requirements.');
 	}
 
 	$code   = 'echo json_encode(get_loaded_extensions());';
-	$output = @shell_exec(cacti_escapeshellarg($path) . ' -r ' . cacti_escapeshellarg($code));
+	// Startup warnings, such as an extension loaded twice, print to stdout by default and would corrupt the JSON.
+	$output = @shell_exec(cacti_escapeshellarg($path) . ' -d display_errors=stderr -d display_startup_errors=0 -r ' . cacti_escapeshellarg($code));
 	$loaded = is_string($output) ? json_decode($output, true) : null;
 
 	if (!is_array($loaded)) {
@@ -202,25 +280,34 @@ function doctor_check_optional_php_extensions() {
 
 /** @return array<string,mixed> */
 function doctor_check_php_configuration() {
-	$memoryRaw = (string) ini_get('memory_limit');
-	$memory    = doctor_ini_bytes($memoryRaw);
-	$execution = (int) ini_get('max_execution_time');
-	$timezone  = date_default_timezone_get();
-	$problems  = [];
+	return doctor_evaluate_php_configuration((string) ini_get('memory_limit'), (int) ini_get('max_execution_time'), (string) ini_get('date.timezone'), PHP_VERSION);
+}
 
-	if ($memory !== -1 && $memory < 128 * 1024 * 1024) {
-		$problems[] = 'memory_limit is ' . $memoryRaw . ' (128M or more is recommended)';
+/**
+ * Apply the thresholds from Cacti's utility_php_verify_recommends(). The
+ * timezone comes from date.timezone because date_default_timezone_get()
+ * silently falls back to UTC when it is unset.
+ *
+ * @return array<string,mixed>
+ */
+function doctor_evaluate_php_configuration($memoryRaw, $execution, $timezone, $phpVersion) {
+	$memory      = doctor_ini_bytes($memoryRaw);
+	$recommended = version_compare($phpVersion, '7.0.0', '<') ? 800 : 400;
+	$problems    = [];
+
+	if ($memory > 0 && $memory < $recommended * 1024 * 1024) {
+		$problems[] = 'memory_limit is ' . $memoryRaw . ' (' . $recommended . 'M or more is recommended)';
 	}
 
-	if ($execution !== 0 && $execution < 60) {
+	if ($execution > 0 && $execution < 60) {
 		$problems[] = 'max_execution_time is ' . $execution . ' seconds (60 or more is recommended)';
 	}
 
 	if ($timezone === '') {
-		$problems[] = 'no PHP timezone is configured';
+		$problems[] = 'date.timezone is not set';
 	}
 
-	$detail = 'memory_limit=' . $memoryRaw . ', max_execution_time=' . $execution . ', timezone=' . ($timezone !== '' ? $timezone : 'unset') . '.';
+	$detail = 'memory_limit=' . $memoryRaw . ', max_execution_time=' . $execution . ', date.timezone=' . ($timezone !== '' ? $timezone : 'unset') . '.';
 
 	if ($problems !== []) {
 		return doctor_result('php.configuration', 'Prerequisites', 'warn', 'PHP runtime configuration', implode('; ', $problems) . '. Current values: ' . $detail);
@@ -285,7 +372,7 @@ function doctor_database_identity($raw) {
 function doctor_check_database_version() {
 	$raw      = (string) db_fetch_cell('SELECT VERSION()', '', false);
 	$identity = doctor_database_identity($raw);
-	$is13     = defined('CACTI_VERSION') && version_compare((string) CACTI_VERSION, '1.3.0', '>=');
+	$is13     = doctor_is_cacti_13();
 	$minimum  = $is13 ? ($identity['server'] === 'MariaDB' ? '10.2.0' : '8.0.0') : '5.6.0';
 	$status   = $identity['version'] !== 'unknown' && version_compare($identity['version'], $minimum, '>=') ? 'pass' : 'fail';
 	$detail   = $identity['server'] . ' ' . $identity['version'] . ' detected; this Cacti branch requires ' . $identity['server'] . ' ' . $minimum . ' or newer.';
@@ -334,28 +421,62 @@ function doctor_check_core_tables() {
 	return doctor_result('database.core_tables', 'Database', $status, 'Core database tables', $detail);
 }
 
+function doctor_base_path() {
+	return defined('CACTI_PATH_BASE') ? (string) CACTI_PATH_BASE : doctor_parent_directory(__DIR__, 2);
+}
+
 /**
+ * The repair ignores path_cactilog: a log file may be configured anywhere,
+ * including a code directory such as include/, and the repair must only ever
+ * touch Cacti's own runtime directories.
+ *
  * @return array<string,string>
  */
-function doctor_runtime_directories() {
-	$base = defined('CACTI_PATH_BASE') ? (string) CACTI_PATH_BASE : doctor_parent_directory(__DIR__, 2);
+function doctor_repair_directories($base = null) {
+	$base = $base === null ? doctor_base_path() : $base;
 
 	return [
-		'cache' => $base . '/cache',
+		'cache' => defined('CACTI_PATH_CACHE') ? (string) CACTI_PATH_CACHE : $base . '/cache',
 		'log'   => defined('CACTI_PATH_LOG') ? (string) CACTI_PATH_LOG : $base . '/log',
 		'rra'   => defined('CACTI_PATH_RRA') ? (string) CACTI_PATH_RRA : $base . '/rra'
 	];
 }
 
-/** @return array<string,mixed> */
-function doctor_check_runtime_directories() {
-	$problems = [];
+/**
+ * Cacti 1.3 lets config.php relocate the cache, log, and RRA directories, and
+ * every release lets path_cactilog move the log, so honor both before falling
+ * back to the installation tree.
+ *
+ * @return array<string,string>
+ */
+function doctor_runtime_directories($base = null) {
+	$directories = doctor_repair_directories($base);
+	$logFile     = (string) read_config_option('path_cactilog', true);
 
-	foreach (doctor_runtime_directories() as $name => $path) {
+	if ($logFile !== '') {
+		$directories['log'] = dirname($logFile);
+	}
+
+	return $directories;
+}
+
+/** @return array<string,mixed> */
+function doctor_check_runtime_directories($base = null) {
+	$problems   = [];
+	$repairable = false;
+	$targets    = doctor_repair_directories($base);
+
+	foreach (doctor_runtime_directories($base) as $name => $path) {
 		if (!is_dir($path)) {
 			$problems[] = $name . ' is missing (' . $path . ')';
 		} elseif (!is_writable($path)) {
 			$problems[] = $name . ' is not writable (' . $path . ')';
+		} else {
+			continue;
+		}
+
+		if (in_array($path, $targets, true)) {
+			$repairable = true;
 		}
 	}
 
@@ -363,14 +484,13 @@ function doctor_check_runtime_directories() {
 		return doctor_result('filesystem.runtime_directories', 'Filesystem', 'pass', 'Runtime directories', 'The cache, log, and RRA directories exist and are writable.');
 	}
 
-	return doctor_result('filesystem.runtime_directories', 'Filesystem', 'fail', 'Runtime directories', implode('; ', $problems), 'runtime_directories');
+	return doctor_result('filesystem.runtime_directories', 'Filesystem', 'fail', 'Runtime directories', implode('; ', $problems), $repairable ? 'runtime_directories' : '');
 }
 
 /** @return array<string,mixed> */
-function doctor_check_config_file_security() {
-	$base   = defined('CACTI_PATH_BASE') ? (string) CACTI_PATH_BASE : doctor_parent_directory(__DIR__, 2);
-	$path   = $base . '/include/config.php';
-	$mode   = @fileperms($path);
+function doctor_check_config_file_security($path = null) {
+	$path = $path === null ? doctor_base_path() . '/include/config.php' : $path;
+	$mode = @fileperms($path);
 
 	if (!is_file($path) || !is_readable($path)) {
 		return doctor_result('filesystem.config', 'Filesystem', 'fail', 'Cacti configuration file', 'include/config.php is missing or unreadable.');
@@ -388,12 +508,16 @@ function doctor_check_config_file_security() {
 		return doctor_result('filesystem.config', 'Filesystem', 'warn', 'Cacti configuration file', 'include/config.php is group-writable. Confirm that every member of the owning group is trusted.');
 	}
 
-	return doctor_result('filesystem.config', 'Filesystem', 'pass', 'Cacti configuration file', 'include/config.php is readable and is not group- or world-writable.');
+	if ($mode !== false && ($mode & 0004) !== 0) {
+		return doctor_result('filesystem.config', 'Filesystem', 'warn', 'Cacti configuration file', 'include/config.php is readable by all local users and contains database credentials. Restrict it to the owner and the web server group.');
+	}
+
+	return doctor_result('filesystem.config', 'Filesystem', 'pass', 'Cacti configuration file', 'include/config.php is readable and is not world-readable, group-writable, or world-writable.');
 }
 
 /** @return array<string,mixed> */
 function doctor_check_cacti_log() {
-	$base = defined('CACTI_PATH_BASE') ? (string) CACTI_PATH_BASE : doctor_parent_directory(__DIR__, 2);
+	$base = doctor_base_path();
 	$path = (string) read_config_option('path_cactilog', true);
 	$path = $path !== '' ? $path : $base . '/log/cacti.log';
 
@@ -421,11 +545,12 @@ function doctor_check_cacti_log() {
 /**
  * @return array<int,array<string,mixed>>
  */
-function doctor_check_required_binaries() {
-	$is13 = defined('CACTI_VERSION') && version_compare((string) CACTI_VERSION, '1.3.0', '>=');
+function doctor_check_required_binaries($privileged = null) {
+	$privileged = $privileged === null ? doctor_running_as_root() : $privileged;
+	$is13       = doctor_is_cacti_13();
 	$binaries = [
 		'path_php_binary' => ['label' => 'PHP CLI', 'argument' => '-v', 'pattern' => '/PHP\s+([0-9]+\.[0-9]+(?:\.[0-9]+)?)/i', 'minimum' => doctor_php_minimum_version()],
-		'path_rrdtool'    => ['label' => 'RRDtool', 'argument' => '--version', 'pattern' => '/RRDtool\s+([0-9]+\.[0-9]+(?:\.[0-9]+)?)/i', 'minimum' => $is13 ? '1.8.0' : '1.4.0'],
+		'path_rrdtool'    => ['label' => 'RRDtool', 'argument' => '--version', 'pattern' => '/RRDtool\s+([0-9]+\.[0-9]+(?:\.[0-9]+)?)/i', 'minimum' => doctor_rrdtool_minimum_version()],
 		'path_snmpget'    => ['label' => 'Net-SNMP snmpget', 'argument' => '-V', 'pattern' => '/NET-SNMP version:\s*([0-9]+\.[0-9]+(?:\.[0-9]+)?)/i', 'minimum' => $is13 ? '5.8.0' : '5.5.0'],
 		'path_snmpwalk'   => ['label' => 'Net-SNMP snmpwalk', 'argument' => '-V', 'pattern' => '/NET-SNMP version:\s*([0-9]+\.[0-9]+(?:\.[0-9]+)?)/i', 'minimum' => $is13 ? '5.8.0' : '5.5.0']
 	];
@@ -442,9 +567,13 @@ function doctor_check_required_binaries() {
 		$detail = $status === 'pass' ? 'Executable found at ' . $path . '.' : 'The ' . $option . ' setting is empty, missing, or not executable' . ($path !== '' ? ': ' . $path : '.');
 
 		if ($status === 'pass' && $specification['pattern'] !== '') {
-			$version = doctor_probe_binary_version($path, $specification['argument'], $specification['pattern']);
+			$refusal = doctor_binary_execution_refusal($option, $path, $privileged);
+			$version = $refusal === '' ? doctor_probe_binary_version($path, $specification['argument'], $specification['pattern']) : null;
 
-			if ($version === null) {
+			if ($refusal !== '') {
+				$status  = 'warn';
+				$detail .= ' ' . $refusal;
+			} elseif ($version === null) {
 				$status  = 'warn';
 				$detail .= ' Doctor could not determine its version.';
 			} elseif (version_compare($version, $specification['minimum'], '<')) {
@@ -462,7 +591,7 @@ function doctor_check_required_binaries() {
 }
 
 function doctor_probe_binary_version($path, $argument, $pattern) {
-	if (!function_exists('shell_exec') || (function_exists('is_function_enabled') && !is_function_enabled('shell_exec'))) {
+	if (!doctor_shell_exec_available()) {
 		return null;
 	}
 
@@ -480,6 +609,19 @@ function doctor_probe_binary_version($path, $argument, $pattern) {
 	return $matches[1];
 }
 
+/**
+ * @return array<int,int>
+ */
+function doctor_supported_poller_intervals() {
+	global $poller_intervals;
+
+	if (isset($poller_intervals) && is_array($poller_intervals) && cacti_sizeof($poller_intervals)) {
+		return array_map('intval', array_keys($poller_intervals));
+	}
+
+	return [10, 15, 20, 30, 60, 300];
+}
+
 /** @return array<string,mixed> */
 function doctor_check_poller_configuration() {
 	$type     = (string) read_config_option('poller_type', true);
@@ -490,7 +632,7 @@ function doctor_check_poller_configuration() {
 		$problems[] = 'poller_type is not cmd.php or Spine';
 	}
 
-	if (!in_array($interval, [10, 20, 30, 60, 300], true)) {
+	if (!in_array($interval, doctor_supported_poller_intervals(), true)) {
 		$problems[] = 'poller_interval is not a supported value';
 	}
 
@@ -501,14 +643,20 @@ function doctor_check_poller_configuration() {
 	return doctor_result('poller.configuration', 'Poller', 'pass', 'Poller configuration', 'Poller is ' . ($type === '2' ? 'Spine' : 'cmd.php') . ' with a ' . $interval . '-second interval.');
 }
 
-/** @return array<string,mixed> */
+/**
+ * poller_lastrun_1 is written when a poll starts, so a poller that crashes
+ * every cycle still looks current. poller.last_update is written with the
+ * run statistics only after the main poller finishes.
+ *
+ * @return array<string,mixed>
+ */
 function doctor_check_poller_freshness() {
-	$lastRun = (int) read_config_option('poller_lastrun_1', true);
+	$lastRun  = (int) db_fetch_cell('SELECT UNIX_TIMESTAMP(last_update) FROM poller WHERE id = 1', '', false);
 	$interval = (int) read_config_option('poller_interval', true);
 	$interval = $interval > 0 ? $interval : 300;
 
 	if ($lastRun <= 0) {
-		return doctor_result('poller.freshness', 'Poller', 'warn', 'Main poller freshness', 'No completed main-poller timestamp was found. This can be expected before the first poll.');
+		return doctor_result('poller.freshness', 'Poller', 'warn', 'Main poller freshness', 'No completed main-poller run was found. This can be expected before the first poll.');
 	}
 
 	$age       = max(0, time() - $lastRun);
@@ -536,32 +684,47 @@ function doctor_available_repairs() {
  *
  * @return array<string,mixed>
  */
-function doctor_run_repair($repair) {
+function doctor_run_repair($repair, $privileged = null) {
 	if (!isset(doctor_available_repairs()[$repair])) {
 		return doctor_result('repair.' . $repair, 'Repair', 'fail', 'Unknown repair', 'The requested repair is not allow-listed.');
 	}
 
 	if ($repair === 'runtime_directories') {
-		return doctor_repair_runtime_directories();
+		return doctor_repair_runtime_directories(null, null, $privileged);
 	}
 
 	return doctor_result('repair.' . $repair, 'Repair', 'fail', 'Repair unavailable', 'No repair handler is registered.');
 }
 
-/** @return array<string,mixed> */
-function doctor_repair_runtime_directories() {
-	$base = realpath(defined('CACTI_PATH_BASE') ? (string) CACTI_PATH_BASE : doctor_parent_directory(__DIR__, 2));
+/**
+ * @param array<string,string>|null $directories
+ * @return array<string,mixed>
+ */
+function doctor_repair_runtime_directories($base = null, $directories = null, $privileged = null) {
+	$privileged  = $privileged === null ? doctor_running_as_root() : $privileged;
+	$base        = realpath($base === null ? doctor_base_path() : $base);
+	$directories = $directories === null ? doctor_repair_directories($base) : $directories;
+
+	// Directories created by root are unwritable for the web server and poller.
+	if ($privileged) {
+		return doctor_result('repair.runtime_directories', 'Repair', 'fail', 'Repair runtime directories', 'Repairs are refused while running as root. Run Doctor as the Cacti poller user.');
+	}
 
 	if ($base === false) {
 		return doctor_result('repair.runtime_directories', 'Repair', 'fail', 'Repair runtime directories', 'The Cacti base directory cannot be resolved.');
 	}
 
+	$prefix = rtrim($base, '/') . '/';
 	$errors = [];
 
-	foreach (doctor_runtime_directories() as $name => $path) {
+	foreach ($directories as $name => $path) {
+		if (is_dir($path) && is_writable($path)) {
+			continue;
+		}
+
 		$parent = realpath(dirname($path));
 
-		if ($parent === false || ($parent !== $base && strpos($parent . '/', $base . '/') !== 0)) {
+		if ($parent === false || ($parent !== $base && strpos($parent . '/', $prefix) !== 0)) {
 			$errors[] = $name . ': path is outside the Cacti installation';
 			continue;
 		}
@@ -579,10 +742,15 @@ function doctor_repair_runtime_directories() {
 		$mode = fileperms($path);
 		if ($mode === false || (!is_writable($path) && !chmod($path, ($mode & 0777) | 0700))) {
 			$errors[] = $name . ': could not add owner permissions';
+			continue;
+		}
+
+		clearstatcache();
+
+		if (!is_dir($path) || !is_writable($path)) {
+			$errors[] = $name . ': still not a writable directory';
 		}
 	}
-
-	clearstatcache();
 
 	if ($errors !== []) {
 		return doctor_result('repair.runtime_directories', 'Repair', 'fail', 'Repair runtime directories', implode('; ', $errors));
