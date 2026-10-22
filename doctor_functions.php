@@ -275,8 +275,7 @@ function doctor_check_cli_php_extensions($privileged = null) {
 	$code   = 'echo json_encode(get_loaded_extensions());';
 	// Startup warnings, such as an extension loaded twice, print to stdout by default and would corrupt the JSON.
 	// The path passed doctor_binary_execution_refusal() and both arguments are escaped constants.
-	// nosemgrep: php.lang.security.exec-use.exec-use
-	$output = @shell_exec(cacti_escapeshellarg($path) . ' -d display_errors=stderr -d display_startup_errors=0 -r ' . cacti_escapeshellarg($code));
+	$output = @shell_exec(cacti_escapeshellarg($path) . ' -d display_errors=stderr -d display_startup_errors=0 -r ' . cacti_escapeshellarg($code)); // nosemgrep: php.lang.security.exec-use.exec-use
 	$loaded = is_string($output) ? json_decode($output, true) : null;
 
 	if (!is_array($loaded)) {
@@ -650,8 +649,7 @@ function doctor_probe_binary_version($path, $argument, $pattern) {
 	}
 	$command .= ' 2>&1';
 	// Callers pass only paths accepted by doctor_binary_execution_refusal() and fixed version flags.
-	// nosemgrep: php.lang.security.exec-use.exec-use
-	$output = @shell_exec($command);
+	$output = @shell_exec($command); // nosemgrep: php.lang.security.exec-use.exec-use
 
 	if (!is_string($output) || !preg_match($pattern, $output, $matches)) {
 		return null;
