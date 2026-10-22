@@ -114,6 +114,58 @@ function doctor_config_settings() {
 			'description'   => __('Also alert when a check moves into or out of a warning.', 'doctor'),
 			'method'        => 'checkbox',
 			'default'       => ''
+		],
+		'doctor_thresholds_header' => [
+			'friendly_name' => __('Thresholds', 'doctor'),
+			'method'        => 'spacer'
+		],
+		'doctor_poller_warn_percent' => [
+			'friendly_name' => __('Poller Run Time Warning (%)', 'doctor'),
+			'description'   => __('Warn when the last main-poller run used this share of the polling interval. Runs that reach 100% always fail.', 'doctor'),
+			'method'        => 'textbox',
+			'default'       => '80',
+			'max_length'    => '5',
+			'size'          => '5'
+		],
+		'doctor_disk_warn_percent' => [
+			'friendly_name' => __('RRA Disk Free Warning (%)', 'doctor'),
+			'description'   => __('Warn when free space on the RRA file system drops below this percentage.', 'doctor'),
+			'method'        => 'textbox',
+			'default'       => '10',
+			'max_length'    => '5',
+			'size'          => '5'
+		],
+		'doctor_disk_fail_percent' => [
+			'friendly_name' => __('RRA Disk Free Failure (%)', 'doctor'),
+			'description'   => __('Fail when free space on the RRA file system drops below this percentage.', 'doctor'),
+			'method'        => 'textbox',
+			'default'       => '2',
+			'max_length'    => '5',
+			'size'          => '5'
+		],
+		'doctor_clock_warn_seconds' => [
+			'friendly_name' => __('Clock Drift Warning (seconds)', 'doctor'),
+			'description'   => __('Warn when the database and PHP clocks differ by more than this.', 'doctor'),
+			'method'        => 'textbox',
+			'default'       => '5',
+			'max_length'    => '5',
+			'size'          => '5'
+		],
+		'doctor_clock_fail_seconds' => [
+			'friendly_name' => __('Clock Drift Failure (seconds)', 'doctor'),
+			'description'   => __('Fail when the database and PHP clocks differ by more than this.', 'doctor'),
+			'method'        => 'textbox',
+			'default'       => '60',
+			'max_length'    => '5',
+			'size'          => '5'
+		],
+		'doctor_log_warn_mb' => [
+			'friendly_name' => __('Cacti Log Size Warning (MB)', 'doctor'),
+			'description'   => __('Warn when the Cacti log grows beyond this size, which usually means log rotation is not running.', 'doctor'),
+			'method'        => 'textbox',
+			'default'       => '100',
+			'max_length'    => '5',
+			'size'          => '5'
 		]
 	];
 }

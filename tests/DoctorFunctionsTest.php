@@ -946,3 +946,37 @@ test('a failed offender query is reported instead of silently omitted', function
 	expect($result['status'])->toBe('warn')
 		->and($result['detail'])->toContain('could not be listed');
 });
+
+test('thresholds come from settings and fall back to the default when unset or invalid', function () {
+	$GLOBALS['doctor_test_settings'] = ['doctor_disk_warn_percent' => '20', 'doctor_clock_fail_seconds' => 'abc', 'doctor_log_warn_mb' => '0'];
+
+	expect(doctor_threshold('doctor_disk_warn_percent', 10))->toBe(20.0)
+		->and(doctor_threshold('doctor_clock_fail_seconds', 60))->toBe(60.0)
+		->and(doctor_threshold('doctor_log_warn_mb', 100))->toBe(100.0)
+		->and(doctor_threshold('doctor_poller_warn_percent', 80))->toBe(80.0);
+});
+
+test('evaluators honour custom thresholds', function () {
+	expect(doctor_evaluate_poller_runtime(200.0, 300, 60)['status'])->toBe('warn')
+		->and(doctor_evaluate_poller_runtime(200.0, 300)['status'])->toBe('pass')
+		->and(doctor_evaluate_disk_space(15, 100, '/rra', 20, 5)['status'])->toBe('warn')
+		->and(doctor_evaluate_disk_space(4, 100, '/rra', 20, 5)['status'])->toBe('fail')
+		->and(doctor_evaluate_clock(1000, 1003, 2, 10)['status'])->toBe('warn')
+		->and(doctor_evaluate_clock(1000, 1020, 2, 10)['status'])->toBe('fail');
+});
+
+test('the poller runtime check reads its warning threshold from settings', function () {
+	$GLOBALS['doctor_test_settings'] = ['poller_interval' => '300', 'doctor_poller_warn_percent' => '50'];
+	$GLOBALS['doctor_test_cells']    = ['SELECT total_time FROM poller WHERE id = 1' => '160'];
+
+	expect(doctor_check_poller_runtime()['status'])->toBe('warn');
+});
+
+test('the log size warning reads its threshold from settings', function () {
+	$directory = doctor_test_directory();
+	$path      = $directory . '/cacti.log';
+	file_put_contents($path, str_repeat('x', 2 * 1048576));
+	$GLOBALS['doctor_test_settings'] = ['path_cactilog' => $path, 'doctor_log_warn_mb' => '1'];
+
+	expect(doctor_check_cacti_log()['status'])->toBe('warn');
+});

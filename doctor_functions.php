@@ -577,7 +577,7 @@ function doctor_check_cacti_log() {
 	}
 
 	$size   = filesize($path);
-	$status = $size !== false && $size > 100 * 1024 * 1024 ? 'warn' : 'pass';
+	$status = $size !== false && $size > doctor_threshold('doctor_log_warn_mb', 100) * 1048576 ? 'warn' : 'pass';
 	$detail = 'The log is readable and writable';
 	$detail .= $size !== false ? ' and is ' . round($size / 1048576, 1) . ' MiB.' : '.';
 
@@ -717,6 +717,12 @@ function doctor_check_poller_freshness() {
 	return doctor_result('poller.freshness', 'Poller', $status, 'Main poller freshness', $detail);
 }
 
+function doctor_threshold($name, $default) {
+	$value = read_config_option($name, true);
+
+	return is_numeric($value) && $value > 0 ? (float) $value : (float) $default;
+}
+
 function doctor_poller_interval() {
 	$interval = (int) read_config_option('poller_interval', true);
 
@@ -768,7 +774,7 @@ function doctor_check_schema_version() {
 }
 
 /** @return array<string,mixed> */
-function doctor_evaluate_poller_runtime($runtime, $interval) {
+function doctor_evaluate_poller_runtime($runtime, $interval, $warnPercent = 80) {
 	if ($runtime <= 0) {
 		return doctor_result('poller.runtime', 'Poller', 'pass', 'Main poller run time', 'No completed run time is recorded yet.');
 	}
@@ -779,7 +785,7 @@ function doctor_evaluate_poller_runtime($runtime, $interval) {
 		return doctor_result('poller.runtime', 'Poller', 'fail', 'Main poller run time', $detail . ' Runs that outlast the interval overlap and lose data; add poller processes or threads, or use Spine.');
 	}
 
-	if ($runtime >= $interval * 0.8) {
+	if ($runtime >= $interval * $warnPercent / 100) {
 		return doctor_result('poller.runtime', 'Poller', 'warn', 'Main poller run time', $detail . ' Little headroom remains before polls overlap.');
 	}
 
@@ -790,7 +796,7 @@ function doctor_evaluate_poller_runtime($runtime, $interval) {
 function doctor_check_poller_runtime() {
 	$runtime = (float) db_fetch_cell('SELECT total_time FROM poller WHERE id = 1', '', false);
 
-	return doctor_evaluate_poller_runtime($runtime, doctor_poller_interval());
+	return doctor_evaluate_poller_runtime($runtime, doctor_poller_interval(), doctor_threshold('doctor_poller_warn_percent', 80));
 }
 
 /**
@@ -938,7 +944,7 @@ function doctor_check_rrd_files($rra = null) {
 }
 
 /** @return array<string,mixed> */
-function doctor_evaluate_disk_space($free, $total, $path) {
+function doctor_evaluate_disk_space($free, $total, $path, $warnPercent = 10, $failPercent = 2) {
 	if ($free === false || $total === false || $total <= 0) {
 		return doctor_result('filesystem.disk_space', 'Filesystem', 'warn', 'RRA disk space', 'Doctor could not measure free space for ' . $path . '.');
 	}
@@ -946,11 +952,11 @@ function doctor_evaluate_disk_space($free, $total, $path) {
 	$percent = $free / $total * 100;
 	$detail  = round($percent, 1) . '% (' . round($free / 1073741824, 1) . ' GiB) free on the file system holding ' . $path . '.';
 
-	if ($percent < 2) {
+	if ($percent < $failPercent) {
 		return doctor_result('filesystem.disk_space', 'Filesystem', 'fail', 'RRA disk space', $detail . ' RRD updates fail silently when the disk fills.');
 	}
 
-	if ($percent < 10) {
+	if ($percent < $warnPercent) {
 		return doctor_result('filesystem.disk_space', 'Filesystem', 'warn', 'RRA disk space', $detail);
 	}
 
@@ -961,7 +967,7 @@ function doctor_evaluate_disk_space($free, $total, $path) {
 function doctor_check_disk_space($directory = null) {
 	$directory = $directory === null ? doctor_repair_directories()['rra'] : $directory;
 
-	return doctor_evaluate_disk_space(@disk_free_space($directory), @disk_total_space($directory), $directory);
+	return doctor_evaluate_disk_space(@disk_free_space($directory), @disk_total_space($directory), $directory, doctor_threshold('doctor_disk_warn_percent', 10), doctor_threshold('doctor_disk_fail_percent', 2));
 }
 
 /**
@@ -970,7 +976,7 @@ function doctor_check_disk_space($directory = null) {
  *
  * @return array<string,mixed>
  */
-function doctor_evaluate_clock($databaseTime, $phpTime) {
+function doctor_evaluate_clock($databaseTime, $phpTime, $warnSeconds = 5, $failSeconds = 60) {
 	if ($databaseTime === false || (int) $databaseTime <= 0) {
 		return doctor_result('database.clock', 'Database', 'warn', 'Database clock', 'Doctor could not read the database clock.');
 	}
@@ -978,11 +984,11 @@ function doctor_evaluate_clock($databaseTime, $phpTime) {
 	$drift  = abs((int) $phpTime - (int) $databaseTime);
 	$detail = 'The database and PHP clocks differ by ' . $drift . ' seconds.';
 
-	if ($drift > 60) {
+	if ($drift > $failSeconds) {
 		return doctor_result('database.clock', 'Database', 'fail', 'Database clock', $detail . ' Poll timestamps will be misaligned; synchronise both hosts with NTP.');
 	}
 
-	if ($drift > 5) {
+	if ($drift > $warnSeconds) {
 		return doctor_result('database.clock', 'Database', 'warn', 'Database clock', $detail . ' Synchronise both hosts with NTP.');
 	}
 
@@ -991,7 +997,7 @@ function doctor_evaluate_clock($databaseTime, $phpTime) {
 
 /** @return array<string,mixed> */
 function doctor_check_clock() {
-	return doctor_evaluate_clock(db_fetch_cell('SELECT UNIX_TIMESTAMP()', '', false), time());
+	return doctor_evaluate_clock(db_fetch_cell('SELECT UNIX_TIMESTAMP()', '', false), time(), doctor_threshold('doctor_clock_warn_seconds', 5), doctor_threshold('doctor_clock_fail_seconds', 60));
 }
 
 /**

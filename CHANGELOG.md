@@ -7,6 +7,7 @@
 - Add `--bundle=PATH` to write a private support bundle with secrets masked.
 - Remove Doctor's settings on uninstall.
 - Report down and recovering devices, and fail when most devices are down at once.
+- Make the poller run time, disk space, clock drift, and log size thresholds configurable.
 
 ## 0.4.0 - 2026-10-21
 
