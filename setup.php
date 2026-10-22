@@ -131,9 +131,9 @@ function doctor_config_settings() {
 			'friendly_name' => __('Thresholds', 'doctor'),
 			'method'        => 'spacer'
 		],
-		'doctor_poller_warn_percent' => doctor_threshold_setting(__('Poller Run Time Warning (%)', 'doctor'), __('Warn when the last main-poller run used this share of the polling interval. Runs that reach 100% always fail.', 'doctor'), '80'),
-		'doctor_disk_warn_percent'   => doctor_threshold_setting(__('RRA Disk Free Warning (%)', 'doctor'), __('Warn when free space on the RRA file system drops below this percentage.', 'doctor'), '10'),
-		'doctor_disk_fail_percent'   => doctor_threshold_setting(__('RRA Disk Free Failure (%)', 'doctor'), __('Fail when free space on the RRA file system drops below this percentage.', 'doctor'), '2'),
+		'doctor_poller_warn_percent' => doctor_threshold_setting(__('Poller Run Time Warning (percent)', 'doctor'), __('Warn when the last main-poller run used this share of the polling interval. Runs that take the whole interval always fail.', 'doctor'), '80'),
+		'doctor_disk_warn_percent'   => doctor_threshold_setting(__('RRA Disk Free Warning (percent)', 'doctor'), __('Warn when free space on the RRA file system drops below this percentage.', 'doctor'), '10'),
+		'doctor_disk_fail_percent'   => doctor_threshold_setting(__('RRA Disk Free Failure (percent)', 'doctor'), __('Fail when free space on the RRA file system drops below this percentage.', 'doctor'), '2'),
 		'doctor_clock_warn_seconds'  => doctor_threshold_setting(__('Clock Drift Warning (seconds)', 'doctor'), __('Warn when the database and PHP clocks differ by more than this.', 'doctor'), '5'),
 		'doctor_clock_fail_seconds'  => doctor_threshold_setting(__('Clock Drift Failure (seconds)', 'doctor'), __('Fail when the database and PHP clocks differ by more than this.', 'doctor'), '60'),
 		'doctor_log_warn_mb'         => doctor_threshold_setting(__('Cacti Log Size Warning (MB)', 'doctor'), __('Warn when the Cacti log grows beyond this size, which usually means log rotation is not running.', 'doctor'), '100')

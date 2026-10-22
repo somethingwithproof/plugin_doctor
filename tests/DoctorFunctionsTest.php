@@ -980,3 +980,17 @@ test('the log size warning reads its threshold from settings', function () {
 
 	expect(doctor_check_cacti_log()['status'])->toBe('warn');
 });
+
+test('the settings tab renders through Cacti translation formatting', function () {
+	global $tabs, $settings;
+
+	require_once dirname(__DIR__) . '/setup.php';
+	$tabs     = [];
+	$settings = [];
+
+	doctor_config_settings();
+
+	expect($tabs)->toHaveKey('doctor')
+		->and($settings['doctor'])->toHaveKey('doctor_log_warn_mb')
+		->and($settings['doctor']['doctor_poller_warn_percent']['default'])->toBe('80');
+});

@@ -78,6 +78,15 @@ if (!function_exists('exec_background')) {
 	}
 }
 
+if (!function_exists('__')) {
+	// Like Cacti's __() for a plugin domain with no loaded translations: the text goes through sprintf().
+	function __() {
+		$args = func_get_args();
+
+		return count($args) === 1 ? $args[0] : call_user_func_array('sprintf', $args);
+	}
+}
+
 function doctor_test_directory() {
 	$path = sys_get_temp_dir() . '/doctor-test-' . bin2hex(random_bytes(6));
 	mkdir($path, 0700);
