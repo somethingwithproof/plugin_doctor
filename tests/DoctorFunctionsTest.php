@@ -250,7 +250,7 @@ test('the runtime repair refuses symbolic links', function () {
 	expect($result['status'])->toBe('fail')
 		->and($result['detail'])->toContain('symbolic links')
 		->and(fileperms($target) & 0777)->toBe(0500);
-});
+})->skip(function_exists('posix_geteuid') && posix_geteuid() === 0, 'root can write a 0500 directory');
 
 test('the runtime repair refuses directories outside the installation', function () {
 	$base    = doctor_test_directory();
