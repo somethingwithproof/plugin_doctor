@@ -344,3 +344,43 @@ test('an unknown effective user on Unix is treated as root', function () {
 		->and(doctor_effective_user_is_root(1000, false))->toBeFalse()
 		->and(doctor_effective_user_is_root(null, true))->toBeFalse();
 });
+
+test('database recommendations follow the Cacti utility check for each branch', function () {
+	expect(doctor_database_recommended_version('MariaDB', '1.3.0'))->toBe('10.11.0')
+		->and(doctor_database_recommended_version('MySQL', '1.3.0'))->toBe('8.4.0')
+		->and(doctor_database_recommended_version('MariaDB', '1.2.20'))->toBe('5.6.0')
+		->and(doctor_database_recommended_version('MySQL', '1.2.20'))->toBe('5.6.0');
+});
+
+test('a database older than the recommendation warns instead of failing', function () {
+	$GLOBALS['doctor_test_cells'] = ['SELECT VERSION()' => '5.5.62'];
+
+	$result = doctor_check_database_version();
+
+	expect($result['status'])->toBe('warn')
+		->and($result['detail'])->toContain('recommends MySQL 5.6.0');
+});
+
+test('an unrecognized database version still fails', function () {
+	$GLOBALS['doctor_test_cells'] = ['SELECT VERSION()' => 'unparseable'];
+
+	expect(doctor_check_database_version()['status'])->toBe('fail');
+});
+
+test('Net-SNMP is only compared against a version on Cacti 1.3', function () {
+	expect(doctor_snmp_recommended_version('1.3.0'))->toBe('5.9.0')
+		->and(doctor_snmp_recommended_version('1.2.20'))->toBe('');
+});
+
+test('an old Net-SNMP passes on Cacti 1.2 because that branch documents no minimum', function () {
+	$directory = doctor_test_directory();
+	$GLOBALS['doctor_test_settings'] = [
+		'path_snmpget' => doctor_test_executable($directory, 'snmpget', 'echo "NET-SNMP version: 5.4.2"')
+	];
+
+	$results = doctor_check_required_binaries(false);
+
+	expect($results[2]['id'])->toBe('binary.snmpget')
+		->and($results[2]['status'])->toBe('pass')
+		->and($results[2]['detail'])->toContain('Detected version 5.4.2');
+});
