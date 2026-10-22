@@ -81,6 +81,8 @@ Under **Configuration > Settings > Doctor**, turn on **Run Checks on a Schedule*
 
 Each run records every check's status. When a check starts or stops failing, Doctor writes the change to the Cacti log and, if **Alert Email Addresses** is set, emails those addresses through Cacti's mail settings. **Alert on Warnings** adds changes into and out of warnings. The first run only records a baseline.
 
+The same tab sets the thresholds for poller run time (80% of the interval), RRA free disk space (warn below 10%, fail below 2%), database clock drift (warn over 5 seconds, fail over 60), and Cacti log size (100 MB). Empty or invalid values fall back to these defaults.
+
 ## Monitoring integration
 
 ```console
