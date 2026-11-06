@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Mask complete quoted secrets and URL credentials in support bundles, including opposite quotes and embedded `@` characters.
+
 ## 0.5.0 - 2026-10-22
 
 - Run the checks on a schedule after the poller, log every status change, and email alerts through Cacti's mailer.

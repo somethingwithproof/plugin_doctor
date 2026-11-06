@@ -826,6 +826,24 @@ test('redaction covers quoted keys, URL userinfo, and extended secret names', fu
 		->and($text)->toContain('host=1.2.3.4');
 });
 
+test('quoted redaction preserves delimiters and masks opposite quotes', function () {
+	expect(doctor_redact('password="example\'value"; host=localhost'))
+		->toBe('password="[redacted]"; host=localhost')
+		->and(doctor_redact("password='example\"value'; host=localhost"))
+		->toBe("password='[redacted]'; host=localhost");
+});
+
+test('URL redaction masks the complete userinfo and preserves URL boundaries', function () {
+	expect(doctor_redact('https://user:example@value@example.com/path?q=1#section'))
+		->toBe('https://user:[redacted]@example.com/path?q=1#section')
+		->and(doctor_redact('https://example.com:443/path@value'))
+		->toBe('https://example.com:443/path@value')
+		->and(doctor_redact('https://example.com:443?query=value@other'))
+		->toBe('https://example.com:443?query=value@other')
+		->and(doctor_redact('https://example.com:443#section@other'))
+		->toBe('https://example.com:443#section@other');
+});
+
 test('the support bundle includes the report, context, and redacted log', function () {
 	$results = [doctor_result('poller.runtime', 'Poller', 'warn', 'Runtime', 'slow')];
 
