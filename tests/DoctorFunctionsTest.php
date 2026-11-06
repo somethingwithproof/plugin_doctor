@@ -807,6 +807,60 @@ test('secrets are redacted from bundle text', function () {
 		->and($text)->toContain('host=1.2.3.4');
 });
 
+test('redaction covers quoted keys, URL userinfo, and extended secret names', function () {
+	$text = doctor_redact(
+		'{"api_token":"abcdef123456"}' . "\n" .
+		'"password": "p@ssw0rd"' . "\n" .
+		'passphrase = longcredvalue' . "\n" .
+		'secret: "multi word value"' . "\n" .
+		'url=https://dbuser:urluserinfopw1@host/db' . "\n" .
+		'host=1.2.3.4'
+	);
+
+	expect($text)->not->toContain('abcdef123456')
+		->and($text)->not->toContain('p@ssw0rd')
+		->and($text)->not->toContain('longcredvalue')
+		->and($text)->not->toContain('multi word value')
+		->and($text)->not->toContain('urluserinfopw1')
+		->and($text)->toContain('[redacted]')
+		->and($text)->toContain('host=1.2.3.4');
+});
+
+test('quoted redaction preserves delimiters and masks opposite quotes', function () {
+	expect(doctor_redact('password="example\'value"; host=localhost'))
+		->toBe('password="[redacted]"; host=localhost')
+		->and(doctor_redact("password='example\"value'; host=localhost"))
+		->toBe("password='[redacted]'; host=localhost");
+});
+
+test('URL redaction masks the complete userinfo and preserves URL boundaries', function () {
+	expect(doctor_redact('https://user:example@value@example.com/path?q=1#section'))
+		->toBe('https://user:[redacted]@example.com/path?q=1#section')
+		->and(doctor_redact('https://example.com:443/path@value'))
+		->toBe('https://example.com:443/path@value')
+		->and(doctor_redact('https://example.com:443?query=value@other'))
+		->toBe('https://example.com:443?query=value@other')
+		->and(doctor_redact('https://example.com:443#section@other'))
+		->toBe('https://example.com:443#section@other');
+});
+
+test('quoted redaction masks escaped quotes and truncated values', function () {
+	foreach (['"', "'"] as $quote) {
+		$prefix = 'password=' . $quote;
+		$redacted = $prefix . '[redacted]' . $quote;
+		$escaped = 'example' . chr(92) . $quote . 'value';
+
+		expect(doctor_redact($prefix . $escaped . $quote . '; host=localhost'))
+			->toBe($redacted . '; host=localhost')
+			->and(doctor_redact($prefix . $escaped . "\nhost=localhost"))
+			->toBe($redacted . "\nhost=localhost")
+			->and(doctor_redact($prefix . 'example' . chr(92)))
+			->toBe($redacted)
+			->and(doctor_redact($prefix . 'example' . "\r\nhost=localhost"))
+			->toBe($redacted . "\r\nhost=localhost");
+	}
+});
+
 test('the support bundle includes the report, context, and redacted log', function () {
 	$results = [doctor_result('poller.runtime', 'Poller', 'warn', 'Runtime', 'slow')];
 

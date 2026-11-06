@@ -1468,7 +1468,27 @@ function doctor_format_prometheus($results, $now) {
  * key names, so a support bundle can be shared publicly.
  */
 function doctor_redact($text) {
-	return preg_replace('/(\w*(?:password|passwd|pass|secret|token|community|auth_?key|priv_?key))\b(\s*[=:]\s*|\s+)([\'"]?)[^\s\'";]+/i', '$1$2$3[redacted]', (string) $text);
+	$text = (string) $text;
+	$keys = 'password|passwd|passphrase|pass|secret|token|community|api[_-]?key|auth[_-]?key|priv(?:ate)?[_-]?key';
+
+	// Quoted value after a key (keyword, optionally prefixed by word chars so
+	// api_token / snmp_community match) + separator: JSON, YAML, and ini.
+	// Consume escaped characters together and fail closed at the line ending
+	// when a truncated log value has no closing quote.
+	$text = preg_replace('/(\w*(?:' . $keys . ')\b["\']?\s*[=:]\s*)(["\'])(?:\\\\[^\r\n]|(?!\2)[^\\\\\r\n])*+(?:\2|\\\\?(?=\r?$))/im', '$1$2[redacted]$2', $text);
+
+	// Unquoted value after a key + "=" or ":" separator.
+	$text = preg_replace('/(\w*(?:' . $keys . ')\b["\']?\s*[=:]\s*)(?!["\'])[^\s;,"\'\r\n]+/i', '$1[redacted]', $text);
+
+	// Keyword followed by a space-separated value with no separator (e.g. an SNMP
+	// community, or "DB_Pass s3cret"). Fail-closed: this can also redact the word
+	// after the keyword in prose, which is acceptable for a shareable bundle.
+	$text = preg_replace('/(\w*(?:' . $keys . ')\b\s+)(?!["\'])[^\s;,"\'\r\n]+/i', '$1[redacted]', $text);
+
+	// Password in a URL userinfo: scheme://user:PASSWORD@host.
+	$text = preg_replace('/(\b[a-z][a-z0-9+.\-]*:\/\/[^:\/@?#\s]+:)[^\/\s?#]+(@)/i', '$1[redacted]$2', $text);
+
+	return $text;
 }
 
 /**
