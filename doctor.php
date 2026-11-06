@@ -32,7 +32,7 @@ if (get_request_var('action') === 'repair') {
 	$result = doctor_run_repair($repair);
 	$level  = $result['status'] === 'pass' ? MESSAGE_LEVEL_INFO : MESSAGE_LEVEL_ERROR;
 
-	cacti_log('Doctor repair ' . $repair . ': ' . $result['status'] . ' - ' . $result['detail'], false, 'DOCTOR');
+	cacti_log('Doctor repair ' . str_replace(["\r", "\n"], ' ', $repair) . ': ' . $result['status'] . ' - ' . $result['detail'], false, 'DOCTOR');
 	raise_message('doctor_repair', $result['summary'] . ': ' . $result['detail'], $level);
 
 	header('Location: doctor.php');
