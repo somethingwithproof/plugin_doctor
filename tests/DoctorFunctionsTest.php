@@ -844,6 +844,23 @@ test('URL redaction masks the complete userinfo and preserves URL boundaries', f
 		->toBe('https://example.com:443#section@other');
 });
 
+test('quoted redaction masks escaped quotes and truncated values', function () {
+	foreach (['"', "'"] as $quote) {
+		$prefix = 'password=' . $quote;
+		$redacted = $prefix . '[redacted]' . $quote;
+		$escaped = 'example' . chr(92) . $quote . 'value';
+
+		expect(doctor_redact($prefix . $escaped . $quote . '; host=localhost'))
+			->toBe($redacted . '; host=localhost')
+			->and(doctor_redact($prefix . $escaped . "\nhost=localhost"))
+			->toBe($redacted . "\nhost=localhost")
+			->and(doctor_redact($prefix . 'example' . chr(92)))
+			->toBe($redacted)
+			->and(doctor_redact($prefix . 'example' . "\r\nhost=localhost"))
+			->toBe($redacted . "\r\nhost=localhost");
+	}
+});
+
 test('the support bundle includes the report, context, and redacted log', function () {
 	$results = [doctor_result('poller.runtime', 'Poller', 'warn', 'Runtime', 'slow')];
 

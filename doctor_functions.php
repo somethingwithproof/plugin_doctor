@@ -1473,7 +1473,9 @@ function doctor_redact($text) {
 
 	// Quoted value after a key (keyword, optionally prefixed by word chars so
 	// api_token / snmp_community match) + separator: JSON, YAML, and ini.
-	$text = preg_replace('/(\w*(?:' . $keys . ')\b["\']?\s*[=:]\s*)(["\'])(?:(?!\2)[^\r\n])*\2/i', '$1$2[redacted]$2', $text);
+	// Consume escaped characters together and fail closed at the line ending
+	// when a truncated log value has no closing quote.
+	$text = preg_replace('/(\w*(?:' . $keys . ')\b["\']?\s*[=:]\s*)(["\'])(?:\\\\[^\r\n]|(?!\2)[^\\\\\r\n])*+(?:\2|\\\\?(?=\r?$))/im', '$1$2[redacted]$2', $text);
 
 	// Unquoted value after a key + "=" or ":" separator.
 	$text = preg_replace('/(\w*(?:' . $keys . ')\b["\']?\s*[=:]\s*)(?!["\'])[^\s;,"\'\r\n]+/i', '$1[redacted]', $text);
