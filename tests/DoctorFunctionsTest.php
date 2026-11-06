@@ -807,6 +807,25 @@ test('secrets are redacted from bundle text', function () {
 		->and($text)->toContain('host=1.2.3.4');
 });
 
+test('redaction covers quoted keys, URL userinfo, and extended secret names', function () {
+	$text = doctor_redact(
+		'{"api_token":"abcdef123456"}' . "\n" .
+		'"password": "p@ssw0rd"' . "\n" .
+		'passphrase = longcredvalue' . "\n" .
+		'secret: "multi word value"' . "\n" .
+		'url=https://dbuser:urluserinfopw1@host/db' . "\n" .
+		'host=1.2.3.4'
+	);
+
+	expect($text)->not->toContain('abcdef123456')
+		->and($text)->not->toContain('p@ssw0rd')
+		->and($text)->not->toContain('longcredvalue')
+		->and($text)->not->toContain('multi word value')
+		->and($text)->not->toContain('urluserinfopw1')
+		->and($text)->toContain('[redacted]')
+		->and($text)->toContain('host=1.2.3.4');
+});
+
 test('the support bundle includes the report, context, and redacted log', function () {
 	$results = [doctor_result('poller.runtime', 'Poller', 'warn', 'Runtime', 'slow')];
 
