@@ -1471,9 +1471,16 @@ function doctor_redact($text) {
 	$text = (string) $text;
 	$keys = 'password|passwd|passphrase|pass|secret|token|community|api[_-]?key|auth[_-]?key|priv(?:ate)?[_-]?key';
 
-	// Complete YAML scalars can span lines. Single quotes escape by doubling,
-	// while backslashes are literal. Handle these before the log-line fallback.
-	$text = preg_replace_callback('/(\w*(?:' . $keys . ')\b["\']?\s*:\s*)("(?:\\\\[\s\S]|[^"\\\\])*+"|\'(?:\'\'|[^\'])*+\')/i', function ($matches) {
+	// Only indented or empty lines continue a YAML scalar; a new log record
+	// must retain its own key for redaction. Accept log-style escapes as well
+	// as YAML doubled quotes, since bundle text does not identify its format.
+	$continuation = '(?:\r?\n(?![ \t]*["\']?\w*(?:' . $keys . ')\b["\']?[ \t]*[=:])(?=[ \t]|\r?$))';
+	$doubleQuoted = '"(?>\\\\(?:[^\r\n]|' . $continuation . ')|[^"\\\\\r\n]|' . $continuation . ')*';
+	$singleQuoted = '\'(?>\'\'|\\\\[^\r\n]|[^\'\\\\\r\n]|' . $continuation . ')*';
+	// Prefer a complete scalar before falling back to a truncated record.
+	$quotedValue = $doubleQuoted . '"|' . $singleQuoted . '\\\\?\'|'
+		. $doubleQuoted . '\\\\?(?=\r?$)|' . $singleQuoted . '\\\\?(?=\r?$)';
+	$text = preg_replace_callback('/(\w*(?:' . $keys . ')\b["\']?\s*:\s*)(' . $quotedValue . ')/im', function ($matches) {
 		$quote = $matches[2][0];
 
 		return $matches[1] . $quote . '[redacted]' . $quote;

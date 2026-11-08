@@ -887,7 +887,46 @@ test('support bundles redact multiline YAML across log entries', function () {
 	$bundle = doctor_build_bundle([], [], ["password: 'example''part", "  value'", 'host: localhost']);
 
 	expect($bundle)->toContain("password: '[redacted]'\nhost: localhost")
-		->not->toContain('example', 'part', 'value');
+		->not->toContain('example')
+		->and($bundle)->not->toContain('part')
+		->and($bundle)->not->toContain('value');
+});
+
+test('colon delimited log values retain escaped quote redaction', function () {
+	foreach (["'", '"'] as $quote) {
+		$text = 'password: ' . $quote . 'example' . chr(92) . $quote . 'value' . $quote;
+
+		expect(doctor_redact($text . '; host=localhost'))
+			->toBe('password: ' . $quote . '[redacted]' . $quote . '; host=localhost');
+	}
+});
+
+test('truncated quoted values cannot consume the next log record', function () {
+	foreach (["\n", "\r\n"] as $newline) {
+		foreach (["'", '"'] as $quote) {
+			$prefix = 'password: ' . $quote;
+			$bundle = doctor_build_bundle([], [], [$prefix . 'example', $prefix . 'value' . $quote]);
+			$text = $prefix . 'example' . $newline . $prefix . 'value' . $quote;
+			$redacted = $prefix . '[redacted]' . $quote;
+
+			expect(doctor_redact($text))->toBe($redacted . $newline . $redacted)
+				->and(doctor_redact($prefix . 'example' . $newline . '  ' . $prefix . 'value' . $quote))
+				->toBe($redacted . $newline . '  ' . $redacted)
+				->and($bundle)->toContain($redacted . "\n" . $redacted)
+				->and($bundle)->not->toContain('example')
+				->and($bundle)->not->toContain('value');
+		}
+	}
+});
+
+test('truncated YAML continuations are redacted up to the next record', function () {
+	foreach (["'", '"'] as $quote) {
+		$prefix = 'password: ' . $quote;
+		$text = $prefix . "example\n  continuation\n" . $prefix . 'value' . $quote;
+		$redacted = $prefix . '[redacted]' . $quote;
+
+		expect(doctor_redact($text))->toBe($redacted . "\n" . $redacted);
+	}
 });
 
 test('the support bundle includes the report, context, and redacted log', function () {
