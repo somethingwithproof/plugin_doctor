@@ -248,7 +248,10 @@ jobs:
             binary.snmpget=pass binary.snmpwalk=pass poller.configuration=pass poller.freshness=pass \
             cacti.schema_version=pass cacti.plugin_files=pass poller.runtime=pass \
             poller.output_backlog=pass poller.remote=pass poller.boost=pass \
-            database.clock=pass database.innodb=pass filesystem.disk_space=pass devices.health=pass
+            database.clock=pass database.innodb=pass filesystem.disk_space=pass devices.health=pass \
+            database.health_sample=warn database.connection_capacity=pass \
+            database.buffer_pool_reads=warn database.temporary_tables=warn \
+            database.thread_cache=warn database.slow_queries=warn database.redo_log_waits=warn
         working-directory: cacti
 
       - name: Verify controlled failures and recovery
@@ -295,6 +298,7 @@ jobs:
 
           php plugins/doctor/cli/doctor.php --format=prometheus > doctor.prom
           grep -q '^cacti_doctor_check_status{id="poller.freshness",category="Poller"} 0$' doctor.prom
+          grep -q '^cacti_doctor_check_status{id="database.health_sample",category="Database health"} 1$' doctor.prom
           grep -q '^cacti_doctor_checks{status="fail"} 0$' doctor.prom
 
           php plugins/doctor/cli/doctor.php --bundle="$RUNNER_TEMP/doctor-bundle.txt"

@@ -32,6 +32,7 @@ function doctor_run_checks() {
 	$results[] = doctor_check_database_timezone_support();
 	$results[] = doctor_check_clock();
 	$results[] = doctor_check_innodb();
+	$results   = array_merge($results, doctor_check_database_health());
 	$results[] = doctor_check_core_tables();
 	$results[] = doctor_check_plugin_files();
 	$results[] = doctor_check_runtime_directories();
@@ -66,6 +67,147 @@ function doctor_result($id, $category, $status, $summary, $detail, $repair = '')
 		'repair'     => $repair,
 		'repairable' => $repair !== ''
 	];
+}
+
+/**
+ * Collect health counters and the thread-handling mode, never query text or accounts.
+ * Two bounded reads cover the entire analysis on the existing Cacti connection.
+ *
+ * @return array<int,array<string,mixed>>
+ */
+function doctor_check_database_health() {
+	$statusNames = ['Uptime', 'Uptime_since_flush_status', 'Threads_connected', 'Max_used_connections', 'Connections', 'Threads_created', 'Innodb_buffer_pool_read_requests', 'Innodb_buffer_pool_reads', 'Created_tmp_tables', 'Created_tmp_disk_tables', 'Innodb_log_waits', 'Queries', 'Slow_queries'];
+	$variableNames = ['max_connections', 'thread_handling'];
+	$status = db_fetch_assoc("SHOW GLOBAL STATUS WHERE Variable_name IN ('" . implode("', '", $statusNames) . "')", false);
+	$variables = db_fetch_assoc("SHOW GLOBAL VARIABLES WHERE Variable_name IN ('" . implode("', '", $variableNames) . "')", false);
+
+	return doctor_analyze_database_health(
+		doctor_database_metrics($status, $statusNames),
+		doctor_database_metrics($variables, $variableNames)
+	);
+}
+
+/** @return array<string,float|string|null> */
+function doctor_database_metrics($rows, $allowed) {
+	$numbers = [];
+	$allowed = array_map('strtolower', $allowed);
+
+	if (!is_array($rows)) {
+		return $numbers;
+	}
+
+	foreach ($rows as $row) {
+		if (!is_array($row) || !isset($row['Variable_name']) || !is_string($row['Variable_name'])) {
+			continue;
+		}
+
+		$name = strtolower($row['Variable_name']);
+		if (!in_array($name, $allowed, true)) {
+			continue;
+		}
+
+		// Conflicting/duplicate rows and malformed counters are unknown, not zero.
+		if (array_key_exists($name, $numbers)) {
+			$numbers[$name] = null;
+			continue;
+		}
+
+		$numbers[$name] = null;
+		if (!isset($row['Value']) || (!is_string($row['Value']) && !is_int($row['Value']))) {
+			continue;
+		}
+
+		$value = (string) $row['Value'];
+		if ($name === 'thread_handling') {
+			if (in_array($value, ['one-thread-per-connection', 'pool-of-threads', 'loaded-dynamically', 'no-threads'], true)) {
+				$numbers[$name] = $value;
+			}
+		} elseif (strlen($value) <= 16 && preg_match('/\A[0-9]+\z/', $value) && (float) $value <= 9007199254740991.0) {
+			$numbers[$name] = (float) $value;
+		}
+	}
+
+	return $numbers;
+}
+
+/**
+ * Advisory thresholds are investigation triggers, not configuration targets.
+ * Cumulative counters cannot establish current load or available database RAM.
+ *
+ * @param array<string,float|null> $status
+ * @param array<string,float|string|null> $variables
+ * @return array<int,array<string,mixed>>
+ */
+function doctor_analyze_database_health($status, $variables) {
+	$results = [];
+	$sampleReady = isset($status['uptime'], $status['uptime_since_flush_status'])
+		&& $status['uptime'] >= 86400 && $status['uptime_since_flush_status'] >= 86400
+		&& $status['uptime_since_flush_status'] <= $status['uptime'];
+	$sampleDetail = $sampleReady
+		? 'At least 24 hours since server startup and FLUSH STATUS. Counters are cumulative and may have different reset histories; confirm trends during a representative workload before tuning.'
+		: 'Cumulative tuning advice is deferred: obtain valid uptime and at least 24 hours since startup and FLUSH STATUS. Missing metrics or an inconsistent sample cannot establish database health.';
+	$results[] = doctor_result('database.health_sample', 'Database health', $sampleReady ? 'pass' : 'warn', 'Database observation window', $sampleDetail);
+
+	$connectionStatus = 'warn';
+	$connectionDetail = 'Connection metrics are unavailable or invalid. Check access to SHOW GLOBAL STATUS and SHOW GLOBAL VARIABLES; do not treat missing metrics as an idle server.';
+	if (isset($status['threads_connected'], $status['max_used_connections'], $variables['max_connections']) && $variables['max_connections'] > 0) {
+		$current = 100 * $status['threads_connected'] / $variables['max_connections'];
+		$peak = 100 * $status['max_used_connections'] / $variables['max_connections'];
+		$connectionStatus = $current >= 80 || $peak >= 80 ? 'warn' : 'pass';
+		$connectionDetail = sprintf('Current connections: %.0f / %.0f (%.1f%%); recorded peak: %.0f (%.1f%% of the current limit).', $status['threads_connected'], $variables['max_connections'], $current, $status['max_used_connections'], $peak);
+		if ($connectionStatus === 'warn') {
+			$connectionDetail .= ' Review connection pooling and poller concurrency. Check database-host memory headroom before raising max_connections; the historical peak may reflect an older limit.';
+		}
+	}
+	$results[] = doctor_result('database.connection_capacity', 'Database health', $connectionStatus, 'Connection capacity', $connectionDetail);
+
+	$rules = [
+		['buffer_pool_reads', 'InnoDB buffer pool reads', 'innodb_buffer_pool_reads', 'innodb_buffer_pool_read_requests', 10000, 1, 'Review query plans and the working set. Consider innodb_buffer_pool_size only after measuring memory available on the database host; a cumulative miss ratio alone does not prove memory pressure.'],
+		['temporary_tables', 'On-disk temporary tables', 'created_tmp_disk_tables', 'created_tmp_tables', 1000, 25, 'Review query plans, sorting, grouping, and temporary-table data types before changing memory limits. Some tables must use disk; memory limits and accounting differ between MySQL and MariaDB versions.'],
+		['thread_cache', 'Connection thread creation', 'threads_created', 'connections', 1000, 5, 'Review connection reuse and thread_cache_size. Check the server thread-handling mode before tuning; thread-pool implementations do not behave like one-thread-per-connection servers.'],
+		['slow_queries', 'Slow statements', 'slow_queries', 'queries', 1000, 1, 'Review slow-query logging, long_query_time, and query plans before changing server buffers. This counter depends on the configured slow-query threshold and does not identify individual statements.']
+	];
+
+	foreach ($rules as $rule) {
+		list($id, $title, $numerator, $denominator, $minimum, $limit, $advice) = $rule;
+		$level = 'warn';
+		$detail = 'Cumulative advice deferred until the observation window is sufficient.';
+		if ($id === 'thread_cache' && (!isset($variables['thread_handling']) || $variables['thread_handling'] !== 'one-thread-per-connection')) {
+			$detail = 'Thread-cache advice is not assessed: thread_handling is unavailable or is not one-thread-per-connection. Review the active thread-pool implementation instead.';
+		} elseif ($sampleReady) {
+			if (!isset($status[$numerator], $status[$denominator])) {
+				$detail = 'Required counters are missing or invalid: ' . $numerator . ', ' . $denominator . '. Check server-version support and monitoring permissions.';
+			} elseif ($status[$denominator] < $minimum) {
+				$detail = sprintf('Insufficient activity: %.0f %s; at least %d observations are needed for this advisory.', $status[$denominator], $denominator, $minimum);
+			} elseif ($status[$numerator] > $status[$denominator]) {
+				$detail = 'Counters are inconsistent or were reset independently. Collect a new representative sample before tuning.';
+			} else {
+				$ratio = 100 * $status[$numerator] / $status[$denominator];
+				$level = $ratio >= $limit ? 'warn' : 'pass';
+				$detail = sprintf('Cumulative %s / %s: %.0f / %.0f (%.1f%%); investigation threshold: %d%%.', $numerator, $denominator, $status[$numerator], $status[$denominator], $ratio, $limit);
+				if ($id === 'temporary_tables') {
+					$detail .= ' This counter can omit memory-mapped temporary files on MySQL; a low ratio does not rule out disk use.';
+				}
+				if ($level === 'warn') {
+					$detail .= ' ' . $advice;
+				}
+			}
+		}
+		$results[] = doctor_result('database.' . $id, 'Database health', $level, $title, $detail);
+	}
+
+	$redoLevel = 'warn';
+	$redoDetail = 'Redo-log advice deferred until the observation window is sufficient and Innodb_log_waits is available.';
+	if ($sampleReady && isset($status['innodb_log_waits'])) {
+		$redoLevel = $status['innodb_log_waits'] > 0 ? 'warn' : 'pass';
+		$redoDetail = sprintf('Cumulative Innodb_log_waits: %.0f.', $status['innodb_log_waits']);
+		if ($redoLevel === 'warn') {
+			$redoDetail .= ' Investigate transaction sizes, log-buffer pressure, and storage latency. Recheck the rate under load before considering innodb_log_buffer_size; this historical count is not evidence of a current stall.';
+		}
+	}
+	$results[] = doctor_result('database.redo_log_waits', 'Database health', $redoLevel, 'InnoDB log-buffer waits', $redoDetail);
+
+	return $results;
 }
 
 function doctor_html_escape_attr($value) {
