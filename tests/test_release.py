@@ -8,6 +8,7 @@ import subprocess
 import tarfile
 import tempfile
 import unittest
+from unittest.mock import patch
 import zipfile
 
 spec = importlib.util.spec_from_file_location("build_release", Path(__file__).parents[1] / "tools/build_release.py")
@@ -28,13 +29,8 @@ class ReleaseTests(unittest.TestCase):
             path.write_text("fixture\n")
         (self.root / "INFO").write_text("[info]\nname = doctor\nversion = 0.5.1\n")
         (self.root / "CHANGELOG.md").write_text("## 0.5.1 - 2026-11-08\n\n- Fixes.\n")
-        self.git("init", "-q")
-        self.git("add", "-f", "--", *sorted(release.ROOT_FILES), "cli", "images", "vendor", ".env")
-        self.git("-c", "user.name=Release Fixture", "-c", "user.email=fixture@example.invalid",
-                 "-c", "commit.gpgsign=false", "commit", "-qm", "fixture")
-
-    def git(self, *args):
-        return release.git(self.root, *args)
+        subprocess.check_call(["git", "-C", str(self.root), "init", "-q"])
+        self.commit(*sorted(release.ROOT_FILES), "cli", "images", "vendor", ".env")
 
     def test_semver(self):
         for tag in ["v1.0.0", "v0.5.1-rc.1", "v1.2.3+build.01"]:
@@ -49,9 +45,23 @@ class ReleaseTests(unittest.TestCase):
         self.assertFalse(self.out.exists())
 
     def commit(self, *paths):
-        self.git("add", "-f", "--", *paths)
-        self.git("-c", "user.name=Release Fixture", "-c", "user.email=fixture@example.invalid",
-                 "-c", "commit.gpgsign=false", "commit", "-qm", "fixture update")
+        subprocess.check_call(["git", "-C", str(self.root), "add", "-f", "--", *paths])
+        subprocess.check_call(["git", "-C", str(self.root),
+                               "-c", "user.name=Release Fixture", "-c", "user.email=fixture@example.invalid",
+                               "-c", "commit.gpgsign=false", "commit", "-qm", "fixture update"])
+
+    def test_repository_reads_reject_unapproved_operations_before_execution(self):
+        with patch.object(release.subprocess, "check_output") as execute:
+            for operation, revision, paths in [
+                ("commit", None, ()), ("info", "HEAD", ()),
+                ("archive", "a" * 40, ("../outside",)),
+                ("archive", "a" * 40, ("-option",)),
+                ("archive", "a" * 40, ("cli/*.php",)),
+                ("info", "a" * 40, ("README.md",)),
+            ]:
+                with self.subTest(operation=operation, paths=paths), self.assertRaises(ValueError):
+                    release.git_read(self.root, operation, revision, paths)
+            execute.assert_not_called()
 
     def test_missing_release_notes_are_rejected(self):
         (self.root / "CHANGELOG.md").write_text("## Unreleased\n")
@@ -85,7 +95,7 @@ class ReleaseTests(unittest.TestCase):
                 self.assertTrue(member.isfile())
                 self.assertEqual(tar.extractfile(member).read(), zipped.read(member.name))
         manifest = json.loads((self.out / "release.json").read_text())
-        self.assertEqual(manifest["commit"], self.git("rev-parse", "HEAD").decode().strip())
+        self.assertEqual(manifest["commit"], release.git_read(self.root, "head").decode().strip())
         for line in (self.out / "SHA256SUMS").read_text().splitlines():
             digest, name = line.split("  ")
             self.assertEqual(digest, hashlib.sha256((self.out / name).read_bytes()).hexdigest())

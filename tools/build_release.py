@@ -21,8 +21,30 @@ ROOT_FILES = {
 }
 
 
-def git(root, *args):
-    return subprocess.check_output(["git", "-C", str(root), *args])
+def git_read(root, operation, revision=None, paths=()):
+    """Expose only the read operations used by this builder, not a CLI bridge."""
+    if operation not in {"head", "info", "changelog", "paths", "archive", "timestamp"}:
+        raise ValueError("Unsupported repository read operation")
+    if operation != "head" and not re.fullmatch(r"(?:[0-9a-f]{40}|[0-9a-f]{64})", revision or ""):
+        raise ValueError("Repository reads require a full commit object ID")
+    if paths and operation != "archive":
+        raise ValueError("Paths are only accepted for archive reads")
+    for path in paths:
+        if not re.fullmatch(r"[A-Za-z0-9_./-]+", path) or path.startswith(("/", "-")) or ".." in path.split("/"):
+            raise ValueError("Invalid release path")
+    commands = {
+        "head": ["rev-parse", "--verify", "HEAD^{commit}"],
+        "info": ["show", f"{revision}:INFO"],
+        "changelog": ["show", f"{revision}:CHANGELOG.md"],
+        "paths": ["ls-tree", "-rz", "--name-only", revision],
+        "archive": ["archive", "--format=tar", revision, "--", *paths],
+        "timestamp": ["show", "-s", "--format=%ct", revision],
+    }
+    # Resolve -C's operand as a path and disable pathspec interpretation.
+    return subprocess.check_output([
+        "git", "--literal-pathspecs", "-C", str(Path(root).resolve(strict=True)),
+        *commands[operation],
+    ])
 
 
 def version_from_tag(tag):
@@ -41,24 +63,24 @@ def version_from_tag(tag):
 
 def build(root, tag, output):
     version = version_from_tag(tag)
-    revision = git(root, "rev-parse", "HEAD").decode().strip()
+    revision = git_read(root, "head").decode().strip()
     info = configparser.ConfigParser(interpolation=None)
-    info.read_string(git(root, "show", f"{revision}:INFO").decode())
+    info.read_string(git_read(root, "info", revision).decode())
     if info["info"]["name"] != "doctor" or info["info"]["version"] != version:
         raise ValueError("Tag must match the committed doctor version in INFO")
-    changelog = git(root, "show", f"{revision}:CHANGELOG.md").decode()
+    changelog = git_read(root, "changelog", revision).decode()
     if not re.search(r"^## " + re.escape(version) + r" - \d{4}-\d{2}-\d{2}$", changelog, re.M):
         raise ValueError("CHANGELOG.md must contain a dated heading for this version")
 
-    tracked = git(root, "ls-tree", "-r", "--name-only", revision).decode().splitlines()
+    tracked = git_read(root, "paths", revision).decode().rstrip("\0").split("\0")
     paths = sorted(path for path in tracked if path in ROOT_FILES
                    or path.startswith(("cli/", "images/", "docs/screenshots/"))
                    or path == "docs/releasing.md")
     missing = ROOT_FILES - set(paths)
     if missing or "cli/doctor.php" not in paths:
         raise ValueError("Release is missing required runtime or documentation files")
-    source = git(root, "archive", "--format=tar", revision, "--", *paths)
-    timestamp = int(git(root, "show", "-s", "--format=%ct", revision))
+    source = git_read(root, "archive", revision, paths)
+    timestamp = int(git_read(root, "timestamp", revision))
     archive = io.BytesIO()
     zipped = io.BytesIO()
     included = set()
