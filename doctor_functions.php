@@ -235,8 +235,50 @@ function doctor_is_cacti_13($cactiVersion = null) {
 	return $cactiVersion !== '' && version_compare($cactiVersion, '1.3.0', '>=');
 }
 
-function doctor_php_minimum_version($cactiVersion = null) {
-	return doctor_is_cacti_13($cactiVersion) ? '8.3.0' : '5.4.0';
+/**
+ * Read the installed Cacti package, not Doctor's own PHP compatibility floor.
+ * Only the constraint forms used by supported Cacti packages are interpreted.
+ */
+function doctor_php_requirement($base = null, $cactiVersion = null) {
+	$base = $base === null ? doctor_base_path() : $base;
+	$cactiVersion = $cactiVersion === null ? (defined('CACTI_VERSION') ? (string) CACTI_VERSION : 'unknown') : $cactiVersion;
+	$requirement = ['cacti' => $cactiVersion, 'minimum' => '', 'maximum' => '', 'source' => ''];
+	$manifest = $base . '/composer.json';
+
+	if (file_exists($manifest) || is_link($manifest)) {
+		$contents = is_file($manifest) ? @file_get_contents($manifest, false, null, 0, 1048577) : false;
+		$data = is_string($contents) && strlen($contents) <= 1048576 ? json_decode($contents, true) : null;
+		if (!is_array($data) || !isset($data['require']) || !is_array($data['require']) || !isset($data['require']['php']) || !is_string($data['require']['php'])) {
+			return $requirement;
+		}
+		$constraint = trim($data['require']['php']);
+		if (!preg_match('/\A(>=|\^)\s*([1-9][0-9]?)\.([0-9]{1,2})(?:\.([0-9]{1,4}))?\z/', $constraint, $match)) {
+			return $requirement;
+		}
+		$requirement['minimum'] = $match[2] . '.' . $match[3] . '.' . (isset($match[4]) ? $match[4] : '0');
+		$requirement['maximum'] = $match[1] === '^' ? ((int) $match[2] + 1) . '.0.0' : '';
+		$requirement['source'] = 'installed Cacti composer.json';
+	} elseif (preg_match('/\A1\.2\.(2[0-9]|3[01])\z/', $cactiVersion)) {
+		// These legacy releases have no root Composer PHP requirement; their installer uses 5.4.
+		$requirement['minimum'] = '5.4.0';
+		$requirement['source'] = 'Cacti ' . $cactiVersion . ' installer requirement';
+	}
+
+	return $requirement;
+}
+
+function doctor_evaluate_php_compatibility($phpVersion, $requirement) {
+	$summary = 'PHP compatibility with installed Cacti';
+	$detail = 'Running PHP ' . $phpVersion . '; installed Cacti ' . $requirement['cacti'] . '. ';
+	if ($requirement['minimum'] === '') {
+		return doctor_result('php.version', 'PHP', 'warn', $summary, $detail . 'Could not establish Cacti\'s PHP requirement. Check the installed Cacti composer.json or release documentation; Doctor does not assume compatibility.');
+	}
+	$compatible = version_compare($phpVersion, $requirement['minimum'], '>=')
+		&& ($requirement['maximum'] === '' || version_compare($phpVersion, $requirement['maximum'], '<'));
+	$range = 'PHP >= ' . $requirement['minimum'] . ($requirement['maximum'] !== '' ? ' and < ' . $requirement['maximum'] : '');
+	$detail .= 'Requires ' . $range . ' (' . $requirement['source'] . '). Running PHP ' . ($compatible ? 'meets' : 'does not meet') . ' that requirement.';
+
+	return doctor_result('php.version', 'PHP', $compatible ? 'pass' : 'fail', $summary, $detail);
 }
 
 // Cacti only warns below these, from the version row in utilities_get_mysql_recommendations().
@@ -278,19 +320,34 @@ function doctor_check_cacti_version() {
 }
 
 /** @return array<string,mixed> */
-function doctor_check_php_version() {
-	$minimum = doctor_php_minimum_version();
-	$status  = version_compare(PHP_VERSION, $minimum, '>=') ? 'pass' : 'fail';
-
-	return doctor_result('php.version', 'PHP', $status, 'Supported PHP version', 'Detected PHP ' . PHP_VERSION . '; this Cacti branch requires PHP ' . $minimum . ' or newer.');
+function doctor_check_php_version($phpVersion = null, $base = null, $cactiVersion = null) {
+	return doctor_evaluate_php_compatibility($phpVersion === null ? PHP_VERSION : $phpVersion, doctor_php_requirement($base, $cactiVersion));
 }
 
-function doctor_check_php_security_baseline() {
-	if (version_compare(PHP_VERSION, '8.2.0', '<')) {
-		return doctor_result('php.security_baseline', 'Security', 'warn', 'PHP security baseline', 'This legacy PHP version is below Doctor\'s recommended PHP 8.2 security baseline. Confirm that your operating-system vendor still supplies security patches and plan an upgrade.');
+function doctor_check_php_security_baseline($phpVersion = null, $today = null) {
+	$phpVersion = $phpVersion === null ? PHP_VERSION : $phpVersion;
+	$today = $today === null ? gmdate('Y-m-d') : $today;
+	$summary = 'PHP upstream security support';
+	$scope = ' This checks the PHP release branch, not whether this patch release is up to date or whether your OS vendor backports fixes. Cacti compatibility is checked separately.';
+	// php.net/supported-versions.php and php.net/eol.php, verified 2026-11-08.
+	$securityEnds = [
+		'5.4' => '2015-09-03', '5.5' => '2016-07-21', '5.6' => '2018-12-31',
+		'7.0' => '2019-01-10', '7.1' => '2019-12-01', '7.2' => '2020-11-30',
+		'7.3' => '2021-12-06', '7.4' => '2022-11-28', '8.0' => '2023-11-26',
+		'8.1' => '2025-12-31', '8.2' => '2026-12-31', '8.3' => '2027-12-31',
+		'8.4' => '2028-12-31', '8.5' => '2029-12-31'
+	];
+	if (!preg_match('/\A([0-9]+\.[0-9]+)\.[0-9]+(?:[-+].*)?\z/', $phpVersion, $match)
+		|| preg_match('/alpha|beta|rc|dev/i', $phpVersion) || !isset($securityEnds[$match[1]])) {
+		return doctor_result('php.security_baseline', 'Security', 'warn', $summary, 'Running PHP ' . $phpVersion . '; upstream security-support status is unknown or this is a prerelease. Check https://www.php.net/supported-versions.php and update Doctor\'s support data.' . $scope);
 	}
+	$end = $securityEnds[$match[1]];
+	$supported = $today <= $end;
+	$detail = 'Running PHP ' . $phpVersion . '; PHP ' . $match[1] . ($supported
+		? ' receives upstream security fixes through ' . $end . '.'
+		: ' no longer receives upstream security fixes; support ended ' . $end . '. Upgrade to a supported PHP branch compatible with your Cacti installation, or confirm security maintenance with your OS vendor.');
 
-	return doctor_result('php.security_baseline', 'Security', 'pass', 'PHP security baseline', 'PHP meets Doctor\'s recommended PHP 8.2 or newer security baseline.');
+	return doctor_result('php.security_baseline', 'Security', $supported ? 'pass' : 'warn', $summary, $detail . $scope);
 }
 
 /** @return array<string,mixed> */
@@ -733,11 +790,11 @@ function doctor_check_cacti_log() {
 /**
  * @return array<int,array<string,mixed>>
  */
-function doctor_check_required_binaries($privileged = null) {
+function doctor_check_required_binaries($privileged = null, $base = null, $cactiVersion = null) {
 	$privileged = $privileged === null ? doctor_running_as_root() : $privileged;
 	$snmp       = doctor_snmp_recommended_version();
 	$binaries = [
-		'path_php_binary' => ['label' => 'PHP CLI', 'argument' => '-v', 'pattern' => '/PHP\s+([0-9]+\.[0-9]+(?:\.[0-9]+)?)/i', 'minimum' => doctor_php_minimum_version()],
+		'path_php_binary' => ['label' => 'PHP CLI', 'argument' => '-v', 'pattern' => '/PHP\s+([0-9]+\.[0-9]+(?:\.[0-9]+)?(?:[A-Za-z][A-Za-z0-9]*|[-+][A-Za-z0-9.+-]+)?)/i', 'minimum' => ''],
 		'path_rrdtool'    => ['label' => 'RRDtool', 'argument' => '--version', 'pattern' => '/RRDtool\s+([0-9]+\.[0-9]+(?:\.[0-9]+)?)/i', 'minimum' => doctor_rrdtool_minimum_version()],
 		'path_snmpget'    => ['label' => 'Net-SNMP snmpget', 'argument' => '-V', 'pattern' => '/NET-SNMP version:\s*([0-9]+\.[0-9]+(?:\.[0-9]+)?)/i', 'minimum' => $snmp, 'below' => 'warn'],
 		'path_snmpwalk'   => ['label' => 'Net-SNMP snmpwalk', 'argument' => '-V', 'pattern' => '/NET-SNMP version:\s*([0-9]+\.[0-9]+(?:\.[0-9]+)?)/i', 'minimum' => $snmp, 'below' => 'warn']
@@ -764,6 +821,10 @@ function doctor_check_required_binaries($privileged = null) {
 			} elseif ($version === null) {
 				$status  = 'warn';
 				$detail .= ' Doctor could not determine its version.';
+			} elseif ($option === 'path_php_binary') {
+				$compatibility = doctor_evaluate_php_compatibility($version, doctor_php_requirement($base, $cactiVersion));
+				$status = $compatibility['status'];
+				$detail .= ' ' . $compatibility['detail'];
 			} elseif ($specification['minimum'] === '') {
 				$detail .= ' Detected version ' . $version . '.';
 			} elseif (version_compare($version, $specification['minimum'], '<')) {

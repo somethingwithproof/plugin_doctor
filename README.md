@@ -32,7 +32,7 @@ Cacti problems usually surface as symptoms: empty graphs, a poller that stopped,
 | Area | Checks |
 |---|---|
 | Doctor | Whether Doctor itself runs as root, which would make permission checks describe the wrong account |
-| Cacti and PHP | Cacti version, an upgrade the installer never finished, enabled plugins whose files are missing, PHP version for the installed Cacti branch, PHP security baseline |
+| Cacti and PHP | Cacti version, an upgrade the installer never finished, enabled plugins whose files are missing, PHP compatibility with the installed Cacti package, PHP upstream security-support status |
 | PHP extensions | Required extensions in the web PHP and in the CLI PHP the poller uses, plus recommended features |
 | PHP configuration | `memory_limit`, `max_execution_time`, and `date.timezone`, using Cacti's own recommendations |
 | Database | Connectivity, server version against Cacti's recommendation, UTF-8 character set, timezone tables, core tables, clock drift from the PHP host, and the InnoDB settings Cacti flags as errors |
@@ -162,7 +162,11 @@ It does not change ownership, run shell commands, rewrite configuration, or modi
 | Current 1.2.x | 8.2 or newer | Cacti's `composer.json` requires `>=8.2` |
 | `develop` (1.3) | 8.3 or newer | Cacti's `composer.json` requires `^8.3` |
 
-PHP below 8.2 triggers a security-baseline warning. Compatibility with legacy PHP is meant for diagnosing old systems, not for keeping them in service.
+The **PHP compatibility with installed Cacti** row compares the running PHP version with the PHP requirement in Cacti's own root `composer.json`, including the upper bound of a caret constraint such as `^8.3`. The configured PHP CLI executable is checked against the same requirement. Doctor recognizes the `>=` and `^` constraint forms used by these Cacti packages. An unreadable, malformed, missing, or unrecognized requirement produces a warning; Cacti 1.2.20–1.2.31 installations without a manifest retain their documented PHP 5.4 installer floor. Doctor's own PHP 5.4 compatibility does not establish compatibility with a newer Cacti installation.
+
+The **PHP upstream security support** row answers a separate question: does that PHP release branch still receive security fixes from the PHP project? It reports the branch's published security-support end date and warns after that date. For example, PHP 8.1 can meet an older Cacti installation's runtime requirement while no longer receiving upstream security fixes. A passing result does not mean the installed patch release is current, and Doctor cannot determine whether an OS vendor supplies backported fixes.
+
+Support dates are bundled with Doctor from the [PHP support schedule](https://www.php.net/supported-versions.php) and [end-of-life list](https://www.php.net/eol.php), last checked on 2026-11-08. Unknown branches and prereleases produce a warning rather than an assumed pass. No network request is made during diagnostics. Update Doctor's support data when PHP publishes a new schedule. Existing JSON/monitoring IDs `php.version` and `php.security_baseline` are unchanged.
 
 ## Development
 
