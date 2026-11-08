@@ -51,7 +51,7 @@ test('attribute escaping works without a Cacti helper', function () {
 });
 
 test('legacy Cacti defaults to its historical PHP floor', function () {
-	expect(doctor_check_php_version('5.4.45', doctor_test_directory(), '1.2.31')['status'])->toBe('pass');
+	expect(doctor_check_php_version('5.4.45', doctor_test_directory(), '1.2.30')['status'])->toBe('pass');
 });
 
 test('parent paths are resolved without the PHP 7 dirname levels argument', function () {
@@ -1144,6 +1144,7 @@ test('a missing manifest only uses documented legacy Cacti requirements', functi
 	$base = doctor_test_directory();
 	expect(doctor_check_php_version('5.3.29', $base, '1.2.20')['status'])->toBe('fail')
 		->and(doctor_check_php_version('5.4.0', $base, '1.2.20')['status'])->toBe('pass')
+		->and(doctor_check_php_version('8.4.25', $base, '1.2.31')['status'])->toBe('warn')
 		->and(doctor_check_php_version('8.4.25', $base, '1.2.32')['status'])->toBe('warn')
 		->and(doctor_check_php_version('8.4.25', $base, 'unknown')['status'])->toBe('warn')
 		->and(doctor_check_php_version('8.4.25', $base, '1.3.0-dev')['status'])->toBe('warn');

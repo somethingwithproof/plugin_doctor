@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Refresh diagnostic and settings screenshots; warn when Cacti 1.2.31 is missing its required PHP manifest.
 - Check web/CLI PHP against the installed Cacti package requirement, and explain PHP upstream security support with branch end dates separately from compatibility.
 
 ## 0.5.1 - 2026-11-08

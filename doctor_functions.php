@@ -258,7 +258,7 @@ function doctor_php_requirement($base = null, $cactiVersion = null) {
 		$requirement['minimum'] = $match[2] . '.' . $match[3] . '.' . (isset($match[4]) ? $match[4] : '0');
 		$requirement['maximum'] = $match[1] === '^' ? ((int) $match[2] + 1) . '.0.0' : '';
 		$requirement['source'] = 'installed Cacti composer.json';
-	} elseif (preg_match('/\A1\.2\.(2[0-9]|3[01])\z/', $cactiVersion)) {
+	} elseif (preg_match('/\A1\.2\.(2[0-9]|30)\z/', $cactiVersion)) {
 		// These legacy releases have no root Composer PHP requirement; their installer uses 5.4.
 		$requirement['minimum'] = '5.4.0';
 		$requirement['source'] = 'Cacti ' . $cactiVersion . ' installer requirement';
