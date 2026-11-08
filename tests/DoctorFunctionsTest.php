@@ -51,7 +51,7 @@ test('attribute escaping works without a Cacti helper', function () {
 });
 
 test('legacy Cacti defaults to its historical PHP floor', function () {
-	expect(doctor_php_minimum_version())->toBe('5.4.0');
+	expect(doctor_check_php_version('5.4.45', doctor_test_directory(), '1.2.30')['status'])->toBe('pass');
 });
 
 test('parent paths are resolved without the PHP 7 dirname levels argument', function () {
@@ -117,8 +117,11 @@ test('running as root is reported because writability results describe root', fu
 });
 
 test('Cacti 1.3 requires the PHP release its composer.json declares', function () {
-	expect(doctor_php_minimum_version('1.3.0'))->toBe('8.3.0')
-		->and(doctor_php_minimum_version('1.2.30'))->toBe('5.4.0');
+	$base = doctor_test_directory();
+	file_put_contents($base . '/composer.json', '{"require":{"php":"^8.3"}}');
+	expect(doctor_check_php_version('8.2.30', $base, '1.3.0-dev')['status'])->toBe('fail')
+		->and(doctor_check_php_version('8.3.0', $base, '1.3.0-dev')['status'])->toBe('pass')
+		->and(doctor_check_php_version('9.0.0', $base, '1.3.0-dev')['status'])->toBe('fail');
 });
 
 test('the RRDtool floor follows the oldest release each Cacti branch supports', function () {
@@ -1115,4 +1118,72 @@ test('the settings tab renders through Cacti translation formatting', function (
 	expect($tabs)->toHaveKey('doctor')
 		->and($settings['doctor'])->toHaveKey('doctor_log_warn_mb')
 		->and($settings['doctor']['doctor_poller_warn_percent']['default'])->toBe('80');
+});
+
+
+test('PHP compatibility follows the installed Cacti manifest on the 1.2 branch', function () {
+	$base = doctor_test_directory();
+	file_put_contents($base . '/composer.json', '{"require":{"php":">=8.2"},"config":{"platform":{"php":"5.4"}}}');
+	$result = doctor_check_php_version('8.1.34', $base, '1.2.32');
+	expect($result['id'])->toBe('php.version')
+		->and($result['summary'])->toBe('PHP compatibility with installed Cacti')
+		->and($result['status'])->toBe('fail')
+		->and($result['detail'])->toContain('installed Cacti 1.2.32', 'PHP >= 8.2.0', 'installed Cacti composer.json')
+		->and(doctor_check_php_version('8.2.0', $base, '1.2.32')['status'])->toBe('pass');
+});
+
+test('unavailable or unrecognized Cacti PHP requirements warn rather than assuming compatibility', function ($manifest) {
+	$base = doctor_test_directory();
+	file_put_contents($base . '/composer.json', $manifest);
+	$result = doctor_check_php_version('8.4.25', $base, '1.2.31');
+	expect($result['status'])->toBe('warn')
+		->and($result['detail'])->toContain('Could not establish');
+})->with(['invalid json', '{}', '{"require":[]}', '{"require":{"php":[]}}', '{"require":{"php":"^8.2 || ^8.3"}}']);
+
+test('a missing manifest only uses documented legacy Cacti requirements', function () {
+	$base = doctor_test_directory();
+	expect(doctor_check_php_version('5.3.29', $base, '1.2.20')['status'])->toBe('fail')
+		->and(doctor_check_php_version('5.4.0', $base, '1.2.20')['status'])->toBe('pass')
+		->and(doctor_check_php_version('8.4.25', $base, '1.2.31')['status'])->toBe('warn')
+		->and(doctor_check_php_version('8.4.25', $base, '1.2.32')['status'])->toBe('warn')
+		->and(doctor_check_php_version('8.4.25', $base, 'unknown')['status'])->toBe('warn')
+		->and(doctor_check_php_version('8.4.25', $base, '1.3.0-dev')['status'])->toBe('warn');
+});
+
+test('PHP CLI uses the same Cacti requirement as the current runtime', function () {
+	$base = doctor_test_directory();
+	file_put_contents($base . '/composer.json', '{"require":{"php":">=8.2"}}');
+	$GLOBALS['doctor_test_settings'] = ['path_php_binary' => doctor_test_executable($base, 'php', 'echo "PHP 8.1.34 (cli)"')];
+	$result = doctor_check_required_binaries(false, $base, '1.2.32')[0];
+	expect($result['id'])->toBe('binary.php_binary')
+		->and($result['status'])->toBe('fail')
+		->and($result['detail'])->toContain('PHP >= 8.2.0', 'installed Cacti 1.2.32');
+});
+
+test('PHP security support explains branch lifetime and does not certify patch freshness', function () {
+	$result = doctor_check_php_security_baseline('8.4.0', '2026-11-08');
+	expect($result['id'])->toBe('php.security_baseline')
+		->and($result['summary'])->toBe('PHP upstream security support')
+		->and($result['status'])->toBe('pass')
+		->and($result['detail'])->toContain('through 2028-12-31', 'not whether this patch release is up to date', 'OS vendor backports', 'Cacti compatibility is checked separately');
+});
+
+test('PHP security support expires after the published final day', function () {
+	expect(doctor_check_php_security_baseline('8.2.30', '2026-12-31')['status'])->toBe('pass')
+		->and(doctor_check_php_security_baseline('8.2.30', '2027-01-01')['status'])->toBe('warn')
+		->and(doctor_check_php_security_baseline('8.1.34', '2026-11-08')['detail'])->toContain('support ended 2025-12-31');
+});
+
+test('unknown and prerelease PHP branches are not declared security supported', function ($version) {
+	expect(doctor_check_php_security_baseline($version, '2026-11-08')['status'])->toBe('warn');
+})->with(['8.6.0', '9.0.0', '8.5.0RC1', '8.5.0-dev', 'unknown']);
+
+
+test('PHP CLI preserves prerelease suffixes when checking Cacti compatibility', function () {
+	$base = doctor_test_directory();
+	file_put_contents($base . '/composer.json', '{"require":{"php":"^8.3"}}');
+	$GLOBALS['doctor_test_settings'] = ['path_php_binary' => doctor_test_executable($base, 'php', 'echo "PHP 8.3.0RC1 (cli)"')];
+	$result = doctor_check_required_binaries(false, $base, '1.3.0-dev')[0];
+	expect($result['status'])->toBe('fail')
+		->and($result['detail'])->toContain('8.3.0RC1');
 });
