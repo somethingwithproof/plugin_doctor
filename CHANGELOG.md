@@ -2,9 +2,13 @@
 
 ## Unreleased
 
+## 0.5.1 - 2026-11-08
+
 - Add native MySQL/MariaDB health analysis and conditional tuning advice for connections, InnoDB reads and log waits, temporary tables, thread creation, and slow statements. Defer cumulative advice for short or invalid samples; never modify database settings.
 - Mask complete quoted secrets and URL credentials in support bundles, including multiline YAML, doubled single quotes, escaped or unfinished quotes, and embedded `@` characters.
 - Keep adjacent log records separate while redacting truncated values and indented continuations.
+- Add validated SemVer release packages, checksums, and installation screenshots.
+- Render diagnostic results as native Cacti table rows and columns.
 
 ## 0.5.0 - 2026-10-22
 

@@ -16,6 +16,15 @@
 
 Cacti Doctor is a Cacti plugin that diagnoses an installation in one pass and applies small repairs only when an administrator asks for them.
 
+## Screenshots
+
+Diagnostics and scheduling settings in an isolated Cacti 1.2.31 demonstration
+installation. Warnings and failures shown here describe that demo environment.
+
+![Doctor diagnostic table with pass, warning, and failure results](docs/screenshots/diagnostics.png)
+
+![Doctor scheduling, alert, and threshold settings](docs/screenshots/settings.png)
+
 Cacti problems usually surface as symptoms: empty graphs, a poller that stopped, a plugin that will not install. The cause is often a prerequisite that drifted, such as a missing PHP extension in the CLI build, a log directory the poller cannot write, an RRDtool path that points at the wrong binary, or a database without timezone tables. Doctor checks those prerequisites directly and reports each one as pass, warn, or fail with a sentence explaining what it found. The same report is available on a web page, on the command line, and as JSON for monitoring.
 
 ## What it checks
@@ -67,7 +76,21 @@ A diagnostic tool runs with the poller's or web server's privileges and reads pa
 - Doctor never runs configured binaries as root, and it reports when it is running as root.
 - Repairs come from a fixed allow-list. Each one needs an authenticated administrator action in the web UI or `--yes` on the CLI, and each one is written to the Cacti log.
 
+## Releases
+
+Versions follow SemVer and match the plugin's `INFO` file. See the
+[release process](docs/releasing.md) for version selection, CI gates, package
+contents, checksums, and rollback instructions.
+
 ## Installation
+
+Download `doctor-VERSION.tar.gz` or `doctor-VERSION.zip` and `SHA256SUMS` from
+[GitHub Releases](https://github.com/somethingwithproof/plugin_doctor/releases).
+Verify the archive's SHA-256 checksum, then extract its `doctor/` directory into
+Cacti's `plugins/` directory. These are the installable packages; GitHub's
+automatic source archives have a different directory name.
+
+For source checkouts:
 
 Clone or unpack the repository as `plugins/doctor` inside a Cacti installation. The directory must be named `doctor`, not `plugin_doctor`.
 
