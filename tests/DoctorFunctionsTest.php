@@ -861,6 +861,35 @@ test('quoted redaction masks escaped quotes and truncated values', function () {
 	}
 });
 
+test('YAML quoted redaction masks complete scalars and preserves following fields', function () {
+	foreach (["\n", "\r\n"] as $newline) {
+		foreach (['"', "'"] as $quote) {
+			$prefix = 'password: ' . $quote;
+			$suffix = $newline . 'host: localhost';
+			$value = 'example' . $newline . $newline . '  value';
+
+			expect(doctor_redact($prefix . $value . $quote . $suffix))
+				->toBe($prefix . '[redacted]' . $quote . $suffix);
+		}
+	}
+});
+
+test('YAML single quoted redaction handles doubled quotes and literal backslashes', function () {
+	expect(doctor_redact("password: 'example''value'; host=localhost"))
+		->toBe("password: '[redacted]'; host=localhost")
+		->and(doctor_redact("password: 'example\\'; host=localhost"))
+		->toBe("password: '[redacted]'; host=localhost")
+		->and(doctor_redact('password: ""; host=localhost'))
+		->toBe('password: "[redacted]"; host=localhost');
+});
+
+test('support bundles redact multiline YAML across log entries', function () {
+	$bundle = doctor_build_bundle([], [], ["password: 'example''part", "  value'", 'host: localhost']);
+
+	expect($bundle)->toContain("password: '[redacted]'\nhost: localhost")
+		->not->toContain('example', 'part', 'value');
+});
+
 test('the support bundle includes the report, context, and redacted log', function () {
 	$results = [doctor_result('poller.runtime', 'Poller', 'warn', 'Runtime', 'slow')];
 

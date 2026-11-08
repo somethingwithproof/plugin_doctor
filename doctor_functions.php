@@ -1471,6 +1471,14 @@ function doctor_redact($text) {
 	$text = (string) $text;
 	$keys = 'password|passwd|passphrase|pass|secret|token|community|api[_-]?key|auth[_-]?key|priv(?:ate)?[_-]?key';
 
+	// Complete YAML scalars can span lines. Single quotes escape by doubling,
+	// while backslashes are literal. Handle these before the log-line fallback.
+	$text = preg_replace_callback('/(\w*(?:' . $keys . ')\b["\']?\s*:\s*)("(?:\\\\[\s\S]|[^"\\\\])*+"|\'(?:\'\'|[^\'])*+\')/i', function ($matches) {
+		$quote = $matches[2][0];
+
+		return $matches[1] . $quote . '[redacted]' . $quote;
+	}, $text);
+
 	// Quoted value after a key (keyword, optionally prefixed by word chars so
 	// api_token / snmp_community match) + separator: JSON, YAML, and ini.
 	// Consume escaped characters together and fail closed at the line ending

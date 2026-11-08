@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-- Mask complete quoted secrets and URL credentials in support bundles, including escaped or unfinished quotes and embedded `@` characters.
+- Mask complete quoted secrets and URL credentials in support bundles, including multiline YAML, doubled single quotes, escaped or unfinished quotes, and embedded `@` characters.
 
 ## 0.5.0 - 2026-10-22
 
