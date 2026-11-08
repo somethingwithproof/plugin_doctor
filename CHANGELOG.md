@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Report PHP 8.0 as the floor for Cacti 1.2.31 and later 1.2 releases, as their composer.json requires, and label the 1.2.x database recommendation by server (MySQL 5.6, MariaDB 10.0).
+
 ## 0.5.1 - 2026-11-08
 
 - Add native MySQL/MariaDB health analysis and conditional tuning advice for connections, InnoDB reads and log waits, temporary tables, thread creation, and slow statements. Defer cumulative advice for short or invalid samples; never modify database settings.

@@ -118,6 +118,7 @@ test('running as root is reported because writability results describe root', fu
 
 test('Cacti 1.3 requires the PHP release its composer.json declares', function () {
 	expect(doctor_php_minimum_version('1.3.0'))->toBe('8.3.0')
+		->and(doctor_php_minimum_version('1.2.31'))->toBe('8.0.0')
 		->and(doctor_php_minimum_version('1.2.30'))->toBe('5.4.0');
 });
 
@@ -348,7 +349,7 @@ test('an unknown effective user on Unix is treated as root', function () {
 test('database recommendations follow the Cacti utility check for each branch', function () {
 	expect(doctor_database_recommended_version('MariaDB', '1.3.0'))->toBe('10.11.0')
 		->and(doctor_database_recommended_version('MySQL', '1.3.0'))->toBe('8.4.0')
-		->and(doctor_database_recommended_version('MariaDB', '1.2.20'))->toBe('5.6.0')
+		->and(doctor_database_recommended_version('MariaDB', '1.2.20'))->toBe('10.0.0')
 		->and(doctor_database_recommended_version('MySQL', '1.2.20'))->toBe('5.6.0');
 });
 
@@ -359,6 +360,15 @@ test('a database older than the recommendation warns instead of failing', functi
 
 	expect($result['status'])->toBe('warn')
 		->and($result['detail'])->toContain('recommends MySQL 5.6.0');
+});
+
+test('a 1.2.x MariaDB server is compared with the MariaDB floor', function () {
+	$GLOBALS['doctor_test_cells'] = ['SELECT VERSION()' => '10.11.19-MariaDB'];
+
+	$result = doctor_check_database_version();
+
+	expect($result['status'])->toBe('pass')
+		->and($result['detail'])->toContain('recommends MariaDB 10.0.0');
 });
 
 test('an unrecognized database version still fails', function () {

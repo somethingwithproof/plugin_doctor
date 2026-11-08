@@ -228,21 +228,49 @@ function doctor_parent_directory($path, $levels) {
 }
 
 function doctor_is_cacti_13($cactiVersion = null) {
-	if ($cactiVersion === null) {
-		$cactiVersion = defined('CACTI_VERSION') ? (string) CACTI_VERSION : '';
-	}
+	$cactiVersion = doctor_cacti_version($cactiVersion);
 
 	return $cactiVersion !== '' && version_compare($cactiVersion, '1.3.0', '>=');
 }
 
-function doctor_php_minimum_version($cactiVersion = null) {
-	return doctor_is_cacti_13($cactiVersion) ? '8.3.0' : '5.4.0';
+/**
+ * Resolve the Cacti version to evaluate, defaulting to the running release.
+ *
+ * @param string|null $cactiVersion An explicit version, or null for CACTI_VERSION.
+ *
+ * @return string The version, or '' when it cannot be determined.
+ */
+function doctor_cacti_version($cactiVersion = null) {
+	if ($cactiVersion === null) {
+		$cactiVersion = defined('CACTI_VERSION') ? (string) CACTI_VERSION : '';
+	}
+
+	return $cactiVersion;
 }
 
-// Cacti only warns below these, from the version row in utilities_get_mysql_recommendations().
+/**
+ * Cacti 1.2.31 ships composer.json with php >=8.0 while its installer constant
+ * still says 5.4.0; releases before 1.2.31 have no manifest and use 5.4.0.
+ */
+function doctor_php_minimum_version($cactiVersion = null) {
+	$cactiVersion = doctor_cacti_version($cactiVersion);
+
+	if (doctor_is_cacti_13($cactiVersion)) {
+		return '8.3.0';
+	}
+
+	return $cactiVersion !== '' && version_compare($cactiVersion, '1.2.31', '>=') ? '8.0.0' : '5.4.0';
+}
+
+/**
+ * Cacti only warns below these, from the version row in
+ * utilities_get_mysql_recommendations(). On 1.2.x that row compares against
+ * 5.6 and its text names MySQL 5.6 and MariaDB 10.0, so the floor is labeled
+ * by server rather than reporting a MariaDB 5.6 that never existed.
+ */
 function doctor_database_recommended_version($server, $cactiVersion = null) {
 	if (!doctor_is_cacti_13($cactiVersion)) {
-		return '5.6.0';
+		return $server === 'MariaDB' ? '10.0.0' : '5.6.0';
 	}
 
 	return $server === 'MariaDB' ? '10.11.0' : '8.4.0';
