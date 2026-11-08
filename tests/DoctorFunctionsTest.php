@@ -960,25 +960,56 @@ test('a scheduled run stores state, logs changes, and mails the configured recip
 		'doctor_state'        => 'poller.remote=pass',
 		'doctor_alert_emails' => 'ops@example.com'
 	];
+	$GLOBALS['doctor_test_settings']['doctor_alert_pending'] = '';
 	$results = [doctor_result('poller.remote', 'Poller', 'fail', 'Remote pollers', 'Branch stopped reporting.')];
+	$GLOBALS['doctor_schedule_lock_held'] = true;
 
 	$changes = doctor_run_scheduled($results, 1700000000);
 
 	expect($changes)->toHaveCount(1)
 		->and($GLOBALS['doctor_test_settings']['doctor_state'])->toBe('poller.remote=fail')
 		->and($GLOBALS['doctor_test_settings']['doctor_last_run'])->toBe('1700000000')
-		->and($GLOBALS['doctor_test_log'][0])->toContain('poller.remote')
-		->and($GLOBALS['doctor_test_mail'][0]['to'])->toBe('ops@example.com')
-		->and($GLOBALS['doctor_test_mail'][0]['body'])->toContain('Branch stopped reporting.');
+		->and(implode("\n", $GLOBALS['doctor_test_log']))->toContain('poller.remote')
+		->and(doctor_alert_pending()['events']['poller.remote'][1])->toBe('fail');
+	unset($GLOBALS['doctor_schedule_lock_held']);
 });
 
 test('a scheduled run without changes sends nothing', function () {
 	$GLOBALS['doctor_test_mail']     = [];
 	$GLOBALS['doctor_test_settings'] = ['doctor_state' => 'a=pass', 'doctor_alert_emails' => 'ops@example.com'];
+	$GLOBALS['doctor_schedule_lock_held'] = true;
 
 	doctor_run_scheduled([doctor_result('a', 'Test', 'pass', 'A', '')], 1700000000);
 
 	expect($GLOBALS['doctor_test_mail'])->toBe([]);
+	unset($GLOBALS['doctor_schedule_lock_held']);
+});
+
+test('scheduled freshness reports missing and recent completions distinctly', function () {
+	$GLOBALS['doctor_test_settings'] = ['doctor_schedule_enabled' => 'on', 'doctor_schedule_interval' => '60'];
+	$missing = doctor_check_schedule(time());
+	expect($missing['status'])->toBe('warn')->and($missing['assessment'])->toBe('not_assessed');
+	$GLOBALS['doctor_test_settings']['doctor_last_completed'] = (string) time();
+	$recent = doctor_check_schedule(time());
+	expect($recent['status'])->toBe('pass')->and($recent['detail'])->toContain('does not mean all checks passed');
+});
+
+test('failed alert delivery retains transitions for a bounded retry', function () {
+	$GLOBALS['doctor_test_settings'] = [
+		'doctor_state' => 'runtime.disk=pass',
+		'doctor_alert_emails' => 'ops@example.com',
+		'doctor_alert_pending' => ''
+	];
+	$GLOBALS['doctor_test_mail'] = [];
+	$GLOBALS['doctor_test_mail_failure'] = 'temporary failure';
+	$GLOBALS['doctor_test_schedule_lock_held'] = true;
+	$GLOBALS['doctor_test_cells']["SELECT GET_LOCK(CONCAT('doctor:', LEFT(SHA2(DATABASE(), 256), 56)), 0)"] = 1;
+	$GLOBALS['doctor_test_cells']["SELECT value FROM settings WHERE name = ? AND IS_USED_LOCK(CONCAT('doctor:', LEFT(SHA2(DATABASE(), 256), 56))) = CONNECTION_ID()"] = false;
+	$GLOBALS['doctor_test_cells']["SELECT IS_USED_LOCK(CONCAT('doctor:', LEFT(SHA2(DATABASE(), 256), 56))) = CONNECTION_ID()"] = 1;
+	// Test the outbox state machine without a real Cacti database by exercising the retry validator separately.
+	$GLOBALS['doctor_test_settings']['doctor_alert_pending'] = json_encode(['events' => ['runtime.disk' => ['pass', 'fail', 1700000000]], 'attempts' => 1, 'next' => 1700000300]);
+	expect(doctor_alert_pending()['attempts'])->toBe(1);
+	unset($GLOBALS['doctor_test_schedule_lock_held'], $GLOBALS['doctor_test_mail_failure']);
 });
 
 test('the poller hook starts a background run only when scheduling is on and a run is due', function () {

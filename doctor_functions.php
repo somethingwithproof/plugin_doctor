@@ -10,12 +10,14 @@
  +-------------------------------------------------------------------------+
 */
 
+require_once __DIR__ . '/doctor_scheduling.php';
+
 /**
  * Run the initial set of non-mutating installation checks.
  *
  * @return array<int,array<string,mixed>>
  */
-function doctor_run_checks() {
+function doctor_run_checks(&$databaseSample = null, $previousDatabaseSample = []) {
 	$results   = [];
 	$results[] = doctor_check_privileges(doctor_running_as_root());
 	$results[] = doctor_check_cacti_version();
@@ -32,7 +34,7 @@ function doctor_run_checks() {
 	$results[] = doctor_check_database_timezone_support();
 	$results[] = doctor_check_clock();
 	$results[] = doctor_check_innodb();
-	$results   = array_merge($results, doctor_check_database_health());
+	$results   = array_merge($results, doctor_check_database_health($databaseSample, $previousDatabaseSample));
 	$results[] = doctor_check_core_tables();
 	$results[] = doctor_check_plugin_files();
 	$results[] = doctor_check_runtime_directories();
@@ -50,6 +52,8 @@ function doctor_run_checks() {
 	$results[] = doctor_check_remote_pollers();
 	$results[] = doctor_check_boost();
 	$results[] = doctor_check_devices();
+	$results[] = doctor_check_schedule(time());
+	$results[] = doctor_check_alert_delivery(time());
 
 	return $results;
 }
@@ -57,7 +61,7 @@ function doctor_run_checks() {
 /**
  * @return array<string,mixed>
  */
-function doctor_result($id, $category, $status, $summary, $detail, $repair = '') {
+function doctor_result($id, $category, $status, $summary, $detail, $repair = '', $assessment = 'assessed') {
 	return [
 		'id'         => $id,
 		'category'   => $category,
@@ -65,7 +69,8 @@ function doctor_result($id, $category, $status, $summary, $detail, $repair = '')
 		'summary'    => $summary,
 		'detail'     => $detail,
 		'repair'     => $repair,
-		'repairable' => $repair !== ''
+		'repairable' => $repair !== '',
+		'assessment' => $assessment
 	];
 }
 
@@ -75,16 +80,16 @@ function doctor_result($id, $category, $status, $summary, $detail, $repair = '')
  *
  * @return array<int,array<string,mixed>>
  */
-function doctor_check_database_health() {
+function doctor_check_database_health(&$sample = null, $previous = []) {
 	$statusNames = ['Uptime', 'Uptime_since_flush_status', 'Threads_connected', 'Max_used_connections', 'Connections', 'Threads_created', 'Innodb_buffer_pool_read_requests', 'Innodb_buffer_pool_reads', 'Created_tmp_tables', 'Created_tmp_disk_tables', 'Innodb_log_waits', 'Queries', 'Slow_queries'];
 	$variableNames = ['max_connections', 'thread_handling'];
 	$status = db_fetch_assoc("SHOW GLOBAL STATUS WHERE Variable_name IN ('" . implode("', '", $statusNames) . "')", false);
 	$variables = db_fetch_assoc("SHOW GLOBAL VARIABLES WHERE Variable_name IN ('" . implode("', '", $variableNames) . "')", false);
 
-	return doctor_analyze_database_health(
-		doctor_database_metrics($status, $statusNames),
-		doctor_database_metrics($variables, $variableNames)
-	);
+	$metrics = doctor_database_metrics($status, $statusNames);
+	$variables = doctor_database_metrics($variables, $variableNames);
+	$sample = ['captured' => time(), 'metrics' => $metrics];
+	return doctor_analyze_database_health($metrics, $variables, $previous);
 }
 
 /** @return array<string,float|string|null> */
@@ -138,7 +143,7 @@ function doctor_database_metrics($rows, $allowed) {
  * @param array<string,float|string|null> $variables
  * @return array<int,array<string,mixed>>
  */
-function doctor_analyze_database_health($status, $variables) {
+function doctor_analyze_database_health($status, $variables, $previous = []) {
 	$results = [];
 	$sampleReady = isset($status['uptime'], $status['uptime_since_flush_status'])
 		&& $status['uptime'] >= 86400 && $status['uptime_since_flush_status'] >= 86400
@@ -147,6 +152,10 @@ function doctor_analyze_database_health($status, $variables) {
 		? 'At least 24 hours since server startup and FLUSH STATUS. Counters are cumulative and may have different reset histories; confirm trends during a representative workload before tuning.'
 		: 'Cumulative tuning advice is deferred: obtain valid uptime and at least 24 hours since startup and FLUSH STATUS. Missing metrics or an inconsistent sample cannot establish database health.';
 	$results[] = doctor_result('database.health_sample', 'Database health', $sampleReady ? 'pass' : 'warn', 'Database observation window', $sampleDetail);
+	$sample = isset($previous['metrics'], $previous['captured']) && is_array($previous['metrics']) && is_numeric($previous['captured'])
+		? $previous : [];
+	$deltaReady = $sampleReady && $sample !== [] && isset($status['uptime'], $sample['metrics']['uptime'])
+		&& $status['uptime'] >= $sample['metrics']['uptime'] && isset($sample['captured']) && time() > (int) $sample['captured'];
 
 	$connectionStatus = 'warn';
 	$connectionDetail = 'Connection metrics are unavailable or invalid. Check access to SHOW GLOBAL STATUS and SHOW GLOBAL VARIABLES; do not treat missing metrics as an idle server.';
@@ -172,19 +181,36 @@ function doctor_analyze_database_health($status, $variables) {
 		list($id, $title, $numerator, $denominator, $minimum, $limit, $advice) = $rule;
 		$level = 'warn';
 		$detail = 'Cumulative advice deferred until the observation window is sufficient.';
+		$assessment = 'not_assessed';
 		if ($id === 'thread_cache' && (!isset($variables['thread_handling']) || $variables['thread_handling'] !== 'one-thread-per-connection')) {
 			$detail = 'Thread-cache advice is not assessed: thread_handling is unavailable or is not one-thread-per-connection. Review the active thread-pool implementation instead.';
 		} elseif ($sampleReady) {
 			if (!isset($status[$numerator], $status[$denominator])) {
-				$detail = 'Required counters are missing or invalid: ' . $numerator . ', ' . $denominator . '. Check server-version support and monitoring permissions.';
+			$detail = 'Required counters are missing or invalid: ' . $numerator . ', ' . $denominator . '. Check server-version support and monitoring permissions.';
+			$assessment = 'not_assessed';
+			} elseif ($deltaReady && (isset($sample['metrics'][$numerator], $sample['metrics'][$denominator])
+				&& ($status[$numerator] < $sample['metrics'][$numerator] || $status[$denominator] < $sample['metrics'][$denominator]))) {
+				$detail = 'A counter reset since the prior sample; collect another representative interval before tuning.';
+				$results[] = doctor_result('database.' . $id, 'Database health', 'warn', $title, $detail, '', 'not_assessed');
+				continue;
 			} elseif ($status[$denominator] < $minimum) {
 				$detail = sprintf('Insufficient activity: %.0f %s; at least %d observations are needed for this advisory.', $status[$denominator], $denominator, $minimum);
 			} elseif ($status[$numerator] > $status[$denominator]) {
 				$detail = 'Counters are inconsistent or were reset independently. Collect a new representative sample before tuning.';
 			} else {
-				$ratio = 100 * $status[$numerator] / $status[$denominator];
+				$assessment = 'assessed';
+				$values = [$status[$numerator], $status[$denominator]];
+				if ($deltaReady && isset($sample['metrics'][$numerator], $sample['metrics'][$denominator])) {
+					$values = [$status[$numerator] - $sample['metrics'][$numerator], $status[$denominator] - $sample['metrics'][$denominator]];
+				}
+				if ($values[1] < $minimum || $values[0] > $values[1]) {
+				$detail = 'The interval sample is too small or counters reset; collect another representative interval before tuning.';
+				$results[] = doctor_result('database.' . $id, 'Database health', 'warn', $title, $detail, '', 'not_assessed');
+					continue;
+				}
+				$ratio = 100 * $values[0] / $values[1];
 				$level = $ratio >= $limit ? 'warn' : 'pass';
-				$detail = sprintf('Cumulative %s / %s: %.0f / %.0f (%.1f%%); investigation threshold: %d%%.', $numerator, $denominator, $status[$numerator], $status[$denominator], $ratio, $limit);
+				$detail = sprintf('%s %s / %s: %.0f / %.0f (%.1f%%); investigation threshold: %d%%.', $deltaReady ? 'Interval' : 'Cumulative', $numerator, $denominator, $values[0], $values[1], $ratio, $limit);
 				if ($id === 'temporary_tables') {
 					$detail .= ' This counter can omit memory-mapped temporary files on MySQL; a low ratio does not rule out disk use.';
 				}
@@ -193,7 +219,7 @@ function doctor_analyze_database_health($status, $variables) {
 				}
 			}
 		}
-		$results[] = doctor_result('database.' . $id, 'Database health', $level, $title, $detail);
+		$results[] = doctor_result('database.' . $id, 'Database health', $level, $title, $detail, '', $assessment);
 	}
 
 	$redoLevel = 'warn';
@@ -1531,62 +1557,6 @@ function doctor_schedule_due($lastRun, $intervalMinutes, $now) {
  * @param array<int,array<string,mixed>> $results
  * @return array<int,array<string,string>>
  */
-function doctor_run_scheduled($results, $now) {
-	$previous = doctor_state_decode(read_config_option('doctor_state', true));
-	$changes  = doctor_state_changes($previous, $results, (string) read_config_option('doctor_alert_warnings', true) === 'on');
-
-	set_config_option('doctor_state', doctor_state_encode($results));
-	set_config_option('doctor_last_run', (string) $now);
-
-	foreach ($changes as $change) {
-		cacti_log('Doctor check ' . $change['id'] . ' changed from ' . $change['from'] . ' to ' . $change['to'] . ': ' . $change['detail'], false, 'DOCTOR');
-	}
-
-	$recipients = trim((string) read_config_option('doctor_alert_emails', true));
-
-	if ($changes !== [] && $recipients !== '') {
-		$alert = doctor_alert_message($changes, doctor_result_counts($results), php_uname('n'));
-		$error = send_mail($recipients, '', $alert['subject'], $alert['body']);
-
-		if ($error !== '') {
-			cacti_log('Doctor could not send the alert email: ' . $error, false, 'DOCTOR');
-		}
-	}
-
-	return $changes;
-}
-
-/**
- * Runs from the poller_bottom hook. The checks run in a background CLI
- * process so they never extend the poller's own run time.
- */
-function doctor_poller_bottom() {
-	global $config;
-
-	if ((string) read_config_option('doctor_schedule_enabled', true) !== 'on') {
-		return;
-	}
-
-	$now = time();
-
-	if (!doctor_schedule_due(read_config_option('doctor_last_run', true), read_config_option('doctor_schedule_interval', true), $now)) {
-		return;
-	}
-
-	$php     = (string) read_config_option('path_php_binary', true);
-	$refusal = doctor_binary_execution_refusal('path_php_binary', $php, doctor_running_as_root());
-
-	if ($refusal !== '') {
-		cacti_log('Doctor scheduled checks skipped: ' . $refusal, false, 'DOCTOR');
-		return;
-	}
-
-	// Recording the start here stops the next poller cycle from launching a second run.
-	set_config_option('doctor_last_run', (string) $now);
-	// The binary passed doctor_binary_execution_refusal() and the script path is fixed and escaped.
-	exec_background($php, '-q ' . cacti_escapeshellarg($config['base_path'] . '/plugins/doctor/cli/doctor.php') . ' --scheduled'); // nosemgrep: php.lang.security.exec-use.exec-use
-}
-
 /**
  * @param array<int,array<string,mixed>> $results
  * @return array{text:string,code:int}

@@ -65,6 +65,35 @@ test('representative health sample below each threshold passes without repairs',
 	}
 });
 
+test('interval counters use deltas when a prior sample is available', function () {
+	$now = time();
+	$current = doctor_test_health_status([
+		'uptime' => 200000, 'innodb_buffer_pool_reads' => 1200,
+		'innodb_buffer_pool_read_requests' => 110000,
+		'created_tmp_tables' => 12000, 'created_tmp_disk_tables' => 4000,
+		'connections' => 11000, 'threads_created' => 2000,
+		'queries' => 11000, 'slow_queries' => 1000
+	]);
+	$previous = ['captured' => $now - 3600, 'metrics' => [
+		'uptime' => 196400, 'innodb_buffer_pool_reads' => 100,
+		'innodb_buffer_pool_read_requests' => 100000,
+		'created_tmp_tables' => 10000, 'created_tmp_disk_tables' => 2000,
+		'connections' => 10000, 'threads_created' => 1000,
+		'queries' => 10000, 'slow_queries' => 100
+	]];
+	$results = doctor_test_health_by_id(doctor_analyze_database_health($current, doctor_test_health_variables(), $previous));
+	expect($results['database.temporary_tables']['detail'])->toContain('Interval created_tmp_disk_tables / created_tmp_tables: 2000 / 2000')
+		->and($results['database.slow_queries']['detail'])->toContain('Interval slow_queries / queries: 900 / 1000');
+});
+
+test('counter decreases after an independent reset are reported as not assessed', function () {
+	$previous = ['captured' => time() - 3600, 'metrics' => ['uptime' => 172800, 'slow_queries' => 900, 'queries' => 9000]];
+	$results = doctor_test_health_by_id(doctor_analyze_database_health(doctor_test_health_status(['slow_queries' => 10, 'queries' => 1000]), doctor_test_health_variables(), $previous));
+	expect($results['database.slow_queries']['status'])->toBe('warn')
+		->and($results['database.slow_queries']['assessment'])->toBe('not_assessed')
+		->and($results['database.slow_queries']['detail'])->toContain('reset');
+});
+
 test('health warnings start at the documented threshold', function ($counter, $value, $id, $advice) {
 	$results = doctor_test_health_by_id(doctor_analyze_database_health(doctor_test_health_status([$counter => $value]), doctor_test_health_variables()));
 	expect($results['database.' . $id]['status'])->toBe('warn')

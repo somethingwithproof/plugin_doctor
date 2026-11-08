@@ -129,6 +129,8 @@ Under **Configuration > Settings > Doctor**, turn on **Run Checks on a Schedule*
 
 Each run records every check's status. When a check starts or stops failing, Doctor writes the change to the Cacti log and, if **Alert Email Addresses** is set, emails those addresses through Cacti's mail settings. **Alert on Warnings** adds changes into and out of warnings. The first run only records a baseline.
 
+Scheduled reports run on the primary poller under a database advisory lock and have a two-minute worker limit. Doctor reports the last start and successful completion so missing or stale results are visible. Failed alert delivery is retained for up to three retries with increasing delays; after that, correct Cacti's mail settings and run `php plugins/doctor/cli/doctor.php --scheduled --retry-alerts` as the poller user. Mail-server acceptance does not confirm inbox delivery.
+
 The same tab sets the thresholds for poller run time (80% of the interval), RRA free disk space (warn below 10%, fail below 2%), database clock drift (warn over 5 seconds, fail over 60), and Cacti log size (100 MB). Empty or invalid values fall back to these defaults.
 
 ## Monitoring integration
@@ -138,7 +140,7 @@ php plugins/doctor/cli/doctor.php --format=nagios
 php plugins/doctor/cli/doctor.php --format=prometheus > /var/lib/node_exporter/textfile/cacti_doctor.prom
 ```
 
-`--format=nagios` prints one status line with performance data and exits `0` (OK), `1` (WARNING), or `2` (CRITICAL), so Nagios, Icinga, or any compatible system can run it directly. `--format=prometheus` writes the Prometheus text format for node_exporter's textfile collector: `cacti_doctor_check_status` per check (0 pass, 1 warn, 2 fail), `cacti_doctor_checks` per status, and `cacti_doctor_last_run_timestamp_seconds`.
+`--format=nagios` prints one status line with performance data and exits `0` (OK), `1` (WARNING), or `2` (CRITICAL), so Nagios, Icinga, or any compatible system can run it directly. `--format=prometheus` writes the Prometheus text format for node_exporter's textfile collector: `cacti_doctor_check_status` per check (0 pass, 1 warn, 2 fail), `cacti_doctor_checks` per status, and `cacti_doctor_last_run_timestamp_seconds`. JSON check rows include an `assessment` field; `not_assessed` means the check could not reach a conclusion from the available data.
 
 ## Support bundle
 
