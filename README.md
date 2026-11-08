@@ -27,6 +27,7 @@ Cacti problems usually surface as symptoms: empty graphs, a poller that stopped,
 | PHP extensions | Required extensions in the web PHP and in the CLI PHP the poller uses, plus recommended features |
 | PHP configuration | `memory_limit`, `max_execution_time`, and `date.timezone`, using Cacti's own recommendations |
 | Database | Connectivity, server version against Cacti's recommendation, UTF-8 character set, timezone tables, core tables, clock drift from the PHP host, and the InnoDB settings Cacti flags as errors |
+| Database health | Connection capacity, buffer-pool reads, disk temporary tables, connection thread creation, slow statements, and InnoDB log-buffer waits, with workload-dependent tuning suggestions |
 | Filesystem | Writable cache, log, and RRA directories; free space for RRD files; active data sources with no RRD file; `include/config.php` not world-readable; Cacti log writable and not oversized |
 | Binaries | PHP CLI, RRDtool, `snmpget`, `snmpwalk`, and Spine when it is the configured poller, including versions where Cacti states one |
 | Log | Errors among the most recent Cacti log lines, with the most frequent message |
@@ -34,6 +35,28 @@ Cacti problems usually surface as symptoms: empty graphs, a poller that stopped,
 | Poller | Poller type and interval, time since the main poller last completed, run time against the interval, poller output that never reached an RRD file, remote pollers that stopped reporting, a stalled Boost, and a Spine configuration that points at a different database |
 
 Every check has a stable ID, such as `database.timezone` or `binary.rrdtool`, so scripts can key on individual results.
+
+## Database health advice
+
+Doctor's native PHP analyzer reads a fixed set of global MySQL or MariaDB counters through Cacti's existing database connection. It makes two read-only queries per report, requires no extra credentials or executable, and never changes database configuration. These checks appear in the web report, CLI, JSON, monitoring output, support bundle, and scheduled status tracking.
+
+| Check ID | Investigation trigger |
+|---|---|
+| `database.health_sample` | Less than 24 hours since startup or `FLUSH STATUS`, or unavailable/inconsistent uptime |
+| `database.connection_capacity` | Current or recorded peak connections at least 80% of the current `max_connections` |
+| `database.buffer_pool_reads` | `Innodb_buffer_pool_reads / Innodb_buffer_pool_read_requests` at least 1%, with at least 10,000 read requests |
+| `database.temporary_tables` | `Created_tmp_disk_tables / Created_tmp_tables` at least 25%, with at least 1,000 temporary tables |
+| `database.thread_cache` | `Threads_created / Connections` at least 5%, with at least 1,000 connection attempts and `thread_handling=one-thread-per-connection` |
+| `database.slow_queries` | `Slow_queries / Queries` at least 1%, with at least 1,000 statements |
+| `database.redo_log_waits` | Nonzero `Innodb_log_waits` |
+
+These are Doctor's investigation thresholds, not vendor configuration targets. Except for connection capacity, cumulative advice requires the observation window above. Missing, malformed, duplicate, or oversized counters, insufficient activity, and unsupported thread modes produce warnings instead of a healthy verdict or a tuning recommendation. Warnings can affect Nagios status and scheduled alerts when **Alert on Warnings** is enabled.
+
+Read the measured counters and suggestion together. Cumulative values do not establish current load; counters can have different reset histories and are not an atomic snapshot. Peak connections may reflect an older limit. Slow-query counts depend on `long_query_time`, and MySQL's disk temporary-table counter can omit memory-mapped files. A low ratio does not prove the absence of a bottleneck. Confirm trends under a representative workload, review query plans and connection reuse, and measure memory on the **database host** before changing buffers or connection limits.
+
+If metrics are unavailable, check server support and the Cacti account's access to `SHOW GLOBAL STATUS` and `SHOW GLOBAL VARIABLES`; Doctor does not request elevated credentials. Counter definitions come from the [MySQL status-variable reference](https://dev.mysql.com/doc/refman/8.0/en/server-status-variables.html) and [MariaDB status-variable reference](https://mariadb.com/docs/server/server-management/variables-and-modes/server-status-variables). No MySQLTuner script or code is used.
+
+No schema or configuration migration is needed. Deploy the plugin files normally; reverting those files removes the added diagnostics. Existing scheduled state is refreshed on the next run.
 
 ## How it stays safe
 

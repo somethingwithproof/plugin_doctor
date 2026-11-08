@@ -10,6 +10,7 @@
 $GLOBALS['doctor_test_settings'] = [];
 $GLOBALS['doctor_test_cells']    = [];
 $GLOBALS['doctor_test_rows']     = [];
+$GLOBALS['doctor_test_queries']  = [];
 $GLOBALS['doctor_test_log']      = [];
 $GLOBALS['doctor_test_mail']     = [];
 $GLOBALS['doctor_test_spawned']  = [];
@@ -45,7 +46,8 @@ if (!function_exists('db_fetch_cell_prepared')) {
 }
 
 if (!function_exists('db_fetch_assoc')) {
-	function db_fetch_assoc($sql, $log = true) {
+	function db_fetch_assoc($sql, $log = true, $db_conn = false) {
+		$GLOBALS['doctor_test_queries'][] = $sql;
 		return isset($GLOBALS['doctor_test_rows'][$sql]) ? $GLOBALS['doctor_test_rows'][$sql] : [];
 	}
 }
