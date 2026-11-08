@@ -2,4 +2,6 @@
 /.php-cs-fixer.cache
 /coverage/
 /vendor/
+/dist/
+__pycache__/
 .DS_Store

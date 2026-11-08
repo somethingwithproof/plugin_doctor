@@ -2,7 +2,9 @@ name: CI
 
 on:
   push:
+    branches: ['**']
   pull_request:
+  workflow_call:
 
 permissions:
   contents: read
@@ -12,6 +14,21 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  release-package:
+    name: Release packaging
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Check release contracts
+        run: python3 -m unittest discover -s tests -p 'test_release.py' -v
+      - name: Build this revision
+        run: |
+          VERSION=$(python3 -c 'import configparser; c=configparser.ConfigParser(); c.read("INFO"); print(c["info"]["version"])')
+          python3 tools/build_release.py --tag "v$VERSION" --output dist
+
   runtime-syntax:
     name: PHP ${{ matrix.php }} syntax
     runs-on: ubuntu-latest

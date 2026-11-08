@@ -45,25 +45,18 @@ $counts  = doctor_result_counts($results);
 top_header();
 
 html_start_box(__('Cacti Doctor', 'doctor'), '100%', false, 3, 'center', '');
-print '<div class="cactiTableTitleRow">';
-print '<div class="cactiTableTitle">' . html_escape(__('Installation health: %d passed, %d warnings, %d failed', $counts['pass'], $counts['warn'], $counts['fail'], 'doctor')) . '</div>';
-print '</div>';
-print '<div class="cactiTableHead">';
-print '<div class="cactiTableColumn">' . __('Status', 'doctor') . '</div>';
-print '<div class="cactiTableColumn">' . __('Category', 'doctor') . '</div>';
-print '<div class="cactiTableColumn">' . __('Check', 'doctor') . '</div>';
-print '<div class="cactiTableColumn">' . __('Details', 'doctor') . '</div>';
-print '<div class="cactiTableColumn">' . __('Action', 'doctor') . '</div>';
-print '</div>';
+print '<tr class="tableHeader"><th colspan="5">' . html_escape(__('Installation health: %d passed, %d warnings, %d failed', $counts['pass'], $counts['warn'], $counts['fail'], 'doctor')) . '</th></tr>';
+html_header([__('Status', 'doctor'), __('Category', 'doctor'), __('Check', 'doctor'), __('Details', 'doctor'), __('Action', 'doctor')]);
 
+$row = 0;
 foreach ($results as $result) {
 	$statusClass = $result['status'] === 'pass' ? 'deviceUp' : ($result['status'] === 'warn' ? 'deviceRecovering' : 'deviceDown');
-	print '<div class="cactiTableRow">';
-	print '<div class="cactiTableColumn"><span class="' . $statusClass . '">' . html_escape(strtoupper((string) $result['status'])) . '</span></div>';
-	print '<div class="cactiTableColumn">' . html_escape((string) $result['category']) . '</div>';
-	print '<div class="cactiTableColumn">' . html_escape((string) $result['summary']) . '</div>';
-	print '<div class="cactiTableColumn">' . html_escape((string) $result['detail']) . '</div>';
-	print '<div class="cactiTableColumn">';
+	print '<tr class="' . ($row++ % 2 ? 'even' : 'odd') . '">';
+	print '<td><span class="' . $statusClass . '">' . html_escape(strtoupper((string) $result['status'])) . '</span></td>';
+	print '<td>' . html_escape((string) $result['category']) . '</td>';
+	print '<td>' . html_escape((string) $result['summary']) . '</td>';
+	print '<td>' . html_escape((string) $result['detail']) . '</td>';
+	print '<td>';
 
 	if ($result['repairable']) {
 		$repairs = doctor_available_repairs();
@@ -77,7 +70,7 @@ foreach ($results as $result) {
 		print '&mdash;';
 	}
 
-	print '</div></div>';
+	print '</td></tr>';
 }
 
 html_end_box();
