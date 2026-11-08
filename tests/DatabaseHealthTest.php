@@ -94,6 +94,12 @@ test('counter decreases after an independent reset are reported as not assessed'
 		->and($results['database.slow_queries']['detail'])->toContain('reset');
 });
 
+test('missing prior interval counters retain a cumulative label', function () {
+	$previous = ['captured' => time() - 3600, 'metrics' => ['uptime' => 172800]];
+	$results = doctor_test_health_by_id(doctor_analyze_database_health(doctor_test_health_status(), doctor_test_health_variables(), $previous));
+	expect($results['database.slow_queries']['detail'])->toContain('Cumulative slow_queries / queries');
+});
+
 test('health warnings start at the documented threshold', function ($counter, $value, $id, $advice) {
 	$results = doctor_test_health_by_id(doctor_analyze_database_health(doctor_test_health_status([$counter => $value]), doctor_test_health_variables()));
 	expect($results['database.' . $id]['status'])->toBe('warn')

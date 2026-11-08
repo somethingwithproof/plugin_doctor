@@ -17,8 +17,9 @@
  * @return array{code:int,stdout:string,stderr:string,error:string}
  */
 function doctor_process($arguments, $seconds, $limit = 1048576) {
-	$result = ['code' => 1, 'stdout' => '', 'stderr' => '', 'error' => ''];
+	$result = ['code' => -1, 'stdout' => '', 'stderr' => '', 'error' => ''];
 	if (!function_exists('proc_open') || !function_exists('proc_terminate')) {
+		$result['code'] = 1;
 		$result['error'] = 'Process supervision is unavailable; enable proc_open and proc_terminate for the poller PHP runtime.';
 		return $result;
 	}
@@ -28,6 +29,7 @@ function doctor_process($arguments, $seconds, $limit = 1048576) {
 	}
 	$process = @proc_open($command, [0 => ['pipe', 'r'], 1 => ['pipe', 'w'], 2 => ['pipe', 'w']], $pipes, null, null, ['bypass_shell' => true]); // nosemgrep: php.lang.security.exec-use.exec-use
 	if (!is_resource($process)) {
+		$result['code'] = 1;
 		$result['error'] = 'Doctor could not start the supervised process.';
 		return $result;
 	}
@@ -56,7 +58,9 @@ function doctor_process($arguments, $seconds, $limit = 1048576) {
 			break;
 		}
 		if (!$status['running'] && feof($pipes[1]) && feof($pipes[2])) {
-			$result['code'] = $status['exitcode'];
+			if ($status['exitcode'] >= 0) {
+				$result['code'] = $status['exitcode'];
+			}
 			break;
 		}
 		// Older PHP only reports the exit code once, even while output remains.
@@ -76,6 +80,10 @@ function doctor_process($arguments, $seconds, $limit = 1048576) {
 		$result['stdout'] = '';
 		$result['stderr'] = '';
 	}
+	if ($result['code'] < 0) {
+		$result['code'] = 1;
+		$result['error'] = 'Doctor could not determine the supervised process exit status.';
+	}
 	return $result;
 }
 
@@ -93,7 +101,7 @@ function doctor_store_setting($name, $value) {
 		set_config_option($name, $value);
 		return;
 	}
-	$sql = 'INSERT INTO settings (name, value) SELECT ?, ? WHERE IS_USED_LOCK(' . doctor_schedule_lock_sql() . ') = CONNECTION_ID() ON DUPLICATE KEY UPDATE value = VALUES(value)';
+	$sql = 'INSERT INTO settings (name, value) SELECT ?, ? FROM DUAL WHERE IS_USED_LOCK(' . doctor_schedule_lock_sql() . ') = CONNECTION_ID() ON DUPLICATE KEY UPDATE value = VALUES(value)';
 	if (!db_execute_prepared($sql, [$name, $value], false)
 		|| (string) db_fetch_cell_prepared('SELECT value FROM settings WHERE name = ? AND IS_USED_LOCK(' . doctor_schedule_lock_sql() . ') = CONNECTION_ID()', [$name], '', false) !== $value) {
 		throw new RuntimeException('Doctor could not confirm its state write or no longer owns the schedule lock.');

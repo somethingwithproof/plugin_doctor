@@ -985,6 +985,13 @@ test('a scheduled run without changes sends nothing', function () {
 	unset($GLOBALS['doctor_schedule_lock_held']);
 });
 
+test('supervised process preserves a successful exit code after output closes', function () {
+	$result = doctor_process([PHP_BINARY, '-r', 'fwrite(STDOUT, "done"); exit(0);'], 5);
+	expect($result['code'])->toBe(0)
+		->and($result['stdout'])->toBe('done')
+		->and($result['error'])->toBe('');
+});
+
 test('scheduled freshness reports missing and recent completions distinctly', function () {
 	$GLOBALS['doctor_test_settings'] = ['doctor_schedule_enabled' => 'on', 'doctor_schedule_interval' => '60'];
 	$missing = doctor_check_schedule(time());
@@ -1002,14 +1009,17 @@ test('failed alert delivery retains transitions for a bounded retry', function (
 	];
 	$GLOBALS['doctor_test_mail'] = [];
 	$GLOBALS['doctor_test_mail_failure'] = 'temporary failure';
-	$GLOBALS['doctor_test_schedule_lock_held'] = true;
-	$GLOBALS['doctor_test_cells']["SELECT GET_LOCK(CONCAT('doctor:', LEFT(SHA2(DATABASE(), 256), 56)), 0)"] = 1;
-	$GLOBALS['doctor_test_cells']["SELECT value FROM settings WHERE name = ? AND IS_USED_LOCK(CONCAT('doctor:', LEFT(SHA2(DATABASE(), 256), 56))) = CONNECTION_ID()"] = false;
-	$GLOBALS['doctor_test_cells']["SELECT IS_USED_LOCK(CONCAT('doctor:', LEFT(SHA2(DATABASE(), 256), 56))) = CONNECTION_ID()"] = 1;
-	// Test the outbox state machine without a real Cacti database by exercising the retry validator separately.
 	$GLOBALS['doctor_test_settings']['doctor_alert_pending'] = json_encode(['events' => ['runtime.disk' => ['pass', 'fail', 1700000000]], 'attempts' => 1, 'next' => 1700000300]);
-	expect(doctor_alert_pending()['attempts'])->toBe(1);
-	unset($GLOBALS['doctor_test_schedule_lock_held'], $GLOBALS['doctor_test_mail_failure']);
+	$GLOBALS['doctor_schedule_lock_held'] = true;
+	$GLOBALS['doctor_test_log'] = [];
+	doctor_retry_alerts(1700000300);
+	$pending = doctor_alert_pending();
+	expect($GLOBALS['doctor_test_mail'])->toHaveCount(1)
+		->and($pending['attempts'])->toBe(2)
+		->and($pending['next'])->toBe(1700001200)
+		->and($pending['events'])->toHaveKey('runtime.disk')
+		->and(implode("\n", $GLOBALS['doctor_test_log']))->not->toContain('temporary failure');
+	unset($GLOBALS['doctor_schedule_lock_held'], $GLOBALS['doctor_test_mail_failure']);
 });
 
 test('the poller hook starts a background run only when scheduling is on and a run is due', function () {

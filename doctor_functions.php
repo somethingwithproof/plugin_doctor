@@ -200,7 +200,8 @@ function doctor_analyze_database_health($status, $variables, $previous = []) {
 			} else {
 				$assessment = 'assessed';
 				$values = [$status[$numerator], $status[$denominator]];
-				if ($deltaReady && isset($sample['metrics'][$numerator], $sample['metrics'][$denominator])) {
+				$interval = $deltaReady && isset($sample['metrics'][$numerator], $sample['metrics'][$denominator]);
+				if ($interval) {
 					$values = [$status[$numerator] - $sample['metrics'][$numerator], $status[$denominator] - $sample['metrics'][$denominator]];
 				}
 				if ($values[1] < $minimum || $values[0] > $values[1]) {
@@ -210,7 +211,7 @@ function doctor_analyze_database_health($status, $variables, $previous = []) {
 				}
 				$ratio = 100 * $values[0] / $values[1];
 				$level = $ratio >= $limit ? 'warn' : 'pass';
-				$detail = sprintf('%s %s / %s: %.0f / %.0f (%.1f%%); investigation threshold: %d%%.', $deltaReady ? 'Interval' : 'Cumulative', $numerator, $denominator, $values[0], $values[1], $ratio, $limit);
+				$detail = sprintf('%s %s / %s: %.0f / %.0f (%.1f%%); investigation threshold: %d%%.', $interval ? 'Interval' : 'Cumulative', $numerator, $denominator, $values[0], $values[1], $ratio, $limit);
 				if ($id === 'temporary_tables') {
 					$detail .= ' This counter can omit memory-mapped temporary files on MySQL; a low ratio does not rule out disk use.';
 				}
