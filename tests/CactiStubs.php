@@ -14,6 +14,7 @@ $GLOBALS['doctor_test_queries']  = [];
 $GLOBALS['doctor_test_log']      = [];
 $GLOBALS['doctor_test_mail']     = [];
 $GLOBALS['doctor_test_spawned']  = [];
+$GLOBALS['doctor_test_database'] = [];
 
 if (!function_exists('read_config_option')) {
 	function read_config_option($name, $force = false) {
@@ -45,6 +46,18 @@ if (!function_exists('db_fetch_cell_prepared')) {
 	}
 }
 
+if (!function_exists('db_execute_prepared')) {
+	function db_execute_prepared($sql, $params = [], $log = true) {
+		$GLOBALS['doctor_test_database'][] = ['sql' => $sql, 'params' => $params];
+		if (strpos($sql, 'INSERT INTO settings') === 0 && isset($params[0], $params[1])) {
+			$GLOBALS['doctor_test_settings'][$params[0]] = $params[1];
+			$GLOBALS['doctor_test_cells']["SELECT value FROM settings WHERE name = ? AND IS_USED_LOCK(CONCAT('doctor:', LEFT(SHA2(DATABASE(), 256), 56))) = CONNECTION_ID()"] = $params[1];
+			return true;
+		}
+		return false;
+	}
+}
+
 if (!function_exists('db_fetch_assoc')) {
 	function db_fetch_assoc($sql, $log = true, $db_conn = false) {
 		$GLOBALS['doctor_test_queries'][] = $sql;
@@ -69,8 +82,7 @@ if (!function_exists('cacti_log')) {
 if (!function_exists('send_mail')) {
 	function send_mail($to, $from, $subject, $body, $attachments = '', $headers = '', $html = false) {
 		$GLOBALS['doctor_test_mail'][] = ['to' => $to, 'subject' => $subject, 'body' => $body];
-
-		return '';
+		return isset($GLOBALS['doctor_test_mail_failure']) ? $GLOBALS['doctor_test_mail_failure'] : '';
 	}
 }
 

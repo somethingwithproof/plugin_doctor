@@ -17,7 +17,7 @@ import zipfile
 
 ROOT_FILES = {
     "INFO", "LICENSE", "README.md", "CHANGELOG.md", "SECURITY.md",
-    "doctor.php", "doctor_functions.php", "index.php", "setup.php",
+    "doctor.php", "doctor_functions.php", "doctor_scheduling.php", "index.php", "setup.php",
 }
 
 

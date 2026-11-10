@@ -27,16 +27,34 @@ if (!is_file($cactiBase . '/include/cli_check.php')) {
 	exit(2);
 }
 
+$options = getopt('', ['json', 'format:', 'bundle:', 'scheduled', 'scheduled-worker', 'due', 'retry-alerts', 'repair:', 'yes', 'help']);
+
+// Supervise bootstrap too: a stalled connection must not leave a worker forever.
+if (isset($options['scheduled'])) {
+	include_once dirname(__DIR__) . '/doctor_scheduling.php';
+	$arguments = [PHP_BINARY, __FILE__, '--scheduled-worker'];
+	foreach (['due', 'retry-alerts'] as $flag) {
+		if (isset($options[$flag])) {
+			$arguments[] = '--' . $flag;
+		}
+	}
+	$outcome = doctor_process($arguments, 120);
+	print $outcome['stdout'];
+	if ($outcome['error'] !== '' || $outcome['code'] !== 0) {
+		fwrite(STDERR, ($outcome['error'] !== '' ? $outcome['error'] : 'Doctor scheduled worker failed. Check the Cacti log.') . PHP_EOL);
+	}
+	exit($outcome['code'] === 0 ? 0 : 1);
+}
+
 chdir($cactiBase);
 include_once('./include/cli_check.php');
 include_once('./plugins/doctor/doctor_functions.php');
-
-$options = getopt('', ['json', 'format:', 'bundle:', 'scheduled', 'repair:', 'yes', 'help']);
 
 if (isset($options['help'])) {
 	print 'Usage: php plugins/doctor/cli/doctor.php [--json | --format=text|json|nagios|prometheus]' . PHP_EOL;
 	print '       php plugins/doctor/cli/doctor.php --bundle=PATH' . PHP_EOL;
 	print '       php plugins/doctor/cli/doctor.php --repair=REPAIR_ID --yes' . PHP_EOL;
+	print '       php plugins/doctor/cli/doctor.php --scheduled [--retry-alerts]' . PHP_EOL;
 	print 'Available repairs: ' . implode(', ', array_keys(doctor_available_repairs())) . PHP_EOL;
 	exit(0);
 }
@@ -48,10 +66,8 @@ if (!in_array($format, ['text', 'json', 'nagios', 'prometheus'], true)) {
 	exit(2);
 }
 
-if (isset($options['scheduled'])) {
-	$changes = doctor_run_scheduled(doctor_run_checks(), time());
-	print count($changes) . ' checks changed status.' . PHP_EOL;
-	exit(0);
+if (isset($options['scheduled-worker'])) {
+	exit(doctor_scheduled_worker(isset($options['due']), isset($options['retry-alerts'])));
 }
 
 if (isset($options['bundle'])) {
