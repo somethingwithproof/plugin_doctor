@@ -32,7 +32,7 @@ if (get_request_var('action') === 'repair') {
 	$result = doctor_run_repair($repair);
 	$level  = $result['status'] === 'pass' ? MESSAGE_LEVEL_INFO : MESSAGE_LEVEL_ERROR;
 
-	cacti_log('Doctor repair ' . str_replace(["\r", "\n"], ' ', $repair) . ': ' . $result['status'] . ' - ' . $result['detail'], false, 'DOCTOR');
+	cacti_log('Doctor repair ' . str_replace(["\r", "\n"], ' ', $repair) . ': ' . $result['status'] . ' - ' . (isset($result['log']) ? $result['log'] : $result['detail']), false, 'DOCTOR');
 	raise_message('doctor_repair', $result['summary'] . ': ' . $result['detail'], $level);
 
 	header('Location: doctor.php');
@@ -52,8 +52,8 @@ $row = 0;
 foreach ($results as $result) {
 	$statusClass = $result['status'] === 'pass' ? 'deviceUp' : ($result['status'] === 'warn' ? 'deviceRecovering' : 'deviceDown');
 	print '<tr class="' . ($row++ % 2 ? 'even' : 'odd') . '">';
-	print '<td><span class="' . $statusClass . '">' . html_escape(strtoupper((string) $result['status'])) . '</span></td>';
-	print '<td>' . html_escape((string) $result['category']) . '</td>';
+	print '<td><span class="' . $statusClass . '">' . html_escape(doctor_status_label((string) $result['status'])) . '</span></td>';
+	print '<td>' . html_escape(doctor_category_label((string) $result['category'])) . '</td>';
 	print '<td>' . html_escape((string) $result['summary']) . '</td>';
 	print '<td>' . html_escape((string) $result['detail']) . '</td>';
 	print '<td>';

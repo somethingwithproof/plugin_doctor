@@ -29,6 +29,21 @@ jobs:
           VERSION=$(python3 -c 'import configparser; c=configparser.ConfigParser(); c.read("INFO"); print(c["info"]["version"])')
           python3 tools/build_release.py --tag "v$VERSION" --output dist
 
+  translations:
+    name: Translation catalogs
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Install GNU gettext
+        run: |
+          sudo apt-get update
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends gettext
+      - name: Verify translation template and catalogs
+        run: sh locales/build_gettext.sh --check
+
   runtime-syntax:
     name: PHP ${{ matrix.php }} syntax
     runs-on: ubuntu-latest
@@ -244,6 +259,16 @@ jobs:
           test "$REALMS" -eq 1
           test "$ENABLED" -eq 1
           test "$DISABLED_HOOKS" -eq 0
+
+      - name: Verify Cacti loads Doctor's translations
+        run: |
+          php plugins/doctor/tests/ci/AssertTranslations.php en-US
+          mysql -h127.0.0.1 -ucactiuser cacti -e "REPLACE INTO settings (name, value) VALUES ('i18n_language_support', '1');"
+          for locale in de-DE es-ES fr-FR ja-JP zh-CN; do
+            php plugins/doctor/tests/ci/AssertTranslations.php "$locale"
+          done
+          mysql -h127.0.0.1 -ucactiuser cacti -e "DELETE FROM settings WHERE name='i18n_language_support'; DELETE FROM settings_user WHERE name='language';"
+        working-directory: cacti
 
       - name: Run and validate baseline Doctor report
         env:

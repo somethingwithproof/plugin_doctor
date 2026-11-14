@@ -55,14 +55,14 @@ if (isset($options['help'])) {
 	print '       php plugins/doctor/cli/doctor.php --bundle=PATH' . PHP_EOL;
 	print '       php plugins/doctor/cli/doctor.php --repair=REPAIR_ID --yes' . PHP_EOL;
 	print '       php plugins/doctor/cli/doctor.php --scheduled [--retry-alerts]' . PHP_EOL;
-	print 'Available repairs: ' . implode(', ', array_keys(doctor_available_repairs())) . PHP_EOL;
+	print __('Available repairs: %s', implode(', ', array_keys(doctor_available_repairs())), 'doctor') . PHP_EOL;
 	exit(0);
 }
 
 $format = isset($options['json']) ? 'json' : (isset($options['format']) ? (string) $options['format'] : 'text');
 
 if (!in_array($format, ['text', 'json', 'nagios', 'prometheus'], true)) {
-	fwrite(STDERR, 'Unknown format ' . $format . '. Use text, json, nagios, or prometheus.' . PHP_EOL);
+	fwrite(STDERR, __('Unknown format %s. Use text, json, nagios, or prometheus.', $format, 'doctor') . PHP_EOL);
 	exit(2);
 }
 
@@ -81,18 +81,19 @@ if (isset($options['bundle'])) {
 		exit(1);
 	}
 
-	print 'Wrote ' . $options['bundle'] . '. Review it before sharing; values after password, secret, token, and community names are masked.' . PHP_EOL;
+	print __('Wrote %s. Review it before sharing; values after password, secret, token, and community names are masked.', $options['bundle'], 'doctor') . PHP_EOL;
 	exit(0);
 }
 
 if (isset($options['repair'])) {
 	if (!isset($options['yes'])) {
-		fwrite(STDERR, 'Refusing to repair without --yes.' . PHP_EOL);
+		fwrite(STDERR, __('Refusing to repair without --yes.', 'doctor') . PHP_EOL);
 		exit(2);
 	}
 
 	$repairResult = doctor_run_repair((string) $options['repair']);
-	cacti_log('Doctor CLI repair ' . str_replace(["\r", "\n"], ' ', (string) $options['repair']) . ': ' . $repairResult['status'] . ' - ' . $repairResult['detail'], false, 'DOCTOR');
+	cacti_log('Doctor CLI repair ' . str_replace(["\r", "\n"], ' ', (string) $options['repair']) . ': ' . $repairResult['status'] . ' - ' . (isset($repairResult['log']) ? $repairResult['log'] : $repairResult['detail']), false, 'DOCTOR');
+	unset($repairResult['log']);
 
 	if ($format === 'json') {
 		print json_encode($repairResult, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES) . PHP_EOL;

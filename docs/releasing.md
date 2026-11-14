@@ -46,7 +46,7 @@ blocking failures, not permission to skip tests or publish a passing status.
 The release contains `doctor-VERSION.tar.gz`, `doctor-VERSION.zip`,
 `SHA256SUMS`, and `release.json` with the source commit and archive hashes.
 Both archives unpack into `doctor/`, ready to place under Cacti's `plugins/`.
-They contain runtime files, logos, and user documentation. Git metadata,
+They contain runtime files, logos, translation catalogs (`locales/po` and the compiled `locales/LC_MESSAGES`), and user documentation. Git metadata,
 development dependencies, tests, workflow files, and untracked files are excluded.
 GitHub's automatically generated source archives are not the installable packages.
 
