@@ -126,16 +126,16 @@ function doctor_schedule_interval() {
 /** @return array<string,mixed> */
 function doctor_check_schedule($now) {
 	if ((string) read_config_option('doctor_schedule_enabled', true) !== 'on') {
-		return doctor_result('doctor.schedule', 'Doctor', 'pass', 'Scheduled report freshness', 'Scheduled checks are disabled. Enable them in Settings > Doctor to retain samples and alert on changes.', '', 'not_applicable');
+		return doctor_result('doctor.schedule', 'Doctor', 'pass', __('Scheduled report freshness', 'doctor'), __('Scheduled checks are disabled. Enable them in Settings > Doctor to retain samples and alert on changes.', 'doctor'), '', 'not_applicable');
 	}
 	$started = (int) read_config_option('doctor_last_started', true);
 	$completed = (int) read_config_option('doctor_last_completed', true);
 	$age = $now - $completed;
-	$detail = 'Last started: ' . ($started > 0 ? gmdate('Y-m-d H:i:s', $started) . ' UTC' : 'never') . '; last completed: ' . ($completed > 0 ? gmdate('Y-m-d H:i:s', $completed) . ' UTC' : 'never') . '.';
+	$detail = __('Last started: %s; last completed: %s.', $started > 0 ? __('%s UTC', gmdate('Y-m-d H:i:s', $started), 'doctor') : __('never', 'doctor'), $completed > 0 ? __('%s UTC', gmdate('Y-m-d H:i:s', $completed), 'doctor') : __('never', 'doctor'), 'doctor');
 	if ($completed <= 0 || $age < 0 || $age > doctor_schedule_interval() + 180 || ($started > $completed && $now - $started > 180)) {
-		return doctor_result('doctor.schedule', 'Doctor', 'warn', 'Scheduled report freshness', $detail . ' Results are missing or stale. Check the primary poller and DOCTOR log for startup, timeout, or persistence errors.', '', 'not_assessed');
+		return doctor_result('doctor.schedule', 'Doctor', 'warn', __('Scheduled report freshness', 'doctor'), $detail . ' ' . __('Results are missing or stale. Check the primary poller and DOCTOR log for startup, timeout, or persistence errors.', 'doctor'), '', 'not_assessed');
 	}
-	return doctor_result('doctor.schedule', 'Doctor', 'pass', 'Scheduled report freshness', $detail . ' A completed diagnostic run is recent; this does not mean all checks passed.');
+	return doctor_result('doctor.schedule', 'Doctor', 'pass', __('Scheduled report freshness', 'doctor'), $detail . ' ' . __('A completed diagnostic run is recent; this does not mean all checks passed.', 'doctor'));
 }
 
 /** Only compact transitions are retained, never logs, recipients, or credentials. */
@@ -146,13 +146,13 @@ function doctor_alert_pending() {
 	}
 	if (!isset($pending['events'], $pending['attempts'], $pending['next']) || !is_array($pending['events']) || count($pending['events']) > 64
 		|| !is_int($pending['attempts']) || $pending['attempts'] < 0 || $pending['attempts'] > 3 || !is_int($pending['next']) || $pending['next'] < 0) {
-		throw new RuntimeException('Doctor alert state is invalid. Restore doctor_alert_pending from backup before retrying.');
+		throw new RuntimeException(__('Doctor alert state is invalid. Restore doctor_alert_pending from backup before retrying.', 'doctor'));
 	}
 	foreach ($pending['events'] as $id => $event) {
 		if (!is_string($id) || !preg_match('/\A[a-z0-9_.]+\z/', $id) || !is_array($event) || count($event) !== 3
 			|| !isset($event[0], $event[1], $event[2]) || !in_array($event[0], ['new', 'pass', 'warn', 'fail'], true)
 			|| !in_array($event[1], ['pass', 'warn', 'fail'], true) || !is_int($event[2])) {
-			throw new RuntimeException('Doctor alert transitions are invalid; no email was sent.');
+			throw new RuntimeException(__('Doctor alert transitions are invalid; no email was sent.', 'doctor'));
 		}
 	}
 	return $pending;
@@ -162,17 +162,17 @@ function doctor_check_alert_delivery($now) {
 	try {
 		$pending = doctor_alert_pending();
 	} catch (Exception $error) {
-		return doctor_result('doctor.alert_delivery', 'Doctor', 'warn', 'Alert delivery', $error->getMessage(), '', 'not_assessed');
+		return doctor_result('doctor.alert_delivery', 'Doctor', 'warn', __('Alert delivery', 'doctor'), $error->getMessage(), '', 'not_assessed');
 	}
 	if ($pending !== []) {
-		$detail = count($pending['events']) . ' check transitions await delivery; attempts: ' . $pending['attempts'] . ' of 3.';
-		$detail .= $pending['attempts'] >= 3 ? ' Automatic retries exhausted. Correct Cacti mail settings, then run Doctor with --scheduled --retry-alerts as the poller user.' : ' Next eligible retry: ' . gmdate('Y-m-d H:i:s', $pending['next']) . ' UTC, after a primary poller cycle.';
+		$detail = __('%d check transitions await delivery; attempts: %d of 3.', count($pending['events']), $pending['attempts'], 'doctor');
+		$detail .= ' ' . ($pending['attempts'] >= 3 ? __('Automatic retries exhausted. Correct Cacti mail settings, then run Doctor with --scheduled --retry-alerts as the poller user.', 'doctor') : __('Next eligible retry: %s UTC, after a primary poller cycle.', gmdate('Y-m-d H:i:s', $pending['next']), 'doctor'));
 		if (trim((string) read_config_option('doctor_alert_emails', true)) === '') {
-			$detail .= ' No alert recipients are currently configured; pending transitions are retained.';
+			$detail .= ' ' . __('No alert recipients are currently configured; pending transitions are retained.', 'doctor');
 		}
-		return doctor_result('doctor.alert_delivery', 'Doctor', 'warn', 'Alert delivery', $detail);
+		return doctor_result('doctor.alert_delivery', 'Doctor', 'warn', __('Alert delivery', 'doctor'), $detail);
 	}
-	return doctor_result('doctor.alert_delivery', 'Doctor', 'pass', 'Alert delivery', 'No retained alert is awaiting delivery. Mail-server acceptance does not prove inbox delivery.');
+	return doctor_result('doctor.alert_delivery', 'Doctor', 'pass', __('Alert delivery', 'doctor'), __('No retained alert is awaiting delivery. Mail-server acceptance does not prove inbox delivery.', 'doctor'));
 }
 
 function doctor_retry_alerts($now, $retry = false) {
@@ -192,13 +192,13 @@ function doctor_retry_alerts($now, $retry = false) {
 	$pending['attempts']++;
 	$pending['next'] = $now + 300 * pow(3, $pending['attempts'] - 1);
 	doctor_store_setting('doctor_alert_pending', json_encode($pending));
-	$lines = ['Doctor retained status changes (UTC). Repeated changes for one check are coalesced; an out-and-back transition is retained.', ''];
+	$lines = [__('Doctor retained status changes (UTC). Repeated changes for one check are coalesced; an out-and-back transition is retained.', 'doctor'), ''];
 	foreach ($pending['events'] as $id => $event) {
-		$lines[] = $id . ': ' . $event[0] . ' -> ' . $event[1] . ' (latest change ' . gmdate('Y-m-d H:i:s', $event[2]) . ')';
+		$lines[] = __('%s: %s -> %s (latest change %s)', $id, $event[0], $event[1], gmdate('Y-m-d H:i:s', $event[2]), 'doctor');
 	}
 	$lines[] = '';
-	$lines[] = 'Open Utilities > Doctor for current measurements, recommended actions, and verification steps.';
-	$error = send_mail($recipients, '', 'Cacti Doctor: ' . count($pending['events']) . ' retained status changes', implode("\n", $lines));
+	$lines[] = __('Open Utilities > Doctor for current measurements, recommended actions, and verification steps.', 'doctor');
+	$error = send_mail($recipients, '', __('Cacti Doctor: %d retained status changes', count($pending['events']), 'doctor'), implode("\n", $lines));
 	if ($error === '') {
 		doctor_store_setting('doctor_alert_pending', '');
 		doctor_store_setting('doctor_alert_last_success', (string) $now);
@@ -253,7 +253,7 @@ function doctor_scheduled_worker($dueOnly = false, $retry = false) {
 		return 1;
 	}
 	if ((string) db_fetch_cell('SELECT GET_LOCK(' . doctor_schedule_lock_sql() . ', 0)', '', false) !== '1') {
-		print 'Doctor schedule is already running or the database lock is unavailable.' . PHP_EOL;
+		print __('Doctor schedule is already running or the database lock is unavailable.', 'doctor') . PHP_EOL;
 		return 1;
 	}
 	$GLOBALS['doctor_schedule_lock_held'] = true;
