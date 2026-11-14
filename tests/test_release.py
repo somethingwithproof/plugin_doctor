@@ -23,14 +23,15 @@ class ReleaseTests(unittest.TestCase):
         self.root = Path(self.temp.name) / "source"
         self.root.mkdir()
         self.out = Path(self.temp.name) / "dist"
-        for name in release.ROOT_FILES | {"cli/doctor.php", "images/logo.png", "vendor/private", ".env"}:
+        for name in release.ROOT_FILES | {"cli/doctor.php", "images/logo.png", "locales/po/cacti.pot", "locales/po/de-DE.po",
+                                          "locales/LC_MESSAGES/de-DE.mo", "locales/build_gettext.sh", "vendor/private", ".env"}:
             path = self.root / name
             path.parent.mkdir(parents=True, exist_ok=True)
             path.write_text("fixture\n")
         (self.root / "INFO").write_text("[info]\nname = doctor\nversion = 0.5.1\n")
         (self.root / "CHANGELOG.md").write_text("## 0.5.1 - 2026-11-08\n\n- Fixes.\n")
         subprocess.check_call(["git", "-C", str(self.root), "init", "-q"])
-        self.commit(*sorted(release.ROOT_FILES), "cli", "images", "vendor", ".env")
+        self.commit(*sorted(release.ROOT_FILES), "cli", "images", "locales", "vendor", ".env")
 
     def test_semver(self):
         for tag in ["v1.0.0", "v0.5.1-rc.1", "v1.2.3+build.01"]:
@@ -75,6 +76,15 @@ class ReleaseTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             release.build(self.root, "v0.5.1", self.out)
 
+    def test_missing_compiled_catalogs_are_rejected(self):
+        subprocess.check_call(["git", "-C", str(self.root), "rm", "-q", "--", "locales/LC_MESSAGES/de-DE.mo"])
+        subprocess.check_call(["git", "-C", str(self.root), "-c", "user.name=Release Fixture",
+                               "-c", "user.email=fixture@example.invalid", "-c", "commit.gpgsign=false",
+                               "commit", "-qm", "drop catalog"])
+        with self.assertRaises(ValueError):
+            release.build(self.root, "v0.5.1", self.out)
+        self.assertFalse(self.out.exists())
+
     def test_symlinks_are_not_packaged(self):
         (self.root / "images/link").symlink_to("../.env")
         self.commit("images/link")
@@ -88,6 +98,9 @@ class ReleaseTests(unittest.TestCase):
                 zipfile.ZipFile(self.out / "doctor-0.5.1.zip") as zipped:
             self.assertEqual(sorted(tar.getnames()), sorted(zipped.namelist()))
             self.assertIn("doctor/cli/doctor.php", tar.getnames())
+            self.assertIn("doctor/locales/po/de-DE.po", tar.getnames())
+            self.assertIn("doctor/locales/LC_MESSAGES/de-DE.mo", tar.getnames())
+            self.assertNotIn("doctor/locales/build_gettext.sh", tar.getnames())
             self.assertNotIn("doctor/.env", tar.getnames())
             self.assertNotIn("doctor/vendor/private", tar.getnames())
             self.assertEqual(tar.extractfile("doctor/doctor.php").read(), b"fixture\n")

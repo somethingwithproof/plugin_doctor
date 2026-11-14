@@ -103,6 +103,16 @@ git clone https://github.com/somethingwithproof/plugin_doctor.git doctor
 
 Install and enable **Cacti Doctor** from **Configuration > Plugin Management**, then grant the **Cacti Doctor** realm to administrators who should have access. The report appears under **Utilities > Cacti Doctor**.
 
+## Languages
+
+Doctor ships translations into Spanish (Spain, `es-ES`), French (`fr-FR`), German (`de-DE`), Simplified Chinese (`zh-CN`), and Japanese (`ja-JP`). Cacti shows them once language support is on (**Configuration > Settings > General > Language Support**) and a user picks the language. The web page, the settings, and the messages and report text the command line prints follow Cacti's language; the command-line report itself uses the Cacti default language, which stays English unless you change it.
+
+Machine-readable output is never translated: check IDs, JSON keys and status values, the `--format=nagios` and `--format=prometheus` output, log lines, and the support-bundle section headings stay in English so scripts and monitoring keep working in every language. The `summary` and `detail` text of each check is the one translated part of the JSON report.
+
+A Latin American Spanish catalog (`es-419`) ships as well, but neither Cacti 1.2 nor Cacti 1.3 has a Latin American Spanish locale to select, so it takes effect only when Cacti adds one. Until then, choose Spanish (`es-ES`).
+
+Cacti loads a plugin's catalog from `plugins/doctor/locales/LC_MESSAGES/<locale>.mo` with `doctor` as the text domain, on 1.2.x and 1.3 alike (1.3 resolves the plugin directory through its configurable plugins path).
+
 ## Command line
 
 Run these from the Cacti root as the Cacti poller user, not root:
@@ -188,11 +198,18 @@ GitHub Actions runs three layers of checks on every push and pull request:
 
 - `php -l` on every PHP file under PHP 5.4, 5.6, 7.0, 7.1, 7.4, and 8.0 through 8.4.
 - The unit suite on PHP 8.2, 8.3, and 8.4.
+- `locales/build_gettext.sh --check`, which fails on a stale translation template, an incomplete or fuzzy catalog, or a compiled catalog that differs from its source.
 - Seven integration jobs that install Cacti 1.2.20, the current 1.2.x branch, and `develop` against MySQL and MariaDB, with both cmd.php and Spine. Each job installs and enables the plugin, runs the full CLI report, and checks the report schema, summary totals, expected statuses, and the exact set of failures. It then breaks a binary path and the poller timestamp, confirms both are reported, restores them, exercises the repair and its confirmation, and runs disable, enable, uninstall, and reinstall. The JSON report is kept as an artifact when a job fails.
 
 ## Contributing
 
 Pull requests go to `develop`. Keep production files PHP 5.4 compatible and use Cacti's style: tabs, single-quoted strings, and Cacti helpers such as `read_config_option()` and `db_fetch_cell()`. Add a unit test for each behavior change, sign off your commits (`git commit -s`), and add a line to `CHANGELOG.md`.
+
+### Translations
+
+Wrap every user-visible message in `__('...', 'doctor')` (or `__n()`, `__x()`, `__esc()`), and give a sentence that contains a value a single format string with sequential `%s`/`%d` placeholders rather than concatenating pieces. Cacti's `__()` formats a message only when it contains a format specifier, does not support positional `%1$s` forms, and reads the `%%` escape for a literal percent sign. Keep check IDs, JSON keys, status keywords, monitoring output, and log lines untranslated.
+
+`locales/build_gettext.sh` regenerates the template `locales/po/cacti.pot`, merges it into each catalog `locales/po/<locale>.po`, and compiles `locales/LC_MESSAGES/<locale>.mo`; commit all three. CI runs `sh locales/build_gettext.sh --check`, which fails when the template is stale or a catalog misses or has a fuzzy entry, a placeholder differs, or a compiled file is out of date. A changed message therefore needs its translations updated in the same pull request. It needs GNU gettext (`xgettext`, `msgmerge`, `msgfmt`, `msgunfmt`). A new language is a new `<locale>.po` named as Cacti names its locales (for example `pt-BR`).
 
 ## Security
 

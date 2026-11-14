@@ -149,54 +149,54 @@ function doctor_analyze_database_health($status, $variables, $previous = []) {
 		&& $status['uptime'] >= 86400 && $status['uptime_since_flush_status'] >= 86400
 		&& $status['uptime_since_flush_status'] <= $status['uptime'];
 	$sampleDetail = $sampleReady
-		? 'At least 24 hours since server startup and FLUSH STATUS. Counters are cumulative and may have different reset histories; confirm trends during a representative workload before tuning.'
-		: 'Cumulative tuning advice is deferred: obtain valid uptime and at least 24 hours since startup and FLUSH STATUS. Missing metrics or an inconsistent sample cannot establish database health.';
-	$results[] = doctor_result('database.health_sample', 'Database health', $sampleReady ? 'pass' : 'warn', 'Database observation window', $sampleDetail);
+		? __('At least 24 hours since server startup and FLUSH STATUS. Counters are cumulative and may have different reset histories; confirm trends during a representative workload before tuning.', 'doctor')
+		: __('Cumulative tuning advice is deferred: obtain valid uptime and at least 24 hours since startup and FLUSH STATUS. Missing metrics or an inconsistent sample cannot establish database health.', 'doctor');
+	$results[] = doctor_result('database.health_sample', 'Database health', $sampleReady ? 'pass' : 'warn', __('Database observation window', 'doctor'), $sampleDetail);
 	$sample = isset($previous['metrics'], $previous['captured']) && is_array($previous['metrics']) && is_numeric($previous['captured'])
 		? $previous : [];
 	$deltaReady = $sampleReady && $sample !== [] && isset($status['uptime'], $sample['metrics']['uptime'])
 		&& $status['uptime'] >= $sample['metrics']['uptime'] && isset($sample['captured']) && time() > (int) $sample['captured'];
 
 	$connectionStatus = 'warn';
-	$connectionDetail = 'Connection metrics are unavailable or invalid. Check access to SHOW GLOBAL STATUS and SHOW GLOBAL VARIABLES; do not treat missing metrics as an idle server.';
+	$connectionDetail = __('Connection metrics are unavailable or invalid. Check access to SHOW GLOBAL STATUS and SHOW GLOBAL VARIABLES; do not treat missing metrics as an idle server.', 'doctor');
 	if (isset($status['threads_connected'], $status['max_used_connections'], $variables['max_connections']) && $variables['max_connections'] > 0) {
 		$current = 100 * $status['threads_connected'] / $variables['max_connections'];
 		$peak = 100 * $status['max_used_connections'] / $variables['max_connections'];
 		$connectionStatus = $current >= 80 || $peak >= 80 ? 'warn' : 'pass';
-		$connectionDetail = sprintf('Current connections: %.0f / %.0f (%.1f%%); recorded peak: %.0f (%.1f%% of the current limit).', $status['threads_connected'], $variables['max_connections'], $current, $status['max_used_connections'], $peak);
+		$connectionDetail = __('Current connections: %.0f / %.0f (%s); recorded peak: %.0f (%s of the current limit).', $status['threads_connected'], $variables['max_connections'], sprintf('%.1f%%', $current), $status['max_used_connections'], sprintf('%.1f%%', $peak), 'doctor');
 		if ($connectionStatus === 'warn') {
-			$connectionDetail .= ' Review connection pooling and poller concurrency. Check database-host memory headroom before raising max_connections; the historical peak may reflect an older limit.';
+			$connectionDetail .= ' ' . __('Review connection pooling and poller concurrency. Check database-host memory headroom before raising max_connections; the historical peak may reflect an older limit.', 'doctor');
 		}
 	}
-	$results[] = doctor_result('database.connection_capacity', 'Database health', $connectionStatus, 'Connection capacity', $connectionDetail);
+	$results[] = doctor_result('database.connection_capacity', 'Database health', $connectionStatus, __('Connection capacity', 'doctor'), $connectionDetail);
 
 	$rules = [
-		['buffer_pool_reads', 'InnoDB buffer pool reads', 'innodb_buffer_pool_reads', 'innodb_buffer_pool_read_requests', 10000, 1, 'Review query plans and the working set. Consider innodb_buffer_pool_size only after measuring memory available on the database host; a cumulative miss ratio alone does not prove memory pressure.'],
-		['temporary_tables', 'On-disk temporary tables', 'created_tmp_disk_tables', 'created_tmp_tables', 1000, 25, 'Review query plans, sorting, grouping, and temporary-table data types before changing memory limits. Some tables must use disk; memory limits and accounting differ between MySQL and MariaDB versions.'],
-		['thread_cache', 'Connection thread creation', 'threads_created', 'connections', 1000, 5, 'Review connection reuse and thread_cache_size. Check the server thread-handling mode before tuning; thread-pool implementations do not behave like one-thread-per-connection servers.'],
-		['slow_queries', 'Slow statements', 'slow_queries', 'queries', 1000, 1, 'Review slow-query logging, long_query_time, and query plans before changing server buffers. This counter depends on the configured slow-query threshold and does not identify individual statements.']
+		['buffer_pool_reads', __('InnoDB buffer pool reads', 'doctor'), 'innodb_buffer_pool_reads', 'innodb_buffer_pool_read_requests', 10000, 1, __('Review query plans and the working set. Consider innodb_buffer_pool_size only after measuring memory available on the database host; a cumulative miss ratio alone does not prove memory pressure.', 'doctor')],
+		['temporary_tables', __('On-disk temporary tables', 'doctor'), 'created_tmp_disk_tables', 'created_tmp_tables', 1000, 25, __('Review query plans, sorting, grouping, and temporary-table data types before changing memory limits. Some tables must use disk; memory limits and accounting differ between MySQL and MariaDB versions.', 'doctor')],
+		['thread_cache', __('Connection thread creation', 'doctor'), 'threads_created', 'connections', 1000, 5, __('Review connection reuse and thread_cache_size. Check the server thread-handling mode before tuning; thread-pool implementations do not behave like one-thread-per-connection servers.', 'doctor')],
+		['slow_queries', __('Slow statements', 'doctor'), 'slow_queries', 'queries', 1000, 1, __('Review slow-query logging, long_query_time, and query plans before changing server buffers. This counter depends on the configured slow-query threshold and does not identify individual statements.', 'doctor')]
 	];
 
 	foreach ($rules as $rule) {
 		list($id, $title, $numerator, $denominator, $minimum, $limit, $advice) = $rule;
 		$level = 'warn';
-		$detail = 'Cumulative advice deferred until the observation window is sufficient.';
+		$detail = __('Cumulative advice deferred until the observation window is sufficient.', 'doctor');
 		$assessment = 'not_assessed';
 		if ($id === 'thread_cache' && (!isset($variables['thread_handling']) || $variables['thread_handling'] !== 'one-thread-per-connection')) {
-			$detail = 'Thread-cache advice is not assessed: thread_handling is unavailable or is not one-thread-per-connection. Review the active thread-pool implementation instead.';
+			$detail = __('Thread-cache advice is not assessed: thread_handling is unavailable or is not one-thread-per-connection. Review the active thread-pool implementation instead.', 'doctor');
 		} elseif ($sampleReady) {
 			if (!isset($status[$numerator], $status[$denominator])) {
-			$detail = 'Required counters are missing or invalid: ' . $numerator . ', ' . $denominator . '. Check server-version support and monitoring permissions.';
+			$detail = __('Required counters are missing or invalid: %s, %s. Check server-version support and monitoring permissions.', $numerator, $denominator, 'doctor');
 			$assessment = 'not_assessed';
 			} elseif ($deltaReady && (isset($sample['metrics'][$numerator], $sample['metrics'][$denominator])
 				&& ($status[$numerator] < $sample['metrics'][$numerator] || $status[$denominator] < $sample['metrics'][$denominator]))) {
-				$detail = 'A counter reset since the prior sample; collect another representative interval before tuning.';
+				$detail = __('A counter reset since the prior sample; collect another representative interval before tuning.', 'doctor');
 				$results[] = doctor_result('database.' . $id, 'Database health', 'warn', $title, $detail, '', 'not_assessed');
 				continue;
 			} elseif ($status[$denominator] < $minimum) {
-				$detail = sprintf('Insufficient activity: %.0f %s; at least %d observations are needed for this advisory.', $status[$denominator], $denominator, $minimum);
+				$detail = __('Insufficient activity: %.0f %s; at least %d observations are needed for this advisory.', $status[$denominator], $denominator, $minimum, 'doctor');
 			} elseif ($status[$numerator] > $status[$denominator]) {
-				$detail = 'Counters are inconsistent or were reset independently. Collect a new representative sample before tuning.';
+				$detail = __('Counters are inconsistent or were reset independently. Collect a new representative sample before tuning.', 'doctor');
 			} else {
 				$assessment = 'assessed';
 				$values = [$status[$numerator], $status[$denominator]];
@@ -205,15 +205,17 @@ function doctor_analyze_database_health($status, $variables, $previous = []) {
 					$values = [$status[$numerator] - $sample['metrics'][$numerator], $status[$denominator] - $sample['metrics'][$denominator]];
 				}
 				if ($values[1] < $minimum || $values[0] > $values[1]) {
-				$detail = 'The interval sample is too small or counters reset; collect another representative interval before tuning.';
+				$detail = __('The interval sample is too small or counters reset; collect another representative interval before tuning.', 'doctor');
 				$results[] = doctor_result('database.' . $id, 'Database health', 'warn', $title, $detail, '', 'not_assessed');
 					continue;
 				}
 				$ratio = 100 * $values[0] / $values[1];
 				$level = $ratio >= $limit ? 'warn' : 'pass';
-				$detail = sprintf('%s %s / %s: %.0f / %.0f (%.1f%%); investigation threshold: %d%%.', $interval ? 'Interval' : 'Cumulative', $numerator, $denominator, $values[0], $values[1], $ratio, $limit);
+				$detail = $interval
+					? __('Interval %s / %s: %.0f / %.0f (%s); investigation threshold: %s.', $numerator, $denominator, $values[0], $values[1], sprintf('%.1f%%', $ratio), sprintf('%d%%', $limit), 'doctor')
+					: __('Cumulative %s / %s: %.0f / %.0f (%s); investigation threshold: %s.', $numerator, $denominator, $values[0], $values[1], sprintf('%.1f%%', $ratio), sprintf('%d%%', $limit), 'doctor');
 				if ($id === 'temporary_tables') {
-					$detail .= ' This counter can omit memory-mapped temporary files on MySQL; a low ratio does not rule out disk use.';
+					$detail .= ' ' . __('This counter can omit memory-mapped temporary files on MySQL; a low ratio does not rule out disk use.', 'doctor');
 				}
 				if ($level === 'warn') {
 					$detail .= ' ' . $advice;
@@ -224,15 +226,15 @@ function doctor_analyze_database_health($status, $variables, $previous = []) {
 	}
 
 	$redoLevel = 'warn';
-	$redoDetail = 'Redo-log advice deferred until the observation window is sufficient and Innodb_log_waits is available.';
+	$redoDetail = __('Redo-log advice deferred until the observation window is sufficient and Innodb_log_waits is available.', 'doctor');
 	if ($sampleReady && isset($status['innodb_log_waits'])) {
 		$redoLevel = $status['innodb_log_waits'] > 0 ? 'warn' : 'pass';
-		$redoDetail = sprintf('Cumulative Innodb_log_waits: %.0f.', $status['innodb_log_waits']);
+		$redoDetail = __('Cumulative Innodb_log_waits: %.0f.', $status['innodb_log_waits'], 'doctor');
 		if ($redoLevel === 'warn') {
-			$redoDetail .= ' Investigate transaction sizes, log-buffer pressure, and storage latency. Recheck the rate under load before considering innodb_log_buffer_size; this historical count is not evidence of a current stall.';
+			$redoDetail .= ' ' . __('Investigate transaction sizes, log-buffer pressure, and storage latency. Recheck the rate under load before considering innodb_log_buffer_size; this historical count is not evidence of a current stall.', 'doctor');
 		}
 	}
-	$results[] = doctor_result('database.redo_log_waits', 'Database health', $redoLevel, 'InnoDB log-buffer waits', $redoDetail);
+	$results[] = doctor_result('database.redo_log_waits', 'Database health', $redoLevel, __('InnoDB log-buffer waits', 'doctor'), $redoDetail);
 
 	return $results;
 }
@@ -284,26 +286,30 @@ function doctor_php_requirement($base = null, $cactiVersion = null) {
 		}
 		$requirement['minimum'] = $match[2] . '.' . $match[3] . '.' . (isset($match[4]) ? $match[4] : '0');
 		$requirement['maximum'] = $match[1] === '^' ? ((int) $match[2] + 1) . '.0.0' : '';
-		$requirement['source'] = 'installed Cacti composer.json';
+		$requirement['source'] = __('installed Cacti composer.json', 'doctor');
 	} elseif (preg_match('/\A1\.2\.(2[0-9]|30)\z/', $cactiVersion)) {
 		// These legacy releases have no root Composer PHP requirement; their installer uses 5.4.
 		$requirement['minimum'] = '5.4.0';
-		$requirement['source'] = 'Cacti ' . $cactiVersion . ' installer requirement';
+		$requirement['source'] = __('Cacti %s installer requirement', $cactiVersion, 'doctor');
 	}
 
 	return $requirement;
 }
 
 function doctor_evaluate_php_compatibility($phpVersion, $requirement) {
-	$summary = 'PHP compatibility with installed Cacti';
-	$detail = 'Running PHP ' . $phpVersion . '; installed Cacti ' . $requirement['cacti'] . '. ';
+	$summary = __('PHP compatibility with installed Cacti', 'doctor');
+	$detail = __('Running PHP %s; installed Cacti %s.', $phpVersion, $requirement['cacti'], 'doctor') . ' ';
 	if ($requirement['minimum'] === '') {
-		return doctor_result('php.version', 'PHP', 'warn', $summary, $detail . 'Could not establish Cacti\'s PHP requirement. Check the installed Cacti composer.json or release documentation; Doctor does not assume compatibility.');
+		return doctor_result('php.version', 'PHP', 'warn', $summary, $detail . __('Could not establish Cacti\'s PHP requirement. Check the installed Cacti composer.json or release documentation; Doctor does not assume compatibility.', 'doctor'));
 	}
 	$compatible = version_compare($phpVersion, $requirement['minimum'], '>=')
 		&& ($requirement['maximum'] === '' || version_compare($phpVersion, $requirement['maximum'], '<'));
-	$range = 'PHP >= ' . $requirement['minimum'] . ($requirement['maximum'] !== '' ? ' and < ' . $requirement['maximum'] : '');
-	$detail .= 'Requires ' . $range . ' (' . $requirement['source'] . '). Running PHP ' . ($compatible ? 'meets' : 'does not meet') . ' that requirement.';
+	$range = $requirement['maximum'] !== ''
+		? __('PHP >= %s and < %s', $requirement['minimum'], $requirement['maximum'], 'doctor')
+		: __('PHP >= %s', $requirement['minimum'], 'doctor');
+	$detail .= $compatible
+		? __('Requires %s (%s). Running PHP meets that requirement.', $range, $requirement['source'], 'doctor')
+		: __('Requires %s (%s). Running PHP does not meet that requirement.', $range, $requirement['source'], 'doctor');
 
 	return doctor_result('php.version', 'PHP', $compatible ? 'pass' : 'fail', $summary, $detail);
 }
@@ -343,7 +349,7 @@ function doctor_check_cacti_version() {
 	$version = defined('CACTI_VERSION') ? (string) CACTI_VERSION : 'unknown';
 	$status  = $version !== 'unknown' && version_compare($version, '1.2.20', '>=') ? 'pass' : 'fail';
 
-	return doctor_result('cacti.version', 'Cacti', $status, 'Supported Cacti version', 'Detected ' . $version . '; Doctor requires Cacti 1.2.20 or newer.');
+	return doctor_result('cacti.version', 'Cacti', $status, __('Supported Cacti version', 'doctor'), __('Detected %s; Doctor requires Cacti 1.2.20 or newer.', $version, 'doctor'));
 }
 
 /** @return array<string,mixed> */
@@ -354,8 +360,8 @@ function doctor_check_php_version($phpVersion = null, $base = null, $cactiVersio
 function doctor_check_php_security_baseline($phpVersion = null, $today = null) {
 	$phpVersion = $phpVersion === null ? PHP_VERSION : $phpVersion;
 	$today = $today === null ? gmdate('Y-m-d') : $today;
-	$summary = 'PHP upstream security support';
-	$scope = ' This checks the PHP release branch, not whether this patch release is up to date or whether your OS vendor backports fixes. Cacti compatibility is checked separately.';
+	$summary = __('PHP upstream security support', 'doctor');
+	$scope = ' ' . __('This checks the PHP release branch, not whether this patch release is up to date or whether your OS vendor backports fixes. Cacti compatibility is checked separately.', 'doctor');
 	// php.net/supported-versions.php and php.net/eol.php, verified 2026-11-08.
 	$securityEnds = [
 		'5.4' => '2015-09-03', '5.5' => '2016-07-21', '5.6' => '2018-12-31',
@@ -366,13 +372,13 @@ function doctor_check_php_security_baseline($phpVersion = null, $today = null) {
 	];
 	if (!preg_match('/\A([0-9]+\.[0-9]+)\.[0-9]+(?:[-+].*)?\z/', $phpVersion, $match)
 		|| preg_match('/alpha|beta|rc|dev/i', $phpVersion) || !isset($securityEnds[$match[1]])) {
-		return doctor_result('php.security_baseline', 'Security', 'warn', $summary, 'Running PHP ' . $phpVersion . '; upstream security-support status is unknown or this is a prerelease. Check https://www.php.net/supported-versions.php and update Doctor\'s support data.' . $scope);
+		return doctor_result('php.security_baseline', 'Security', 'warn', $summary, __('Running PHP %s; upstream security-support status is unknown or this is a prerelease. Check https://www.php.net/supported-versions.php and update Doctor\'s support data.', $phpVersion, 'doctor') . $scope);
 	}
 	$end = $securityEnds[$match[1]];
 	$supported = $today <= $end;
-	$detail = 'Running PHP ' . $phpVersion . '; PHP ' . $match[1] . ($supported
-		? ' receives upstream security fixes through ' . $end . '.'
-		: ' no longer receives upstream security fixes; support ended ' . $end . '. Upgrade to a supported PHP branch compatible with your Cacti installation, or confirm security maintenance with your OS vendor.');
+	$detail = $supported
+		? __('Running PHP %s; PHP %s receives upstream security fixes through %s.', $phpVersion, $match[1], $end, 'doctor')
+		: __('Running PHP %s; PHP %s no longer receives upstream security fixes; support ended %s. Upgrade to a supported PHP branch compatible with your Cacti installation, or confirm security maintenance with your OS vendor.', $phpVersion, $match[1], $end, 'doctor');
 
 	return doctor_result('php.security_baseline', 'Security', $supported ? 'pass' : 'warn', $summary, $detail . $scope);
 }
@@ -381,7 +387,7 @@ function doctor_check_php_security_baseline($phpVersion = null, $today = null) {
 function doctor_check_php_extensions() {
 	$required = doctor_required_php_extensions();
 	$missing  = [];
-	$context  = PHP_SAPI === 'cli' ? 'current CLI' : 'web';
+	$summary  = PHP_SAPI === 'cli' ? __('Required current CLI PHP extensions', 'doctor') : __('Required web PHP extensions', 'doctor');
 
 	foreach ($required as $extension) {
 		if (!extension_loaded($extension)) {
@@ -390,10 +396,10 @@ function doctor_check_php_extensions() {
 	}
 
 	if ($missing !== []) {
-		return doctor_result('php.extensions', 'Prerequisites', 'fail', 'Required ' . $context . ' PHP extensions', 'Missing: ' . implode(', ', $missing) . '. Install them through the operating system package manager.');
+		return doctor_result('php.extensions', 'Prerequisites', 'fail', $summary, __('Missing: %s. Install them through the operating system package manager.', implode(', ', $missing), 'doctor'));
 	}
 
-	return doctor_result('php.extensions', 'Prerequisites', 'pass', 'Required ' . $context . ' PHP extensions', 'All PHP extensions required by the Cacti installer are loaded in this PHP context.');
+	return doctor_result('php.extensions', 'Prerequisites', 'pass', $summary, __('All PHP extensions required by the Cacti installer are loaded in this PHP context.', 'doctor'));
 }
 
 /** @return array<int,string> */
@@ -461,11 +467,11 @@ function doctor_binary_execution_refusal($option, $path, $privileged) {
 	];
 
 	if ($privileged) {
-		return 'Doctor does not execute configured binaries while running as root.';
+		return __('Doctor does not execute configured binaries while running as root.', 'doctor');
 	}
 
 	if (!isset($names[$option]) || !preg_match($names[$option], basename($path))) {
-		return 'The file name ' . basename($path) . ' is not expected for ' . $option . ', so Doctor did not execute it.';
+		return __('The file name %s is not expected for %s, so Doctor did not execute it.', basename($path), $option, 'doctor');
 	}
 
 	return '';
@@ -474,10 +480,10 @@ function doctor_binary_execution_refusal($option, $path, $privileged) {
 /** @return array<string,mixed> */
 function doctor_check_privileges($privileged) {
 	if ($privileged) {
-		return doctor_result('doctor.privileges', 'Doctor', 'warn', 'Doctor privileges', 'Doctor is running as root, so permission checks describe root rather than the web server or poller account, configured binaries are not executed, and repairs are refused. Run Doctor as the Cacti poller user.');
+		return doctor_result('doctor.privileges', 'Doctor', 'warn', __('Doctor privileges', 'doctor'), __('Doctor is running as root, so permission checks describe root rather than the web server or poller account, configured binaries are not executed, and repairs are refused. Run Doctor as the Cacti poller user.', 'doctor'));
 	}
 
-	return doctor_result('doctor.privileges', 'Doctor', 'pass', 'Doctor privileges', 'Doctor is running without root privileges.');
+	return doctor_result('doctor.privileges', 'Doctor', 'pass', __('Doctor privileges', 'doctor'), __('Doctor is running without root privileges.', 'doctor'));
 }
 
 /** @return array<string,mixed> */
@@ -486,17 +492,17 @@ function doctor_check_cli_php_extensions($privileged = null) {
 	$path       = (string) read_config_option('path_php_binary', true);
 
 	if ($path === '' || !is_file($path) || !is_executable($path)) {
-		return doctor_result('php.cli_extensions', 'Prerequisites', 'fail', 'Required CLI PHP extensions', 'The configured PHP CLI executable is unavailable, so its extensions cannot be checked.');
+		return doctor_result('php.cli_extensions', 'Prerequisites', 'fail', __('Required CLI PHP extensions', 'doctor'), __('The configured PHP CLI executable is unavailable, so its extensions cannot be checked.', 'doctor'));
 	}
 
 	$refusal = doctor_binary_execution_refusal('path_php_binary', $path, $privileged);
 
 	if ($refusal !== '') {
-		return doctor_result('php.cli_extensions', 'Prerequisites', 'warn', 'Required CLI PHP extensions', $refusal);
+		return doctor_result('php.cli_extensions', 'Prerequisites', 'warn', __('Required CLI PHP extensions', 'doctor'), $refusal);
 	}
 
 	if (!doctor_shell_exec_available()) {
-		return doctor_result('php.cli_extensions', 'Prerequisites', 'warn', 'Required CLI PHP extensions', 'shell_exec() is disabled, so Doctor cannot compare the CLI PHP extensions with Cacti requirements.');
+		return doctor_result('php.cli_extensions', 'Prerequisites', 'warn', __('Required CLI PHP extensions', 'doctor'), __('shell_exec() is disabled, so Doctor cannot compare the CLI PHP extensions with Cacti requirements.', 'doctor'));
 	}
 
 	$code   = 'echo json_encode(get_loaded_extensions());';
@@ -506,7 +512,7 @@ function doctor_check_cli_php_extensions($privileged = null) {
 	$loaded = is_string($output) ? json_decode($output, true) : null;
 
 	if (!is_array($loaded)) {
-		return doctor_result('php.cli_extensions', 'Prerequisites', 'fail', 'Required CLI PHP extensions', 'The configured PHP CLI executable did not return a valid extension list.');
+		return doctor_result('php.cli_extensions', 'Prerequisites', 'fail', __('Required CLI PHP extensions', 'doctor'), __('The configured PHP CLI executable did not return a valid extension list.', 'doctor'));
 	}
 
 	$loaded  = array_map('strtolower', $loaded);
@@ -519,10 +525,10 @@ function doctor_check_cli_php_extensions($privileged = null) {
 	}
 
 	if ($missing !== []) {
-		return doctor_result('php.cli_extensions', 'Prerequisites', 'fail', 'Required CLI PHP extensions', 'Missing from CLI PHP: ' . implode(', ', $missing) . '. The web and CLI PHP configurations are separate on many systems.');
+		return doctor_result('php.cli_extensions', 'Prerequisites', 'fail', __('Required CLI PHP extensions', 'doctor'), __('Missing from CLI PHP: %s. The web and CLI PHP configurations are separate on many systems.', implode(', ', $missing), 'doctor'));
 	}
 
-	return doctor_result('php.cli_extensions', 'Prerequisites', 'pass', 'Required CLI PHP extensions', 'The configured PHP CLI has every extension required by Cacti.');
+	return doctor_result('php.cli_extensions', 'Prerequisites', 'pass', __('Required CLI PHP extensions', 'doctor'), __('The configured PHP CLI has every extension required by Cacti.', 'doctor'));
 }
 
 /** @return array<string,mixed> */
@@ -536,14 +542,14 @@ function doctor_check_optional_php_extensions() {
 	}
 
 	if (!function_exists('imagettfbbox') || !function_exists('imagettftext')) {
-		$missing[] = 'GD TrueType support';
+		$missing[] = __('GD TrueType support', 'doctor');
 	}
 
 	if ($missing !== []) {
-		return doctor_result('php.optional_extensions', 'Prerequisites', 'warn', 'Recommended PHP features', 'Unavailable: ' . implode(', ', $missing) . '. Cacti can run without these features, but related functionality may be limited.');
+		return doctor_result('php.optional_extensions', 'Prerequisites', 'warn', __('Recommended PHP features', 'doctor'), __('Unavailable: %s. Cacti can run without these features, but related functionality may be limited.', implode(', ', $missing), 'doctor'));
 	}
 
-	return doctor_result('php.optional_extensions', 'Prerequisites', 'pass', 'Recommended PHP features', 'The optional gettext, SNMP, and GD TrueType features are available.');
+	return doctor_result('php.optional_extensions', 'Prerequisites', 'pass', __('Recommended PHP features', 'doctor'), __('The optional gettext, SNMP, and GD TrueType features are available.', 'doctor'));
 }
 
 /** @return array<string,mixed> */
@@ -564,24 +570,24 @@ function doctor_evaluate_php_configuration($memoryRaw, $execution, $timezone, $p
 	$problems    = [];
 
 	if ($memory > 0 && $memory < $recommended * 1024 * 1024) {
-		$problems[] = 'memory_limit is ' . $memoryRaw . ' (' . $recommended . 'M or more is recommended)';
+		$problems[] = __('memory_limit is %s (%dM or more is recommended)', $memoryRaw, $recommended, 'doctor');
 	}
 
 	if ($execution > 0 && $execution < 60) {
-		$problems[] = 'max_execution_time is ' . $execution . ' seconds (60 or more is recommended)';
+		$problems[] = __('max_execution_time is %d seconds (60 or more is recommended)', $execution, 'doctor');
 	}
 
 	if ($timezone === '') {
-		$problems[] = 'date.timezone is not set';
+		$problems[] = __('date.timezone is not set', 'doctor');
 	}
 
-	$detail = 'memory_limit=' . $memoryRaw . ', max_execution_time=' . $execution . ', date.timezone=' . ($timezone !== '' ? $timezone : 'unset') . '.';
+	$detail = 'memory_limit=' . $memoryRaw . ', max_execution_time=' . $execution . ', date.timezone=' . ($timezone !== '' ? $timezone : __('unset', 'doctor')) . '.';
 
 	if ($problems !== []) {
-		return doctor_result('php.configuration', 'Prerequisites', 'warn', 'PHP runtime configuration', implode('; ', $problems) . '. Current values: ' . $detail);
+		return doctor_result('php.configuration', 'Prerequisites', 'warn', __('PHP runtime configuration', 'doctor'), __('%s. Current values: %s', implode('; ', $problems), $detail, 'doctor'));
 	}
 
-	return doctor_result('php.configuration', 'Prerequisites', 'pass', 'PHP runtime configuration', $detail);
+	return doctor_result('php.configuration', 'Prerequisites', 'pass', __('PHP runtime configuration', 'doctor'), $detail);
 }
 
 function doctor_ini_bytes($value) {
@@ -614,10 +620,10 @@ function doctor_check_database() {
 	try {
 		$answer = db_fetch_cell('SELECT 1');
 	} catch (Exception $error) {
-		return doctor_result('database.connection', 'Database', 'fail', 'Database connection', 'Query failed: ' . $error->getMessage());
+		return doctor_result('database.connection', 'Database', 'fail', __('Database connection', 'doctor'), __('Query failed: %s', $error->getMessage(), 'doctor'));
 	}
 
-	return doctor_result('database.connection', 'Database', (int) $answer === 1 ? 'pass' : 'fail', 'Database connection', (int) $answer === 1 ? 'A read-only query completed successfully.' : 'The database returned an unexpected result.');
+	return doctor_result('database.connection', 'Database', (int) $answer === 1 ? 'pass' : 'fail', __('Database connection', 'doctor'), (int) $answer === 1 ? __('A read-only query completed successfully.', 'doctor') : __('The database returned an unexpected result.', 'doctor'));
 }
 
 /**
@@ -643,13 +649,13 @@ function doctor_check_database_version() {
 	$minimum  = doctor_database_recommended_version($identity['server']);
 
 	if ($identity['version'] === 'unknown') {
-		return doctor_result('database.version', 'Prerequisites', 'fail', 'Supported database server', 'Doctor could not determine the database server version from ' . $raw . '.');
+		return doctor_result('database.version', 'Prerequisites', 'fail', __('Supported database server', 'doctor'), __('Doctor could not determine the database server version from %s.', $raw, 'doctor'));
 	}
 
 	$status = version_compare($identity['version'], $minimum, '>=') ? 'pass' : 'warn';
-	$detail = $identity['server'] . ' ' . $identity['version'] . ' detected; this Cacti branch recommends ' . $identity['server'] . ' ' . $minimum . ' or newer.';
+	$detail = __('%s %s detected; this Cacti branch recommends %s %s or newer.', $identity['server'], $identity['version'], $identity['server'], $minimum, 'doctor');
 
-	return doctor_result('database.version', 'Prerequisites', $status, 'Supported database server', $detail);
+	return doctor_result('database.version', 'Prerequisites', $status, __('Supported database server', 'doctor'), $detail);
 }
 
 /** @return array<string,mixed> */
@@ -657,9 +663,9 @@ function doctor_check_database_charset() {
 	$charset   = (string) db_fetch_cell('SELECT @@character_set_database', '', false);
 	$collation = (string) db_fetch_cell('SELECT @@collation_database', '', false);
 	$status    = strtolower($charset) === 'utf8mb4' ? 'pass' : 'fail';
-	$detail    = 'Database character set is ' . ($charset !== '' ? $charset : 'unknown') . ' and collation is ' . ($collation !== '' ? $collation : 'unknown') . '. Cacti requires utf8mb4.';
+	$detail    = __('Database character set is %s and collation is %s. Cacti requires utf8mb4.', $charset !== '' ? $charset : __('unknown', 'doctor'), $collation !== '' ? $collation : __('unknown', 'doctor'), 'doctor');
 
-	return doctor_result('database.charset', 'Prerequisites', $status, 'Database character set', $detail);
+	return doctor_result('database.charset', 'Prerequisites', $status, __('Database character set', 'doctor'), $detail);
 }
 
 /** @return array<string,mixed> */
@@ -667,13 +673,13 @@ function doctor_check_database_timezone_support() {
 	$count = db_fetch_cell('SELECT COUNT(*) FROM mysql.time_zone_name', '', false);
 
 	if ($count === false || $count === null || $count === '') {
-		return doctor_result('database.timezone', 'Prerequisites', 'fail', 'Database timezone support', 'The Cacti database account cannot read mysql.time_zone_name. Grant SELECT access and populate the database timezone tables.');
+		return doctor_result('database.timezone', 'Prerequisites', 'fail', __('Database timezone support', 'doctor'), __('The Cacti database account cannot read mysql.time_zone_name. Grant SELECT access and populate the database timezone tables.', 'doctor'));
 	}
 
 	$status = (int) $count > 0 ? 'pass' : 'fail';
-	$detail = $status === 'pass' ? 'The database timezone table is accessible and contains ' . (int) $count . ' entries.' : 'The database timezone table is accessible but empty. Populate the system timezone tables.';
+	$detail = $status === 'pass' ? __('The database timezone table is accessible and contains %d entries.', (int) $count, 'doctor') : __('The database timezone table is accessible but empty. Populate the system timezone tables.', 'doctor');
 
-	return doctor_result('database.timezone', 'Prerequisites', $status, 'Database timezone support', $detail);
+	return doctor_result('database.timezone', 'Prerequisites', $status, __('Database timezone support', 'doctor'), $detail);
 }
 
 /** @return array<string,mixed> */
@@ -688,9 +694,9 @@ function doctor_check_core_tables() {
 	}
 
 	$status = $missing === [] ? 'pass' : 'fail';
-	$detail = $missing === [] ? 'Core tables used by Cacti are present.' : 'Missing core tables: ' . implode(', ', $missing) . '. Restore or upgrade the database before attempting other repairs.';
+	$detail = $missing === [] ? __('Core tables used by Cacti are present.', 'doctor') : __('Missing core tables: %s. Restore or upgrade the database before attempting other repairs.', implode(', ', $missing), 'doctor');
 
-	return doctor_result('database.core_tables', 'Database', $status, 'Core database tables', $detail);
+	return doctor_result('database.core_tables', 'Database', $status, __('Core database tables', 'doctor'), $detail);
 }
 
 function doctor_base_path() {
@@ -740,9 +746,9 @@ function doctor_check_runtime_directories($base = null) {
 
 	foreach (doctor_runtime_directories($base) as $name => $path) {
 		if (!is_dir($path)) {
-			$problems[] = $name . ' is missing (' . $path . ')';
+			$problems[] = __('%s is missing (%s)', $name, $path, 'doctor');
 		} elseif (!is_writable($path)) {
-			$problems[] = $name . ' is not writable (' . $path . ')';
+			$problems[] = __('%s is not writable (%s)', $name, $path, 'doctor');
 		} else {
 			continue;
 		}
@@ -753,10 +759,10 @@ function doctor_check_runtime_directories($base = null) {
 	}
 
 	if ($problems === []) {
-		return doctor_result('filesystem.runtime_directories', 'Filesystem', 'pass', 'Runtime directories', 'The cache, log, and RRA directories exist and are writable.');
+		return doctor_result('filesystem.runtime_directories', 'Filesystem', 'pass', __('Runtime directories', 'doctor'), __('The cache, log, and RRA directories exist and are writable.', 'doctor'));
 	}
 
-	return doctor_result('filesystem.runtime_directories', 'Filesystem', 'fail', 'Runtime directories', implode('; ', $problems), $repairable ? 'runtime_directories' : '');
+	return doctor_result('filesystem.runtime_directories', 'Filesystem', 'fail', __('Runtime directories', 'doctor'), implode('; ', $problems), $repairable ? 'runtime_directories' : '');
 }
 
 /** @return array<string,mixed> */
@@ -765,26 +771,26 @@ function doctor_check_config_file_security($path = null) {
 	$mode = @fileperms($path);
 
 	if (!is_file($path) || !is_readable($path)) {
-		return doctor_result('filesystem.config', 'Filesystem', 'fail', 'Cacti configuration file', 'include/config.php is missing or unreadable.');
+		return doctor_result('filesystem.config', 'Filesystem', 'fail', __('Cacti configuration file', 'doctor'), __('include/config.php is missing or unreadable.', 'doctor'));
 	}
 
 	if (defined('CACTI_SERVER_OS') && CACTI_SERVER_OS === 'win32') {
-		return doctor_result('filesystem.config', 'Filesystem', 'pass', 'Cacti configuration file', 'include/config.php is readable. POSIX mode-bit checks do not apply on Windows.');
+		return doctor_result('filesystem.config', 'Filesystem', 'pass', __('Cacti configuration file', 'doctor'), __('include/config.php is readable. POSIX mode-bit checks do not apply on Windows.', 'doctor'));
 	}
 
 	if ($mode !== false && ($mode & 0002) !== 0) {
-		return doctor_result('filesystem.config', 'Filesystem', 'fail', 'Cacti configuration file', 'include/config.php is writable by other users. Remove world-write permission because this file contains database credentials.');
+		return doctor_result('filesystem.config', 'Filesystem', 'fail', __('Cacti configuration file', 'doctor'), __('include/config.php is writable by other users. Remove world-write permission because this file contains database credentials.', 'doctor'));
 	}
 
 	if ($mode !== false && ($mode & 0020) !== 0) {
-		return doctor_result('filesystem.config', 'Filesystem', 'warn', 'Cacti configuration file', 'include/config.php is group-writable. Confirm that every member of the owning group is trusted.');
+		return doctor_result('filesystem.config', 'Filesystem', 'warn', __('Cacti configuration file', 'doctor'), __('include/config.php is group-writable. Confirm that every member of the owning group is trusted.', 'doctor'));
 	}
 
 	if ($mode !== false && ($mode & 0004) !== 0) {
-		return doctor_result('filesystem.config', 'Filesystem', 'warn', 'Cacti configuration file', 'include/config.php is readable by all local users and contains database credentials. Restrict it to the owner and the web server group.');
+		return doctor_result('filesystem.config', 'Filesystem', 'warn', __('Cacti configuration file', 'doctor'), __('include/config.php is readable by all local users and contains database credentials. Restrict it to the owner and the web server group.', 'doctor'));
 	}
 
-	return doctor_result('filesystem.config', 'Filesystem', 'pass', 'Cacti configuration file', 'include/config.php is readable and is not world-readable, group-writable, or world-writable.');
+	return doctor_result('filesystem.config', 'Filesystem', 'pass', __('Cacti configuration file', 'doctor'), __('include/config.php is readable and is not world-readable, group-writable, or world-writable.', 'doctor'));
 }
 
 /** @return array<string,mixed> */
@@ -795,23 +801,22 @@ function doctor_check_cacti_log() {
 
 	if (!file_exists($path)) {
 		$status = is_writable(dirname($path)) ? 'warn' : 'fail';
-		return doctor_result('logging.cacti', 'Logging', $status, 'Cacti log file', 'The log file does not exist. Its parent directory is ' . (is_writable(dirname($path)) ? 'writable, so Cacti can create it.' : 'not writable.'));
+		return doctor_result('logging.cacti', 'Logging', $status, __('Cacti log file', 'doctor'), is_writable(dirname($path)) ? __('The log file does not exist. Its parent directory is writable, so Cacti can create it.', 'doctor') : __('The log file does not exist. Its parent directory is not writable.', 'doctor'));
 	}
 
 	if (!is_file($path) || !is_readable($path) || !is_writable($path)) {
-		return doctor_result('logging.cacti', 'Logging', 'fail', 'Cacti log file', 'The configured log path must be a readable and writable regular file.');
+		return doctor_result('logging.cacti', 'Logging', 'fail', __('Cacti log file', 'doctor'), __('The configured log path must be a readable and writable regular file.', 'doctor'));
 	}
 
 	$size   = filesize($path);
 	$status = $size !== false && $size > doctor_threshold('doctor_log_warn_mb', 100) * 1048576 ? 'warn' : 'pass';
-	$detail = 'The log is readable and writable';
-	$detail .= $size !== false ? ' and is ' . round($size / 1048576, 1) . ' MiB.' : '.';
+	$detail = $size !== false ? __('The log is readable and writable and is %s MiB.', round($size / 1048576, 1), 'doctor') : __('The log is readable and writable.', 'doctor');
 
 	if ($status === 'warn') {
-		$detail .= ' Verify that Cacti log rotation is enabled.';
+		$detail .= ' ' . __('Verify that Cacti log rotation is enabled.', 'doctor');
 	}
 
-	return doctor_result('logging.cacti', 'Logging', $status, 'Cacti log file', $detail);
+	return doctor_result('logging.cacti', 'Logging', $status, __('Cacti log file', 'doctor'), $detail);
 }
 
 /**
@@ -836,7 +841,11 @@ function doctor_check_required_binaries($privileged = null, $base = null, $cacti
 	foreach ($binaries as $option => $specification) {
 		$path   = (string) read_config_option($option, true);
 		$status = $path !== '' && is_file($path) && is_executable($path) ? 'pass' : 'fail';
-		$detail = $status === 'pass' ? 'Executable found at ' . $path . '.' : 'The ' . $option . ' setting is empty, missing, or not executable' . ($path !== '' ? ': ' . $path : '.');
+		if ($status === 'pass') {
+			$detail = __('Executable found at %s.', $path, 'doctor');
+		} else {
+			$detail = $path !== '' ? __('The %s setting is empty, missing, or not executable: %s', $option, $path, 'doctor') : __('The %s setting is empty, missing, or not executable.', $option, 'doctor');
+		}
 
 		if ($status === 'pass' && $specification['pattern'] !== '') {
 			$refusal = doctor_binary_execution_refusal($option, $path, $privileged);
@@ -847,23 +856,25 @@ function doctor_check_required_binaries($privileged = null, $base = null, $cacti
 				$detail .= ' ' . $refusal;
 			} elseif ($version === null) {
 				$status  = 'warn';
-				$detail .= ' Doctor could not determine its version.';
+				$detail .= ' ' . __('Doctor could not determine its version.', 'doctor');
 			} elseif ($option === 'path_php_binary') {
 				$compatibility = doctor_evaluate_php_compatibility($version, doctor_php_requirement($base, $cactiVersion));
 				$status = $compatibility['status'];
 				$detail .= ' ' . $compatibility['detail'];
 			} elseif ($specification['minimum'] === '') {
-				$detail .= ' Detected version ' . $version . '.';
+				$detail .= ' ' . __('Detected version %s.', $version, 'doctor');
 			} elseif (version_compare($version, $specification['minimum'], '<')) {
 				$below   = isset($specification['below']) ? $specification['below'] : 'fail';
 				$status  = $below;
-				$detail .= ' Detected version ' . $version . '; version ' . $specification['minimum'] . ' or newer is ' . ($below === 'warn' ? 'recommended.' : 'required.');
+				$detail .= ' ' . ($below === 'warn'
+					? __('Detected version %s; version %s or newer is recommended.', $version, $specification['minimum'], 'doctor')
+					: __('Detected version %s; version %s or newer is required.', $version, $specification['minimum'], 'doctor'));
 			} else {
-				$detail .= ' Detected version ' . $version . '; minimum is ' . $specification['minimum'] . '.';
+				$detail .= ' ' . __('Detected version %s; minimum is %s.', $version, $specification['minimum'], 'doctor');
 			}
 		}
 
-		$results[] = doctor_result('binary.' . substr($option, 5), 'Prerequisites', $status, $specification['label'] . ' executable', $detail);
+		$results[] = doctor_result('binary.' . substr($option, 5), 'Prerequisites', $status, __('%s executable', $specification['label'], 'doctor'), $detail);
 	}
 
 	return $results;
@@ -909,18 +920,18 @@ function doctor_check_poller_configuration() {
 	$problems = [];
 
 	if (!in_array($type, ['1', '2'], true)) {
-		$problems[] = 'poller_type is not cmd.php or Spine';
+		$problems[] = __('poller_type is not cmd.php or Spine', 'doctor');
 	}
 
 	if (!in_array($interval, doctor_supported_poller_intervals(), true)) {
-		$problems[] = 'poller_interval is not a supported value';
+		$problems[] = __('poller_interval is not a supported value', 'doctor');
 	}
 
 	if ($problems !== []) {
-		return doctor_result('poller.configuration', 'Poller', 'fail', 'Poller configuration', implode('; ', $problems) . '.');
+		return doctor_result('poller.configuration', 'Poller', 'fail', __('Poller configuration', 'doctor'), implode('; ', $problems) . '.');
 	}
 
-	return doctor_result('poller.configuration', 'Poller', 'pass', 'Poller configuration', 'Poller is ' . ($type === '2' ? 'Spine' : 'cmd.php') . ' with a ' . $interval . '-second interval.');
+	return doctor_result('poller.configuration', 'Poller', 'pass', __('Poller configuration', 'doctor'), __('Poller is %s with a %d-second interval.', $type === '2' ? 'Spine' : 'cmd.php', $interval, 'doctor'));
 }
 
 /**
@@ -936,15 +947,15 @@ function doctor_check_poller_freshness() {
 	$interval = $interval > 0 ? $interval : 300;
 
 	if ($lastRun <= 0) {
-		return doctor_result('poller.freshness', 'Poller', 'warn', 'Main poller freshness', 'No completed main-poller run was found. This can be expected before the first poll.');
+		return doctor_result('poller.freshness', 'Poller', 'warn', __('Main poller freshness', 'doctor'), __('No completed main-poller run was found. This can be expected before the first poll.', 'doctor'));
 	}
 
 	$age       = max(0, time() - $lastRun);
 	$threshold = max(900, $interval * 3);
 	$status    = $age <= $threshold ? 'pass' : 'fail';
-	$detail    = 'Last completed run was ' . $age . ' seconds ago; failure threshold is ' . $threshold . ' seconds.';
+	$detail    = __('Last completed run was %d seconds ago; failure threshold is %d seconds.', $age, $threshold, 'doctor');
 
-	return doctor_result('poller.freshness', 'Poller', $status, 'Main poller freshness', $detail);
+	return doctor_result('poller.freshness', 'Poller', $status, __('Main poller freshness', 'doctor'), $detail);
 }
 
 function doctor_threshold($name, $default) {
@@ -976,24 +987,24 @@ function doctor_evaluate_schema_version($databaseVersion, $codeVersion) {
 	$code            = doctor_short_version($codeVersion);
 
 	if ($databaseVersion === '') {
-		return doctor_result('cacti.schema_version', 'Cacti', 'fail', 'Database schema version', 'The version table is empty or unreadable, so the schema version is unknown.');
+		return doctor_result('cacti.schema_version', 'Cacti', 'fail', __('Database schema version', 'doctor'), __('The version table is empty or unreadable, so the schema version is unknown.', 'doctor'));
 	}
 
 	if ($databaseVersion === 'new_install') {
-		return doctor_result('cacti.schema_version', 'Cacti', 'fail', 'Database schema version', 'The version table still reads new_install, so the installer never finished. Open install/ in a browser to complete it.');
+		return doctor_result('cacti.schema_version', 'Cacti', 'fail', __('Database schema version', 'doctor'), __('The version table still reads new_install, so the installer never finished. Open install/ in a browser to complete it.', 'doctor'));
 	}
 
 	$order = version_compare($database, $code);
 
 	if ($order < 0) {
-		return doctor_result('cacti.schema_version', 'Cacti', 'fail', 'Database schema version', 'The database schema is at ' . $database . ' but the installed code is ' . $code . '. Open install/ in a browser to finish the upgrade.');
+		return doctor_result('cacti.schema_version', 'Cacti', 'fail', __('Database schema version', 'doctor'), __('The database schema is at %s but the installed code is %s. Open install/ in a browser to finish the upgrade.', $database, $code, 'doctor'));
 	}
 
 	if ($order > 0) {
-		return doctor_result('cacti.schema_version', 'Cacti', 'warn', 'Database schema version', 'The database schema (' . $database . ') is newer than the installed code (' . $code . '). The code may have been rolled back.');
+		return doctor_result('cacti.schema_version', 'Cacti', 'warn', __('Database schema version', 'doctor'), __('The database schema (%s) is newer than the installed code (%s). The code may have been rolled back.', $database, $code, 'doctor'));
 	}
 
-	return doctor_result('cacti.schema_version', 'Cacti', 'pass', 'Database schema version', 'The database schema (' . $database . ') matches the installed code.');
+	return doctor_result('cacti.schema_version', 'Cacti', 'pass', __('Database schema version', 'doctor'), __('The database schema (%s) matches the installed code.', $database, 'doctor'));
 }
 
 /** @return array<string,mixed> */
@@ -1006,20 +1017,20 @@ function doctor_check_schema_version() {
 /** @return array<string,mixed> */
 function doctor_evaluate_poller_runtime($runtime, $interval, $warnPercent = 80) {
 	if ($runtime <= 0) {
-		return doctor_result('poller.runtime', 'Poller', 'pass', 'Main poller run time', 'No completed run time is recorded yet.');
+		return doctor_result('poller.runtime', 'Poller', 'pass', __('Main poller run time', 'doctor'), __('No completed run time is recorded yet.', 'doctor'));
 	}
 
-	$detail = 'The last main-poller run took ' . round($runtime, 1) . ' seconds of the ' . $interval . '-second interval.';
+	$detail = __('The last main-poller run took %s seconds of the %d-second interval.', round($runtime, 1), $interval, 'doctor');
 
 	if ($runtime >= $interval) {
-		return doctor_result('poller.runtime', 'Poller', 'fail', 'Main poller run time', $detail . ' Runs that outlast the interval overlap and lose data; add poller processes or threads, or use Spine.');
+		return doctor_result('poller.runtime', 'Poller', 'fail', __('Main poller run time', 'doctor'), $detail . ' ' . __('Runs that outlast the interval overlap and lose data; add poller processes or threads, or use Spine.', 'doctor'));
 	}
 
 	if ($runtime >= $interval * $warnPercent / 100) {
-		return doctor_result('poller.runtime', 'Poller', 'warn', 'Main poller run time', $detail . ' Little headroom remains before polls overlap.');
+		return doctor_result('poller.runtime', 'Poller', 'warn', __('Main poller run time', 'doctor'), $detail . ' ' . __('Little headroom remains before polls overlap.', 'doctor'));
 	}
 
-	return doctor_result('poller.runtime', 'Poller', 'pass', 'Main poller run time', $detail);
+	return doctor_result('poller.runtime', 'Poller', 'pass', __('Main poller run time', 'doctor'), $detail);
 }
 
 /** @return array<string,mixed> */
@@ -1040,10 +1051,10 @@ function doctor_check_poller_output() {
 	$stale    = (int) db_fetch_cell_prepared('SELECT COUNT(*) FROM poller_output WHERE time < FROM_UNIXTIME(UNIX_TIMESTAMP() - ?)', [$interval * 2], '', false);
 
 	if ($stale > 0) {
-		return doctor_result('poller.output_backlog', 'Poller', 'warn', 'Unprocessed poller output', $stale . ' poller_output rows are older than two polling intervals and were never written to RRD files. Check the Cacti log for "Poller Output Table not Empty" and confirm max_heap_table_size is large enough.');
+		return doctor_result('poller.output_backlog', 'Poller', 'warn', __('Unprocessed poller output', 'doctor'), __('%d poller_output rows are older than two polling intervals and were never written to RRD files. Check the Cacti log for "Poller Output Table not Empty" and confirm max_heap_table_size is large enough.', $stale, 'doctor'));
 	}
 
-	return doctor_result('poller.output_backlog', 'Poller', 'pass', 'Unprocessed poller output', 'No stale rows remain in poller_output.');
+	return doctor_result('poller.output_backlog', 'Poller', 'pass', __('Unprocessed poller output', 'doctor'), __('No stale rows remain in poller_output.', 'doctor'));
 }
 
 /**
@@ -1052,7 +1063,7 @@ function doctor_check_poller_output() {
  */
 function doctor_evaluate_remote_pollers($pollers, $interval, $now) {
 	if (!cacti_sizeof($pollers)) {
-		return doctor_result('poller.remote', 'Poller', 'pass', 'Remote pollers', 'No remote pollers are enabled.');
+		return doctor_result('poller.remote', 'Poller', 'pass', __('Remote pollers', 'doctor'), __('No remote pollers are enabled.', 'doctor'));
 	}
 
 	$threshold = max(900, $interval * 3);
@@ -1062,17 +1073,17 @@ function doctor_evaluate_remote_pollers($pollers, $interval, $now) {
 		$lastUpdate = (int) $poller['last_update'];
 
 		if ($lastUpdate <= 0) {
-			$stale[] = $poller['name'] . ' (ID ' . $poller['id'] . ') has never reported';
+			$stale[] = __('%s (ID %s) has never reported', $poller['name'], $poller['id'], 'doctor');
 		} elseif ($now - $lastUpdate > $threshold) {
-			$stale[] = $poller['name'] . ' (ID ' . $poller['id'] . ') last reported ' . ($now - $lastUpdate) . ' seconds ago';
+			$stale[] = __('%s (ID %s) last reported %d seconds ago', $poller['name'], $poller['id'], $now - $lastUpdate, 'doctor');
 		}
 	}
 
 	if ($stale !== []) {
-		return doctor_result('poller.remote', 'Poller', 'fail', 'Remote pollers', implode('; ', $stale) . '. The failure threshold is ' . $threshold . ' seconds.');
+		return doctor_result('poller.remote', 'Poller', 'fail', __('Remote pollers', 'doctor'), implode('; ', $stale) . '. ' . __('The failure threshold is %d seconds.', $threshold, 'doctor'));
 	}
 
-	return doctor_result('poller.remote', 'Poller', 'pass', 'Remote pollers', cacti_sizeof($pollers) . ' enabled remote pollers reported within ' . $threshold . ' seconds.');
+	return doctor_result('poller.remote', 'Poller', 'pass', __('Remote pollers', 'doctor'), __('%d enabled remote pollers reported within %d seconds.', cacti_sizeof($pollers), $threshold, 'doctor'));
 }
 
 /** @return array<string,mixed> */
@@ -1100,10 +1111,10 @@ function doctor_check_plugin_files($base = null) {
 	}
 
 	if ($missing !== []) {
-		return doctor_result('cacti.plugin_files', 'Cacti', 'fail', 'Enabled plugin files', 'Enabled plugins are missing from ' . $plugins . ': ' . implode(', ', $missing) . '. Restore their files or disable them in Plugin Management.');
+		return doctor_result('cacti.plugin_files', 'Cacti', 'fail', __('Enabled plugin files', 'doctor'), __('Enabled plugins are missing from %s: %s. Restore their files or disable them in Plugin Management.', $plugins, implode(', ', $missing), 'doctor'));
 	}
 
-	return doctor_result('cacti.plugin_files', 'Cacti', 'pass', 'Enabled plugin files', 'Every enabled plugin has its setup.php in place.');
+	return doctor_result('cacti.plugin_files', 'Cacti', 'pass', __('Enabled plugin files', 'doctor'), __('Every enabled plugin has its setup.php in place.', 'doctor'));
 }
 
 /**
@@ -1113,27 +1124,27 @@ function doctor_check_plugin_files($base = null) {
  */
 function doctor_evaluate_boost($enabled, $rows, $maxRecords, $lastRun, $intervalMinutes, $now) {
 	if (!$enabled) {
-		return doctor_result('poller.boost', 'Poller', 'pass', 'Boost RRD updates', 'Boost is disabled, so the poller writes RRD files directly.');
+		return doctor_result('poller.boost', 'Poller', 'pass', __('Boost RRD updates', 'doctor'), __('Boost is disabled, so the poller writes RRD files directly.', 'doctor'));
 	}
 
 	$lastRun = is_numeric($lastRun) ? (int) $lastRun : (int) strtotime((string) $lastRun);
 	$window  = max(1, (int) $intervalMinutes) * 60 * 2;
 
 	if ($lastRun <= 0) {
-		return doctor_result('poller.boost', 'Poller', 'warn', 'Boost RRD updates', 'Boost is enabled but has no recorded run. This can be expected before its first flush.');
+		return doctor_result('poller.boost', 'Poller', 'warn', __('Boost RRD updates', 'doctor'), __('Boost is enabled but has no recorded run. This can be expected before its first flush.', 'doctor'));
 	}
 
 	$age = max(0, $now - $lastRun);
 
 	if ($age > $window) {
-		return doctor_result('poller.boost', 'Poller', 'fail', 'Boost RRD updates', 'Boost last flushed ' . $age . ' seconds ago, more than twice its ' . (int) $intervalMinutes . '-minute interval. Graphs stop updating until it runs; check the Cacti log for BOOST errors.');
+		return doctor_result('poller.boost', 'Poller', 'fail', __('Boost RRD updates', 'doctor'), __('Boost last flushed %d seconds ago, more than twice its %d-minute interval. Graphs stop updating until it runs; check the Cacti log for BOOST errors.', $age, (int) $intervalMinutes, 'doctor'));
 	}
 
 	if ($maxRecords > 0 && $rows > $maxRecords) {
-		return doctor_result('poller.boost', 'Poller', 'warn', 'Boost RRD updates', 'poller_output_boost holds ' . $rows . ' rows, above the ' . $maxRecords . '-row limit that forces a flush. Boost is falling behind.');
+		return doctor_result('poller.boost', 'Poller', 'warn', __('Boost RRD updates', 'doctor'), __('poller_output_boost holds %d rows, above the %d-row limit that forces a flush. Boost is falling behind.', $rows, $maxRecords, 'doctor'));
 	}
 
-	return doctor_result('poller.boost', 'Poller', 'pass', 'Boost RRD updates', 'Boost last flushed ' . $age . ' seconds ago with ' . $rows . ' rows waiting.');
+	return doctor_result('poller.boost', 'Poller', 'pass', __('Boost RRD updates', 'doctor'), __('Boost last flushed %d seconds ago with %d rows waiting.', $age, $rows, 'doctor'));
 }
 
 /** @return array<string,mixed> */
@@ -1167,30 +1178,30 @@ function doctor_check_rrd_files($rra = null) {
 	}
 
 	if ($missing !== []) {
-		return doctor_result('filesystem.rrd_files', 'Filesystem', 'warn', 'RRD files', count($missing) . ' of ' . count($sources) . ' active data sources have no RRD file, for example ' . implode(', ', array_slice($missing, 0, 3)) . '. New data sources get one after their first poll; otherwise check the RRA directory and its permissions.');
+		return doctor_result('filesystem.rrd_files', 'Filesystem', 'warn', __('RRD files', 'doctor'), __('%d of %d active data sources have no RRD file, for example %s. New data sources get one after their first poll; otherwise check the RRA directory and its permissions.', count($missing), count($sources), implode(', ', array_slice($missing, 0, 3)), 'doctor'));
 	}
 
-	return doctor_result('filesystem.rrd_files', 'Filesystem', 'pass', 'RRD files', 'All ' . count($sources) . ' active data sources have an RRD file.');
+	return doctor_result('filesystem.rrd_files', 'Filesystem', 'pass', __('RRD files', 'doctor'), __('All %d active data sources have an RRD file.', count($sources), 'doctor'));
 }
 
 /** @return array<string,mixed> */
 function doctor_evaluate_disk_space($free, $total, $path, $warnPercent = 10, $failPercent = 2) {
 	if ($free === false || $total === false || $total <= 0) {
-		return doctor_result('filesystem.disk_space', 'Filesystem', 'warn', 'RRA disk space', 'Doctor could not measure free space for ' . $path . '.');
+		return doctor_result('filesystem.disk_space', 'Filesystem', 'warn', __('RRA disk space', 'doctor'), __('Doctor could not measure free space for %s.', $path, 'doctor'));
 	}
 
 	$percent = $free / $total * 100;
-	$detail  = round($percent, 1) . '% (' . round($free / 1073741824, 1) . ' GiB) free on the file system holding ' . $path . '.';
+	$detail  = __('%s (%s GiB) free on the file system holding %s.', round($percent, 1) . '%', round($free / 1073741824, 1), $path, 'doctor');
 
 	if ($percent < $failPercent) {
-		return doctor_result('filesystem.disk_space', 'Filesystem', 'fail', 'RRA disk space', $detail . ' RRD updates fail silently when the disk fills.');
+		return doctor_result('filesystem.disk_space', 'Filesystem', 'fail', __('RRA disk space', 'doctor'), $detail . ' ' . __('RRD updates fail silently when the disk fills.', 'doctor'));
 	}
 
 	if ($percent < $warnPercent) {
-		return doctor_result('filesystem.disk_space', 'Filesystem', 'warn', 'RRA disk space', $detail);
+		return doctor_result('filesystem.disk_space', 'Filesystem', 'warn', __('RRA disk space', 'doctor'), $detail);
 	}
 
-	return doctor_result('filesystem.disk_space', 'Filesystem', 'pass', 'RRA disk space', $detail);
+	return doctor_result('filesystem.disk_space', 'Filesystem', 'pass', __('RRA disk space', 'doctor'), $detail);
 }
 
 /** @return array<string,mixed> */
@@ -1208,21 +1219,21 @@ function doctor_check_disk_space($directory = null) {
  */
 function doctor_evaluate_clock($databaseTime, $phpTime, $warnSeconds = 5, $failSeconds = 60) {
 	if ($databaseTime === false || (int) $databaseTime <= 0) {
-		return doctor_result('database.clock', 'Database', 'warn', 'Database clock', 'Doctor could not read the database clock.');
+		return doctor_result('database.clock', 'Database', 'warn', __('Database clock', 'doctor'), __('Doctor could not read the database clock.', 'doctor'));
 	}
 
 	$drift  = abs((int) $phpTime - (int) $databaseTime);
-	$detail = 'The database and PHP clocks differ by ' . $drift . ' seconds.';
+	$detail = __('The database and PHP clocks differ by %d seconds.', $drift, 'doctor');
 
 	if ($drift > $failSeconds) {
-		return doctor_result('database.clock', 'Database', 'fail', 'Database clock', $detail . ' Poll timestamps will be misaligned; synchronise both hosts with NTP.');
+		return doctor_result('database.clock', 'Database', 'fail', __('Database clock', 'doctor'), $detail . ' ' . __('Poll timestamps will be misaligned; synchronise both hosts with NTP.', 'doctor'));
 	}
 
 	if ($drift > $warnSeconds) {
-		return doctor_result('database.clock', 'Database', 'warn', 'Database clock', $detail . ' Synchronise both hosts with NTP.');
+		return doctor_result('database.clock', 'Database', 'warn', __('Database clock', 'doctor'), $detail . ' ' . __('Synchronise both hosts with NTP.', 'doctor'));
 	}
 
-	return doctor_result('database.clock', 'Database', 'pass', 'Database clock', $detail);
+	return doctor_result('database.clock', 'Database', 'pass', __('Database clock', 'doctor'), $detail);
 }
 
 /** @return array<string,mixed> */
@@ -1240,7 +1251,7 @@ function doctor_check_spine_config($database = null, $user = null) {
 	global $database_default, $database_username;
 
 	if ((string) read_config_option('poller_type', true) !== '2') {
-		return doctor_result('poller.spine_config', 'Poller', 'pass', 'Spine configuration', 'Spine is not the configured poller.');
+		return doctor_result('poller.spine_config', 'Poller', 'pass', __('Spine configuration', 'doctor'), __('Spine is not the configured poller.', 'doctor'));
 	}
 
 	$database = $database === null ? (string) $database_default : $database;
@@ -1248,13 +1259,13 @@ function doctor_check_spine_config($database = null, $user = null) {
 	$path     = (string) read_config_option('path_spine_config', true);
 
 	if ($path === '') {
-		return doctor_result('poller.spine_config', 'Poller', 'warn', 'Spine configuration', 'path_spine_config is not set, so Spine uses its compiled-in search path and Doctor cannot verify which file it reads.');
+		return doctor_result('poller.spine_config', 'Poller', 'warn', __('Spine configuration', 'doctor'), __('path_spine_config is not set, so Spine uses its compiled-in search path and Doctor cannot verify which file it reads.', 'doctor'));
 	}
 
 	$contents = is_file($path) && is_readable($path) ? @file_get_contents($path) : false;
 
 	if ($contents === false) {
-		return doctor_result('poller.spine_config', 'Poller', 'fail', 'Spine configuration', 'The Spine configuration file is missing or unreadable: ' . $path . '.');
+		return doctor_result('poller.spine_config', 'Poller', 'fail', __('Spine configuration', 'doctor'), __('The Spine configuration file is missing or unreadable: %s.', $path, 'doctor'));
 	}
 
 	$settings = [];
@@ -1268,23 +1279,23 @@ function doctor_check_spine_config($database = null, $user = null) {
 	$problems = [];
 
 	if (isset($settings['DB_Database']) && $settings['DB_Database'] !== $database) {
-		$problems[] = 'DB_Database is ' . $settings['DB_Database'] . ' but Cacti uses ' . $database;
+		$problems[] = __('DB_Database is %s but Cacti uses %s', $settings['DB_Database'], $database, 'doctor');
 	}
 
 	if (isset($settings['DB_User']) && $settings['DB_User'] !== $user) {
-		$problems[] = 'DB_User is ' . $settings['DB_User'] . ' but Cacti uses ' . $user;
+		$problems[] = __('DB_User is %s but Cacti uses %s', $settings['DB_User'], $user, 'doctor');
 	}
 
 	$mode = fileperms($path);
 	if ($mode !== false && ($mode & 0004)) {
-		$problems[] = 'the file is world-readable and holds the database password';
+		$problems[] = __('the file is world-readable and holds the database password', 'doctor');
 	}
 
 	if ($problems !== []) {
-		return doctor_result('poller.spine_config', 'Poller', 'warn', 'Spine configuration', $path . ': ' . implode('; ', $problems) . '.');
+		return doctor_result('poller.spine_config', 'Poller', 'warn', __('Spine configuration', 'doctor'), $path . ': ' . implode('; ', $problems) . '.');
 	}
 
-	return doctor_result('poller.spine_config', 'Poller', 'pass', 'Spine configuration', $path . ' uses the same database and user as Cacti.');
+	return doctor_result('poller.spine_config', 'Poller', 'pass', __('Spine configuration', 'doctor'), __('%s uses the same database and user as Cacti.', $path, 'doctor'));
 }
 
 /**
@@ -1297,15 +1308,15 @@ function doctor_evaluate_innodb($variables) {
 
 	foreach (['innodb_file_per_table', 'innodb_doublewrite'] as $name) {
 		if (isset($variables[$name]) && !in_array(strtoupper((string) $variables[$name]), $enabled, true)) {
-			$disabled[] = $name . ' is ' . $variables[$name];
+			$disabled[] = __('%s is %s', $name, $variables[$name], 'doctor');
 		}
 	}
 
 	if ($disabled !== []) {
-		return doctor_result('database.innodb', 'Database', 'warn', 'InnoDB safety settings', implode('; ', $disabled) . '. Cacti recommends ON; doublewrite may stay off only on ZFS or similar journaling storage.');
+		return doctor_result('database.innodb', 'Database', 'warn', __('InnoDB safety settings', 'doctor'), implode('; ', $disabled) . '. ' . __('Cacti recommends ON; doublewrite may stay off only on ZFS or similar journaling storage.', 'doctor'));
 	}
 
-	return doctor_result('database.innodb', 'Database', 'pass', 'InnoDB safety settings', 'innodb_file_per_table and innodb_doublewrite are enabled.');
+	return doctor_result('database.innodb', 'Database', 'pass', __('InnoDB safety settings', 'doctor'), __('innodb_file_per_table and innodb_doublewrite are enabled.', 'doctor'));
 }
 
 /** @return array<string,mixed> */
@@ -1371,13 +1382,13 @@ function doctor_evaluate_log_lines($lines) {
 	}
 
 	if ($errors === 0) {
-		return doctor_result('logging.recent_errors', 'Logging', 'pass', 'Recent log errors', 'None of the last ' . count($lines) . ' log lines report an error.');
+		return doctor_result('logging.recent_errors', 'Logging', 'pass', __('Recent log errors', 'doctor'), __('None of the last %d log lines report an error.', count($lines), 'doctor'));
 	}
 
 	arsort($messages);
 	$top = key($messages);
 
-	return doctor_result('logging.recent_errors', 'Logging', 'warn', 'Recent log errors', $errors . ' of the last ' . count($lines) . ' log lines report an error. Most frequent (' . current($messages) . 'x): ' . substr($top, 0, 200));
+	return doctor_result('logging.recent_errors', 'Logging', 'warn', __('Recent log errors', 'doctor'), __('%d of the last %d log lines report an error. Most frequent (%dx): %s', $errors, count($lines), current($messages), substr($top, 0, 200), 'doctor'));
 }
 
 /** @return array<string,mixed> */
@@ -1386,7 +1397,7 @@ function doctor_check_recent_log_errors() {
 	$path = $path !== '' ? $path : doctor_base_path() . '/log/cacti.log';
 
 	if (!is_file($path) || !is_readable($path)) {
-		return doctor_result('logging.recent_errors', 'Logging', 'pass', 'Recent log errors', 'The Cacti log is not readable; see the Cacti log file check.');
+		return doctor_result('logging.recent_errors', 'Logging', 'pass', __('Recent log errors', 'doctor'), __('The Cacti log is not readable; see the Cacti log file check.', 'doctor'));
 	}
 
 	return doctor_evaluate_log_lines(doctor_read_log_tail($path));
@@ -1406,18 +1417,18 @@ function doctor_evaluate_devices($counts, $offenders) {
 	$recovering = (int) $counts['recovering'];
 
 	if ($total === 0) {
-		return doctor_result('devices.health', 'Devices', 'pass', 'Device availability', 'No enabled devices are configured.');
+		return doctor_result('devices.health', 'Devices', 'pass', __('Device availability', 'doctor'), __('No enabled devices are configured.', 'doctor'));
 	}
 
 	if ($down === 0 && $recovering === 0) {
-		return doctor_result('devices.health', 'Devices', 'pass', 'Device availability', 'All ' . $total . ' enabled devices are up.');
+		return doctor_result('devices.health', 'Devices', 'pass', __('Device availability', 'doctor'), __('All %d enabled devices are up.', $total, 'doctor'));
 	}
 
-	$detail = $down . ' of ' . $total . ' enabled devices are down and ' . $recovering . ' recovering.';
+	$detail = __('%d of %d enabled devices are down and %d recovering.', $down, $total, $recovering, 'doctor');
 	$listed = [];
 
 	if (!is_array($offenders)) {
-		$detail   .= ' The down devices could not be listed.';
+		$detail   .= ' ' . __('The down devices could not be listed.', 'doctor');
 		$offenders = [];
 	}
 
@@ -1425,7 +1436,7 @@ function doctor_evaluate_devices($counts, $offenders) {
 		$entry = $device['description'] . ' (' . $device['hostname'] . ')';
 
 		if ((int) $device['failed'] > 0) {
-			$entry .= ' down since ' . date('Y-m-d H:i', (int) $device['failed']);
+			$entry = __('%s down since %s', $entry, date('Y-m-d H:i', (int) $device['failed']), 'doctor');
 		}
 
 		if ($device['status_last_error'] !== '') {
@@ -1436,14 +1447,14 @@ function doctor_evaluate_devices($counts, $offenders) {
 	}
 
 	if ($listed !== []) {
-		$detail .= ' Longest down: ' . implode('; ', $listed) . '.';
+		$detail .= ' ' . __('Longest down: %s.', implode('; ', $listed), 'doctor');
 	}
 
 	if ($total >= 4 && $down * 2 > $total) {
-		return doctor_result('devices.health', 'Devices', 'fail', 'Device availability', $detail . ' With most devices down, check the poller host\'s network and SNMP settings first.');
+		return doctor_result('devices.health', 'Devices', 'fail', __('Device availability', 'doctor'), $detail . ' ' . __('With most devices down, check the poller host\'s network and SNMP settings first.', 'doctor'));
 	}
 
-	return doctor_result('devices.health', 'Devices', 'warn', 'Device availability', $detail);
+	return doctor_result('devices.health', 'Devices', 'warn', __('Device availability', 'doctor'), $detail);
 }
 
 /** @return array<string,mixed> */
@@ -1451,7 +1462,7 @@ function doctor_check_devices() {
 	$counts = db_fetch_assoc("SELECT COUNT(*) AS total, SUM(status = 1) AS down, SUM(status = 2) AS recovering FROM host WHERE disabled = '' AND deleted = ''", false);
 
 	if (!is_array($counts) || !isset($counts[0])) {
-		return doctor_result('devices.health', 'Devices', 'warn', 'Device availability', 'Doctor could not read device status from the host table.');
+		return doctor_result('devices.health', 'Devices', 'warn', __('Device availability', 'doctor'), __('Doctor could not read device status from the host table.', 'doctor'));
 	}
 
 	// Outages without a recorded failure time sort last so they cannot crowd out dated ones.
@@ -1536,8 +1547,8 @@ function doctor_state_changes($previous, $results, $includeWarnings) {
  * @return array{subject:string,body:string}
  */
 function doctor_alert_message($changes, $counts, $host) {
-	$subject = 'Cacti Doctor on ' . $host . ': ' . $counts['fail'] . ' failed, ' . $counts['warn'] . ' warnings';
-	$lines   = [count($changes) . ' Cacti Doctor checks changed status on ' . $host . '.', ''];
+	$subject = __('Cacti Doctor on %s: %d failed, %d warnings', $host, $counts['fail'], $counts['warn'], 'doctor');
+	$lines   = [__('%d Cacti Doctor checks changed status on %s.', count($changes), $host, 'doctor'), ''];
 
 	foreach ($changes as $change) {
 		$lines[] = $change['summary'] . ': ' . strtoupper($change['from']) . ' -> ' . strtoupper($change['to']);
@@ -1545,7 +1556,7 @@ function doctor_alert_message($changes, $counts, $host) {
 	}
 
 	$lines[] = '';
-	$lines[] = 'Totals: ' . $counts['pass'] . ' passed, ' . $counts['warn'] . ' warnings, ' . $counts['fail'] . ' failed.';
+	$lines[] = __('Totals: %d passed, %d warnings, %d failed.', $counts['pass'], $counts['warn'], $counts['fail'], 'doctor');
 
 	return ['subject' => $subject, 'body' => implode("\n", $lines) . "\n"];
 }
@@ -1717,7 +1728,7 @@ function doctor_build_bundle($results, $context, $logLines) {
  */
 function doctor_write_bundle($path, $contents) {
 	if (file_exists($path)) {
-		return 'Refusing to overwrite ' . $path . '.';
+		return __('Refusing to overwrite %s.', $path, 'doctor');
 	}
 
 	// The umask makes the file private from the moment it exists.
@@ -1726,7 +1737,7 @@ function doctor_write_bundle($path, $contents) {
 	umask($umask);
 
 	if ($handle === false) {
-		return 'Cannot create ' . $path . '.';
+		return __('Cannot create %s.', $path, 'doctor');
 	}
 
 	$stat = fstat($handle);
@@ -1734,13 +1745,13 @@ function doctor_write_bundle($path, $contents) {
 	if ($stat === false || ($stat['mode'] & 0077) !== 0) {
 		fclose($handle);
 
-		return 'Could not make ' . $path . ' private.';
+		return __('Could not make %s private.', $path, 'doctor');
 	}
 
 	$written = fwrite($handle, $contents);
 	fclose($handle);
 
-	return $written === strlen($contents) ? '' : 'Writing ' . $path . ' failed.';
+	return $written === strlen($contents) ? '' : __('Writing %s failed.', $path, 'doctor');
 }
 
 /** @return array<string,string> */
@@ -1772,8 +1783,8 @@ function doctor_plugin_version() {
 function doctor_available_repairs() {
 	return [
 		'runtime_directories' => [
-			'label'       => 'Repair runtime directories',
-			'description' => 'Create missing cache, log, and RRA directories and add owner read/write/execute permission without removing existing permissions.'
+			'label'       => __('Repair runtime directories', 'doctor'),
+			'description' => __('Create missing cache, log, and RRA directories and add owner read/write/execute permission without removing existing permissions.', 'doctor')
 		]
 	];
 }
@@ -1785,14 +1796,14 @@ function doctor_available_repairs() {
  */
 function doctor_run_repair($repair, $privileged = null) {
 	if (!isset(doctor_available_repairs()[$repair])) {
-		return doctor_result('repair.' . $repair, 'Repair', 'fail', 'Unknown repair', 'The requested repair is not allow-listed.');
+		return doctor_result('repair.' . $repair, 'Repair', 'fail', __('Unknown repair', 'doctor'), __('The requested repair is not allow-listed.', 'doctor'));
 	}
 
 	if ($repair === 'runtime_directories') {
 		return doctor_repair_runtime_directories(null, null, $privileged);
 	}
 
-	return doctor_result('repair.' . $repair, 'Repair', 'fail', 'Repair unavailable', 'No repair handler is registered.');
+	return doctor_result('repair.' . $repair, 'Repair', 'fail', __('Repair unavailable', 'doctor'), __('No repair handler is registered.', 'doctor'));
 }
 
 /**
@@ -1806,11 +1817,11 @@ function doctor_repair_runtime_directories($base = null, $directories = null, $p
 
 	// Directories created by root are unwritable for the web server and poller.
 	if ($privileged) {
-		return doctor_result('repair.runtime_directories', 'Repair', 'fail', 'Repair runtime directories', 'Repairs are refused while running as root. Run Doctor as the Cacti poller user.');
+		return doctor_result('repair.runtime_directories', 'Repair', 'fail', __('Repair runtime directories', 'doctor'), __('Repairs are refused while running as root. Run Doctor as the Cacti poller user.', 'doctor'));
 	}
 
 	if ($base === false) {
-		return doctor_result('repair.runtime_directories', 'Repair', 'fail', 'Repair runtime directories', 'The Cacti base directory cannot be resolved.');
+		return doctor_result('repair.runtime_directories', 'Repair', 'fail', __('Repair runtime directories', 'doctor'), __('The Cacti base directory cannot be resolved.', 'doctor'));
 	}
 
 	$prefix = rtrim($base, '/') . '/';
@@ -1824,38 +1835,75 @@ function doctor_repair_runtime_directories($base = null, $directories = null, $p
 		$parent = realpath(dirname($path));
 
 		if ($parent === false || ($parent !== $base && strpos($parent . '/', $prefix) !== 0)) {
-			$errors[] = $name . ': path is outside the Cacti installation';
+			$errors[] = __('%s: path is outside the Cacti installation', $name, 'doctor');
 			continue;
 		}
 
 		if (is_link($path)) {
-			$errors[] = $name . ': symbolic links are not repaired';
+			$errors[] = __('%s: symbolic links are not repaired', $name, 'doctor');
 			continue;
 		}
 
 		if (!file_exists($path) && !mkdir($path, 0775, false)) {
-			$errors[] = $name . ': directory creation failed';
+			$errors[] = __('%s: directory creation failed', $name, 'doctor');
 			continue;
 		}
 
 		$mode = fileperms($path);
 		if ($mode === false || (!is_writable($path) && !chmod($path, ($mode & 0777) | 0700))) {
-			$errors[] = $name . ': could not add owner permissions';
+			$errors[] = __('%s: could not add owner permissions', $name, 'doctor');
 			continue;
 		}
 
 		clearstatcache();
 
 		if (!is_dir($path) || !is_writable($path)) {
-			$errors[] = $name . ': still not a writable directory';
+			$errors[] = __('%s: still not a writable directory', $name, 'doctor');
 		}
 	}
 
 	if ($errors !== []) {
-		return doctor_result('repair.runtime_directories', 'Repair', 'fail', 'Repair runtime directories', implode('; ', $errors));
+		return doctor_result('repair.runtime_directories', 'Repair', 'fail', __('Repair runtime directories', 'doctor'), implode('; ', $errors));
 	}
 
-	return doctor_result('repair.runtime_directories', 'Repair', 'pass', 'Repair runtime directories', 'Runtime directories now exist and are writable by the current process.');
+	return doctor_result('repair.runtime_directories', 'Repair', 'pass', __('Repair runtime directories', 'doctor'), __('Runtime directories now exist and are writable by the current process.', 'doctor'));
+}
+
+/**
+ * Check categories stay English in reports, JSON, and metrics so scripts keep
+ * working in every language; only screens translate them.
+ */
+function doctor_category_label($category) {
+	$labels = [
+		'Cacti'           => __('Cacti', 'doctor'),
+		'Database'        => __('Database', 'doctor'),
+		'Database health' => __('Database health', 'doctor'),
+		'Devices'         => __('Devices', 'doctor'),
+		'Doctor'          => __('Doctor', 'doctor'),
+		'Filesystem'      => __('Filesystem', 'doctor'),
+		'Logging'         => __('Logging', 'doctor'),
+		'PHP'             => __('PHP', 'doctor'),
+		'Poller'          => __('Poller', 'doctor'),
+		'Prerequisites'   => __('Prerequisites', 'doctor'),
+		'Repair'          => __('Repair', 'doctor'),
+		'Security'        => __('Security', 'doctor')
+	];
+
+	return isset($labels[$category]) ? $labels[$category] : (string) $category;
+}
+
+/**
+ * Status keywords stay lowercase and English in machine output; screens show
+ * a translated label.
+ */
+function doctor_status_label($status) {
+	$labels = [
+		'pass' => __('PASS', 'doctor'),
+		'warn' => __('WARN', 'doctor'),
+		'fail' => __('FAIL', 'doctor')
+	];
+
+	return isset($labels[$status]) ? $labels[$status] : strtoupper((string) $status);
 }
 
 /**
