@@ -27,7 +27,7 @@ generate() {
 	# shellcheck disable=SC2046
 	xgettext --no-wrap --add-location=file --from-code=UTF-8 --copyright-holder="Thomas Vincent" \
 		--package-name="doctor" --package-version="$VERSION" --msgid-bugs-address="https://github.com/somethingwithproof/plugin_doctor/issues" \
-		-F -L PHP -k__gettext -k__ -k__n:1,2 -k__x:1c,2 -k__xn:1c,2,3 -k__esc -k__esc_n:1,2 -k__esc_x:1c,2 -k__esc_xn:1c,2,3 -k__date \
+		-F -L PHP -k__gettext -k__ -k__n:1,2 -k__x:1c,2 -k__xn:1c,2,3 -k__esc -k__esc_n:1,2 -k__esc_x:1c,2 -k__esc_xn:1c,2,3 -k__date -kdoctor_n_ -kdoctor_repair_message \
 		-o "$1" $(find . -maxdepth 2 -name '*.php' -not -path './tests/*' -not -path './vendor/*' | sort)
 
 	sed -e '1s/.*/# SPDX-License-Identifier: GPL-2.0-or-later/' \

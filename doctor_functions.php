@@ -1794,16 +1794,49 @@ function doctor_available_repairs() {
  *
  * @return array<string,mixed>
  */
+/**
+ * Marks an English message for the translation template without translating
+ * it, for text that is logged in English and translated only where shown.
+ */
+function doctor_n_($message) {
+	return $message;
+}
+
+/**
+ * A repair message twice: translated for the screen and English for the
+ * Cacti log, so log lines read the same in every language.
+ *
+ * @return array{text: string, log: string}
+ */
+function doctor_repair_message($format) {
+	$args    = func_get_args();
+	$english = count($args) > 1 ? vsprintf($format, array_slice($args, 1)) : $format;
+	$args[]  = 'doctor';
+
+	return ['text' => call_user_func_array('__', $args), 'log' => $english];
+}
+
+/**
+ * @param list<array{text: string, log: string}> $messages
+ * @return array<string,mixed> a result whose 'log' holds the English detail
+ */
+function doctor_repair_result($id, $status, $summary, $messages) {
+	$result        = doctor_result($id, 'Repair', $status, $summary, implode('; ', array_map(function ($m) { return $m['text']; }, $messages)));
+	$result['log'] = implode('; ', array_map(function ($m) { return $m['log']; }, $messages));
+
+	return $result;
+}
+
 function doctor_run_repair($repair, $privileged = null) {
 	if (!isset(doctor_available_repairs()[$repair])) {
-		return doctor_result('repair.' . $repair, 'Repair', 'fail', __('Unknown repair', 'doctor'), __('The requested repair is not allow-listed.', 'doctor'));
+		return doctor_repair_result('repair.' . $repair, 'fail', __('Unknown repair', 'doctor'), [doctor_repair_message('The requested repair is not allow-listed.')]);
 	}
 
 	if ($repair === 'runtime_directories') {
 		return doctor_repair_runtime_directories(null, null, $privileged);
 	}
 
-	return doctor_result('repair.' . $repair, 'Repair', 'fail', __('Repair unavailable', 'doctor'), __('No repair handler is registered.', 'doctor'));
+	return doctor_repair_result('repair.' . $repair, 'fail', __('Repair unavailable', 'doctor'), [doctor_repair_message('No repair handler is registered.')]);
 }
 
 /**
@@ -1817,11 +1850,11 @@ function doctor_repair_runtime_directories($base = null, $directories = null, $p
 
 	// Directories created by root are unwritable for the web server and poller.
 	if ($privileged) {
-		return doctor_result('repair.runtime_directories', 'Repair', 'fail', __('Repair runtime directories', 'doctor'), __('Repairs are refused while running as root. Run Doctor as the Cacti poller user.', 'doctor'));
+		return doctor_repair_result('repair.runtime_directories', 'fail', __('Repair runtime directories', 'doctor'), [doctor_repair_message('Repairs are refused while running as root. Run Doctor as the Cacti poller user.')]);
 	}
 
 	if ($base === false) {
-		return doctor_result('repair.runtime_directories', 'Repair', 'fail', __('Repair runtime directories', 'doctor'), __('The Cacti base directory cannot be resolved.', 'doctor'));
+		return doctor_repair_result('repair.runtime_directories', 'fail', __('Repair runtime directories', 'doctor'), [doctor_repair_message('The Cacti base directory cannot be resolved.')]);
 	}
 
 	$prefix = rtrim($base, '/') . '/';
@@ -1835,38 +1868,38 @@ function doctor_repair_runtime_directories($base = null, $directories = null, $p
 		$parent = realpath(dirname($path));
 
 		if ($parent === false || ($parent !== $base && strpos($parent . '/', $prefix) !== 0)) {
-			$errors[] = __('%s: path is outside the Cacti installation', $name, 'doctor');
+			$errors[] = doctor_repair_message('%s: path is outside the Cacti installation', $name);
 			continue;
 		}
 
 		if (is_link($path)) {
-			$errors[] = __('%s: symbolic links are not repaired', $name, 'doctor');
+			$errors[] = doctor_repair_message('%s: symbolic links are not repaired', $name);
 			continue;
 		}
 
 		if (!file_exists($path) && !mkdir($path, 0775, false)) {
-			$errors[] = __('%s: directory creation failed', $name, 'doctor');
+			$errors[] = doctor_repair_message('%s: directory creation failed', $name);
 			continue;
 		}
 
 		$mode = fileperms($path);
 		if ($mode === false || (!is_writable($path) && !chmod($path, ($mode & 0777) | 0700))) {
-			$errors[] = __('%s: could not add owner permissions', $name, 'doctor');
+			$errors[] = doctor_repair_message('%s: could not add owner permissions', $name);
 			continue;
 		}
 
 		clearstatcache();
 
 		if (!is_dir($path) || !is_writable($path)) {
-			$errors[] = __('%s: still not a writable directory', $name, 'doctor');
+			$errors[] = doctor_repair_message('%s: still not a writable directory', $name);
 		}
 	}
 
 	if ($errors !== []) {
-		return doctor_result('repair.runtime_directories', 'Repair', 'fail', __('Repair runtime directories', 'doctor'), implode('; ', $errors));
+		return doctor_repair_result('repair.runtime_directories', 'fail', __('Repair runtime directories', 'doctor'), $errors);
 	}
 
-	return doctor_result('repair.runtime_directories', 'Repair', 'pass', __('Repair runtime directories', 'doctor'), __('Runtime directories now exist and are writable by the current process.', 'doctor'));
+	return doctor_repair_result('repair.runtime_directories', 'pass', __('Repair runtime directories', 'doctor'), [doctor_repair_message('Runtime directories now exist and are writable by the current process.')]);
 }
 
 /**

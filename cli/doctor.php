@@ -92,7 +92,8 @@ if (isset($options['repair'])) {
 	}
 
 	$repairResult = doctor_run_repair((string) $options['repair']);
-	cacti_log('Doctor CLI repair ' . str_replace(["\r", "\n"], ' ', (string) $options['repair']) . ': ' . $repairResult['status'] . ' - ' . $repairResult['detail'], false, 'DOCTOR');
+	cacti_log('Doctor CLI repair ' . str_replace(["\r", "\n"], ' ', (string) $options['repair']) . ': ' . $repairResult['status'] . ' - ' . (isset($repairResult['log']) ? $repairResult['log'] : $repairResult['detail']), false, 'DOCTOR');
+	unset($repairResult['log']);
 
 	if ($format === 'json') {
 		print json_encode($repairResult, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES) . PHP_EOL;

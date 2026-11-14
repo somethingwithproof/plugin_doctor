@@ -138,6 +138,19 @@ function doctor_check_schedule($now) {
 	return doctor_result('doctor.schedule', 'Doctor', 'pass', __('Scheduled report freshness', 'doctor'), $detail . ' ' . __('A completed diagnostic run is recent; this does not mean all checks passed.', 'doctor'));
 }
 
+/**
+ * The alert-state errors are thrown in English for the log; the report shows
+ * them translated. Any other error text is shown as it is.
+ */
+function doctor_alert_error_text($message) {
+	$known = [
+		'Doctor alert state is invalid. Restore doctor_alert_pending from backup before retrying.',
+		'Doctor alert transitions are invalid; no email was sent.',
+	];
+
+	return in_array($message, $known, true) ? __($message, 'doctor') : $message;
+}
+
 /** Only compact transitions are retained, never logs, recipients, or credentials. */
 function doctor_alert_pending() {
 	$pending = doctor_read_json_setting('doctor_alert_pending');
@@ -146,13 +159,13 @@ function doctor_alert_pending() {
 	}
 	if (!isset($pending['events'], $pending['attempts'], $pending['next']) || !is_array($pending['events']) || count($pending['events']) > 64
 		|| !is_int($pending['attempts']) || $pending['attempts'] < 0 || $pending['attempts'] > 3 || !is_int($pending['next']) || $pending['next'] < 0) {
-		throw new RuntimeException(__('Doctor alert state is invalid. Restore doctor_alert_pending from backup before retrying.', 'doctor'));
+		throw new RuntimeException(doctor_n_('Doctor alert state is invalid. Restore doctor_alert_pending from backup before retrying.'));
 	}
 	foreach ($pending['events'] as $id => $event) {
 		if (!is_string($id) || !preg_match('/\A[a-z0-9_.]+\z/', $id) || !is_array($event) || count($event) !== 3
 			|| !isset($event[0], $event[1], $event[2]) || !in_array($event[0], ['new', 'pass', 'warn', 'fail'], true)
 			|| !in_array($event[1], ['pass', 'warn', 'fail'], true) || !is_int($event[2])) {
-			throw new RuntimeException(__('Doctor alert transitions are invalid; no email was sent.', 'doctor'));
+			throw new RuntimeException(doctor_n_('Doctor alert transitions are invalid; no email was sent.'));
 		}
 	}
 	return $pending;
@@ -162,7 +175,7 @@ function doctor_check_alert_delivery($now) {
 	try {
 		$pending = doctor_alert_pending();
 	} catch (Exception $error) {
-		return doctor_result('doctor.alert_delivery', 'Doctor', 'warn', __('Alert delivery', 'doctor'), $error->getMessage(), '', 'not_assessed');
+		return doctor_result('doctor.alert_delivery', 'Doctor', 'warn', __('Alert delivery', 'doctor'), doctor_alert_error_text($error->getMessage()), '', 'not_assessed');
 	}
 	if ($pending !== []) {
 		$detail = __('%d check transitions await delivery; attempts: %d of 3.', count($pending['events']), $pending['attempts'], 'doctor');
