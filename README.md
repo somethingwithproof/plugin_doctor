@@ -16,6 +16,8 @@
 
 Cacti Doctor is a Cacti plugin that diagnoses an installation in one pass and applies small repairs only when an administrator asks for them.
 
+**Status: in development, before 1.0.** The current version is 0.5.1, but its GitHub release is still a draft, so no release archive is published yet. Work after 0.5.1, including the translations, is listed under Unreleased in [CHANGELOG.md](CHANGELOG.md) and is on `develop`.
+
 ## Screenshots
 
 Diagnostics and scheduling settings in an isolated Cacti 1.2.31 demonstration
@@ -86,11 +88,12 @@ contents, checksums, and rollback instructions.
 
 ## Installation
 
-Download `doctor-VERSION.tar.gz` or `doctor-VERSION.zip` and `SHA256SUMS` from
+Once a release is published, download `doctor-VERSION.tar.gz` or `doctor-VERSION.zip` and `SHA256SUMS` from
 [GitHub Releases](https://github.com/somethingwithproof/plugin_doctor/releases).
 Verify the archive's SHA-256 checksum, then extract its `doctor/` directory into
 Cacti's `plugins/` directory. These are the installable packages; GitHub's
-automatic source archives have a different directory name.
+automatic source archives have a different directory name. Until the first
+release is published, install from a source checkout.
 
 For source checkouts:
 
@@ -194,7 +197,7 @@ composer test
 
 The tests replace the Cacti functions Doctor calls with small stand-ins in `tests/CactiStubs.php`, so they run without a Cacti installation.
 
-GitHub Actions runs three layers of checks on every push and pull request:
+GitHub Actions runs four kinds of checks on every push and pull request:
 
 - `php -l` on every PHP file under PHP 5.4, 5.6, 7.0, 7.1, 7.4, and 8.0 through 8.4.
 - The unit suite on PHP 8.2, 8.3, and 8.4.
