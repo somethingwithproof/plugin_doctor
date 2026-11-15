@@ -1,6 +1,19 @@
 #!/bin/sh
+# SPDX-FileCopyrightText: 2026 Thomas Vincent <thomasvincent@gmail.com>
 # SPDX-License-Identifier: GPL-2.0-or-later
-# SPDX-FileCopyrightText: 2026 Thomas Vincent
+#
+# This file is part of plugin_doctor, a plugin for Cacti.
+# https://github.com/somethingwithproof/plugin_doctor
+#
+# This program is free software; you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the Free
+# Software Foundation; either version 2 of the License, or (at your option)
+# any later version.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+# more details.
 #
 # Regenerate locales/po/cacti.pot from every runtime PHP file at depth 2 or less (tests and vendor excluded), the
 # scan the Cacti plugin gettext builds use, merge it into each catalog
@@ -30,6 +43,8 @@ generate() {
 		-F -L PHP -k__gettext -k__ -k__n:1,2 -k__x:1c,2 -k__xn:1c,2,3 -k__esc -k__esc_n:1,2 -k__esc_x:1c,2 -k__esc_xn:1c,2,3 -k__date -kdoctor_n_ -kdoctor_repair_message \
 		-o "$1" $(find . -maxdepth 2 -name '*.php' -not -path './tests/*' -not -path './vendor/*' | sort)
 
+	# The two sed expressions below write the template's own SPDX header.
+	# REUSE-IgnoreStart
 	sed -e '1s/.*/# SPDX-License-Identifier: GPL-2.0-or-later/' \
 		-e '2s/.*/# SPDX-FileCopyrightText: 2026 Thomas Vincent/' \
 		-e '3,4d' \
@@ -38,6 +53,7 @@ generate() {
 		-e 's/LANGUAGE <LL@li.org>/Thomas Vincent <thomasvincent@gmail.com>/' \
 		-e 's/CHARSET/UTF-8/' \
 		-e '/^"POT-Creation-Date:/d' "$1" > "$1.tmp" && mv "$1.tmp" "$1"
+	# REUSE-IgnoreEnd
 }
 
 if [ "${1:-}" = "--check" ]; then

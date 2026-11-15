@@ -1,0 +1,11 @@
+# Files that cannot carry an inline header (data, documentation, images,
+# translation catalogs, generated files). Source files carry their own
+# SPDX header.
+version = 1
+
+[[annotations]]
+path = ["**/*.md", "**/*.json", "**/*.lock", "**/*.png", "**/*.po", "**/*.pot", "**/*.mo",
+        "LICENSE", "INFO", ".gitignore", "locales/**"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2026 Thomas Vincent <thomasvincent@gmail.com>"
+SPDX-License-Identifier = "GPL-2.0-or-later"
