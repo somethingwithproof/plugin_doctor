@@ -16,7 +16,7 @@
 
 Cacti Doctor is a Cacti plugin that diagnoses an installation in one pass and applies small repairs only when an administrator asks for them.
 
-**Status: in development, before 1.0.** The current version is 0.5.1, but its GitHub release is still a draft, so no release archive is published yet. Work after 0.5.1, including the translations, is listed under Unreleased in [CHANGELOG.md](CHANGELOG.md) and is on `develop`.
+**Status: in development, before 1.0.** The latest release is [0.5.1](https://github.com/somethingwithproof/plugin_doctor/releases/tag/v0.5.1). Work after 0.5.1, including the translations, is listed under Unreleased in [CHANGELOG.md](CHANGELOG.md) and is on `develop`.
 
 ## Screenshots
 
@@ -88,12 +88,12 @@ contents, checksums, and rollback instructions.
 
 ## Installation
 
-Once a release is published, download `doctor-VERSION.tar.gz` or `doctor-VERSION.zip` and `SHA256SUMS` from
+Download `doctor-VERSION.tar.gz` or `doctor-VERSION.zip` and `SHA256SUMS` from
 [GitHub Releases](https://github.com/somethingwithproof/plugin_doctor/releases).
 Verify the archive's SHA-256 checksum, then extract its `doctor/` directory into
 Cacti's `plugins/` directory. These are the installable packages; GitHub's
-automatic source archives have a different directory name. Until the first
-release is published, install from a source checkout.
+automatic source archives have a different directory name. To run unreleased
+work from `develop`, install from a source checkout.
 
 For source checkouts:
 
