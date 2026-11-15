@@ -197,7 +197,7 @@ composer test
 
 The tests replace the Cacti functions Doctor calls with small stand-ins in `tests/CactiStubs.php`, so they run without a Cacti installation.
 
-GitHub Actions runs three layers of checks on every push and pull request:
+GitHub Actions runs four kinds of checks on every push and pull request:
 
 - `php -l` on every PHP file under PHP 5.4, 5.6, 7.0, 7.1, 7.4, and 8.0 through 8.4.
 - The unit suite on PHP 8.2, 8.3, and 8.4.
