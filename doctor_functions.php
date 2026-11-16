@@ -1940,7 +1940,8 @@ function doctor_status_label($status) {
 	$labels = [
 		'pass' => __('PASS', 'doctor'),
 		'warn' => __('WARN', 'doctor'),
-		'fail' => __('FAIL', 'doctor')
+		'fail' => __('FAIL', 'doctor'),
+		'unknown' => __('UNKNOWN', 'doctor')
 	];
 
 	return isset($labels[$status]) ? $labels[$status] : strtoupper((string) $status);

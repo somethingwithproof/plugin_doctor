@@ -33,38 +33,21 @@ msgstr "%s を書き込みました。共有する前に内容を確認してく
 msgid "Refusing to repair without --yes."
 msgstr "--yes が指定されていないため、修復を実行しません。"
 
-#: doctor.php setup.php
-msgid "Cacti Doctor"
-msgstr "Cacti Doctor"
+#: doctor_access.php doctor_functions.php
+msgid "Device availability"
+msgstr "デバイスの可用性"
 
-#: doctor.php
-#, php-format
-msgid "Installation health: %d passed, %d warnings, %d failed"
-msgstr "インストールの健全性：%d 件合格、%d 件警告、%d 件失敗"
+#: doctor_access.php
+msgid "Device permissions could not be evaluated."
+msgstr "デバイスの権限を評価できませんでした。"
 
-#: doctor.php
-msgid "Action"
-msgstr "アクション"
+#: doctor_access.php
+msgid "The configured PHP CLI cannot run Doctor checks."
+msgstr "設定された PHP CLI では Doctor のチェックを実行できません。"
 
-#: doctor.php
-msgid "Category"
-msgstr "カテゴリ"
-
-#: doctor.php
-msgid "Check"
-msgstr "チェック"
-
-#: doctor.php
-msgid "Details"
-msgstr "詳細"
-
-#: doctor.php
-msgid "Status"
-msgstr "状態"
-
-#: doctor.php
-msgid "Diagnostics are read-only. Repairs only run after an authenticated, CSRF-protected POST and are logged to the Cacti log."
-msgstr "診断は読み取り専用です。修復は、認証済みで CSRF 保護された POST の後にのみ実行され、Cacti ログに記録されます。"
+#: doctor_access.php
+msgid "Doctor checks failed or exceeded their time limit. Review the Doctor log."
+msgstr "Doctor のチェックが失敗したか、制限時間を超えました。Doctor のログを確認してください。"
 
 #: doctor_functions.php
 msgid "At least 24 hours since server startup and FLUSH STATUS. Counters are cumulative and may have different reset histories; confirm trends during a representative workload before tuning."
@@ -846,10 +829,6 @@ msgid "The Cacti log is not readable; see the Cacti log file check."
 msgstr "Cacti ログを読み取れません。Cacti ログファイルのチェックを参照してください。"
 
 #: doctor_functions.php
-msgid "Device availability"
-msgstr "デバイスの可用性"
-
-#: doctor_functions.php
 msgid "No enabled devices are configured."
 msgstr "有効なデバイスが設定されていません。"
 
@@ -1041,6 +1020,10 @@ msgstr "警告"
 msgid "FAIL"
 msgstr "失敗"
 
+#: doctor_functions.php
+msgid "UNKNOWN"
+msgstr "不明"
+
 #: doctor_scheduling.php
 msgid "Scheduled checks are disabled. Enable them in Settings > Doctor to retain samples and alert on changes."
 msgstr "スケジュールチェックが無効です。サンプルを保持し、変更時にアラートを送るには、設定 > Doctor で有効にしてください。"
@@ -1126,6 +1109,104 @@ msgstr "Cacti Doctor：保持された状態変更 %d 件"
 #: doctor_scheduling.php
 msgid "Doctor schedule is already running or the database lock is unavailable."
 msgstr "Doctor のスケジュールはすでに実行中か、データベースロックを利用できません。"
+
+#: doctor_web.php
+msgid "Confirm repair"
+msgstr "修復を確認"
+
+#: doctor_web.php
+msgid "Cancel"
+msgstr "キャンセル"
+
+#: doctor_web.php
+#, php-format
+msgid "Last observation: %s UTC."
+msgstr "最終観測: %s UTC。"
+
+#: doctor_web.php
+msgid "No completed diagnostic report is available."
+msgstr "完了した診断レポートはありません。"
+
+#: doctor_web.php
+msgid "Health is unknown: observations are missing or stale."
+msgstr "状態は不明です。観測データがないか、古くなっています。"
+
+#: doctor_web.php
+msgid "Run diagnostic checks"
+msgstr "診断チェックを実行"
+
+#: doctor_web.php
+msgid "Doctor settings"
+msgstr "Doctor の設定"
+
+#: doctor_web.php setup.php
+msgid "Cacti Doctor"
+msgstr "Cacti Doctor"
+
+#: doctor_web.php
+#, php-format
+msgid "Installation health: %d passed, %d warnings, %d failed"
+msgstr "インストールの健全性：%d 件合格、%d 件警告、%d 件失敗"
+
+#: doctor_web.php
+msgid "Category"
+msgstr "カテゴリ"
+
+#: doctor_web.php
+msgid "Check"
+msgstr "チェック"
+
+#: doctor_web.php
+msgid "Status"
+msgstr "状態"
+
+#: doctor_web.php
+msgid "Action"
+msgstr "アクション"
+
+#: doctor_web.php
+msgid "Details"
+msgstr "詳細"
+
+#: doctor_web.php
+msgid "Acknowledged; health status unchanged."
+msgstr "確認済み。稼働状態は変更されません。"
+
+#: doctor_web.php
+msgid "Acknowledge"
+msgstr "確認済みにする"
+
+#: doctor_web.php
+msgid "Recent scheduled checks"
+msgstr "最近の定期チェック"
+
+#: doctor_web.php
+msgid "Failed"
+msgstr "失敗"
+
+#: doctor_web.php
+msgid "Observation (UTC)"
+msgstr "観測日時 (UTC)"
+
+#: doctor_web.php
+msgid "Passed"
+msgstr "合格"
+
+#: doctor_web.php
+msgid "Warnings"
+msgstr "警告"
+
+#: setup.php
+msgid "Doctor Administrator"
+msgstr "Doctor 管理者"
+
+#: setup.php
+msgid "Doctor Operator"
+msgstr "Doctor オペレーター"
+
+#: setup.php
+msgid "Doctor Viewer"
+msgstr "Doctor 閲覧者"
 
 #: setup.php
 msgid "Utilities"
@@ -1238,3 +1319,6 @@ msgstr "Cacti ログサイズの警告（MB）"
 #: setup.php
 msgid "Warn when the Cacti log grows beyond this size, which usually means log rotation is not running."
 msgstr "Cacti ログがこのサイズを超えて増えたときに警告します。通常は、ログローテーションが実行されていないことを意味します。"
+
+#~ msgid "Diagnostics are read-only. Repairs only run after an authenticated, CSRF-protected POST and are logged to the Cacti log."
+#~ msgstr "診断は読み取り専用です。修復は、認証済みで CSRF 保護された POST の後にのみ実行され、Cacti ログに記録されます。"

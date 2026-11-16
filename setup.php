@@ -19,7 +19,21 @@
 
 function plugin_doctor_install() {
 	doctor_setup_hooks();
-	api_plugin_register_realm('doctor', 'doctor.php', __('Cacti Doctor', 'doctor'), 1);
+	doctor_setup_realms();
+}
+
+/** Keep the original realm ID and grants as Administrator during upgrades. */
+function doctor_setup_realms() {
+	api_plugin_register_realm('doctor', 'doctor.php', __('Doctor Administrator', 'doctor'), 1);
+	api_plugin_register_realm('doctor', 'doctor_operator.php', __('Doctor Operator', 'doctor'), 0);
+	api_plugin_register_realm('doctor', 'doctor_view.php', __('Doctor Viewer', 'doctor'), 0);
+	// Cacti 1.2.20 returns no value from registration; verify persisted realms.
+	foreach (['doctor.php', 'doctor_operator.php', 'doctor_view.php'] as $file) {
+		if (!db_fetch_cell_prepared('SELECT id FROM plugin_realms WHERE plugin = ? AND file = ?', ['doctor', $file])) {
+			return false;
+		}
+	}
+	return true;
 }
 
 /**
@@ -43,7 +57,7 @@ function plugin_doctor_uninstall() {
 function plugin_doctor_check_config() {
 	doctor_setup_hooks();
 
-	return true;
+	return doctor_setup_realms();
 }
 
 function plugin_doctor_upgrade() {
@@ -73,7 +87,15 @@ function doctor_config_arrays() {
 		set_config_option('doctor_hooks_version', $version);
 	}
 
-	$menu[__('Utilities')]['plugins/doctor/doctor.php'] = __('Cacti Doctor', 'doctor');
+	require_once __DIR__ . '/doctor_access.php';
+	if (read_config_option('doctor_access_version') !== '1' && doctor_setup_realms()) {
+		set_config_option('doctor_access_version', '1');
+	}
+	$level = doctor_access_level();
+	$pages = [1 => 'doctor_view.php', 2 => 'doctor_operator.php', 3 => 'doctor.php'];
+	if (isset($pages[$level])) {
+		$menu[__('Utilities')]['plugins/doctor/' . $pages[$level]] = __('Cacti Doctor', 'doctor');
+	}
 
 	if (function_exists('auth_augment_roles')) {
 		auth_augment_roles(__('System Administration'), ['doctor.php']);
@@ -94,6 +116,11 @@ function doctor_threshold_setting($name, $description, $default) {
 
 function doctor_config_settings() {
 	global $tabs, $settings;
+
+	require_once __DIR__ . '/doctor_access.php';
+	if (PHP_SAPI !== 'cli' && !doctor_can_configure()) {
+		return;
+	}
 
 	$tabs['doctor'] = __('Doctor', 'doctor');
 
@@ -159,9 +186,14 @@ function doctor_draw_navigation_text($nav) {
 		'level'   => '1'
 	];
 
+	$nav['doctor_view.php:'] = $nav['doctor.php:'];
+	$nav['doctor_view.php:']['url'] = 'doctor_view.php';
+	$nav['doctor_operator.php:'] = $nav['doctor.php:'];
+	$nav['doctor_operator.php:']['url'] = 'doctor_operator.php';
+
 	return $nav;
 }
 
 function doctor_is_console_page($url) {
-	return strpos($url, 'doctor.php') !== false;
+	return preg_match('/doctor(?:_view|_operator)?\.php/', $url) === 1;
 }

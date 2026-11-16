@@ -104,7 +104,7 @@ cd /path/to/cacti/plugins
 git clone https://github.com/somethingwithproof/plugin_doctor.git doctor
 ```
 
-Install and enable **Cacti Doctor** from **Configuration > Plugin Management**, then grant the **Cacti Doctor** realm to administrators who should have access. The report appears under **Utilities > Cacti Doctor**.
+Install and enable **Cacti Doctor** from **Configuration > Plugin Management**, then grant a **Doctor Viewer**, **Doctor Operator**, or **Doctor Administrator** realm through Cacti user or group permissions. Existing **Cacti Doctor** grants retain Administrator access after upgrade. The report appears under **Utilities > Cacti Doctor**.
 
 ## Languages
 
@@ -115,6 +115,24 @@ Machine-readable output is never translated: check IDs, JSON keys and status val
 A Latin American Spanish catalog (`es-419`) ships as well, but neither Cacti 1.2 nor Cacti 1.3 has a Latin American Spanish locale to select, so it takes effect only when Cacti adds one. Until then, choose Spanish (`es-ES`).
 
 Cacti loads a plugin's catalog from `plugins/doctor/locales/LC_MESSAGES/<locale>.mo` with `doctor` as the text domain, on 1.2.x and 1.3 alike (1.3 resolves the plugin directory through its configurable plugins path).
+
+## Access levels
+
+| Realm | Capabilities |
+|---|---|
+| Doctor Viewer | Read the latest scheduled check statuses, observation time, freshness and recent aggregate history. No diagnostic commands, raw details, configuration or repairs. |
+| Doctor Operator | Run a diagnostic report with a 120-second process limit, inspect redacted details, and acknowledge findings. No settings changes or repairs. |
+| Doctor Administrator | Operator capabilities plus the existing allow-listed repair and Doctor settings. Repairs and settings also require Cacti's Settings/System Utilities realm. |
+
+The Utilities menu opens the page for the highest Doctor realm granted to the user, including group grants. New Viewer and Operator realms receive no automatic grants. The original realm ID remains attached to `doctor.php` as Administrator, preserving existing user and group access.
+
+Viewer data comes from scheduled checks. Enable scheduling before granting Viewer access; missing or overdue observations display **unknown**, never healthy. History retains the last 20 scheduled aggregate counts and excludes device status. Operators start fresh diagnostics explicitly; ordinary page refreshes use their session's last report.
+
+Device details and totals use the current user's device permissions. Log excerpts additionally require Cacti's View Cacti Log realm. Secrets are masked before diagnostic details are stored in the web session or rendered. CLI access continues to be governed by the operating-system account.
+
+Acknowledgments are personal and audited. They apply only to the same finding and evidence; changed evidence requires a new acknowledgment. They never change pass/warn/fail status, suppress alerts, or mark a failing check healthy. This is separate from the accepted-warning proposal in issue #38.
+
+Every action requires POST and a valid CSRF token. Repairs present a separate confirmation page with a non-submitting Cancel link, and record the acting user and result in the Cacti log.
 
 ## Command line
 

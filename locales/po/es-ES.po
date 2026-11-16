@@ -33,38 +33,21 @@ msgstr "Se escribió %s. Revíselo antes de compartirlo; los valores que siguen 
 msgid "Refusing to repair without --yes."
 msgstr "Se rechaza reparar sin --yes."
 
-#: doctor.php setup.php
-msgid "Cacti Doctor"
-msgstr "Cacti Doctor"
+#: doctor_access.php doctor_functions.php
+msgid "Device availability"
+msgstr "Disponibilidad de dispositivos"
 
-#: doctor.php
-#, php-format
-msgid "Installation health: %d passed, %d warnings, %d failed"
-msgstr "Estado de la instalación: %d correctas, %d con avisos, %d con fallos"
+#: doctor_access.php
+msgid "Device permissions could not be evaluated."
+msgstr "No se pudieron evaluar los permisos de los dispositivos."
 
-#: doctor.php
-msgid "Action"
-msgstr "Acción"
+#: doctor_access.php
+msgid "The configured PHP CLI cannot run Doctor checks."
+msgstr "La CLI de PHP configurada no puede ejecutar las comprobaciones de Doctor."
 
-#: doctor.php
-msgid "Category"
-msgstr "Categoría"
-
-#: doctor.php
-msgid "Check"
-msgstr "Comprobación"
-
-#: doctor.php
-msgid "Details"
-msgstr "Detalles"
-
-#: doctor.php
-msgid "Status"
-msgstr "Estado"
-
-#: doctor.php
-msgid "Diagnostics are read-only. Repairs only run after an authenticated, CSRF-protected POST and are logged to the Cacti log."
-msgstr "Los diagnósticos son de solo lectura. Las reparaciones solo se ejecutan tras un POST autenticado y protegido contra CSRF, y se registran en el registro de Cacti."
+#: doctor_access.php
+msgid "Doctor checks failed or exceeded their time limit. Review the Doctor log."
+msgstr "Las comprobaciones de Doctor fallaron o superaron el límite de tiempo. Revise el registro de Doctor."
 
 #: doctor_functions.php
 msgid "At least 24 hours since server startup and FLUSH STATUS. Counters are cumulative and may have different reset histories; confirm trends during a representative workload before tuning."
@@ -846,10 +829,6 @@ msgid "The Cacti log is not readable; see the Cacti log file check."
 msgstr "El registro de Cacti no se puede leer; consulte la comprobación del archivo de registro de Cacti."
 
 #: doctor_functions.php
-msgid "Device availability"
-msgstr "Disponibilidad de dispositivos"
-
-#: doctor_functions.php
 msgid "No enabled devices are configured."
 msgstr "No hay dispositivos habilitados configurados."
 
@@ -1041,6 +1020,10 @@ msgstr "AVISO"
 msgid "FAIL"
 msgstr "FALLO"
 
+#: doctor_functions.php
+msgid "UNKNOWN"
+msgstr "DESCONOCIDO"
+
 #: doctor_scheduling.php
 msgid "Scheduled checks are disabled. Enable them in Settings > Doctor to retain samples and alert on changes."
 msgstr "Las comprobaciones programadas están deshabilitadas. Habilítelas en Opciones > Doctor para conservar muestras y alertar de los cambios."
@@ -1126,6 +1109,104 @@ msgstr "Cacti Doctor: %d cambios de estado conservados"
 #: doctor_scheduling.php
 msgid "Doctor schedule is already running or the database lock is unavailable."
 msgstr "La programación de Doctor ya se está ejecutando o el bloqueo de la base de datos no está disponible."
+
+#: doctor_web.php
+msgid "Confirm repair"
+msgstr "Confirmar reparación"
+
+#: doctor_web.php
+msgid "Cancel"
+msgstr "Cancelar"
+
+#: doctor_web.php
+#, php-format
+msgid "Last observation: %s UTC."
+msgstr "Última observación: %s UTC."
+
+#: doctor_web.php
+msgid "No completed diagnostic report is available."
+msgstr "No hay ningún informe de diagnóstico completado."
+
+#: doctor_web.php
+msgid "Health is unknown: observations are missing or stale."
+msgstr "Estado desconocido: faltan observaciones o están desactualizadas."
+
+#: doctor_web.php
+msgid "Run diagnostic checks"
+msgstr "Ejecutar comprobaciones de diagnóstico"
+
+#: doctor_web.php
+msgid "Doctor settings"
+msgstr "Configuración de Doctor"
+
+#: doctor_web.php setup.php
+msgid "Cacti Doctor"
+msgstr "Cacti Doctor"
+
+#: doctor_web.php
+#, php-format
+msgid "Installation health: %d passed, %d warnings, %d failed"
+msgstr "Estado de la instalación: %d correctas, %d con avisos, %d con fallos"
+
+#: doctor_web.php
+msgid "Category"
+msgstr "Categoría"
+
+#: doctor_web.php
+msgid "Check"
+msgstr "Comprobación"
+
+#: doctor_web.php
+msgid "Status"
+msgstr "Estado"
+
+#: doctor_web.php
+msgid "Action"
+msgstr "Acción"
+
+#: doctor_web.php
+msgid "Details"
+msgstr "Detalles"
+
+#: doctor_web.php
+msgid "Acknowledged; health status unchanged."
+msgstr "Reconocido; estado de salud sin cambios."
+
+#: doctor_web.php
+msgid "Acknowledge"
+msgstr "Reconocer"
+
+#: doctor_web.php
+msgid "Recent scheduled checks"
+msgstr "Comprobaciones programadas recientes"
+
+#: doctor_web.php
+msgid "Failed"
+msgstr "Fallidas"
+
+#: doctor_web.php
+msgid "Observation (UTC)"
+msgstr "Observación (UTC)"
+
+#: doctor_web.php
+msgid "Passed"
+msgstr "Correctas"
+
+#: doctor_web.php
+msgid "Warnings"
+msgstr "Advertencias"
+
+#: setup.php
+msgid "Doctor Administrator"
+msgstr "Administrador de Doctor"
+
+#: setup.php
+msgid "Doctor Operator"
+msgstr "Operador de Doctor"
+
+#: setup.php
+msgid "Doctor Viewer"
+msgstr "Observador de Doctor"
 
 #: setup.php
 msgid "Utilities"
@@ -1238,3 +1319,6 @@ msgstr "Aviso de tamaño del registro de Cacti (MB)"
 #: setup.php
 msgid "Warn when the Cacti log grows beyond this size, which usually means log rotation is not running."
 msgstr "Avisar cuando el registro de Cacti supere este tamaño, lo que normalmente indica que la rotación del registro no se está ejecutando."
+
+#~ msgid "Diagnostics are read-only. Repairs only run after an authenticated, CSRF-protected POST and are logged to the Cacti log."
+#~ msgstr "Los diagnósticos son de solo lectura. Las reparaciones solo se ejecutan tras un POST autenticado y protegido contra CSRF, y se registran en el registro de Cacti."

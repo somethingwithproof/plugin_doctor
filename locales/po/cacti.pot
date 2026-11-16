@@ -32,37 +32,20 @@ msgstr ""
 msgid "Refusing to repair without --yes."
 msgstr ""
 
-#: doctor.php setup.php
-msgid "Cacti Doctor"
+#: doctor_access.php doctor_functions.php
+msgid "Device availability"
 msgstr ""
 
-#: doctor.php
-#, php-format
-msgid "Installation health: %d passed, %d warnings, %d failed"
+#: doctor_access.php
+msgid "Device permissions could not be evaluated."
 msgstr ""
 
-#: doctor.php
-msgid "Action"
+#: doctor_access.php
+msgid "The configured PHP CLI cannot run Doctor checks."
 msgstr ""
 
-#: doctor.php
-msgid "Category"
-msgstr ""
-
-#: doctor.php
-msgid "Check"
-msgstr ""
-
-#: doctor.php
-msgid "Details"
-msgstr ""
-
-#: doctor.php
-msgid "Status"
-msgstr ""
-
-#: doctor.php
-msgid "Diagnostics are read-only. Repairs only run after an authenticated, CSRF-protected POST and are logged to the Cacti log."
+#: doctor_access.php
+msgid "Doctor checks failed or exceeded their time limit. Review the Doctor log."
 msgstr ""
 
 #: doctor_functions.php
@@ -845,10 +828,6 @@ msgid "The Cacti log is not readable; see the Cacti log file check."
 msgstr ""
 
 #: doctor_functions.php
-msgid "Device availability"
-msgstr ""
-
-#: doctor_functions.php
 msgid "No enabled devices are configured."
 msgstr ""
 
@@ -1040,6 +1019,10 @@ msgstr ""
 msgid "FAIL"
 msgstr ""
 
+#: doctor_functions.php
+msgid "UNKNOWN"
+msgstr ""
+
 #: doctor_scheduling.php
 msgid "Scheduled checks are disabled. Enable them in Settings > Doctor to retain samples and alert on changes."
 msgstr ""
@@ -1124,6 +1107,104 @@ msgstr ""
 
 #: doctor_scheduling.php
 msgid "Doctor schedule is already running or the database lock is unavailable."
+msgstr ""
+
+#: doctor_web.php
+msgid "Confirm repair"
+msgstr ""
+
+#: doctor_web.php
+msgid "Cancel"
+msgstr ""
+
+#: doctor_web.php
+#, php-format
+msgid "Last observation: %s UTC."
+msgstr ""
+
+#: doctor_web.php
+msgid "No completed diagnostic report is available."
+msgstr ""
+
+#: doctor_web.php
+msgid "Health is unknown: observations are missing or stale."
+msgstr ""
+
+#: doctor_web.php
+msgid "Run diagnostic checks"
+msgstr ""
+
+#: doctor_web.php
+msgid "Doctor settings"
+msgstr ""
+
+#: doctor_web.php setup.php
+msgid "Cacti Doctor"
+msgstr ""
+
+#: doctor_web.php
+#, php-format
+msgid "Installation health: %d passed, %d warnings, %d failed"
+msgstr ""
+
+#: doctor_web.php
+msgid "Category"
+msgstr ""
+
+#: doctor_web.php
+msgid "Check"
+msgstr ""
+
+#: doctor_web.php
+msgid "Status"
+msgstr ""
+
+#: doctor_web.php
+msgid "Action"
+msgstr ""
+
+#: doctor_web.php
+msgid "Details"
+msgstr ""
+
+#: doctor_web.php
+msgid "Acknowledged; health status unchanged."
+msgstr ""
+
+#: doctor_web.php
+msgid "Acknowledge"
+msgstr ""
+
+#: doctor_web.php
+msgid "Recent scheduled checks"
+msgstr ""
+
+#: doctor_web.php
+msgid "Failed"
+msgstr ""
+
+#: doctor_web.php
+msgid "Observation (UTC)"
+msgstr ""
+
+#: doctor_web.php
+msgid "Passed"
+msgstr ""
+
+#: doctor_web.php
+msgid "Warnings"
+msgstr ""
+
+#: setup.php
+msgid "Doctor Administrator"
+msgstr ""
+
+#: setup.php
+msgid "Doctor Operator"
+msgstr ""
+
+#: setup.php
+msgid "Doctor Viewer"
 msgstr ""
 
 #: setup.php

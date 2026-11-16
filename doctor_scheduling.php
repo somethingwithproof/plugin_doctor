@@ -257,6 +257,13 @@ function doctor_run_scheduled($results, $now) {
 		$pending['next'] = $now;
 		doctor_store_setting('doctor_alert_pending', json_encode($pending));
 	}
+	// Retain only aggregate history; never persist device details or log excerpts for viewers.
+	$history = doctor_read_json_setting('doctor_report_history');
+	$summary = doctor_result_counts(array_values(array_filter($tracked, function ($result) {
+		return $result['id'] !== 'devices.health';
+	})));
+	$history[] = [$now, $summary['pass'], $summary['warn'], $summary['fail']];
+	doctor_store_setting('doctor_report_history', json_encode(array_slice($history, -20)));
 	doctor_store_setting('doctor_state', doctor_state_encode($tracked));
 	doctor_store_setting('doctor_last_run', (string) $now);
 	foreach ($changes as $change) {

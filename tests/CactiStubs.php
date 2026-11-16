@@ -60,6 +60,9 @@ if (!function_exists('db_fetch_cell')) {
 
 if (!function_exists('db_fetch_cell_prepared')) {
 	function db_fetch_cell_prepared($sql, $params = [], $col_name = '', $log = true) {
+		if ($sql === 'SELECT id FROM plugin_realms WHERE plugin = ? AND file = ?') {
+			return isset($GLOBALS['doctor_test_realms'][$params[1]]) ? $GLOBALS['doctor_test_realms'][$params[1]] : false;
+		}
 		return isset($GLOBALS['doctor_test_cells'][$sql]) ? $GLOBALS['doctor_test_cells'][$sql] : false;
 	}
 }
@@ -132,4 +135,18 @@ function doctor_test_executable($directory, $name, $body) {
 	chmod($path, 0700);
 
 	return $path;
+}
+
+
+function is_realm_allowed($realm, $check_user = false) {
+	return in_array($realm, isset($GLOBALS['doctor_test_grants']) ? $GLOBALS['doctor_test_grants'] : [], true);
+}
+
+function get_allowed_devices($sql_where = '', $sql_order = 'description', $sql_limit = '', &$total_rows = 0, $user_id = 0, $device_id = 0) {
+	return isset($GLOBALS['doctor_test_allowed_devices']) ? $GLOBALS['doctor_test_allowed_devices'] : [];
+}
+
+function api_plugin_register_realm($plugin, $file, $display, $admin = true) {
+	$GLOBALS['doctor_test_registrations'][] = [$plugin, $file, $display, $admin];
+	return true;
 }
