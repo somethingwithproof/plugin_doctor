@@ -1,4 +1,4 @@
-<!-- Source: README.md; SHA256: 12ff26d4b9997094224d80de5e3693e2cb6a6a611853f48094d83c2591a640ff -->
+<!-- Source: README.md; SHA256: 1bbfbdbc38598edfb3fb738b511d90b79c13b5db149c1498e68f68e7ba86f459 -->
 
 <!-- translations:start -->
 [English](../../../README.md) | [简体中文](../zh-CN/README.md) | [हिन्दी](README.md) | [Español (España)](../es-ES/README.md) | [Español (Latinoamérica)](../es-419/README.md) | [العربية](../ar-SA/README.md)
@@ -22,7 +22,7 @@
 
 Cacti Doctor एक Cacti प्लगइन है जो एक ही बार में इंस्टॉलेशन का निदान करता है और केवल प्रशासक के अनुरोध पर छोटे सुधार लागू करता है।
 
-**स्थिति: विकास में, 1.0 से पहले।** नवीनतम रिलीज़ [0.5.1](https://github.com/somethingwithproof/plugin_doctor/releases/tag/v0.5.1) है। 0.5.1 के बाद का काम, अनुवाद सहित, [CHANGELOG.md](../../../CHANGELOG.md) के Unreleased भाग में सूचीबद्ध है और `develop` पर है।
+**स्थिति: विकास में, 1.0 से पहले।** नवीनतम रिलीज़ [0.5.1](https://github.com/somethingwithproof/plugin_doctor/releases/tag/v0.5.1) है। 0.5.1 के बाद के काम में भूमिका के अनुसार पहुँच, निर्देशित निदान, सीमित दायरे की RRD ताज़गी जाँच, मरम्मत पूर्वावलोकन और ऑडिट इतिहास, स्वीकृत चेतावनी अपवाद तथा अनुवाद शामिल हैं। ये बदलाव [CHANGELOG.md](../../../CHANGELOG.md) के Unreleased भाग में दर्ज हैं और develop पर हैं।
 
 <a id="screenshots"></a>
 ## स्क्रीनशॉट
@@ -53,6 +53,20 @@ Cacti समस्याएँ सामान्यतः लक्षण क�
 | पोलर | प्रकार और अंतराल, मुख्य पोलर के पिछली बार पूरा होने से बीता समय, अंतराल की तुलना में अवधि, RRD तक न पहुँचा आउटपुट, रिपोर्ट देना बंद कर चुके रिमोट पोलर, रुका Boost और अलग डेटाबेस की ओर जाता Spine कॉन्फ़िगरेशन |
 
 हर जाँच का स्थिर ID है, जैसे `database.timezone` या `binary.rrdtool`, ताकि स्क्रिप्ट अलग-अलग परिणाम पहचान सकें।
+
+<a id="code-and-test-map"></a>
+## कोड और परीक्षण का मानचित्र
+
+| व्यवहार | कार्यान्वयन | इस रिपॉज़िटरी में परीक्षण प्रमाण |
+|---|---|---|
+| निदान जाँच और स्थिर रिपोर्ट ID | [doctor_functions.php](../../../doctor_functions.php) | [DoctorFunctionsTest.php](../../../tests/DoctorFunctionsTest.php), [AssertDoctorReport.php](../../../tests/ci/AssertDoctorReport.php) |
+| भूमिका के अनुसार पहुँच और संवेदनशील डेटा छिपाई गई वेब रिपोर्ट | [doctor_access.php](../../../doctor_access.php), [doctor_web.php](../../../doctor_web.php) | [AccessTest.php](../../../tests/AccessTest.php), [WebAccessTest.php](../../../tests/WebAccessTest.php) |
+| लक्षणों की निर्देशित जाँच | [doctor_diagnosis.php](../../../doctor_diagnosis.php) | [DiagnosisTest.php](../../../tests/DiagnosisTest.php) |
+| RRD ताज़गी और स्थगित लेखन का प्रबंधन | [doctor_rrd.php](../../../doctor_rrd.php) | [RrdFreshnessTest.php](../../../tests/RrdFreshnessTest.php) |
+| मरम्मत पूर्वावलोकन, ऑडिट इतिहास और स्वीकृत चेतावनियाँ | [doctor_workflows.php](../../../doctor_workflows.php), [doctor_operator.php](../../../doctor_operator.php) | [WorkflowTest.php](../../../tests/WorkflowTest.php) |
+| निर्धारित जाँच और अलर्ट स्थिति बदलाव | [doctor_scheduling.php](../../../doctor_scheduling.php) | [DoctorFunctionsTest.php](../../../tests/DoctorFunctionsTest.php), [WorkflowTest.php](../../../tests/WorkflowTest.php) |
+
+ये संदर्भ कार्यान्वयन और परीक्षण कवरेज बताते हैं; इनका अर्थ यह नहीं है कि वर्तमान संशोधन के सभी CI कार्य सफल हुए हैं। जिस संशोधन को तैनात करना है, उसके workflow run की जाँच करें।
 
 <a id="database-health-advice"></a>
 ## डेटाबेस स्वास्थ्य सलाह
@@ -134,7 +148,7 @@ Viewer डेटा निर्धारित जाँचों से आत
 
 डिवाइस विवरण और कुल गिनती वर्तमान उपयोगकर्ता की डिवाइस अनुमतियाँ उपयोग करते हैं। लॉग अंश के लिए Cacti का View Cacti Log क्षेत्र भी चाहिए। निदान विवरण वेब सत्र में रखने या दिखाने से पहले गोपनीय मान छिपाए जाते हैं। CLI पहुँच ऑपरेटिंग-सिस्टम खाते के अधीन रहती है।
 
-पावती व्यक्तिगत और ऑडिट की गई है। यह केवल उसी निष्कर्ष और प्रमाण पर लागू है; बदले प्रमाण के लिए नई पावती चाहिए। इससे pass/warn/fail स्थिति नहीं बदलती, अलर्ट नहीं दबते और विफल जाँच स्वस्थ नहीं बनती। यह मुद्दा #38 के स्वीकृत-चेतावनी प्रस्ताव से अलग है।
+पावती व्यक्तिगत और ऑडिट की गई है। यह केवल उसी निष्कर्ष और प्रमाण पर लागू है; बदले प्रमाण के लिए नई पावती चाहिए। इससे pass/warn/fail स्थिति नहीं बदलती, अलर्ट नहीं दबते और विफल जाँच स्वस्थ नहीं बनती। यह स्वीकृत चेतावनी अपवादों से अलग है, जो अवलोकित स्थिति बदले बिना अलर्ट नीति को प्रभावित करते हैं और नीचे वर्णित हैं।
 
 हर कार्रवाई के लिए POST और वैध CSRF टोकन चाहिए। मरम्मत अलग पुष्टि पृष्ठ दिखाती है, जिसमें फ़ॉर्म न भेजने वाला Cancel लिंक है, और Cacti लॉग में कार्रवाई करने वाला उपयोगकर्ता तथा परिणाम दर्ज होते हैं।
 

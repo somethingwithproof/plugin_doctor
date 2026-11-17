@@ -1,4 +1,4 @@
-<!-- Source: README.md; SHA256: 12ff26d4b9997094224d80de5e3693e2cb6a6a611853f48094d83c2591a640ff -->
+<!-- Source: README.md; SHA256: 1bbfbdbc38598edfb3fb738b511d90b79c13b5db149c1498e68f68e7ba86f459 -->
 
 <!-- translations:start -->
 [English](../../../README.md) | [简体中文](../zh-CN/README.md) | [हिन्दी](../hi-IN/README.md) | [Español (España)](../es-ES/README.md) | [Español (Latinoamérica)](README.md) | [العربية](../ar-SA/README.md)
@@ -22,7 +22,7 @@
 
 Cacti Doctor es un complemento de Cacti que diagnostica una instalación en una sola pasada y aplica pequeñas reparaciones únicamente cuando un administrador las solicita.
 
-**Estado: en desarrollo, antes de la versión 1.0.** La última versión publicada es [0.5.1](https://github.com/somethingwithproof/plugin_doctor/releases/tag/v0.5.1). El trabajo posterior a 0.5.1, incluidas las traducciones, figura en la sección Unreleased de [CHANGELOG.md](../../../CHANGELOG.md) y está en `develop`.
+**Estado: en desarrollo, antes de la versión 1.0.** La última versión publicada es [0.5.1](https://github.com/somethingwithproof/plugin_doctor/releases/tag/v0.5.1). El trabajo desde 0.5.1 incluye acceso según el rol, diagnóstico guiado, comprobaciones de actualidad de RRD con alcance limitado, vistas previas de reparaciones e historial de auditoría, excepciones de advertencias aceptadas y traducciones. Estos cambios figuran en Unreleased de [CHANGELOG.md](../../../CHANGELOG.md) y están en develop.
 
 <a id="screenshots"></a>
 ## Capturas de pantalla
@@ -53,6 +53,20 @@ Los problemas de Cacti suelen aparecer como síntomas: gráficos vacíos, un son
 | Sondeador | Tipo e intervalo, tiempo desde la última finalización del principal, duración frente al intervalo, salida que nunca llegó a RRD, sondeadores remotos que dejaron de informar, Boost detenido y configuración de Spine que apunta a otra base de datos |
 
 Cada comprobación tiene un ID estable, como `database.timezone` o `binary.rrdtool`, para que los scripts identifiquen resultados individuales.
+
+<a id="code-and-test-map"></a>
+## Mapa del código y las pruebas
+
+| Comportamiento | Implementación | Evidencias de pruebas en este repositorio |
+|---|---|---|
+| Comprobaciones de diagnóstico e ID estables de los informes | [doctor_functions.php](../../../doctor_functions.php) | [DoctorFunctionsTest.php](../../../tests/DoctorFunctionsTest.php), [AssertDoctorReport.php](../../../tests/ci/AssertDoctorReport.php) |
+| Acceso según el rol e informes web con datos sensibles ocultos | [doctor_access.php](../../../doctor_access.php), [doctor_web.php](../../../doctor_web.php) | [AccessTest.php](../../../tests/AccessTest.php), [WebAccessTest.php](../../../tests/WebAccessTest.php) |
+| Investigaciones guiadas por síntomas | [doctor_diagnosis.php](../../../doctor_diagnosis.php) | [DiagnosisTest.php](../../../tests/DiagnosisTest.php) |
+| Actualidad de RRD y gestión de escrituras diferidas | [doctor_rrd.php](../../../doctor_rrd.php) | [RrdFreshnessTest.php](../../../tests/RrdFreshnessTest.php) |
+| Vistas previas de reparaciones, historial de auditoría y advertencias aceptadas | [doctor_workflows.php](../../../doctor_workflows.php), [doctor_operator.php](../../../doctor_operator.php) | [WorkflowTest.php](../../../tests/WorkflowTest.php) |
+| Comprobaciones programadas y transiciones de alertas | [doctor_scheduling.php](../../../doctor_scheduling.php) | [DoctorFunctionsTest.php](../../../tests/DoctorFunctionsTest.php), [WorkflowTest.php](../../../tests/WorkflowTest.php) |
+
+Estas referencias identifican la implementación y la cobertura de pruebas; no afirman que todos los trabajos de CI hayan pasado para la revisión actual. Consulte la ejecución del flujo de trabajo de la revisión que vaya a desplegar.
 
 <a id="database-health-advice"></a>
 ## Consejos sobre la salud de la base de datos
@@ -134,7 +148,7 @@ Los datos de Viewer proceden de comprobaciones programadas. Active la programaci
 
 Los detalles y totales de dispositivos usan los permisos del usuario actual. Los extractos de registro requieren además el ámbito View Cacti Log. Los secretos se ocultan antes de almacenar detalles en la sesión web o mostrarlos. El acceso CLI sigue regido por la cuenta del sistema operativo.
 
-Los acuses son personales y auditados. Solo se aplican al mismo hallazgo y evidencia; si cambia la evidencia se necesita otro acuse. Nunca cambian el estado pass/warn/fail, suprimen alertas ni hacen saludable una comprobación fallida. Esto es independiente de la propuesta de advertencias aceptadas de la incidencia #38.
+Los acuses son personales y auditados. Solo se aplican al mismo hallazgo y evidencia; si cambia la evidencia se necesita otro acuse. Nunca cambian el estado pass/warn/fail, suprimen alertas ni hacen saludable una comprobación fallida. Esto es independiente de las excepciones de advertencias aceptadas, que afectan a la política de alertas sin cambiar el estado observado y se describen más abajo.
 
 Cada acción requiere POST y un token CSRF válido. Las reparaciones presentan una página de confirmación separada con un enlace Cancel que no envía formularios, y registran el usuario actuante y el resultado en el registro de Cacti.
 

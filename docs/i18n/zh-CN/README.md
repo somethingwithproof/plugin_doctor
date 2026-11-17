@@ -1,4 +1,4 @@
-<!-- Source: README.md; SHA256: 12ff26d4b9997094224d80de5e3693e2cb6a6a611853f48094d83c2591a640ff -->
+<!-- Source: README.md; SHA256: 1bbfbdbc38598edfb3fb738b511d90b79c13b5db149c1498e68f68e7ba86f459 -->
 
 <!-- translations:start -->
 [English](../../../README.md) | [简体中文](README.md) | [हिन्दी](../hi-IN/README.md) | [Español (España)](../es-ES/README.md) | [Español (Latinoamérica)](../es-419/README.md) | [العربية](../ar-SA/README.md)
@@ -22,7 +22,7 @@
 
 Cacti Doctor 是一个 Cacti 插件，一次运行即可诊断整个安装环境，并仅在管理员明确要求时执行小范围修复。
 
-**状态：开发中，尚未到 1.0。** 最新发布版本为 [0.5.1](https://github.com/somethingwithproof/plugin_doctor/releases/tag/v0.5.1)。0.5.1 之后的工作（包括翻译）列在 [CHANGELOG.md](../../../CHANGELOG.md) 的 Unreleased 部分，位于 `develop` 分支。
+**状态：开发中，尚未到 1.0。** 最新发布版本为 [0.5.1](https://github.com/somethingwithproof/plugin_doctor/releases/tag/v0.5.1)。0.5.1 以来的工作包括按角色限定的访问权限、引导式诊断、限定范围的 RRD 新鲜度检查、修复预览和审计历史、已接受警告的例外规则以及翻译。这些变更列于 [CHANGELOG.md](../../../CHANGELOG.md) 的 Unreleased 部分，位于 develop 分支。
 
 <a id="screenshots"></a>
 ## 截图
@@ -53,6 +53,20 @@ Cacti 问题通常表现为症状：空白图表、轮询器停止、插件无�
 | 轮询器 | 类型和间隔、主轮询器上次完成时间、运行时长与间隔的关系、未写入 RRD 的输出、停止报告的远程轮询器、停滞的 Boost，以及指向不同数据库的 Spine 配置 |
 
 每项检查都有稳定 ID，例如 `database.timezone` 或 `binary.rrdtool`，脚本可据此识别单项结果。
+
+<a id="code-and-test-map"></a>
+## 代码与测试对照
+
+| 行为 | 实现 | 本仓库中的测试依据 |
+|---|---|---|
+| 诊断检查及稳定的报告 ID | [doctor_functions.php](../../../doctor_functions.php) | [DoctorFunctionsTest.php](../../../tests/DoctorFunctionsTest.php), [AssertDoctorReport.php](../../../tests/ci/AssertDoctorReport.php) |
+| 按角色限定的访问及脱敏的 Web 报告 | [doctor_access.php](../../../doctor_access.php), [doctor_web.php](../../../doctor_web.php) | [AccessTest.php](../../../tests/AccessTest.php), [WebAccessTest.php](../../../tests/WebAccessTest.php) |
+| 按症状引导的排查 | [doctor_diagnosis.php](../../../doctor_diagnosis.php) | [DiagnosisTest.php](../../../tests/DiagnosisTest.php) |
+| RRD 新鲜度及延迟写入处理 | [doctor_rrd.php](../../../doctor_rrd.php) | [RrdFreshnessTest.php](../../../tests/RrdFreshnessTest.php) |
+| 修复预览、审计历史及已接受的警告 | [doctor_workflows.php](../../../doctor_workflows.php), [doctor_operator.php](../../../doctor_operator.php) | [WorkflowTest.php](../../../tests/WorkflowTest.php) |
+| 计划检查及告警状态转换 | [doctor_scheduling.php](../../../doctor_scheduling.php) | [DoctorFunctionsTest.php](../../../tests/DoctorFunctionsTest.php), [WorkflowTest.php](../../../tests/WorkflowTest.php) |
+
+这些引用指出实现及测试覆盖范围，并不表示当前修订的每项 CI 作业都已通过。请检查您计划部署的修订对应的工作流运行结果。
 
 <a id="database-health-advice"></a>
 ## 数据库健康建议
@@ -134,7 +148,7 @@ Viewer 数据来自定时检查。授予 Viewer 访问前请启用调度；观�
 
 设备详情和总计按当前用户的设备权限过滤。日志摘录还要求 Cacti 的 View Cacti Log 权限域。诊断详情存入 Web 会话或渲染前会遮蔽秘密。CLI 访问仍由操作系统账户控制。
 
-确认记录是个人专用且会审计。它们仅适用于相同发现和证据；证据变化需要重新确认。确认不会更改 pass/warn/fail 状态、抑制告警或将失败检查标为健康。这与议题 #38 中的接受警告方案分开。
+确认记录是个人专用且会审计。它们仅适用于相同发现和证据；证据变化需要重新确认。确认不会更改 pass/warn/fail 状态、抑制告警或将失败检查标为健康。这与下文所述的已接受警告例外规则不同；后者影响告警策略，但不改变观测状态。
 
 每项操作都需要 POST 和有效 CSRF 令牌。修复会显示单独确认页，Cancel 链接不会提交表单，并在 Cacti 日志中记录操作者和结果。
 

@@ -1,4 +1,4 @@
-<!-- Source: README.md; SHA256: 12ff26d4b9997094224d80de5e3693e2cb6a6a611853f48094d83c2591a640ff -->
+<!-- Source: README.md; SHA256: 1bbfbdbc38598edfb3fb738b511d90b79c13b5db149c1498e68f68e7ba86f459 -->
 
 <!-- translations:start -->
 [English](../../../README.md) | [简体中文](../zh-CN/README.md) | [हिन्दी](../hi-IN/README.md) | [Español (España)](../es-ES/README.md) | [Español (Latinoamérica)](../es-419/README.md) | [العربية](README.md)
@@ -22,7 +22,7 @@
 
 Cacti Doctor إضافة لـ Cacti تشخّص التثبيت في مرور واحد وتطبّق إصلاحات صغيرة فقط عندما يطلبها مسؤول.
 
-**الحالة: قيد التطوير، قبل 1.0.** أحدث إصدار هو [0.5.1](https://github.com/somethingwithproof/plugin_doctor/releases/tag/v0.5.1). العمل اللاحق للإصدار 0.5.1، بما فيه الترجمات، مدرج تحت Unreleased في [CHANGELOG.md](../../../CHANGELOG.md) وموجود على `develop`.
+**الحالة: قيد التطوير، قبل 1.0.** أحدث إصدار هو [0.5.1](https://github.com/somethingwithproof/plugin_doctor/releases/tag/v0.5.1). يشمل العمل منذ 0.5.1 الوصول المحدد بالأدوار والتشخيص الموجّه وفحوص حداثة RRD محددة النطاق ومعاينات الإصلاح وسجل التدقيق واستثناءات التحذيرات المقبولة والترجمات. تُتابع هذه التغييرات تحت Unreleased في [CHANGELOG.md](../../../CHANGELOG.md) وهي موجودة على develop.
 
 <a id="screenshots"></a>
 ## لقطات الشاشة
@@ -53,6 +53,20 @@ Cacti Doctor إضافة لـ Cacti تشخّص التثبيت في مرور وا�
 | المستطلع | النوع والفاصل، الوقت منذ اكتمال المستطلع الرئيسي، مدة التشغيل مقارنة بالفاصل، إخراج لم يصل إلى RRD، مستطلعات بعيدة توقفت عن الإبلاغ، Boost متوقف، وإعداد Spine يشير إلى قاعدة بيانات مختلفة |
 
 لكل فحص معرّف ثابت مثل `database.timezone` أو `binary.rrdtool`، كي تستطيع البرامج النصية تمييز النتائج الفردية.
+
+<a id="code-and-test-map"></a>
+## خريطة الكود والاختبارات
+
+| السلوك | التنفيذ | أدلة الاختبار في هذا المستودع |
+|---|---|---|
+| فحوص التشخيص ومعرّفات التقارير الثابتة | [doctor_functions.php](../../../doctor_functions.php) | [DoctorFunctionsTest.php](../../../tests/DoctorFunctionsTest.php), [AssertDoctorReport.php](../../../tests/ci/AssertDoctorReport.php) |
+| الوصول المحدد بالأدوار وتقارير الويب المحجوبة البيانات الحساسة | [doctor_access.php](../../../doctor_access.php), [doctor_web.php](../../../doctor_web.php) | [AccessTest.php](../../../tests/AccessTest.php), [WebAccessTest.php](../../../tests/WebAccessTest.php) |
+| استقصاءات موجّهة للأعراض | [doctor_diagnosis.php](../../../doctor_diagnosis.php) | [DiagnosisTest.php](../../../tests/DiagnosisTest.php) |
+| حداثة RRD ومعالجة الكتابة المؤجلة | [doctor_rrd.php](../../../doctor_rrd.php) | [RrdFreshnessTest.php](../../../tests/RrdFreshnessTest.php) |
+| معاينات الإصلاح وسجل التدقيق والتحذيرات المقبولة | [doctor_workflows.php](../../../doctor_workflows.php), [doctor_operator.php](../../../doctor_operator.php) | [WorkflowTest.php](../../../tests/WorkflowTest.php) |
+| الفحوص المجدولة وانتقالات التنبيه | [doctor_scheduling.php](../../../doctor_scheduling.php) | [DoctorFunctionsTest.php](../../../tests/DoctorFunctionsTest.php), [WorkflowTest.php](../../../tests/WorkflowTest.php) |
+
+تحدد هذه المراجع التنفيذ وتغطية الاختبارات؛ ولا تعني أن كل مهمة CI قد نجحت للمراجعة الحالية. افحص تشغيل سير العمل للمراجعة التي تنوي نشرها.
 
 <a id="database-health-advice"></a>
 ## نصائح صحة قاعدة البيانات
@@ -134,7 +148,7 @@ git clone https://github.com/somethingwithproof/plugin_doctor.git doctor
 
 تستخدم تفاصيل الأجهزة وإجمالياتها أذونات أجهزة المستخدم الحالي. وتتطلب مقتطفات السجل أيضًا نطاق View Cacti Log. تُحجب الأسرار قبل تخزين التفاصيل التشخيصية في جلسة الويب أو عرضها. يبقى وصول CLI خاضعًا لحساب نظام التشغيل.
 
-الإقرارات شخصية وخاضعة للتدقيق. تنطبق فقط على النتيجة والأدلة نفسيهما؛ وتستدعي الأدلة المتغيرة إقرارًا جديدًا. لا تغيّر حالة pass/warn/fail، ولا تكتم التنبيهات، ولا تعتبر فحصًا فاشلًا سليمًا. هذا منفصل عن اقتراح قبول التحذيرات في المسألة #38.
+الإقرارات شخصية وخاضعة للتدقيق. تنطبق فقط على النتيجة والأدلة نفسيهما؛ وتستدعي الأدلة المتغيرة إقرارًا جديدًا. لا تغيّر حالة pass/warn/fail، ولا تكتم التنبيهات، ولا تعتبر فحصًا فاشلًا سليمًا. هذا منفصل عن استثناءات التحذيرات المقبولة، التي تؤثر في سياسة التنبيه دون تغيير الحالة المرصودة ويَرِد وصفها أدناه.
 
 يتطلب كل إجراء POST ورمز CSRF صالحًا. تعرض الإصلاحات صفحة تأكيد منفصلة مع رابط Cancel لا يرسل النموذج، وتُسجّل المستخدم المنفّذ والنتيجة في سجل Cacti.
 
