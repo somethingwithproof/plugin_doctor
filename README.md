@@ -16,7 +16,7 @@
 
 Cacti Doctor is a Cacti plugin that diagnoses an installation in one pass and applies small repairs only when an administrator asks for them.
 
-**Status: in development, before 1.0.** The latest release is [0.5.1](https://github.com/somethingwithproof/plugin_doctor/releases/tag/v0.5.1). Work after 0.5.1, including the translations, is listed under Unreleased in [CHANGELOG.md](CHANGELOG.md) and is on `develop`.
+**Status: in development, before 1.0.** The latest release is [0.5.1](https://github.com/somethingwithproof/plugin_doctor/releases/tag/v0.5.1). Work since 0.5.1 includes role-scoped access, guided diagnosis, scoped RRD freshness checks, repair previews and audit history, accepted warning exceptions, and translations. These changes are tracked under Unreleased in [CHANGELOG.md](CHANGELOG.md) and are on develop.
 
 ## Screenshots
 
@@ -48,6 +48,21 @@ Cacti problems usually surface as symptoms: empty graphs, a poller that stopped,
 | Poller | Poller type and interval, time since the main poller last completed, run time against the interval, poller output that never reached an RRD file, remote pollers that stopped reporting, a stalled Boost, and a Spine configuration that points at a different database |
 
 Every check has a stable ID, such as `database.timezone` or `binary.rrdtool`, so scripts can key on individual results.
+
+## Code and test map
+
+| Behavior | Implementation | Test evidence in this repository |
+|---|---|---|
+| Diagnostic checks and stable report IDs | [doctor_functions.php](doctor_functions.php) | [DoctorFunctionsTest.php](tests/DoctorFunctionsTest.php), [AssertDoctorReport.php](tests/ci/AssertDoctorReport.php) |
+| Role-scoped access and redacted web reports | [doctor_access.php](doctor_access.php), [doctor_web.php](doctor_web.php) | [AccessTest.php](tests/AccessTest.php), [WebAccessTest.php](tests/WebAccessTest.php) |
+| Guided symptom investigations | [doctor_diagnosis.php](doctor_diagnosis.php) | [DiagnosisTest.php](tests/DiagnosisTest.php) |
+| RRD freshness and deferred-write handling | [doctor_rrd.php](doctor_rrd.php) | [RrdFreshnessTest.php](tests/RrdFreshnessTest.php) |
+| Repair previews, audit history, and accepted warnings | [doctor_workflows.php](doctor_workflows.php), [doctor_operator.php](doctor_operator.php) | [WorkflowTest.php](tests/WorkflowTest.php) |
+| Scheduled checks and alert transitions | [doctor_scheduling.php](doctor_scheduling.php) | [DoctorFunctionsTest.php](tests/DoctorFunctionsTest.php), [WorkflowTest.php](tests/WorkflowTest.php) |
+
+These references identify the implementation and test coverage; they do not say
+that every CI job has passed for the current revision. Check the workflow run
+for the revision you plan to deploy.
 
 ## Database health advice
 
@@ -130,7 +145,7 @@ Viewer data comes from scheduled checks. Enable scheduling before granting Viewe
 
 Device details and totals use the current user's device permissions. Log excerpts additionally require Cacti's View Cacti Log realm. Secrets are masked before diagnostic details are stored in the web session or rendered. CLI access continues to be governed by the operating-system account.
 
-Acknowledgments are personal and audited. They apply only to the same finding and evidence; changed evidence requires a new acknowledgment. They never change pass/warn/fail status, suppress alerts, or mark a failing check healthy. This is separate from the accepted-warning proposal in issue #38.
+Acknowledgments are personal and audited. They apply only to the same finding and evidence; changed evidence requires a new acknowledgment. They never change pass/warn/fail status, suppress alerts, or mark a failing check healthy. This is separate from accepted-warning exceptions, which affect alert policy without changing the observed status and are described below.
 
 Every action requires POST and a valid CSRF token. Repairs present a separate confirmation page with a non-submitting Cancel link, and record the acting user and result in the Cacti log.
 
