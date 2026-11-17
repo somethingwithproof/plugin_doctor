@@ -40,14 +40,14 @@ class ReleaseTests(unittest.TestCase):
         self.root.mkdir()
         self.out = Path(self.temp.name) / "dist"
         for name in release.ROOT_FILES | {"cli/doctor.php", "images/logo.png", "locales/po/cacti.pot", "locales/po/de-DE.po",
-                                          "locales/LC_MESSAGES/de-DE.mo", "locales/build_gettext.sh", "vendor/private", ".env"}:
+                                          "locales/LC_MESSAGES/de-DE.mo", "locales/build_gettext.sh", "docs/i18n/es-419/README.md", "vendor/private", ".env"}:
             path = self.root / name
             path.parent.mkdir(parents=True, exist_ok=True)
             path.write_text("fixture\n")
         (self.root / "INFO").write_text("[info]\nname = doctor\nversion = 0.5.1\n")
         (self.root / "CHANGELOG.md").write_text("## 0.5.1 - 2026-11-08\n\n- Fixes.\n")
         subprocess.check_call(["git", "-C", str(self.root), "init", "-q"])
-        self.commit(*sorted(release.ROOT_FILES), "cli", "images", "locales", "vendor", ".env")
+        self.commit(*sorted(release.ROOT_FILES), "cli", "images", "locales", "docs", "vendor", ".env")
 
     def test_semver(self):
         for tag in ["v1.0.0", "v0.5.1-rc.1", "v1.2.3+build.01"]:
@@ -116,6 +116,7 @@ class ReleaseTests(unittest.TestCase):
             self.assertIn("doctor/cli/doctor.php", tar.getnames())
             self.assertIn("doctor/locales/po/de-DE.po", tar.getnames())
             self.assertIn("doctor/locales/LC_MESSAGES/de-DE.mo", tar.getnames())
+            self.assertIn("doctor/docs/i18n/es-419/README.md", tar.getnames())
             self.assertNotIn("doctor/locales/build_gettext.sh", tar.getnames())
             self.assertNotIn("doctor/.env", tar.getnames())
             self.assertNotIn("doctor/vendor/private", tar.getnames())

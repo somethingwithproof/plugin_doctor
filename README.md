@@ -1,3 +1,7 @@
+<!-- translations:start -->
+[English](README.md) | [简体中文](docs/i18n/zh-CN/README.md) | [हिन्दी](docs/i18n/hi-IN/README.md) | [Español (España)](docs/i18n/es-ES/README.md) | [Español (Latinoamérica)](docs/i18n/es-419/README.md) | [العربية](docs/i18n/ar-SA/README.md)
+<!-- translations:end -->
+
 <h1 align="center">
 	<picture>
 		<source media="(prefers-color-scheme: dark)" srcset="images/doctor_logo_dark.png">
@@ -123,7 +127,7 @@ Install and enable **Cacti Doctor** from **Configuration > Plugin Management**, 
 
 ## Languages
 
-Doctor ships translations into Spanish (Spain, `es-ES`), French (`fr-FR`), German (`de-DE`), Simplified Chinese (`zh-CN`), and Japanese (`ja-JP`). Cacti shows them once language support is on (**Configuration > Settings > General > Language Support**) and a user picks the language. The web page, the settings, and the messages and report text the command line prints follow Cacti's language; the command-line report itself uses the Cacti default language, which stays English unless you change it.
+Doctor ships translations into Spanish (Spain, `es-ES`), French (`fr-FR`), German (`de-DE`), Simplified Chinese (`zh-CN`), Hindi (`hi-IN`), Arabic (`ar-SA`), and Japanese (`ja-JP`). Cacti shows them once language support is on (**Configuration > Settings > General > Language Support**) and a user picks the language. The web page, the settings, and the messages and report text the command line prints follow Cacti's language; the command-line report itself uses the Cacti default language, which stays English unless you change it.
 
 Machine-readable output is never translated: check IDs, JSON keys and status values, the `--format=nagios` and `--format=prometheus` output, log lines, and the support-bundle section headings stay in English so scripts and monitoring keep working in every language. The `summary` and `detail` text of each check is the one translated part of the JSON report.
 
