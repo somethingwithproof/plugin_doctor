@@ -80,7 +80,7 @@ function doctor_web_results($results) {
 			continue;
 		}
 		// Replace the installation-wide device check and the CLI-only PHP settings.
-		if (in_array($result['id'], ['devices.health', 'php.configuration'], true)) {
+		if (in_array($result['id'], ['devices.health', 'filesystem.rrd_files', 'php.configuration'], true)) {
 			continue;
 		}
 		if ($result['id'] === 'logging.recent_errors' && !is_realm_allowed(18)) {
@@ -118,10 +118,10 @@ function doctor_run_web_checks() {
 function doctor_viewer_results($now) {
 	$completed = (int) read_config_option('doctor_last_completed', true);
 	$state = doctor_state_decode(read_config_option('doctor_state', true));
-	$fresh = $completed > 0 && $now >= $completed && $now - $completed <= doctor_schedule_interval() + 180;
+	$fresh = read_config_option('doctor_schedule_enabled', true) === 'on' && $completed > 0 && $now >= $completed && $now - $completed <= doctor_schedule_interval() + 180;
 	$results = [];
 	foreach ($state as $id => $status) {
-		if ($id === 'devices.health' || !preg_match('/\A[a-z0-9_.]+\z/', $id) || !in_array($status, ['pass', 'warn', 'fail'], true)) {
+		if (in_array($id, ['devices.health', 'filesystem.rrd_files'], true) || !preg_match('/\A[a-z0-9_.]+\z/', $id) || !in_array($status, ['pass', 'warn', 'fail'], true)) {
 			continue;
 		}
 		$parts = explode('.', $id);

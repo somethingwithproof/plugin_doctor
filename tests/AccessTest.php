@@ -70,7 +70,7 @@ test('registration keeps legacy grants on Administrator and does not merge realm
 });
 
 test('viewer snapshots contain no global device status or diagnostics and expire', function () {
-	$GLOBALS['doctor_test_settings'] = ['doctor_last_completed' => '1000', 'doctor_state' => 'database.clock=pass;devices.health=fail;poller.runtime=warn'];
+	$GLOBALS['doctor_test_settings'] = ['doctor_schedule_enabled' => 'on', 'doctor_last_completed' => '1000', 'doctor_state' => 'database.clock=pass;devices.health=fail;poller.runtime=warn'];
 	$report = doctor_viewer_results(1001);
 	expect($report['fresh'])->toBeTrue()->and(array_column($report['results'], 'id'))->toBe(['database.clock', 'poller.runtime'])
 		->and(array_column($report['results'], 'detail'))->toBe(['', '']);
@@ -144,3 +144,17 @@ test('scheduled viewer history stays bounded and excludes device counts and deta
 		->and($GLOBALS['doctor_test_settings']['doctor_report_history'])->not->toContain('private');
 	unset($GLOBALS['doctor_schedule_lock_held']);
 });
+
+test('disabled scheduling invalidates viewer freshness', function () {
+	$GLOBALS['doctor_test_settings'] = ['doctor_last_completed' => (string) time(), 'doctor_state' => 'database.clock=pass'];
+	expect(doctor_viewer_results(time())['fresh'])->toBeFalse();
+});
+
+test('web reports omit installation-wide RRD paths', function () {
+	$results = doctor_web_results([doctor_result('filesystem.rrd_files', 'Filesystem', 'warn', 'RRD', '/private/device.rrd')]);
+	expect(array_column($results, 'id'))->not->toContain('filesystem.rrd_files');
+});
+
+test('HTTP authorization credentials are redacted', function ($text) {
+	expect(doctor_redact($text))->not->toContain('sensitivevalue');
+})->with(['Authorization: Bearer sensitivevalue', 'Authorization: sensitivevalue', 'Authorization: Basic sensitivevalue', 'bearer sensitivevalue', '"Authorization": "Bearer sensitivevalue"']);

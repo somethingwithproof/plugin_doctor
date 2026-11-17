@@ -32,7 +32,7 @@ $GLOBALS['doctor_test_grants'] = $input['grants'];
 $_SESSION = ['sess_user_id' => 7, 'doctor_report' => [
 	'user' => 7, 'time' => time() - (isset($input['age']) ? $input['age'] : 0), 'results' => [doctor_result('database.clock', 'Database', 'fail', 'Clock', 'private detail', 'runtime_directories')]
 ]];
-$GLOBALS['doctor_test_settings'] = ['doctor_state' => 'database.clock=fail', 'doctor_last_completed' => (string) time()];
+$GLOBALS['doctor_test_settings'] = ['doctor_schedule_enabled' => 'on', 'doctor_state' => 'database.clock=fail', 'doctor_last_completed' => (string) time()];
 $_SERVER['REQUEST_METHOD'] = $input['method'];
 function get_request_var($name) { global $input; return isset($input[$name]) ? $input[$name] : ''; }
 function get_nfilter_request_var($name) { return get_request_var($name); }
