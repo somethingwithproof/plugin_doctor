@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.6.0 - 2026-11-17
+
 - Add expiring repair previews, structured audit history, symptom investigations, scoped stale-RRD checks with deferred-write allowances, and expiring accepted warnings that preserve observed health.
 
 - Add Viewer, Operator and Administrator realms with scoped/redacted reports, bounded diagnostic runs, personal acknowledgments, repair confirmation and permission-gated settings. Preserve existing Doctor grants as Administrator.

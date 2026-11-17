@@ -1,6 +1,6 @@
 [info]
 name = doctor
-version = 0.5.1
+version = 0.6.0
 longname = Cacti Doctor
 author = Thomas Vincent
 email = thomasvincent@gmail.com
