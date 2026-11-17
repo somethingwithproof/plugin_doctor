@@ -3,7 +3,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: doctor 0.6.0\n"
+"Project-Id-Version: doctor 0.6.1\n"
 "Report-Msgid-Bugs-To: https://github.com/somethingwithproof/plugin_doctor/issues\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Thomas Vincent <thomasvincent@gmail.com>\n"
