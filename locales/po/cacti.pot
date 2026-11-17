@@ -1160,11 +1160,11 @@ msgid "Status"
 msgstr ""
 
 #: doctor_web.php
-msgid "Action"
+msgid "Details"
 msgstr ""
 
 #: doctor_web.php
-msgid "Details"
+msgid "Action"
 msgstr ""
 
 #: doctor_web.php
