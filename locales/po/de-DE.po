@@ -29,42 +29,117 @@ msgstr "Unbekanntes Format %s. Verwenden Sie text, json, nagios oder prometheus.
 msgid "Wrote %s. Review it before sharing; values after password, secret, token, and community names are masked."
 msgstr "%s geschrieben. Prüfen Sie die Datei vor der Weitergabe; Werte nach den Namen password, secret, token und community sind maskiert."
 
+#: cli/doctor.php doctor_functions.php
+msgid "Unknown repair"
+msgstr "Unbekannte Reparatur"
+
 #: cli/doctor.php
 msgid "Refusing to repair without --yes."
 msgstr "Reparatur ohne --yes abgelehnt."
 
-#: doctor.php setup.php
-msgid "Cacti Doctor"
-msgstr "Cacti Doctor"
+#: cli/doctor.php
+msgid "Select a supported symptom and text or JSON output."
+msgstr "Wählen Sie ein unterstütztes Symptom und Text- oder JSON-Ausgabe."
 
-#: doctor.php
-#, php-format
-msgid "Installation health: %d passed, %d warnings, %d failed"
-msgstr "Zustand der Installation: %d bestanden, %d Warnungen, %d fehlgeschlagen"
+#: cli/doctor.php doctor_web.php
+msgid "Accepted warning"
+msgstr "Akzeptierte Warnung"
 
-#: doctor.php
-msgid "Action"
-msgstr "Aktion"
+#: doctor_access.php doctor_functions.php
+msgid "Device availability"
+msgstr "Verfügbarkeit der Zielsysteme"
 
-#: doctor.php
-msgid "Category"
-msgstr "Kategorie"
+#: doctor_access.php
+msgid "Device permissions could not be evaluated."
+msgstr "Geräteberechtigungen konnten nicht ausgewertet werden."
 
-#: doctor.php
-msgid "Check"
-msgstr "Prüfung"
+#: doctor_access.php
+msgid "The configured PHP CLI cannot run Doctor checks."
+msgstr "Die konfigurierte PHP-CLI kann keine Doctor-Prüfungen ausführen."
 
-#: doctor.php
-msgid "Details"
-msgstr "Details"
+#: doctor_access.php
+msgid "Doctor checks failed or exceeded their time limit. Review the Doctor log."
+msgstr "Doctor-Prüfungen sind fehlgeschlagen oder haben ihr Zeitlimit überschritten. Prüfen Sie das Doctor-Protokoll."
 
-#: doctor.php
-msgid "Status"
-msgstr "Status"
+#: doctor_diagnosis.php
+msgid "Graphs stopped updating"
+msgstr "Diagramme werden nicht mehr aktualisiert"
 
-#: doctor.php
-msgid "Diagnostics are read-only. Repairs only run after an authenticated, CSRF-protected POST and are logged to the Cacti log."
-msgstr "Diagnosen sind schreibgeschützt. Reparaturen werden nur nach einem authentifizierten, CSRF-geschützten POST ausgeführt und im Cacti-Protokoll festgehalten."
+#: doctor_diagnosis.php
+msgid "Polling is slow"
+msgstr "Abfragen sind langsam"
+
+#: doctor_diagnosis.php
+msgid "Devices are missing or unavailable"
+msgstr "Geräte fehlen oder sind nicht verfügbar"
+
+#: doctor_diagnosis.php
+msgid "Doctor alerts are missing"
+msgstr "Doctor-Benachrichtigungen fehlen"
+
+#: doctor_diagnosis.php
+msgid "Check the poller scheduler and the affected poller log, then verify a new completed cycle."
+msgstr "Prüfen Sie die Poller-Zeitplanung und das betroffene Poller-Protokoll und bestätigen Sie einen neu abgeschlossenen Zyklus."
+
+#: doctor_diagnosis.php
+msgid "Collection may have stopped."
+msgstr "Die Datenerfassung wurde möglicherweise angehalten."
+
+#: doctor_diagnosis.php
+msgid "Collected values may not be reaching disk."
+msgstr "Erfasste Werte erreichen möglicherweise nicht die Festplatte."
+
+#: doctor_diagnosis.php
+msgid "Inspect the output queue and Boost flush history; verify that the queue drains and RRD timestamps advance."
+msgstr "Prüfen Sie die Ausgabewarteschlange und den Boost-Schreibverlauf; bestätigen Sie, dass die Warteschlange abgebaut wird und RRD-Zeitstempel fortschreiten."
+
+#: doctor_diagnosis.php
+msgid "Check storage capacity, runtime-directory permissions and the last RRD update; account for deferred writes."
+msgstr "Prüfen Sie Speicherkapazität, Berechtigungen der Laufzeitverzeichnisse und die letzte RRD-Aktualisierung; berücksichtigen Sie verzögerte Schreibvorgänge."
+
+#: doctor_diagnosis.php
+msgid "RRD storage needs investigation."
+msgstr "Der RRD-Speicher muss untersucht werden."
+
+#: doctor_diagnosis.php
+msgid "Collection work may be exceeding its time budget."
+msgstr "Die Datenerfassung überschreitet möglicherweise ihr Zeitbudget."
+
+#: doctor_diagnosis.php
+msgid "Compare cycle duration with the polling interval and inspect device timeouts before increasing concurrency."
+msgstr "Vergleichen Sie Zyklusdauer und Abfrageintervall und prüfen Sie Gerätezeitüberschreitungen, bevor Sie die Parallelität erhöhen."
+
+#: doctor_diagnosis.php
+msgid "Compare database counters during a slow cycle and inspect query plans before changing server limits."
+msgstr "Vergleichen Sie Datenbankzähler während eines langsamen Zyklus und prüfen Sie Abfragepläne, bevor Sie Servergrenzen ändern."
+
+#: doctor_diagnosis.php
+msgid "Database pressure may be contributing to slow polling."
+msgstr "Datenbanklast trägt möglicherweise zu langsamen Abfragen bei."
+
+#: doctor_diagnosis.php
+msgid "Collection prerequisites or reachability may be failing."
+msgstr "Voraussetzungen der Datenerfassung oder Erreichbarkeit sind möglicherweise gestört."
+
+#: doctor_diagnosis.php
+msgid "Verify the affected device permissions, reachability, credentials and assigned poller using Cacti diagnostics."
+msgstr "Prüfen Sie mit der Cacti-Diagnose die Berechtigungen, Erreichbarkeit, Zugangsdaten und den zugewiesenen Poller des betroffenen Geräts."
+
+#: doctor_diagnosis.php
+msgid "Scheduled checks or mail delivery need attention."
+msgstr "Geplante Prüfungen oder die Mailzustellung müssen überprüft werden."
+
+#: doctor_diagnosis.php
+msgid "Verify scheduling and recipient settings, inspect retained delivery attempts, and send a Cacti test email."
+msgstr "Prüfen Sie Zeitplanung, Empfängereinstellungen und gespeicherte Zustellversuche und senden Sie eine Cacti-Testmail."
+
+#: doctor_diagnosis.php
+msgid "Possible causes require verification; matching checks do not establish a root cause."
+msgstr "Mögliche Ursachen müssen überprüft werden; übereinstimmende Prüfungen belegen keine Grundursache."
+
+#: doctor_diagnosis.php
+msgid "No cause is established by the available observations. Run fresh diagnostics and investigate the symptom directly."
+msgstr "Die verfügbaren Beobachtungen belegen keine Ursache. Führen Sie aktuelle Diagnosen aus und untersuchen Sie das Symptom direkt."
 
 #: doctor_functions.php
 msgid "At least 24 hours since server startup and FLUSH STATUS. Counters are cumulative and may have different reset histories; confirm trends during a representative workload before tuning."
@@ -846,10 +921,6 @@ msgid "The Cacti log is not readable; see the Cacti log file check."
 msgstr "Das Cacti-Protokoll ist nicht lesbar; siehe die Prüfung der Cacti-Protokolldatei."
 
 #: doctor_functions.php
-msgid "Device availability"
-msgstr "Verfügbarkeit der Zielsysteme"
-
-#: doctor_functions.php
 msgid "No enabled devices are configured."
 msgstr "Es sind keine aktivierten Zielsysteme konfiguriert."
 
@@ -931,10 +1002,6 @@ msgstr "Legt fehlende Verzeichnisse für Cache, Protokoll und RRA an und fügt d
 #: doctor_functions.php
 msgid "The requested repair is not allow-listed."
 msgstr "Die angeforderte Reparatur steht nicht auf der Positivliste."
-
-#: doctor_functions.php
-msgid "Unknown repair"
-msgstr "Unbekannte Reparatur"
 
 #: doctor_functions.php
 msgid "No repair handler is registered."
@@ -1041,6 +1108,35 @@ msgstr "WARNUNG"
 msgid "FAIL"
 msgstr "FEHLER"
 
+#: doctor_functions.php
+msgid "UNKNOWN"
+msgstr "UNBEKANNT"
+
+#: doctor_rrd.php
+msgid "Data source freshness could not be assessed."
+msgstr "Die Aktualität der Datenquellen konnte nicht bewertet werden."
+
+#: doctor_rrd.php
+msgid "RRD update freshness"
+msgstr "Aktualität der RRD-Aktualisierungen"
+
+#: doctor_rrd.php
+msgid "The deferred-write interval is unknown; configure it before judging file age."
+msgstr "Das Intervall für verzögerte Schreibvorgänge ist unbekannt; konfigurieren Sie es vor der Bewertung des Dateialters."
+
+#: doctor_rrd.php
+#, php-format
+msgid "Checked %d files; %d stale files across %d devices; %d unavailable or future-dated files."
+msgstr "%d Dateien geprüft; %d veraltete Dateien auf %d Geräten; %d nicht verfügbare oder in der Zukunft datierte Dateien."
+
+#: doctor_rrd.php
+msgid "Limited to the first 500 active data sources; unsampled files are not assessed."
+msgstr "Auf die ersten 500 aktiven Datenquellen begrenzt; nicht erfasste Dateien werden nicht bewertet."
+
+#: doctor_rrd.php
+msgid "File age includes the collection interval and configured deferred-write allowance; verify the poller and flush process before changing data."
+msgstr "Das Dateialter berücksichtigt das Erfassungsintervall und den konfigurierten Schreibaufschub; prüfen Sie Poller und Schreibprozess, bevor Sie Daten ändern."
+
 #: doctor_scheduling.php
 msgid "Scheduled checks are disabled. Enable them in Settings > Doctor to retain samples and alert on changes."
 msgstr "Geplante Prüfungen sind deaktiviert. Aktivieren Sie sie unter Einstellungen > Doctor, um Stichproben aufzubewahren und bei Änderungen zu benachrichtigen."
@@ -1126,6 +1222,181 @@ msgstr "Cacti Doctor: %d aufbewahrte Statusänderungen"
 #: doctor_scheduling.php
 msgid "Doctor schedule is already running or the database lock is unavailable."
 msgstr "Der Doctor-Zeitplan läuft bereits oder die Datenbanksperre ist nicht verfügbar."
+
+#: doctor_web.php
+msgid "The warning exception could not be saved. Use a fresh assessed warning, an owner, a reason and an expiry within 90 days."
+msgstr "Die Warnungsausnahme konnte nicht gespeichert werden. Verwenden Sie eine aktuelle bewertete Warnung, einen Verantwortlichen, einen Grund und einen Ablauf innerhalb von 90 Tagen."
+
+#: doctor_web.php
+msgid "Confirm repair"
+msgstr "Reparatur bestätigen"
+
+#: doctor_web.php
+msgid "Approval expires after five minutes and is invalidated by a changed filesystem. The acting account must be able to create directories or change owner permissions."
+msgstr "Die Genehmigung läuft nach fünf Minuten ab und wird bei Dateisystemänderungen ungültig. Das ausführende Konto muss Verzeichnisse erstellen oder Eigentümerberechtigungen ändern können."
+
+#: doctor_web.php
+msgid "Repair prerequisites are not met. No changes will be made."
+msgstr "Die Reparaturvoraussetzungen sind nicht erfüllt. Es werden keine Änderungen vorgenommen."
+
+#: doctor_web.php
+msgid "Cancel"
+msgstr "Abbrechen"
+
+#: doctor_web.php
+#, php-format
+msgid "Last observation: %s UTC."
+msgstr "Letzte Beobachtung: %s UTC."
+
+#: doctor_web.php
+msgid "No completed diagnostic report is available."
+msgstr "Es ist kein abgeschlossener Diagnosebericht verfügbar."
+
+#: doctor_web.php
+msgid "Health is unknown: observations are missing or stale."
+msgstr "Zustand unbekannt: Beobachtungen fehlen oder sind veraltet."
+
+#: doctor_web.php
+msgid "Run diagnostic checks"
+msgstr "Diagnoseprüfungen ausführen"
+
+#: doctor_web.php
+msgid "Doctor settings"
+msgstr "Doctor-Einstellungen"
+
+#: doctor_web.php setup.php
+msgid "Cacti Doctor"
+msgstr "Cacti Doctor"
+
+#: doctor_web.php
+#, php-format
+msgid "Installation health: %d passed, %d warnings, %d failed"
+msgstr "Zustand der Installation: %d bestanden, %d Warnungen, %d fehlgeschlagen"
+
+#: doctor_web.php
+msgid "Category"
+msgstr "Kategorie"
+
+#: doctor_web.php
+msgid "Check"
+msgstr "Prüfung"
+
+#: doctor_web.php
+msgid "Status"
+msgstr "Status"
+
+#: doctor_web.php
+msgid "Action"
+msgstr "Aktion"
+
+#: doctor_web.php
+msgid "Details"
+msgstr "Details"
+
+#: doctor_web.php
+msgid "Acknowledged; health status unchanged."
+msgstr "Bestätigt; Zustand unverändert."
+
+#: doctor_web.php
+msgid "Acknowledge"
+msgstr "Bestätigen"
+
+#: doctor_web.php
+#, php-format
+msgid "Owner: %s; review by %s UTC. Reason: %s"
+msgstr "Verantwortlich: %s; prüfen bis %s UTC. Grund: %s"
+
+#: doctor_web.php
+msgid "Investigate a symptom"
+msgstr "Ein Symptom untersuchen"
+
+#: doctor_web.php
+msgid "Investigate"
+msgstr "Untersuchen"
+
+#: doctor_web.php
+msgid "Recent scheduled checks"
+msgstr "Letzte geplante Prüfungen"
+
+#: doctor_web.php
+msgid "Failed"
+msgstr "Fehlgeschlagen"
+
+#: doctor_web.php
+msgid "Observation (UTC)"
+msgstr "Beobachtung (UTC)"
+
+#: doctor_web.php
+msgid "Passed"
+msgstr "Bestanden"
+
+#: doctor_web.php
+msgid "Warnings"
+msgstr "Warnungen"
+
+#: doctor_web.php
+msgid "Warning exceptions"
+msgstr "Warnungsausnahmen"
+
+#: doctor_web.php
+msgid "Owner"
+msgstr "Verantwortlicher"
+
+#: doctor_web.php
+msgid "Reason"
+msgstr "Grund"
+
+#: doctor_web.php
+msgid "Review date (UTC)"
+msgstr "Prüfdatum (UTC)"
+
+#: doctor_web.php
+msgid "Accept warning"
+msgstr "Warnung akzeptieren"
+
+#: doctor_web.php
+msgid "Expired"
+msgstr "Abgelaufen"
+
+#: doctor_web.php
+msgid "Check not present in this report; verify its ID."
+msgstr "Prüfung fehlt in diesem Bericht; überprüfen Sie ihre ID."
+
+#: doctor_web.php
+msgid "Remove exception"
+msgstr "Ausnahme entfernen"
+
+#: doctor_web.php
+msgid "Audit history"
+msgstr "Auditverlauf"
+
+#: doctor_workflows.php
+msgid "Repair refused"
+msgstr "Reparatur verweigert"
+
+#: doctor_workflows.php
+msgid "The approved plan is expired or the filesystem changed. Preview the repair again."
+msgstr "Der genehmigte Plan ist abgelaufen oder das Dateisystem wurde geändert. Zeigen Sie die Reparaturvorschau erneut an."
+
+#: doctor_workflows.php
+msgid "The audit record could not be saved. No repair was attempted."
+msgstr "Der Auditeintrag konnte nicht gespeichert werden. Es wurde keine Reparatur versucht."
+
+#: doctor_workflows.php
+msgid "The completion audit failed; inspect the filesystem and the started audit record."
+msgstr "Der Abschluss-Auditeintrag konnte nicht gespeichert werden; prüfen Sie das Dateisystem und den Start-Auditeintrag."
+
+#: setup.php
+msgid "Doctor Administrator"
+msgstr "Doctor-Administrator"
+
+#: setup.php
+msgid "Doctor Operator"
+msgstr "Doctor-Operator"
+
+#: setup.php
+msgid "Doctor Viewer"
+msgstr "Doctor-Betrachter"
 
 #: setup.php
 msgid "Utilities"
@@ -1232,9 +1503,28 @@ msgid "Fail when the database and PHP clocks differ by more than this."
 msgstr "Fehlschlagen, wenn die Uhren von Datenbank und PHP um mehr als diesen Wert voneinander abweichen."
 
 #: setup.php
+msgid "RRD Stale Intervals"
+msgstr "Intervalle bis zur RRD-Veralterung"
+
+#: setup.php
+msgid "Warn after this many collection intervals without a file update (1 to 100)."
+msgstr "Nach dieser Anzahl von Erfassungsintervallen ohne Dateiaktualisierung warnen (1 bis 100)."
+
+#: setup.php
+msgid "Additional disk-write delay for external caching (0 to 86400). Boost adds its own allowance."
+msgstr "Zusätzliche Schreibverzögerung für externe Zwischenspeicherung (0 bis 86400). Boost ergänzt seinen eigenen Aufschub."
+
+#: setup.php
+msgid "Deferred RRD Write Allowance (seconds)"
+msgstr "Aufschub für RRD-Schreibvorgänge (Sekunden)"
+
+#: setup.php
 msgid "Cacti Log Size Warning (MB)"
 msgstr "Warnung zur Größe des Cacti-Protokolls (MB)"
 
 #: setup.php
 msgid "Warn when the Cacti log grows beyond this size, which usually means log rotation is not running."
 msgstr "Warnen, wenn das Cacti-Protokoll über diese Größe hinauswächst, was meist bedeutet, dass die Protokollrotation nicht läuft."
+
+#~ msgid "Diagnostics are read-only. Repairs only run after an authenticated, CSRF-protected POST and are logged to the Cacti log."
+#~ msgstr "Diagnosen sind schreibgeschützt. Reparaturen werden nur nach einem authentifizierten, CSRF-geschützten POST ausgeführt und im Cacti-Protokoll festgehalten."

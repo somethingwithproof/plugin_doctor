@@ -34,7 +34,7 @@ if (!is_file($cactiBase . '/include/cli_check.php')) {
 	exit(2);
 }
 
-$options = getopt('', ['json', 'format:', 'bundle:', 'scheduled', 'scheduled-worker', 'due', 'retry-alerts', 'repair:', 'yes', 'help']);
+$options = getopt('', ['json', 'format:', 'bundle:', 'scheduled', 'scheduled-worker', 'due', 'retry-alerts', 'repair:', 'preview', 'symptom:', 'yes', 'help']);
 
 // Supervise bootstrap too: a stalled connection must not leave a worker forever.
 if (isset($options['scheduled'])) {
@@ -59,8 +59,9 @@ include_once('./plugins/doctor/doctor_functions.php');
 
 if (isset($options['help'])) {
 	print 'Usage: php plugins/doctor/cli/doctor.php [--json | --format=text|json|nagios|prometheus]' . PHP_EOL;
+	print '       php plugins/doctor/cli/doctor.php --symptom=graphs_stopped|slow_polling|devices_missing|alerts_missing [--json]' . PHP_EOL;
 	print '       php plugins/doctor/cli/doctor.php --bundle=PATH' . PHP_EOL;
-	print '       php plugins/doctor/cli/doctor.php --repair=REPAIR_ID --yes' . PHP_EOL;
+	print '       php plugins/doctor/cli/doctor.php --repair=REPAIR_ID [--preview | --yes]' . PHP_EOL;
 	print '       php plugins/doctor/cli/doctor.php --scheduled [--retry-alerts]' . PHP_EOL;
 	print __('Available repairs: %s', implode(', ', array_keys(doctor_available_repairs())), 'doctor') . PHP_EOL;
 	exit(0);
@@ -93,12 +94,23 @@ if (isset($options['bundle'])) {
 }
 
 if (isset($options['repair'])) {
+	if (!isset(doctor_available_repairs()[(string) $options['repair']])) {
+		fwrite(STDERR, __('Unknown repair', 'doctor') . PHP_EOL);
+		exit(2);
+	}
+	$plan = doctor_repair_snapshot();
+	$plan['created'] = time();
+	$plan['actor'] = doctor_actor();
+	if (isset($options['preview'])) {
+		print json_encode($plan, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES) . PHP_EOL;
+		exit($plan['allowed'] ? 0 : 1);
+	}
 	if (!isset($options['yes'])) {
 		fwrite(STDERR, __('Refusing to repair without --yes.', 'doctor') . PHP_EOL);
 		exit(2);
 	}
 
-	$repairResult = doctor_run_repair((string) $options['repair']);
+	$repairResult = doctor_execute_repair_plan($plan);
 	cacti_log('Doctor CLI repair ' . str_replace(["\r", "\n"], ' ', (string) $options['repair']) . ': ' . $repairResult['status'] . ' - ' . (isset($repairResult['log']) ? $repairResult['log'] : $repairResult['detail']), false, 'DOCTOR');
 	unset($repairResult['log']);
 
@@ -112,6 +124,15 @@ if (isset($options['repair'])) {
 }
 
 $results = doctor_run_checks();
+if (isset($options['symptom'])) {
+	$diagnosis = doctor_diagnose((string) $options['symptom'], $results);
+	if ($diagnosis === false || !in_array($format, ['text', 'json'], true)) {
+		fwrite(STDERR, __('Select a supported symptom and text or JSON output.', 'doctor') . PHP_EOL);
+		exit(2);
+	}
+	print ($format === 'json' ? json_encode($diagnosis, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES) : doctor_diagnosis_text($diagnosis)) . PHP_EOL;
+	exit(0);
+}
 
 if ($format === 'nagios') {
 	$nagios = doctor_format_nagios($results);
@@ -128,7 +149,7 @@ if ($format === 'json') {
 	print json_encode(['summary' => doctor_result_counts($results), 'checks' => $results], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES) . PHP_EOL;
 } else {
 	foreach ($results as $result) {
-		print str_pad(strtoupper((string) $result['status']), 5) . ' [' . $result['category'] . '] ' . $result['summary'] . ' - ' . $result['detail'] . PHP_EOL;
+		print str_pad(strtoupper((string) $result['status']), 5) . ' [' . $result['category'] . '] ' . $result['summary'] . ' - ' . $result['detail'] . (doctor_warning_accepted($result) ? ' [' . __('Accepted warning', 'doctor') . ': ' . doctor_redact($result['acceptance']['owner'] . '; ' . $result['acceptance']['reason'] . '; ' . gmdate('Y-m-d', $result['acceptance']['expires'])) . ' UTC]' : '') . PHP_EOL;
 	}
 }
 

@@ -28,41 +28,116 @@ msgstr ""
 msgid "Wrote %s. Review it before sharing; values after password, secret, token, and community names are masked."
 msgstr ""
 
+#: cli/doctor.php doctor_functions.php
+msgid "Unknown repair"
+msgstr ""
+
 #: cli/doctor.php
 msgid "Refusing to repair without --yes."
 msgstr ""
 
-#: doctor.php setup.php
-msgid "Cacti Doctor"
+#: cli/doctor.php
+msgid "Select a supported symptom and text or JSON output."
 msgstr ""
 
-#: doctor.php
-#, php-format
-msgid "Installation health: %d passed, %d warnings, %d failed"
+#: cli/doctor.php doctor_web.php
+msgid "Accepted warning"
 msgstr ""
 
-#: doctor.php
-msgid "Action"
+#: doctor_access.php doctor_functions.php
+msgid "Device availability"
 msgstr ""
 
-#: doctor.php
-msgid "Category"
+#: doctor_access.php
+msgid "Device permissions could not be evaluated."
 msgstr ""
 
-#: doctor.php
-msgid "Check"
+#: doctor_access.php
+msgid "The configured PHP CLI cannot run Doctor checks."
 msgstr ""
 
-#: doctor.php
-msgid "Details"
+#: doctor_access.php
+msgid "Doctor checks failed or exceeded their time limit. Review the Doctor log."
 msgstr ""
 
-#: doctor.php
-msgid "Status"
+#: doctor_diagnosis.php
+msgid "Graphs stopped updating"
 msgstr ""
 
-#: doctor.php
-msgid "Diagnostics are read-only. Repairs only run after an authenticated, CSRF-protected POST and are logged to the Cacti log."
+#: doctor_diagnosis.php
+msgid "Polling is slow"
+msgstr ""
+
+#: doctor_diagnosis.php
+msgid "Devices are missing or unavailable"
+msgstr ""
+
+#: doctor_diagnosis.php
+msgid "Doctor alerts are missing"
+msgstr ""
+
+#: doctor_diagnosis.php
+msgid "Check the poller scheduler and the affected poller log, then verify a new completed cycle."
+msgstr ""
+
+#: doctor_diagnosis.php
+msgid "Collection may have stopped."
+msgstr ""
+
+#: doctor_diagnosis.php
+msgid "Collected values may not be reaching disk."
+msgstr ""
+
+#: doctor_diagnosis.php
+msgid "Inspect the output queue and Boost flush history; verify that the queue drains and RRD timestamps advance."
+msgstr ""
+
+#: doctor_diagnosis.php
+msgid "Check storage capacity, runtime-directory permissions and the last RRD update; account for deferred writes."
+msgstr ""
+
+#: doctor_diagnosis.php
+msgid "RRD storage needs investigation."
+msgstr ""
+
+#: doctor_diagnosis.php
+msgid "Collection work may be exceeding its time budget."
+msgstr ""
+
+#: doctor_diagnosis.php
+msgid "Compare cycle duration with the polling interval and inspect device timeouts before increasing concurrency."
+msgstr ""
+
+#: doctor_diagnosis.php
+msgid "Compare database counters during a slow cycle and inspect query plans before changing server limits."
+msgstr ""
+
+#: doctor_diagnosis.php
+msgid "Database pressure may be contributing to slow polling."
+msgstr ""
+
+#: doctor_diagnosis.php
+msgid "Collection prerequisites or reachability may be failing."
+msgstr ""
+
+#: doctor_diagnosis.php
+msgid "Verify the affected device permissions, reachability, credentials and assigned poller using Cacti diagnostics."
+msgstr ""
+
+#: doctor_diagnosis.php
+msgid "Scheduled checks or mail delivery need attention."
+msgstr ""
+
+#: doctor_diagnosis.php
+msgid "Verify scheduling and recipient settings, inspect retained delivery attempts, and send a Cacti test email."
+msgstr ""
+
+#: doctor_diagnosis.php
+msgid "Possible causes require verification; matching checks do not establish a root cause."
+msgstr ""
+
+#: doctor_diagnosis.php
+msgid "No cause is established by the available observations. Run fresh diagnostics and investigate the symptom directly."
 msgstr ""
 
 #: doctor_functions.php
@@ -845,10 +920,6 @@ msgid "The Cacti log is not readable; see the Cacti log file check."
 msgstr ""
 
 #: doctor_functions.php
-msgid "Device availability"
-msgstr ""
-
-#: doctor_functions.php
 msgid "No enabled devices are configured."
 msgstr ""
 
@@ -929,10 +1000,6 @@ msgstr ""
 
 #: doctor_functions.php
 msgid "The requested repair is not allow-listed."
-msgstr ""
-
-#: doctor_functions.php
-msgid "Unknown repair"
 msgstr ""
 
 #: doctor_functions.php
@@ -1040,6 +1107,35 @@ msgstr ""
 msgid "FAIL"
 msgstr ""
 
+#: doctor_functions.php
+msgid "UNKNOWN"
+msgstr ""
+
+#: doctor_rrd.php
+msgid "Data source freshness could not be assessed."
+msgstr ""
+
+#: doctor_rrd.php
+msgid "RRD update freshness"
+msgstr ""
+
+#: doctor_rrd.php
+msgid "The deferred-write interval is unknown; configure it before judging file age."
+msgstr ""
+
+#: doctor_rrd.php
+#, php-format
+msgid "Checked %d files; %d stale files across %d devices; %d unavailable or future-dated files."
+msgstr ""
+
+#: doctor_rrd.php
+msgid "Limited to the first 500 active data sources; unsampled files are not assessed."
+msgstr ""
+
+#: doctor_rrd.php
+msgid "File age includes the collection interval and configured deferred-write allowance; verify the poller and flush process before changing data."
+msgstr ""
+
 #: doctor_scheduling.php
 msgid "Scheduled checks are disabled. Enable them in Settings > Doctor to retain samples and alert on changes."
 msgstr ""
@@ -1124,6 +1220,181 @@ msgstr ""
 
 #: doctor_scheduling.php
 msgid "Doctor schedule is already running or the database lock is unavailable."
+msgstr ""
+
+#: doctor_web.php
+msgid "The warning exception could not be saved. Use a fresh assessed warning, an owner, a reason and an expiry within 90 days."
+msgstr ""
+
+#: doctor_web.php
+msgid "Confirm repair"
+msgstr ""
+
+#: doctor_web.php
+msgid "Approval expires after five minutes and is invalidated by a changed filesystem. The acting account must be able to create directories or change owner permissions."
+msgstr ""
+
+#: doctor_web.php
+msgid "Repair prerequisites are not met. No changes will be made."
+msgstr ""
+
+#: doctor_web.php
+msgid "Cancel"
+msgstr ""
+
+#: doctor_web.php
+#, php-format
+msgid "Last observation: %s UTC."
+msgstr ""
+
+#: doctor_web.php
+msgid "No completed diagnostic report is available."
+msgstr ""
+
+#: doctor_web.php
+msgid "Health is unknown: observations are missing or stale."
+msgstr ""
+
+#: doctor_web.php
+msgid "Run diagnostic checks"
+msgstr ""
+
+#: doctor_web.php
+msgid "Doctor settings"
+msgstr ""
+
+#: doctor_web.php setup.php
+msgid "Cacti Doctor"
+msgstr ""
+
+#: doctor_web.php
+#, php-format
+msgid "Installation health: %d passed, %d warnings, %d failed"
+msgstr ""
+
+#: doctor_web.php
+msgid "Category"
+msgstr ""
+
+#: doctor_web.php
+msgid "Check"
+msgstr ""
+
+#: doctor_web.php
+msgid "Status"
+msgstr ""
+
+#: doctor_web.php
+msgid "Details"
+msgstr ""
+
+#: doctor_web.php
+msgid "Action"
+msgstr ""
+
+#: doctor_web.php
+msgid "Acknowledged; health status unchanged."
+msgstr ""
+
+#: doctor_web.php
+msgid "Acknowledge"
+msgstr ""
+
+#: doctor_web.php
+#, php-format
+msgid "Owner: %s; review by %s UTC. Reason: %s"
+msgstr ""
+
+#: doctor_web.php
+msgid "Investigate a symptom"
+msgstr ""
+
+#: doctor_web.php
+msgid "Investigate"
+msgstr ""
+
+#: doctor_web.php
+msgid "Recent scheduled checks"
+msgstr ""
+
+#: doctor_web.php
+msgid "Failed"
+msgstr ""
+
+#: doctor_web.php
+msgid "Observation (UTC)"
+msgstr ""
+
+#: doctor_web.php
+msgid "Passed"
+msgstr ""
+
+#: doctor_web.php
+msgid "Warnings"
+msgstr ""
+
+#: doctor_web.php
+msgid "Warning exceptions"
+msgstr ""
+
+#: doctor_web.php
+msgid "Owner"
+msgstr ""
+
+#: doctor_web.php
+msgid "Reason"
+msgstr ""
+
+#: doctor_web.php
+msgid "Review date (UTC)"
+msgstr ""
+
+#: doctor_web.php
+msgid "Accept warning"
+msgstr ""
+
+#: doctor_web.php
+msgid "Expired"
+msgstr ""
+
+#: doctor_web.php
+msgid "Check not present in this report; verify its ID."
+msgstr ""
+
+#: doctor_web.php
+msgid "Remove exception"
+msgstr ""
+
+#: doctor_web.php
+msgid "Audit history"
+msgstr ""
+
+#: doctor_workflows.php
+msgid "Repair refused"
+msgstr ""
+
+#: doctor_workflows.php
+msgid "The approved plan is expired or the filesystem changed. Preview the repair again."
+msgstr ""
+
+#: doctor_workflows.php
+msgid "The audit record could not be saved. No repair was attempted."
+msgstr ""
+
+#: doctor_workflows.php
+msgid "The completion audit failed; inspect the filesystem and the started audit record."
+msgstr ""
+
+#: setup.php
+msgid "Doctor Administrator"
+msgstr ""
+
+#: setup.php
+msgid "Doctor Operator"
+msgstr ""
+
+#: setup.php
+msgid "Doctor Viewer"
 msgstr ""
 
 #: setup.php
@@ -1228,6 +1499,22 @@ msgstr ""
 
 #: setup.php
 msgid "Fail when the database and PHP clocks differ by more than this."
+msgstr ""
+
+#: setup.php
+msgid "RRD Stale Intervals"
+msgstr ""
+
+#: setup.php
+msgid "Warn after this many collection intervals without a file update (1 to 100)."
+msgstr ""
+
+#: setup.php
+msgid "Additional disk-write delay for external caching (0 to 86400). Boost adds its own allowance."
+msgstr ""
+
+#: setup.php
+msgid "Deferred RRD Write Allowance (seconds)"
 msgstr ""
 
 #: setup.php

@@ -19,7 +19,23 @@
 
 function plugin_doctor_install() {
 	doctor_setup_hooks();
-	api_plugin_register_realm('doctor', 'doctor.php', __('Cacti Doctor', 'doctor'), 1);
+	doctor_setup_realms();
+	require_once __DIR__ . '/doctor_workflows.php';
+	doctor_setup_workflows();
+}
+
+/** Keep the original realm ID and grants as Administrator during upgrades. */
+function doctor_setup_realms() {
+	api_plugin_register_realm('doctor', 'doctor.php', __('Doctor Administrator', 'doctor'), 1);
+	api_plugin_register_realm('doctor', 'doctor_operator.php', __('Doctor Operator', 'doctor'), 0);
+	api_plugin_register_realm('doctor', 'doctor_view.php', __('Doctor Viewer', 'doctor'), 0);
+	// Cacti 1.2.20 returns no value from registration; verify persisted realms.
+	foreach (['doctor.php', 'doctor_operator.php', 'doctor_view.php'] as $file) {
+		if (!db_fetch_cell_prepared('SELECT id FROM plugin_realms WHERE plugin = ? AND file = ?', ['doctor', $file])) {
+			return false;
+		}
+	}
+	return true;
 }
 
 /**
@@ -37,13 +53,16 @@ function doctor_setup_hooks($enable = false) {
 }
 
 function plugin_doctor_uninstall() {
+	db_execute('DROP TABLE IF EXISTS plugin_doctor_acceptance');
+	db_execute('DROP TABLE IF EXISTS plugin_doctor_audit');
 	db_execute("DELETE FROM settings WHERE name LIKE 'doctor\\_%'");
 }
 
 function plugin_doctor_check_config() {
 	doctor_setup_hooks();
 
-	return true;
+	require_once __DIR__ . '/doctor_workflows.php';
+	return doctor_setup_realms() && doctor_setup_workflows();
 }
 
 function plugin_doctor_upgrade() {
@@ -73,7 +92,19 @@ function doctor_config_arrays() {
 		set_config_option('doctor_hooks_version', $version);
 	}
 
-	$menu[__('Utilities')]['plugins/doctor/doctor.php'] = __('Cacti Doctor', 'doctor');
+	require_once __DIR__ . '/doctor_access.php';
+	if (read_config_option('doctor_access_version') !== '1' && doctor_setup_realms()) {
+		set_config_option('doctor_access_version', '1');
+	}
+	require_once __DIR__ . '/doctor_workflows.php';
+	if (read_config_option('doctor_workflows_version') !== '1' && doctor_setup_workflows()) {
+		set_config_option('doctor_workflows_version', '1');
+	}
+	$level = doctor_access_level();
+	$pages = [1 => 'doctor_view.php', 2 => 'doctor_operator.php', 3 => 'doctor.php'];
+	if (isset($pages[$level])) {
+		$menu[__('Utilities')]['plugins/doctor/' . $pages[$level]] = __('Cacti Doctor', 'doctor');
+	}
 
 	if (function_exists('auth_augment_roles')) {
 		auth_augment_roles(__('System Administration'), ['doctor.php']);
@@ -94,6 +125,11 @@ function doctor_threshold_setting($name, $description, $default) {
 
 function doctor_config_settings() {
 	global $tabs, $settings;
+
+	require_once __DIR__ . '/doctor_access.php';
+	if (PHP_SAPI !== 'cli' && !doctor_can_configure()) {
+		return;
+	}
 
 	$tabs['doctor'] = __('Doctor', 'doctor');
 
@@ -143,6 +179,8 @@ function doctor_config_settings() {
 		'doctor_disk_fail_percent'   => doctor_threshold_setting(__('RRA Disk Free Failure (percent)', 'doctor'), __('Fail when free space on the RRA file system drops below this percentage.', 'doctor'), '2'),
 		'doctor_clock_warn_seconds'  => doctor_threshold_setting(__('Clock Drift Warning (seconds)', 'doctor'), __('Warn when the database and PHP clocks differ by more than this.', 'doctor'), '5'),
 		'doctor_clock_fail_seconds'  => doctor_threshold_setting(__('Clock Drift Failure (seconds)', 'doctor'), __('Fail when the database and PHP clocks differ by more than this.', 'doctor'), '60'),
+		'doctor_rrd_stale_intervals' => doctor_threshold_setting(__('RRD Stale Intervals', 'doctor'), __('Warn after this many collection intervals without a file update (1 to 100).', 'doctor'), '3'),
+		'doctor_rrd_deferred_seconds' => doctor_threshold_setting(__('Deferred RRD Write Allowance (seconds)', 'doctor'), __('Additional disk-write delay for external caching (0 to 86400). Boost adds its own allowance.', 'doctor'), '0'),
 		'doctor_log_warn_mb'         => doctor_threshold_setting(__('Cacti Log Size Warning (MB)', 'doctor'), __('Warn when the Cacti log grows beyond this size, which usually means log rotation is not running.', 'doctor'), '100')
 	];
 }
@@ -159,9 +197,14 @@ function doctor_draw_navigation_text($nav) {
 		'level'   => '1'
 	];
 
+	$nav['doctor_view.php:'] = $nav['doctor.php:'];
+	$nav['doctor_view.php:']['url'] = 'doctor_view.php';
+	$nav['doctor_operator.php:'] = $nav['doctor.php:'];
+	$nav['doctor_operator.php:']['url'] = 'doctor_operator.php';
+
 	return $nav;
 }
 
 function doctor_is_console_page($url) {
-	return strpos($url, 'doctor.php') !== false;
+	return preg_match('/doctor(?:_view|_operator)?\.php/', $url) === 1;
 }

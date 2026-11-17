@@ -41,7 +41,7 @@ Cacti problems usually surface as symptoms: empty graphs, a poller that stopped,
 | PHP configuration | `memory_limit`, `max_execution_time`, and `date.timezone`, using Cacti's own recommendations |
 | Database | Connectivity, server version against Cacti's recommendation, UTF-8 character set, timezone tables, core tables, clock drift from the PHP host, and the InnoDB settings Cacti flags as errors |
 | Database health | Connection capacity, buffer-pool reads, disk temporary tables, connection thread creation, slow statements, and InnoDB log-buffer waits, with workload-dependent tuning suggestions |
-| Filesystem | Writable cache, log, and RRA directories; free space for RRD files; active data sources with no RRD file; `include/config.php` not world-readable; Cacti log writable and not oversized |
+| Filesystem | Writable cache, log, and RRA directories; free space for RRD files; active data sources with no RRD file or overdue file updates; `include/config.php` not world-readable; Cacti log writable and not oversized |
 | Binaries | PHP CLI, RRDtool, `snmpget`, `snmpwalk`, and Spine when it is the configured poller, including versions where Cacti states one |
 | Log | Errors among the most recent Cacti log lines, with the most frequent message |
 | Devices | Enabled devices that are down or recovering, the three down longest with their last error, and a failure when most devices are down at once |
@@ -104,7 +104,7 @@ cd /path/to/cacti/plugins
 git clone https://github.com/somethingwithproof/plugin_doctor.git doctor
 ```
 
-Install and enable **Cacti Doctor** from **Configuration > Plugin Management**, then grant the **Cacti Doctor** realm to administrators who should have access. The report appears under **Utilities > Cacti Doctor**.
+Install and enable **Cacti Doctor** from **Configuration > Plugin Management**, then grant a **Doctor Viewer**, **Doctor Operator**, or **Doctor Administrator** realm through Cacti user or group permissions. Existing **Cacti Doctor** grants retain Administrator access after upgrade. The report appears under **Utilities > Cacti Doctor**.
 
 ## Languages
 
@@ -115,6 +115,24 @@ Machine-readable output is never translated: check IDs, JSON keys and status val
 A Latin American Spanish catalog (`es-419`) ships as well, but neither Cacti 1.2 nor Cacti 1.3 has a Latin American Spanish locale to select, so it takes effect only when Cacti adds one. Until then, choose Spanish (`es-ES`).
 
 Cacti loads a plugin's catalog from `plugins/doctor/locales/LC_MESSAGES/<locale>.mo` with `doctor` as the text domain, on 1.2.x and 1.3 alike (1.3 resolves the plugin directory through its configurable plugins path).
+
+## Access levels
+
+| Realm | Capabilities |
+|---|---|
+| Doctor Viewer | Read the latest scheduled check statuses, observation time, freshness and recent aggregate history. No diagnostic commands, raw details, configuration or repairs. |
+| Doctor Operator | Run a diagnostic report with a 120-second process limit, inspect redacted details, and acknowledge findings. No settings changes or repairs. |
+| Doctor Administrator | Operator capabilities plus the existing allow-listed repair and Doctor settings. Repairs and settings also require Cacti's Settings/System Utilities realm. |
+
+The Utilities menu opens the page for the highest Doctor realm granted to the user, including group grants. New Viewer and Operator realms receive no automatic grants. The original realm ID remains attached to `doctor.php` as Administrator, preserving existing user and group access.
+
+Viewer data comes from scheduled checks. Enable scheduling before granting Viewer access; missing or overdue observations display **unknown**, never healthy. History retains the last 20 scheduled aggregate counts and excludes device status. Operators start fresh diagnostics explicitly; ordinary page refreshes use their session's last report.
+
+Device details and totals use the current user's device permissions. Log excerpts additionally require Cacti's View Cacti Log realm. Secrets are masked before diagnostic details are stored in the web session or rendered. CLI access continues to be governed by the operating-system account.
+
+Acknowledgments are personal and audited. They apply only to the same finding and evidence; changed evidence requires a new acknowledgment. They never change pass/warn/fail status, suppress alerts, or mark a failing check healthy. This is separate from the accepted-warning proposal in issue #38.
+
+Every action requires POST and a valid CSRF token. Repairs present a separate confirmation page with a non-submitting Cancel link, and record the acting user and result in the Cacti log.
 
 ## Command line
 
@@ -140,7 +158,7 @@ Cacti raises `memory_limit` for every CLI script, so the PHP runtime configurati
 
 Under **Configuration > Settings > Doctor**, turn on **Run Checks on a Schedule** and pick an interval from 15 minutes to a day. After each poller cycle that falls due, Doctor runs every check in a background process, so the poller's own run time is unaffected.
 
-Each run records every check's status. When a check starts or stops failing, Doctor writes the change to the Cacti log and, if **Alert Email Addresses** is set, emails those addresses through Cacti's mail settings. **Alert on Warnings** adds changes into and out of warnings. The first run only records a baseline.
+Each run records every check's observed status. Active warning exceptions affect alert policy without changing that observation. When a check starts or stops failing, Doctor writes the change to the Cacti log and, if **Alert Email Addresses** is set, emails those addresses through Cacti's mail settings. **Alert on Warnings** adds changes into and out of warnings. The first run only records a baseline.
 
 Scheduled reports run on the primary poller under a database advisory lock and have a two-minute worker limit. Doctor reports the last start and successful completion so missing or stale results are visible. Failed alert delivery is retained for up to three retries with increasing delays; after that, correct Cacti's mail settings and run `php plugins/doctor/cli/doctor.php --scheduled --retry-alerts` as the poller user. Mail-server acceptance does not confirm inbox delivery.
 
@@ -153,7 +171,7 @@ php plugins/doctor/cli/doctor.php --format=nagios
 php plugins/doctor/cli/doctor.php --format=prometheus > /var/lib/node_exporter/textfile/cacti_doctor.prom
 ```
 
-`--format=nagios` prints one status line with performance data and exits `0` (OK), `1` (WARNING), or `2` (CRITICAL), so Nagios, Icinga, or any compatible system can run it directly. `--format=prometheus` writes the Prometheus text format for node_exporter's textfile collector: `cacti_doctor_check_status` per check (0 pass, 1 warn, 2 fail), `cacti_doctor_checks` per status, and `cacti_doctor_last_run_timestamp_seconds`. JSON check rows include an `assessment` field; `not_assessed` means the check could not reach a conclusion from the available data.
+`--format=nagios` prints one status line with performance data and exits `0` (OK), `1` (WARNING), or `2` (CRITICAL), so Nagios, Icinga, or any compatible system can run it directly. `--format=prometheus` writes the Prometheus text format for node_exporter's textfile collector: `cacti_doctor_check_status` per check (0 pass or accepted warning, 1 actionable warning, 2 failure), `cacti_doctor_check_observed_status` before exceptions, `cacti_doctor_check_accepted`, `cacti_doctor_checks` per status, and `cacti_doctor_last_run_timestamp_seconds`. JSON check rows include an `assessment` field; `not_assessed` means the check could not reach a conclusion from the available data.
 
 ## Support bundle
 
@@ -170,6 +188,40 @@ Doctor includes one repair, `runtime_directories`. It creates missing Cacti runt
 It targets `$cache_path`, `$log_path`, and `$rra_path` on Cacti 1.3, or the installation's `cache`, `log`, and `rra` directories otherwise. It skips directories that are already writable, refuses directories outside the Cacti installation (such as a log directory under `/var/log`), refuses symbolic links, and refuses to run as root. It never follows `path_cactilog`, so a log file configured inside a code directory cannot redirect the repair there. The diagnostic still checks the configured log file's directory on every release.
 
 It does not change ownership, run shell commands, rewrite configuration, or modify Cacti application data. New repairs must each include a diagnostic, an allow-listed handler, confirmation, audit logging, and tests.
+
+## Investigating symptoms
+
+Operators and Administrators can select **Investigate a symptom** on the Doctor page. The same rules are available through `--symptom=graphs_stopped`, `slow_polling`, `devices_missing`, or `alerts_missing`, with text or JSON output. Support bundles include relevant symptom investigations.
+
+Each candidate lists the observed checks and a next verification step. Candidates are hypotheses, not confirmed root causes. Missing, unassessed or stale observations never establish a cause. Web investigations use the permission-filtered report; CLI reports use the operating-system account's access.
+
+## RRD update freshness
+
+`filesystem.rrd_stale` checks up to the first 500 active data sources by ID, excluding disabled and down devices. It compares file modification times with the larger of the poller interval, source RRD step and profile step, multiplied by **RRD Stale Intervals** (default 3). It shows the three oldest stale files and the number of affected devices. Web results include only permitted devices.
+
+Boost adds twice its configured flush interval as a disk-write allowance. For another deferred writer, configure **Deferred RRD Write Allowance (seconds)**. An advertised `RRDCACHED_ADDRESS` without an allowance, or an invalid Boost interval, produces an unassessed result. Doctor never flushes a cache to perform this check. Modification time is evidence of disk activity, not proof of successful data collection. External caching that Doctor cannot detect must be configured explicitly.
+
+Missing, unreadable or future-dated files and a capped sample are reported as incomplete coverage rather than a healthy installation. Unsampled files are not assessed.
+
+## Repair previews and audit history
+
+The Administrator repair page shows each affected path, its proposed action, current permissions and target permissions. Approval is tied to that preview, the acting user and a five-minute lifetime. Confirmation consumes the preview; a changed filesystem requires another preview. Root execution, paths outside the installation, links requiring repair and unmet filesystem permissions prevent approval.
+
+`--repair=runtime_directories --preview` prints a read-only JSON plan. `--repair=runtime_directories --yes` approves a freshly computed CLI plan and rechecks it before execution. The CLI account must already be authorized to repair the installation; it does not inherit web roles.
+
+A structured `repair.started` record must be saved before any filesystem change. A linked `repair.completed` record contains the post-repair snapshot and verification result. An interrupted operation leaves a started record for investigation. A completion-audit failure is reported as a failure even if filesystem changes occurred. Doctor adds owner permissions and creates directories; it does not attempt automatic rollback.
+
+Administrators with Cacti's Settings/System Utilities permission can read the latest 20 audit entries on the Doctor page. The plugin retains the latest 200 records in `plugin_doctor_audit`; the Cacti log also records their IDs, actions and actors. Audit payloads are redacted.
+
+## Accepted warnings
+
+Administrators with Cacti's Settings/System Utilities permission can create a **Warning exception** from a fresh, assessed warning on the Doctor page. An exception requires an owner, a reason and a UTC review date within 90 days. It expires at midnight UTC at the start of that date. Up to 100 exceptions can be configured. The list displays expired entries and IDs not present in the current report, and allows removal.
+
+The observed warning remains visible, with its owner, reason and expiry in diagnostic details. JSON retains the observed status and adds `accepted` and `acceptance` metadata. Nagios excludes active accepted warnings from its exit severity but names them in its output. Prometheus exports both observed and actionable severity. Ordinary CLI exit status remains unchanged: warnings already exit zero, failures exit one.
+
+Scheduled warning alerts are suppressed while the exception applies; expiry or removal makes a continuing warning eligible for warning alerts again. Failure transitions and recovery from failure remain eligible for alerts. An unassessed result or failure cannot be accepted. Personal acknowledgment is separate and does not suppress anything. Exception creation and removal are transactional with the audit record.
+
+Upgrade creates `plugin_doctor_audit` and `plugin_doctor_acceptance` without changing Cacti application data. Export any history you need before uninstalling: uninstall removes both plugin tables and its settings. Reverting the plugin files leaves the tables available for investigation, but older versions do not honor warning exceptions.
 
 ## Requirements
 

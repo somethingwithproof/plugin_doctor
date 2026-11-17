@@ -18,6 +18,9 @@
  */
 
 require_once __DIR__ . '/doctor_scheduling.php';
+require_once __DIR__ . '/doctor_rrd.php';
+require_once __DIR__ . '/doctor_diagnosis.php';
+require_once __DIR__ . '/doctor_workflows.php';
 
 /**
  * Run the initial set of non-mutating installation checks.
@@ -47,6 +50,7 @@ function doctor_run_checks(&$databaseSample = null, $previousDatabaseSample = []
 	$results[] = doctor_check_runtime_directories();
 	$results[] = doctor_check_disk_space();
 	$results[] = doctor_check_rrd_files();
+	$results[] = doctor_check_rrd_stale();
 	$results[] = doctor_check_config_file_security();
 	$results[] = doctor_check_cacti_log();
 	$results[] = doctor_check_recent_log_errors();
@@ -62,7 +66,7 @@ function doctor_run_checks(&$databaseSample = null, $previousDatabaseSample = []
 	$results[] = doctor_check_schedule(time());
 	$results[] = doctor_check_alert_delivery(time());
 
-	return $results;
+	return doctor_apply_acceptances($results);
 }
 
 /**
@@ -158,7 +162,7 @@ function doctor_analyze_database_health($status, $variables, $previous = []) {
 	$sampleDetail = $sampleReady
 		? __('At least 24 hours since server startup and FLUSH STATUS. Counters are cumulative and may have different reset histories; confirm trends during a representative workload before tuning.', 'doctor')
 		: __('Cumulative tuning advice is deferred: obtain valid uptime and at least 24 hours since startup and FLUSH STATUS. Missing metrics or an inconsistent sample cannot establish database health.', 'doctor');
-	$results[] = doctor_result('database.health_sample', 'Database health', $sampleReady ? 'pass' : 'warn', __('Database observation window', 'doctor'), $sampleDetail);
+	$results[] = doctor_result('database.health_sample', 'Database health', $sampleReady ? 'pass' : 'warn', __('Database observation window', 'doctor'), $sampleDetail, '', $sampleReady ? 'assessed' : 'not_assessed');
 	$sample = isset($previous['metrics'], $previous['captured']) && is_array($previous['metrics']) && is_numeric($previous['captured'])
 		? $previous : [];
 	$deltaReady = $sampleReady && $sample !== [] && isset($status['uptime'], $sample['metrics']['uptime'])
@@ -166,7 +170,8 @@ function doctor_analyze_database_health($status, $variables, $previous = []) {
 
 	$connectionStatus = 'warn';
 	$connectionDetail = __('Connection metrics are unavailable or invalid. Check access to SHOW GLOBAL STATUS and SHOW GLOBAL VARIABLES; do not treat missing metrics as an idle server.', 'doctor');
-	if (isset($status['threads_connected'], $status['max_used_connections'], $variables['max_connections']) && $variables['max_connections'] > 0) {
+	$connectionReady = isset($status['threads_connected'], $status['max_used_connections'], $variables['max_connections']) && $variables['max_connections'] > 0;
+	if ($connectionReady) {
 		$current = 100 * $status['threads_connected'] / $variables['max_connections'];
 		$peak = 100 * $status['max_used_connections'] / $variables['max_connections'];
 		$connectionStatus = $current >= 80 || $peak >= 80 ? 'warn' : 'pass';
@@ -175,7 +180,7 @@ function doctor_analyze_database_health($status, $variables, $previous = []) {
 			$connectionDetail .= ' ' . __('Review connection pooling and poller concurrency. Check database-host memory headroom before raising max_connections; the historical peak may reflect an older limit.', 'doctor');
 		}
 	}
-	$results[] = doctor_result('database.connection_capacity', 'Database health', $connectionStatus, __('Connection capacity', 'doctor'), $connectionDetail);
+	$results[] = doctor_result('database.connection_capacity', 'Database health', $connectionStatus, __('Connection capacity', 'doctor'), $connectionDetail, '', $connectionReady ? 'assessed' : 'not_assessed');
 
 	$rules = [
 		['buffer_pool_reads', __('InnoDB buffer pool reads', 'doctor'), 'innodb_buffer_pool_reads', 'innodb_buffer_pool_read_requests', 10000, 1, __('Review query plans and the working set. Consider innodb_buffer_pool_size only after measuring memory available on the database host; a cumulative miss ratio alone does not prove memory pressure.', 'doctor')],
@@ -241,7 +246,7 @@ function doctor_analyze_database_health($status, $variables, $previous = []) {
 			$redoDetail .= ' ' . __('Investigate transaction sizes, log-buffer pressure, and storage latency. Recheck the rate under load before considering innodb_log_buffer_size; this historical count is not evidence of a current stall.', 'doctor');
 		}
 	}
-	$results[] = doctor_result('database.redo_log_waits', 'Database health', $redoLevel, __('InnoDB log-buffer waits', 'doctor'), $redoDetail);
+	$results[] = doctor_result('database.redo_log_waits', 'Database health', $redoLevel, __('InnoDB log-buffer waits', 'doctor'), $redoDetail, '', $sampleReady && isset($status['innodb_log_waits']) ? 'assessed' : 'not_assessed');
 
 	return $results;
 }
@@ -1588,7 +1593,7 @@ function doctor_format_nagios($results) {
 	foreach ($results as $result) {
 		if ($result['status'] === 'fail') {
 			$failed[] = $result['id'];
-		} elseif ($result['status'] === 'warn') {
+		} elseif ($result['status'] === 'warn' && !doctor_warning_accepted($result)) {
 			$warned[] = $result['id'];
 		}
 	}
@@ -1614,6 +1619,15 @@ function doctor_format_nagios($results) {
 		$parts[] = count($warned) . ' warnings: ' . implode(', ', $warned);
 	}
 
+	$accepted = 0;
+	foreach ($results as $result) {
+		if (doctor_warning_accepted($result)) {
+			$accepted++;
+		}
+	}
+	if ($accepted > 0) {
+		$parts[] = $accepted . ' accepted warnings';
+	}
 	$summary = $parts !== [] ? implode('; ', $parts) : count($results) . ' checks passed';
 	$perf    = 'pass=' . $counts['pass'] . ' warn=' . $counts['warn'] . ' fail=' . $counts['fail'];
 
@@ -1633,12 +1647,19 @@ function doctor_prometheus_label($value) {
 function doctor_format_prometheus($results, $now) {
 	$levels = ['pass' => 0, 'warn' => 1, 'fail' => 2];
 	$lines  = [
-		'# HELP cacti_doctor_check_status Cacti Doctor check status: 0 pass, 1 warn, 2 fail.',
-		'# TYPE cacti_doctor_check_status gauge'
+		'# HELP cacti_doctor_check_status Actionable severity: 0 pass or accepted warning, 1 warn, 2 fail.',
+		'# TYPE cacti_doctor_check_status gauge',
+		'# HELP cacti_doctor_check_observed_status Observed severity, before warning exceptions: 0 pass, 1 warn, 2 fail.',
+		'# TYPE cacti_doctor_check_observed_status gauge',
+		'# HELP cacti_doctor_check_accepted Whether a current warning exception applies.',
+		'# TYPE cacti_doctor_check_accepted gauge'
 	];
 
 	foreach ($results as $result) {
-		$lines[] = 'cacti_doctor_check_status{id="' . doctor_prometheus_label($result['id']) . '",category="' . doctor_prometheus_label($result['category']) . '"} ' . $levels[$result['status']];
+		$labels = '{id="' . doctor_prometheus_label($result['id']) . '",category="' . doctor_prometheus_label($result['category']) . '"} ';
+		$lines[] = 'cacti_doctor_check_status' . $labels . (doctor_warning_accepted($result) ? 0 : $levels[$result['status']]);
+		$lines[] = 'cacti_doctor_check_observed_status' . $labels . $levels[$result['status']];
+		$lines[] = 'cacti_doctor_check_accepted' . $labels . (doctor_warning_accepted($result) ? 1 : 0);
 	}
 
 	$lines[] = '# HELP cacti_doctor_checks Number of Cacti Doctor checks by status.';
@@ -1661,7 +1682,8 @@ function doctor_format_prometheus($results, $now) {
  */
 function doctor_redact($text) {
 	$text = (string) $text;
-	$keys = 'password|passwd|passphrase|pass|secret|token|community|api[_-]?key|auth[_-]?key|priv(?:ate)?[_-]?key';
+	$text = preg_replace('/(\b(?:Bearer|Basic)[ \t]+)(?:\\\\[^\r\n]|[^\s;,"\'\\\\\r\n])+/i', '$1[redacted]', $text);
+	$keys = 'authorization|password|passwd|passphrase|pass|secret|token|community|api[_-]?key|auth[_-]?key|priv(?:ate)?[_-]?key';
 
 	// Only indented or empty lines continue a YAML scalar; a new log record
 	// must retain its own key for redaction. Accept log-style escapes as well
@@ -1717,6 +1739,14 @@ function doctor_build_bundle($results, $context, $logLines) {
 		$lines[] = str_pad(strtoupper((string) $result['status']), 5) . ' [' . $result['category'] . '] ' . $result['summary'] . ' - ' . $result['detail'];
 	}
 
+	$lines[] = '';
+	$lines[] = '== Symptom investigation';
+	foreach (doctor_symptoms() as $id => $label) {
+		$diagnosis = doctor_diagnose($id, $results);
+		if ($diagnosis['candidates'] !== []) {
+			$lines[] = $label . "\n" . doctor_diagnosis_text($diagnosis);
+		}
+	}
 	$lines[] = '';
 	$lines[] = '== Cacti log (last ' . count($logLines) . ' lines)';
 
@@ -1940,7 +1970,8 @@ function doctor_status_label($status) {
 	$labels = [
 		'pass' => __('PASS', 'doctor'),
 		'warn' => __('WARN', 'doctor'),
-		'fail' => __('FAIL', 'doctor')
+		'fail' => __('FAIL', 'doctor'),
+		'unknown' => __('UNKNOWN', 'doctor')
 	];
 
 	return isset($labels[$status]) ? $labels[$status] : strtoupper((string) $status);

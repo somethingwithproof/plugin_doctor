@@ -29,42 +29,117 @@ msgstr "未知格式 %s。请使用 text、json、nagios 或 prometheus。"
 msgid "Wrote %s. Review it before sharing; values after password, secret, token, and community names are masked."
 msgstr "已写入 %s。分享前请先检查；password、secret、token 以及 community 名称之后的值已被屏蔽。"
 
+#: cli/doctor.php doctor_functions.php
+msgid "Unknown repair"
+msgstr "未知修复"
+
 #: cli/doctor.php
 msgid "Refusing to repair without --yes."
 msgstr "未指定 --yes，拒绝执行修复。"
 
-#: doctor.php setup.php
-msgid "Cacti Doctor"
-msgstr "Cacti Doctor"
+#: cli/doctor.php
+msgid "Select a supported symptom and text or JSON output."
+msgstr "请选择支持的症状以及文本或 JSON 输出。"
 
-#: doctor.php
-#, php-format
-msgid "Installation health: %d passed, %d warnings, %d failed"
-msgstr "安装健康状况：%d 项通过，%d 项警告，%d 项失败"
+#: cli/doctor.php doctor_web.php
+msgid "Accepted warning"
+msgstr "已接受的警告"
 
-#: doctor.php
-msgid "Action"
-msgstr "操作"
+#: doctor_access.php doctor_functions.php
+msgid "Device availability"
+msgstr "设备可用性"
 
-#: doctor.php
-msgid "Category"
-msgstr "类别"
+#: doctor_access.php
+msgid "Device permissions could not be evaluated."
+msgstr "无法评估设备权限。"
 
-#: doctor.php
-msgid "Check"
-msgstr "检查项"
+#: doctor_access.php
+msgid "The configured PHP CLI cannot run Doctor checks."
+msgstr "配置的 PHP CLI 无法运行 Doctor 检查。"
 
-#: doctor.php
-msgid "Details"
-msgstr "详情"
+#: doctor_access.php
+msgid "Doctor checks failed or exceeded their time limit. Review the Doctor log."
+msgstr "Doctor 检查失败或超时。请查看 Doctor 日志。"
 
-#: doctor.php
-msgid "Status"
-msgstr "状态"
+#: doctor_diagnosis.php
+msgid "Graphs stopped updating"
+msgstr "图表停止更新"
 
-#: doctor.php
-msgid "Diagnostics are read-only. Repairs only run after an authenticated, CSRF-protected POST and are logged to the Cacti log."
-msgstr "诊断为只读。修复仅在经过身份验证且受 CSRF 保护的 POST 请求后才会执行，并记录到 Cacti 日志。"
+#: doctor_diagnosis.php
+msgid "Polling is slow"
+msgstr "轮询缓慢"
+
+#: doctor_diagnosis.php
+msgid "Devices are missing or unavailable"
+msgstr "设备缺失或不可用"
+
+#: doctor_diagnosis.php
+msgid "Doctor alerts are missing"
+msgstr "未收到 Doctor 告警"
+
+#: doctor_diagnosis.php
+msgid "Check the poller scheduler and the affected poller log, then verify a new completed cycle."
+msgstr "检查轮询器调度和相关轮询器日志，然后验证新的轮询周期已完成。"
+
+#: doctor_diagnosis.php
+msgid "Collection may have stopped."
+msgstr "数据采集可能已停止。"
+
+#: doctor_diagnosis.php
+msgid "Collected values may not be reaching disk."
+msgstr "采集的数值可能未写入磁盘。"
+
+#: doctor_diagnosis.php
+msgid "Inspect the output queue and Boost flush history; verify that the queue drains and RRD timestamps advance."
+msgstr "检查输出队列和 Boost 写入历史；验证队列正在清空且 RRD 时间戳持续更新。"
+
+#: doctor_diagnosis.php
+msgid "Check storage capacity, runtime-directory permissions and the last RRD update; account for deferred writes."
+msgstr "检查存储容量、运行时目录权限和最后一次 RRD 更新，并考虑延迟写入。"
+
+#: doctor_diagnosis.php
+msgid "RRD storage needs investigation."
+msgstr "需要调查 RRD 存储。"
+
+#: doctor_diagnosis.php
+msgid "Collection work may be exceeding its time budget."
+msgstr "采集任务可能超出时间预算。"
+
+#: doctor_diagnosis.php
+msgid "Compare cycle duration with the polling interval and inspect device timeouts before increasing concurrency."
+msgstr "增加并发数之前，请比较周期时长与轮询间隔，并检查设备超时。"
+
+#: doctor_diagnosis.php
+msgid "Compare database counters during a slow cycle and inspect query plans before changing server limits."
+msgstr "更改服务器限制之前，请比较缓慢周期中的数据库计数器并检查查询计划。"
+
+#: doctor_diagnosis.php
+msgid "Database pressure may be contributing to slow polling."
+msgstr "数据库负载可能导致轮询缓慢。"
+
+#: doctor_diagnosis.php
+msgid "Collection prerequisites or reachability may be failing."
+msgstr "采集前提条件或连通性可能存在问题。"
+
+#: doctor_diagnosis.php
+msgid "Verify the affected device permissions, reachability, credentials and assigned poller using Cacti diagnostics."
+msgstr "使用 Cacti 诊断验证相关设备的权限、连通性、凭据以及分配的轮询器。"
+
+#: doctor_diagnosis.php
+msgid "Scheduled checks or mail delivery need attention."
+msgstr "需要检查计划检查或邮件投递。"
+
+#: doctor_diagnosis.php
+msgid "Verify scheduling and recipient settings, inspect retained delivery attempts, and send a Cacti test email."
+msgstr "验证调度和收件人设置，检查保留的投递尝试，并发送 Cacti 测试邮件。"
+
+#: doctor_diagnosis.php
+msgid "Possible causes require verification; matching checks do not establish a root cause."
+msgstr "可能的原因需要验证；匹配的检查结果不能证明根本原因。"
+
+#: doctor_diagnosis.php
+msgid "No cause is established by the available observations. Run fresh diagnostics and investigate the symptom directly."
+msgstr "现有观测数据无法确定原因。请运行新的诊断并直接调查症状。"
 
 #: doctor_functions.php
 msgid "At least 24 hours since server startup and FLUSH STATUS. Counters are cumulative and may have different reset histories; confirm trends during a representative workload before tuning."
@@ -846,10 +921,6 @@ msgid "The Cacti log is not readable; see the Cacti log file check."
 msgstr "Cacti 日志不可读；请参阅 Cacti 日志文件检查项。"
 
 #: doctor_functions.php
-msgid "Device availability"
-msgstr "设备可用性"
-
-#: doctor_functions.php
 msgid "No enabled devices are configured."
 msgstr "没有配置已启用的设备。"
 
@@ -931,10 +1002,6 @@ msgstr "创建缺失的缓存、日志和 RRA 目录，并添加所有者读/写
 #: doctor_functions.php
 msgid "The requested repair is not allow-listed."
 msgstr "所请求的修复不在允许列表中。"
-
-#: doctor_functions.php
-msgid "Unknown repair"
-msgstr "未知修复"
 
 #: doctor_functions.php
 msgid "No repair handler is registered."
@@ -1041,6 +1108,35 @@ msgstr "警告"
 msgid "FAIL"
 msgstr "失败"
 
+#: doctor_functions.php
+msgid "UNKNOWN"
+msgstr "未知"
+
+#: doctor_rrd.php
+msgid "Data source freshness could not be assessed."
+msgstr "无法评估数据源的更新情况。"
+
+#: doctor_rrd.php
+msgid "RRD update freshness"
+msgstr "RRD 更新时效"
+
+#: doctor_rrd.php
+msgid "The deferred-write interval is unknown; configure it before judging file age."
+msgstr "延迟写入间隔未知；请先配置该间隔，再判断文件的更新时间。"
+
+#: doctor_rrd.php
+#, php-format
+msgid "Checked %d files; %d stale files across %d devices; %d unavailable or future-dated files."
+msgstr "已检查 %d 个文件；%d 个过期文件涉及 %d 台设备；%d 个文件不可用或日期在未来。"
+
+#: doctor_rrd.php
+msgid "Limited to the first 500 active data sources; unsampled files are not assessed."
+msgstr "仅检查前 500 个活动数据源；未采样的文件不会被评估。"
+
+#: doctor_rrd.php
+msgid "File age includes the collection interval and configured deferred-write allowance; verify the poller and flush process before changing data."
+msgstr "文件更新时间的判断包含采集间隔和配置的延迟写入宽限时间；修改数据之前，请验证轮询器和写入进程。"
+
 #: doctor_scheduling.php
 msgid "Scheduled checks are disabled. Enable them in Settings > Doctor to retain samples and alert on changes."
 msgstr "计划检查已禁用。请在“设置 > Doctor”中启用，以保留样本并在状态变化时告警。"
@@ -1126,6 +1222,181 @@ msgstr "Cacti Doctor：%d 项已保留的状态变化"
 #: doctor_scheduling.php
 msgid "Doctor schedule is already running or the database lock is unavailable."
 msgstr "Doctor 计划任务已在运行，或数据库锁不可用。"
+
+#: doctor_web.php
+msgid "The warning exception could not be saved. Use a fresh assessed warning, an owner, a reason and an expiry within 90 days."
+msgstr "无法保存警告例外。请使用最新且已评估的警告，并提供负责人、原因以及 90 天内的到期时间。"
+
+#: doctor_web.php
+msgid "Confirm repair"
+msgstr "确认修复"
+
+#: doctor_web.php
+msgid "Approval expires after five minutes and is invalidated by a changed filesystem. The acting account must be able to create directories or change owner permissions."
+msgstr "批准将在五分钟后过期，文件系统发生变化时也会失效。执行账户必须能够创建目录或更改所有者权限。"
+
+#: doctor_web.php
+msgid "Repair prerequisites are not met. No changes will be made."
+msgstr "不满足修复前提条件。不会进行任何更改。"
+
+#: doctor_web.php
+msgid "Cancel"
+msgstr "取消"
+
+#: doctor_web.php
+#, php-format
+msgid "Last observation: %s UTC."
+msgstr "上次观测：%s UTC。"
+
+#: doctor_web.php
+msgid "No completed diagnostic report is available."
+msgstr "没有已完成的诊断报告。"
+
+#: doctor_web.php
+msgid "Health is unknown: observations are missing or stale."
+msgstr "健康状态未知：观测数据缺失或已过期。"
+
+#: doctor_web.php
+msgid "Run diagnostic checks"
+msgstr "运行诊断检查"
+
+#: doctor_web.php
+msgid "Doctor settings"
+msgstr "Doctor 设置"
+
+#: doctor_web.php setup.php
+msgid "Cacti Doctor"
+msgstr "Cacti Doctor"
+
+#: doctor_web.php
+#, php-format
+msgid "Installation health: %d passed, %d warnings, %d failed"
+msgstr "安装健康状况：%d 项通过，%d 项警告，%d 项失败"
+
+#: doctor_web.php
+msgid "Category"
+msgstr "类别"
+
+#: doctor_web.php
+msgid "Check"
+msgstr "检查项"
+
+#: doctor_web.php
+msgid "Status"
+msgstr "状态"
+
+#: doctor_web.php
+msgid "Action"
+msgstr "操作"
+
+#: doctor_web.php
+msgid "Details"
+msgstr "详情"
+
+#: doctor_web.php
+msgid "Acknowledged; health status unchanged."
+msgstr "已确认；健康状态未改变。"
+
+#: doctor_web.php
+msgid "Acknowledge"
+msgstr "确认已读"
+
+#: doctor_web.php
+#, php-format
+msgid "Owner: %s; review by %s UTC. Reason: %s"
+msgstr "负责人：%s；请在 %s UTC 前复核。原因：%s"
+
+#: doctor_web.php
+msgid "Investigate a symptom"
+msgstr "调查症状"
+
+#: doctor_web.php
+msgid "Investigate"
+msgstr "调查"
+
+#: doctor_web.php
+msgid "Recent scheduled checks"
+msgstr "最近的计划检查"
+
+#: doctor_web.php
+msgid "Failed"
+msgstr "失败"
+
+#: doctor_web.php
+msgid "Observation (UTC)"
+msgstr "观测时间 (UTC)"
+
+#: doctor_web.php
+msgid "Passed"
+msgstr "通过"
+
+#: doctor_web.php
+msgid "Warnings"
+msgstr "警告"
+
+#: doctor_web.php
+msgid "Warning exceptions"
+msgstr "警告例外"
+
+#: doctor_web.php
+msgid "Owner"
+msgstr "负责人"
+
+#: doctor_web.php
+msgid "Reason"
+msgstr "原因"
+
+#: doctor_web.php
+msgid "Review date (UTC)"
+msgstr "复核日期 (UTC)"
+
+#: doctor_web.php
+msgid "Accept warning"
+msgstr "接受警告"
+
+#: doctor_web.php
+msgid "Expired"
+msgstr "已过期"
+
+#: doctor_web.php
+msgid "Check not present in this report; verify its ID."
+msgstr "此报告中没有该检查；请验证其 ID。"
+
+#: doctor_web.php
+msgid "Remove exception"
+msgstr "移除例外"
+
+#: doctor_web.php
+msgid "Audit history"
+msgstr "审计历史"
+
+#: doctor_workflows.php
+msgid "Repair refused"
+msgstr "修复已被拒绝"
+
+#: doctor_workflows.php
+msgid "The approved plan is expired or the filesystem changed. Preview the repair again."
+msgstr "已批准的计划已过期或文件系统已更改。请重新预览修复。"
+
+#: doctor_workflows.php
+msgid "The audit record could not be saved. No repair was attempted."
+msgstr "无法保存审计记录。未尝试任何修复。"
+
+#: doctor_workflows.php
+msgid "The completion audit failed; inspect the filesystem and the started audit record."
+msgstr "完成审计失败；请检查文件系统以及开始审计记录。"
+
+#: setup.php
+msgid "Doctor Administrator"
+msgstr "Doctor 管理员"
+
+#: setup.php
+msgid "Doctor Operator"
+msgstr "Doctor 操作员"
+
+#: setup.php
+msgid "Doctor Viewer"
+msgstr "Doctor 查看者"
 
 #: setup.php
 msgid "Utilities"
@@ -1232,9 +1503,28 @@ msgid "Fail when the database and PHP clocks differ by more than this."
 msgstr "当数据库与 PHP 的时钟相差超过此值时判为失败。"
 
 #: setup.php
+msgid "RRD Stale Intervals"
+msgstr "RRD 过期间隔数"
+
+#: setup.php
+msgid "Warn after this many collection intervals without a file update (1 to 100)."
+msgstr "文件连续这么多个采集间隔未更新时发出警告（1 至 100）。"
+
+#: setup.php
+msgid "Additional disk-write delay for external caching (0 to 86400). Boost adds its own allowance."
+msgstr "外部缓存造成的额外磁盘写入延迟（0 至 86400）。Boost 会增加自己的宽限时间。"
+
+#: setup.php
+msgid "Deferred RRD Write Allowance (seconds)"
+msgstr "RRD 延迟写入宽限时间（秒）"
+
+#: setup.php
 msgid "Cacti Log Size Warning (MB)"
 msgstr "Cacti 日志大小警告（MB）"
 
 #: setup.php
 msgid "Warn when the Cacti log grows beyond this size, which usually means log rotation is not running."
 msgstr "当 Cacti 日志增长超过此大小时发出警告，这通常意味着日志轮转没有运行。"
+
+#~ msgid "Diagnostics are read-only. Repairs only run after an authenticated, CSRF-protected POST and are logged to the Cacti log."
+#~ msgstr "诊断为只读。修复仅在经过身份验证且受 CSRF 保护的 POST 请求后才会执行，并记录到 Cacti 日志。"
