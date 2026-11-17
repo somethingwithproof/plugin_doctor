@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Add expiring repair previews, structured audit history, symptom investigations, scoped stale-RRD checks with deferred-write allowances, and expiring accepted warnings that preserve observed health.
+
 - Add Viewer, Operator and Administrator realms with scoped/redacted reports, bounded diagnostic runs, personal acknowledgments, repair confirmation and permission-gated settings. Preserve existing Doctor grants as Administrator.
 
 - Add translations into Spanish (`es-ES`), French, German, Simplified Chinese, and Japanese, plus a Latin American Spanish catalog (`es-419`) that Cacti cannot select until it adds that locale. Check summaries and details, repairs, alert email text, settings, and CLI messages are translated; check IDs, JSON keys and statuses, monitoring output, and log lines are unchanged. Release packages include `locales/po` and `locales/LC_MESSAGES`.

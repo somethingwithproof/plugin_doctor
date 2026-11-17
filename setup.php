@@ -20,6 +20,8 @@
 function plugin_doctor_install() {
 	doctor_setup_hooks();
 	doctor_setup_realms();
+	require_once __DIR__ . '/doctor_workflows.php';
+	doctor_setup_workflows();
 }
 
 /** Keep the original realm ID and grants as Administrator during upgrades. */
@@ -51,13 +53,16 @@ function doctor_setup_hooks($enable = false) {
 }
 
 function plugin_doctor_uninstall() {
+	db_execute('DROP TABLE IF EXISTS plugin_doctor_acceptance');
+	db_execute('DROP TABLE IF EXISTS plugin_doctor_audit');
 	db_execute("DELETE FROM settings WHERE name LIKE 'doctor\\_%'");
 }
 
 function plugin_doctor_check_config() {
 	doctor_setup_hooks();
 
-	return doctor_setup_realms();
+	require_once __DIR__ . '/doctor_workflows.php';
+	return doctor_setup_realms() && doctor_setup_workflows();
 }
 
 function plugin_doctor_upgrade() {
@@ -90,6 +95,10 @@ function doctor_config_arrays() {
 	require_once __DIR__ . '/doctor_access.php';
 	if (read_config_option('doctor_access_version') !== '1' && doctor_setup_realms()) {
 		set_config_option('doctor_access_version', '1');
+	}
+	require_once __DIR__ . '/doctor_workflows.php';
+	if (read_config_option('doctor_workflows_version') !== '1' && doctor_setup_workflows()) {
+		set_config_option('doctor_workflows_version', '1');
 	}
 	$level = doctor_access_level();
 	$pages = [1 => 'doctor_view.php', 2 => 'doctor_operator.php', 3 => 'doctor.php'];
@@ -170,6 +179,8 @@ function doctor_config_settings() {
 		'doctor_disk_fail_percent'   => doctor_threshold_setting(__('RRA Disk Free Failure (percent)', 'doctor'), __('Fail when free space on the RRA file system drops below this percentage.', 'doctor'), '2'),
 		'doctor_clock_warn_seconds'  => doctor_threshold_setting(__('Clock Drift Warning (seconds)', 'doctor'), __('Warn when the database and PHP clocks differ by more than this.', 'doctor'), '5'),
 		'doctor_clock_fail_seconds'  => doctor_threshold_setting(__('Clock Drift Failure (seconds)', 'doctor'), __('Fail when the database and PHP clocks differ by more than this.', 'doctor'), '60'),
+		'doctor_rrd_stale_intervals' => doctor_threshold_setting(__('RRD Stale Intervals', 'doctor'), __('Warn after this many collection intervals without a file update (1 to 100).', 'doctor'), '3'),
+		'doctor_rrd_deferred_seconds' => doctor_threshold_setting(__('Deferred RRD Write Allowance (seconds)', 'doctor'), __('Additional disk-write delay for external caching (0 to 86400). Boost adds its own allowance.', 'doctor'), '0'),
 		'doctor_log_warn_mb'         => doctor_threshold_setting(__('Cacti Log Size Warning (MB)', 'doctor'), __('Warn when the Cacti log grows beyond this size, which usually means log rotation is not running.', 'doctor'), '100')
 	];
 }

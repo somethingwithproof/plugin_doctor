@@ -170,8 +170,8 @@ function doctor_alert_pending() {
 	}
 	foreach ($pending['events'] as $id => $event) {
 		if (!is_string($id) || !preg_match('/\A[a-z0-9_.]+\z/', $id) || !is_array($event) || count($event) !== 3
-			|| !isset($event[0], $event[1], $event[2]) || !in_array($event[0], ['new', 'pass', 'warn', 'fail'], true)
-			|| !in_array($event[1], ['pass', 'warn', 'fail'], true) || !is_int($event[2])) {
+			|| !isset($event[0], $event[1], $event[2]) || !in_array($event[0], ['new', 'pass', 'warn', 'fail', 'accepted'], true)
+			|| !in_array($event[1], ['pass', 'warn', 'fail', 'accepted'], true) || !is_int($event[2])) {
 			throw new RuntimeException(doctor_n_('Doctor alert transitions are invalid; no email was sent.'));
 		}
 	}
@@ -201,6 +201,14 @@ function doctor_retry_alerts($now, $retry = false) {
 	if ($pending === [] || $recipients === '') {
 		return;
 	}
+	$policies = doctor_acceptances();
+	foreach ($pending['events'] as $id => $event) {
+		if ($event[1] === 'warn' && $event[0] !== 'fail') {
+			$check = doctor_apply_acceptances([doctor_result($id, '', 'warn', '', '')], $now, $policies);
+			if ($check[0]['accepted']) { unset($pending['events'][$id]); }
+		}
+	}
+	if ($pending['events'] === []) { doctor_store_setting('doctor_alert_pending', ''); return; }
 	if ($retry) {
 		$pending['attempts'] = 0;
 		$pending['next'] = $now;
@@ -237,8 +245,18 @@ function doctor_run_scheduled($results, $now) {
 	$tracked = array_values(array_filter($results, function ($result) {
 		return !in_array($result['id'], ['doctor.schedule', 'doctor.alert_delivery'], true);
 	}));
-	$previous = doctor_state_decode(read_config_option('doctor_state', true));
-	$changes = doctor_state_changes($previous, $tracked, (string) read_config_option('doctor_alert_warnings', true) === 'on');
+	$tracked = doctor_apply_acceptances($tracked, $now);
+	$alertResults = $tracked;
+	foreach ($alertResults as &$r) {
+		if (!empty($r['accepted'])) { $r['status'] = 'accepted'; }
+	}
+	unset($r);
+	$alertState = read_config_option('doctor_alert_state', true);
+	$previous = doctor_state_decode($alertState !== '' ? $alertState : read_config_option('doctor_state', true));
+	$changes = doctor_state_changes($previous, $alertResults, (string) read_config_option('doctor_alert_warnings', true) === 'on');
+	$changes = array_values(array_filter($changes, function ($change) {
+		return !($change['to'] === 'accepted' && $change['from'] !== 'fail') && !($change['from'] === 'accepted' && $change['to'] === 'pass');
+	}));
 	$pending = doctor_alert_pending();
 	if ($changes !== [] && (trim((string) read_config_option('doctor_alert_emails', true)) !== '' || $pending !== [])) {
 		if ($pending === []) {
@@ -260,10 +278,11 @@ function doctor_run_scheduled($results, $now) {
 	// Retain only aggregate history; never persist device details or log excerpts for viewers.
 	$history = doctor_read_json_setting('doctor_report_history');
 	$summary = doctor_result_counts(array_values(array_filter($tracked, function ($result) {
-		return $result['id'] !== 'devices.health';
+		return !in_array($result['id'], ['devices.health', 'filesystem.rrd_files', 'filesystem.rrd_stale'], true);
 	})));
 	$history[] = [$now, $summary['pass'], $summary['warn'], $summary['fail']];
 	doctor_store_setting('doctor_report_history', json_encode(array_slice($history, -20)));
+	doctor_store_setting('doctor_alert_state', doctor_state_encode($alertResults));
 	doctor_store_setting('doctor_state', doctor_state_encode($tracked));
 	doctor_store_setting('doctor_last_run', (string) $now);
 	foreach ($changes as $change) {

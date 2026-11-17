@@ -52,11 +52,42 @@ test('operators can investigate and acknowledge but cannot see repair or setting
 test('an administrator must confirm before an allow-listed repair runs', function () {
 	$result = doctor_web_request([120, 15], 'repair', 'POST', true, ['repair_id' => 'runtime_directories']);
 	expect($result['status'])->toBe(200)->and($result['html'])->toContain('Confirm repair', '>Cancel</a>')->and($result['log'])->toBe([]);
-	$result = doctor_web_request([120, 15], 'repair', 'POST', true, ['repair_id' => 'runtime_directories', 'confirmed' => 'yes']);
+	$result = doctor_web_request([120, 15], 'repair', 'POST', true, ['repair_id' => 'runtime_directories', 'confirmed' => 'yes', 'preview_first' => true]);
 	expect($result['status'])->toBe(302)->and(implode("\n", $result['log']))->toContain('Doctor repair runtime_directories by user 7');
 });
 
 test('stale reports cannot be acknowledged by a forged POST', function () {
 	$result = doctor_web_request([121], 'acknowledge', 'POST', true, ['age' => 86400, 'check_id' => 'database.clock', 'fingerprint' => hash('sha256', json_encode(['database.clock', 'fail', 'private detail']))]);
 	expect($result['status'])->toBe(409)->and($result['log'])->toBe([]);
+});
+
+
+test('repair confirmation without a preview is refused', function () {
+	$r = doctor_web_request([120, 15], 'repair', 'POST', true, ['repair_id' => 'runtime_directories', 'confirmed' => 'yes']);
+	expect($r['status'])->toBe(409)->and($r['audit'])->toBe([]);
+});
+
+test('repair audit records approval before mutation and verified completion afterwards', function () {
+	$r = doctor_web_request([120, 15], 'repair', 'POST', true, ['repair_id' => 'runtime_directories', 'confirmed' => 'yes', 'preview_first' => true]);
+	expect(array_column($r['audit'], 'action'))->toBe(['repair.started', 'repair.completed']);
+	$before = json_decode($r['audit'][0]['payload'], true);
+	$after = json_decode($r['audit'][1]['payload'], true);
+	expect(array_column($before['before']['objects'], 'action'))->toBe(['create', 'create', 'create'])
+		->and($after['verified'])->toBeTrue()->and(array_column($after['after']['objects'], 'action'))->toBe(['keep', 'keep', 'keep']);
+});
+
+test('expired changed or unauditable repair plans cannot execute', function ($extra) {
+	$r = doctor_web_request([120, 15], 'repair', 'POST', true, array_merge(['repair_id' => 'runtime_directories', 'confirmed' => 'yes', 'preview_first' => true], $extra));
+	expect($r['audit'])->toBe([]);
+})->with([[['plan_age' => 301]], [['change_after_preview' => true]], [['audit_fail' => true]]]);
+
+test('warning exceptions require administrator core permission and csrf', function ($grants, $csrf) {
+	$r = doctor_web_request($grants, 'accept', 'POST', $csrf, ['finding_status' => 'warn', 'check_id' => 'database.clock', 'owner' => 'Operations', 'reason' => 'Investigating drift', 'expires' => gmdate('Y-m-d', time() + 86400)]);
+	expect($r['status'])->toBe(403)->and($r['acceptances'])->toBe([])->and($r['audit'])->toBe([]);
+})->with([[[121, 15], true], [[120], true], [[120, 15], false], [[122], true]]);
+
+test('an administrator can accept a fresh warning with a reason owner and expiry', function () {
+	$r = doctor_web_request([120, 15], 'accept', 'POST', true, ['finding_status' => 'warn', 'check_id' => 'database.clock', 'owner' => 'Operations', 'reason' => 'Investigating drift', 'expires' => gmdate('Y-m-d', time() + 86400)]);
+	expect($r['status'])->toBe(200)->and($r['acceptances'])->toHaveCount(1)->and($r['html'])->toContain('WARN', 'Accepted warning', 'Operations')
+		->and(array_column($r['audit'], 'action'))->toBe(['warning.accepted']);
 });

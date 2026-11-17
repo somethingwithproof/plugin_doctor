@@ -25,7 +25,8 @@ if (PHP_SAPI !== 'cli') {
 }
 $input = json_decode($argv[1], true);
 require dirname(__DIR__) . '/CactiStubs.php';
-$fixtureRoot = sys_get_temp_dir() . '/doctor-web-' . getmypid();
+doctor_test_workflow_database();
+$fixtureRoot = sys_get_temp_dir() . '/doctor-web-' . getmypid() . '-' . uniqid();
 mkdir($fixtureRoot, 0700);
 define('CACTI_PATH_BASE', $fixtureRoot);
 require dirname(dirname(__DIR__)) . '/doctor_functions.php';
@@ -33,7 +34,7 @@ require dirname(dirname(__DIR__)) . '/doctor_access.php';
 $GLOBALS['doctor_test_realms'] = ['doctor.php' => 20, 'doctor_operator.php' => 21, 'doctor_view.php' => 22];
 $GLOBALS['doctor_test_grants'] = $input['grants'];
 $_SESSION = ['sess_user_id' => 7, 'doctor_report' => [
-	'user' => 7, 'time' => time() - (isset($input['age']) ? $input['age'] : 0), 'results' => [doctor_result('database.clock', 'Database', 'fail', 'Clock', 'private detail', 'runtime_directories')]
+	'user' => 7, 'time' => time() - (isset($input['age']) ? $input['age'] : 0), 'results' => [doctor_result('database.clock', 'Database', isset($input['finding_status']) ? $input['finding_status'] : 'fail', 'Clock', 'private detail', 'runtime_directories')]
 ]];
 $GLOBALS['doctor_test_settings'] = ['doctor_schedule_enabled' => 'on', 'doctor_state' => 'database.clock=fail', 'doctor_last_completed' => (string) time()];
 $_SERVER['REQUEST_METHOD'] = $input['method'];
@@ -72,6 +73,15 @@ function raise_message($name, $message, $level) {}
 define('MESSAGE_LEVEL_INFO', 1);
 define('MESSAGE_LEVEL_ERROR', 2);
 define('DOCTOR_WEB_REQUEST', true);
+if (!empty($input['preview_first'])) {
+	$plan = doctor_repair_snapshot();
+	$plan['created'] = time() - (isset($input['plan_age']) ? $input['plan_age'] : 0);
+	$plan['actor'] = doctor_actor();
+	$_SESSION['doctor_repair_plan'] = $plan;
+	$input['plan'] = $plan['fingerprint'];
+	if (!empty($input['change_after_preview'])) { mkdir($fixtureRoot . '/cache'); }
+}
+$GLOBALS['doctor_test_audit_fail'] = !empty($input['audit_fail']);
 http_response_code(200);
 ob_start();
 register_shutdown_function(function () {
@@ -81,6 +91,6 @@ register_shutdown_function(function () {
 	}
 	rmdir($fixtureRoot);
 	$html = ob_get_clean();
-	print json_encode(['status' => http_response_code(), 'html' => $html, 'log' => $GLOBALS['doctor_test_log']]);
+	print json_encode(['status' => http_response_code(), 'html' => $html, 'log' => $GLOBALS['doctor_test_log'], 'audit' => $GLOBALS['doctor_test_pdo']->query('SELECT action, payload FROM plugin_doctor_audit ORDER BY id')->fetchAll(PDO::FETCH_ASSOC), 'acceptances' => doctor_acceptances()]);
 });
 require dirname(dirname(__DIR__)) . '/doctor_web.php';

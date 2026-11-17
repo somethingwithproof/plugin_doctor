@@ -38,13 +38,13 @@ function doctor_can_configure() {
 /** Every state-changing request passes this guard before work or output. */
 function doctor_action_status($action, $method, $csrf) {
 	$level = doctor_access_level();
-	if (!in_array($action, ['run', 'acknowledge', 'repair'], true)) {
+	if (!in_array($action, ['run', 'acknowledge', 'repair', 'accept', 'unaccept'], true)) {
 		return 400;
 	}
 	if ($method !== 'POST') {
 		return 405;
 	}
-	if (!$csrf || $level < 2 || ($action === 'repair' && !doctor_can_configure())) {
+	if (!$csrf || $level < 2 || (in_array($action, ['repair', 'accept', 'unaccept'], true) && !doctor_can_configure())) {
 		return 403;
 	}
 	return 200;
@@ -80,7 +80,7 @@ function doctor_web_results($results) {
 			continue;
 		}
 		// Replace the installation-wide device check and the CLI-only PHP settings.
-		if (in_array($result['id'], ['devices.health', 'filesystem.rrd_files', 'php.configuration'], true)) {
+		if (in_array($result['id'], ['devices.health', 'filesystem.rrd_files', 'filesystem.rrd_stale', 'php.configuration'], true)) {
 			continue;
 		}
 		if ($result['id'] === 'logging.recent_errors' && !is_realm_allowed(18)) {
@@ -91,12 +91,17 @@ function doctor_web_results($results) {
 			isset($result['assessment']) ? $result['assessment'] : 'assessed');
 	}
 	$visible[] = doctor_visible_devices();
+	if (function_exists('get_allowed_devices')) {
+		$ids = [];
+		foreach (get_allowed_devices() as $device) { $ids[] = (int) $device['id']; }
+		$visible[] = doctor_check_rrd_stale($ids);
+	}
 	$visible[] = doctor_check_php_configuration();
 	foreach ($visible as &$result) {
 		$result['detail'] = doctor_redact($result['detail']);
 	}
 	unset($result);
-	return $visible;
+	return doctor_apply_acceptances($visible);
 }
 
 /** Reuse the existing supervised CLI; never accept a command or arguments from a request. */
@@ -121,7 +126,7 @@ function doctor_viewer_results($now) {
 	$fresh = read_config_option('doctor_schedule_enabled', true) === 'on' && $completed > 0 && $now >= $completed && $now - $completed <= doctor_schedule_interval() + 180;
 	$results = [];
 	foreach ($state as $id => $status) {
-		if (in_array($id, ['devices.health', 'filesystem.rrd_files'], true) || !preg_match('/\A[a-z0-9_.]+\z/', $id) || !in_array($status, ['pass', 'warn', 'fail'], true)) {
+		if (in_array($id, ['devices.health', 'filesystem.rrd_files', 'filesystem.rrd_stale'], true) || !preg_match('/\A[a-z0-9_.]+\z/', $id) || !in_array($status, ['pass', 'warn', 'fail'], true)) {
 			continue;
 		}
 		$parts = explode('.', $id);

@@ -65,6 +65,17 @@ if ($action !== '' && $action !== 'default') {
 			http_response_code(409);
 			exit;
 		}
+	} elseif ($action === 'accept' || $action === 'unaccept') {
+		$date = (string) get_nfilter_request_var('expires');
+		$expires = preg_match('/\A[0-9]{4}-[0-9]{2}-[0-9]{2}\z/', $date) ? strtotime($date . ' 00:00:00 UTC') : false;
+		if ($expires !== false && gmdate('Y-m-d', $expires) !== $date) { $expires = false; }
+		if (($action === 'accept' && (empty($cached['time']) || time() < $cached['time'] || time() - $cached['time'] > doctor_schedule_interval() + 180))
+			|| !doctor_change_acceptance($results, (string) get_nfilter_request_var('check_id'), (string) get_nfilter_request_var('owner'),
+				(string) get_nfilter_request_var('reason'), $expires === false ? 0 : $expires, $action === 'unaccept')) {
+			http_response_code(409);
+			$error = __('The warning exception could not be saved. Use a fresh assessed warning, an owner, a reason and an expiry within 90 days.', 'doctor');
+		}
+		$results = doctor_apply_acceptances($results);
 	} elseif ($action === 'repair') {
 		$repair = (string) get_nfilter_request_var('repair_id');
 		if (!isset(doctor_available_repairs()[$repair])) {
@@ -73,8 +84,17 @@ if ($action !== '' && $action !== 'default') {
 		}
 		if (get_request_var('confirmed') !== 'yes') {
 			$confirm = $repair;
+			$_SESSION['doctor_repair_plan'] = doctor_repair_snapshot();
+			$_SESSION['doctor_repair_plan']['created'] = time();
+			$_SESSION['doctor_repair_plan']['actor'] = doctor_actor();
 		} else {
-			$result = doctor_run_repair($repair);
+			$plan = isset($_SESSION['doctor_repair_plan']) ? $_SESSION['doctor_repair_plan'] : [];
+			unset($_SESSION['doctor_repair_plan']);
+			if (!isset($plan['fingerprint']) || get_nfilter_request_var('plan') !== $plan['fingerprint']) {
+				http_response_code(409);
+				exit;
+			}
+			$result = doctor_execute_repair_plan($plan);
 			cacti_log('Doctor repair ' . $repair . ' by user ' . (int) $_SESSION['sess_user_id'] . ': ' . $result['status'] . ' - ' . doctor_redact(isset($result['log']) ? $result['log'] : $result['detail']), false, 'DOCTOR');
 			raise_message('doctor_repair', doctor_redact($result['summary'] . ': ' . $result['detail']), $result['status'] === 'pass' ? MESSAGE_LEVEL_INFO : MESSAGE_LEVEL_ERROR);
 			unset($_SESSION['doctor_report']);
@@ -89,6 +109,7 @@ $fresh = $observed > 0 && time() >= $observed && time() - $observed <= doctor_sc
 if ($access === 1) {
 	$view = doctor_viewer_results(time());
 	$results = $view['results'];
+	$results = doctor_apply_acceptances($results);
 	$observed = $view['time'];
 	$fresh = $view['fresh'];
 }
@@ -112,7 +133,17 @@ if ($confirm !== '') {
 	$repairs = doctor_available_repairs();
 	html_start_box(__('Confirm repair', 'doctor'), '100%', false, 3, 'center', '');
 	print '<tr><td>' . html_escape($repairs[$confirm]['description']) . '</td></tr><tr><td>';
-	doctor_action_form($page, 'repair', ['repair_id' => $confirm, 'confirmed' => 'yes'], __('Confirm repair', 'doctor'));
+	$plan = $_SESSION['doctor_repair_plan'];
+	print '<p>' . html_escape(__('Approval expires after five minutes and is invalidated by a changed filesystem. The acting account must be able to create directories or change owner permissions.', 'doctor')) . '</p><ul>';
+	foreach ($plan['objects'] as $object) {
+		$before = $object['mode'] === null ? '-' : sprintf('%04o', $object['mode']);
+		$after = $object['target_mode'] === null ? '-' : sprintf('%04o', $object['target_mode']);
+		print '<li>' . html_escape($object['path'] . ': ' . $object['action'] . ' (' . $before . ' -> ' . $after . ')') . '</li>';
+	}
+	print '</ul>';
+	if ($plan['allowed']) {
+		doctor_action_form($page, 'repair', ['repair_id' => $confirm, 'confirmed' => 'yes', 'plan' => $plan['fingerprint']], __('Confirm repair', 'doctor'));
+	} else { print '<p>' . html_escape(__('Repair prerequisites are not met. No changes will be made.', 'doctor')) . '</p>'; }
 	print '<a class="ui-button" href="' . html_escape($page) . '">' . html_escape(__('Cancel', 'doctor')) . '</a></td></tr>';
 	html_end_box();
 }
@@ -143,7 +174,7 @@ $row = 0;
 foreach ($results as $result) {
 	$status = $fresh ? $result['status'] : 'unknown';
 	$class = $status === 'pass' ? 'deviceUp' : ($status === 'fail' ? 'deviceDown' : 'textWarning');
-	print '<tr class="' . ($row++ % 2 ? 'even' : 'odd') . '"><td><span class="' . $class . '">' . html_escape(doctor_status_label($status)) . '</span></td>';
+	print '<tr class="' . ($row++ % 2 ? 'even' : 'odd') . '"><td><span class="' . $class . '">' . html_escape(doctor_status_label($status)) . '</span>' . ($fresh && doctor_warning_accepted($result) ? ' (' . html_escape(__('Accepted warning', 'doctor')) . ')' : '') . '</td>';
 	print '<td>' . html_escape(doctor_category_label($result['category'])) . '</td><td>' . html_escape($result['summary']) . '</td>';
 	if ($access >= 2) {
 		print '<td>' . html_escape($result['detail']) . '</td><td>';
@@ -159,11 +190,29 @@ foreach ($results as $result) {
 				doctor_action_form($page, 'acknowledge', ['check_id' => $result['id'], 'fingerprint' => $fingerprint], __('Acknowledge', 'doctor'));
 			}
 		}
+		if (doctor_warning_accepted($result)) {
+			$policy = $result['acceptance'];
+			print '<p>' . html_escape(__('Owner: %s; review by %s UTC. Reason: %s', $policy['owner'], gmdate('Y-m-d', $policy['expires']), $policy['reason'], 'doctor')) . '</p>';
+		}
 		print '</td>';
 	}
 	print '</tr>';
 }
 html_end_box();
+
+if ($access >= 2) {
+	print '<form method="get" action="' . html_escape($page) . '"><label for="doctor_symptom">' . html_escape(__('Investigate a symptom', 'doctor')) . '</label> ';
+	print '<select id="doctor_symptom" name="symptom">';
+	$symptom = (string) get_nfilter_request_var('symptom');
+	foreach (doctor_symptoms() as $id => $label) {
+		print '<option value="' . html_escape($id) . '"' . ($id === $symptom ? ' selected' : '') . '>' . html_escape($label) . '</option>';
+	}
+	print '</select> <button type="submit">' . html_escape(__('Investigate', 'doctor')) . '</button></form>';
+	$diagnosis = doctor_diagnose($symptom, $results, $fresh);
+	if ($diagnosis !== false) {
+		print '<pre style="white-space:pre-wrap;overflow-wrap:anywhere">' . html_escape(doctor_diagnosis_text($diagnosis)) . '</pre>';
+	}
+}
 
 $history = doctor_read_json_setting('doctor_report_history');
 if ($history !== []) {
@@ -173,6 +222,42 @@ if ($history !== []) {
 		if (is_array($sample) && count($sample) === 4) {
 			print '<tr><td>' . html_escape(gmdate('Y-m-d H:i:s', (int) $sample[0])) . '</td><td>' . (int) $sample[1] . '</td><td>' . (int) $sample[2] . '</td><td>' . (int) $sample[3] . '</td></tr>';
 		}
+	}
+	html_end_box();
+}
+if (doctor_can_configure()) {
+	html_start_box(__('Warning exceptions', 'doctor'), '100%', false, 3, 'center', '');
+	print '<tr><td>';
+	form_start($page);
+	print '<input type="hidden" name="action" value="accept">';
+	print '<p><label for="doctor_check">' . html_escape(__('Check', 'doctor')) . '</label> <select name="check_id" id="doctor_check" style="max-width:100%">';
+	foreach ($results as $r) {
+		if ($fresh && $r['status'] === 'warn' && $r['assessment'] === 'assessed') {
+			print '<option value="' . html_escape($r['id']) . '">' . html_escape($r['summary']) . '</option>';
+		}
+	}
+	print '</select></p>';
+	foreach (['owner' => __('Owner', 'doctor'), 'reason' => __('Reason', 'doctor'), 'expires' => __('Review date (UTC)', 'doctor')] as $name => $label) {
+		print '<p><label for="doctor_' . $name . '">' . html_escape($label) . '</label><br><input style="width:100%;max-width:30em;box-sizing:border-box" required id="doctor_' . $name . '" name="' . $name . '" type="' . ($name === 'expires' ? 'date' : 'text') . '" maxlength="' . ($name === 'reason' ? 512 : 128) . '"></p>';
+	}
+	print '<button type="submit">' . html_escape(__('Accept warning', 'doctor')) . '</button>';
+	form_end(false);
+	print '</td></tr>';
+	$known = [];
+	foreach ($results as $r) { $known[$r['id']] = true; }
+	foreach (doctor_acceptances() as $policy) {
+		print '<tr><td>' . html_escape($policy['check_id'] . ': ' . $policy['owner'] . ' / ' . $policy['reason'] . ' / ' . gmdate('Y-m-d', $policy['expires']) . ' UTC') . ' ';
+		if ($policy['expires'] <= time()) { print html_escape(__('Expired', 'doctor')); }
+		if (!isset($known[$policy['check_id']])) { print ' ' . html_escape(__('Check not present in this report; verify its ID.', 'doctor')); }
+		doctor_action_form($page, 'unaccept', ['check_id' => $policy['check_id']], __('Remove exception', 'doctor'));
+		print '</td></tr>';
+	}
+	html_end_box();
+	html_start_box(__('Audit history', 'doctor'), '100%', false, 3, 'center', '');
+	html_header([__('Observation (UTC)', 'doctor'), __('Action', 'doctor'), __('Details', 'doctor')]);
+	$auditRows = db_fetch_assoc('SELECT id, created, actor, action, payload FROM plugin_doctor_audit ORDER BY id DESC LIMIT 20', false);
+	foreach (is_array($auditRows) ? $auditRows : [] as $audit) {
+		print '<tr><td>' . html_escape(gmdate('Y-m-d H:i:s', $audit['created'])) . '</td><td>' . html_escape($audit['actor'] . ': ' . $audit['action']) . '</td><td><details><summary>#' . (int) $audit['id'] . '</summary><pre style="white-space:pre-wrap;overflow-wrap:anywhere">' . html_escape(doctor_redact($audit['payload'])) . '</pre></details></td></tr>';
 	}
 	html_end_box();
 }
