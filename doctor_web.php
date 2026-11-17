@@ -43,7 +43,9 @@ if ($action !== '' && $action !== 'default') {
 	$status = doctor_action_status($action, $method, $method === 'POST' && csrf_check(false));
 	if ($status !== 200) {
 		http_response_code($status);
-		if ($status === 405) { header('Allow: POST'); }
+		if ($status === 405) {
+			header('Allow: POST');
+		}
 		exit;
 	}
 	if ($action === 'run') {
@@ -132,7 +134,10 @@ if ($fresh) {
 	print '<tr class="tableHeader"><th colspan="' . ($access >= 2 ? 5 : 3) . '">' . html_escape(__('Installation health: %d passed, %d warnings, %d failed', $counts['pass'], $counts['warn'], $counts['fail'], 'doctor')) . '</th></tr>';
 }
 $headers = [__('Status', 'doctor'), __('Category', 'doctor'), __('Check', 'doctor')];
-if ($access >= 2) { $headers[] = __('Details', 'doctor'); $headers[] = __('Action', 'doctor'); }
+if ($access >= 2) {
+	$headers[] = __('Details', 'doctor');
+	$headers[] = __('Action', 'doctor');
+}
 html_header($headers);
 $row = 0;
 foreach ($results as $result) {

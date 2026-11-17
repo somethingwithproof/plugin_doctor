@@ -19,7 +19,10 @@
  */
 
 // Executed only in a subprocess by WebAccessTest, never as a web endpoint.
-if (PHP_SAPI !== 'cli') { http_response_code(404); exit; }
+if (PHP_SAPI !== 'cli') {
+	http_response_code(404);
+	exit;
+}
 $input = json_decode($argv[1], true);
 require dirname(__DIR__) . '/CactiStubs.php';
 $fixtureRoot = sys_get_temp_dir() . '/doctor-web-' . getmypid();
@@ -34,17 +37,37 @@ $_SESSION = ['sess_user_id' => 7, 'doctor_report' => [
 ]];
 $GLOBALS['doctor_test_settings'] = ['doctor_schedule_enabled' => 'on', 'doctor_state' => 'database.clock=fail', 'doctor_last_completed' => (string) time()];
 $_SERVER['REQUEST_METHOD'] = $input['method'];
-function get_request_var($name) { global $input; return isset($input[$name]) ? $input[$name] : ''; }
-function get_nfilter_request_var($name) { return get_request_var($name); }
-function csrf_check($fatal = true) { global $input; return $input['csrf']; }
-function html_escape($s) { return htmlspecialchars($s, ENT_QUOTES, 'UTF-8'); }
+function get_request_var($name) {
+	global $input;
+	return isset($input[$name]) ? $input[$name] : '';
+}
+function get_nfilter_request_var($name) {
+	return get_request_var($name);
+}
+function csrf_check($fatal = true) {
+	global $input;
+	return $input['csrf'];
+}
+function html_escape($s) {
+	return htmlspecialchars($s, ENT_QUOTES, 'UTF-8');
+}
 function top_header() {}
 function bottom_footer() {}
-function html_start_box($title, $width, $color, $padding, $align, $action) { print '<table>'; }
-function html_end_box() { print '</table>'; }
-function html_header($headers) { print '<tr><th>' . implode('</th><th>', $headers) . '</th></tr>'; }
-function form_start($action, $id = '', $multipart = false) { print '<form method="post" action="' . $action . '">'; }
-function form_end($save = true) { print '</form>'; }
+function html_start_box($title, $width, $color, $padding, $align, $action) {
+	print '<table>';
+}
+function html_end_box() {
+	print '</table>';
+}
+function html_header($headers) {
+	print '<tr><th>' . implode('</th><th>', $headers) . '</th></tr>';
+}
+function form_start($action, $id = '', $multipart = false) {
+	print '<form method="post" action="' . $action . '">';
+}
+function form_end($save = true) {
+	print '</form>';
+}
 function raise_message($name, $message, $level) {}
 define('MESSAGE_LEVEL_INFO', 1);
 define('MESSAGE_LEVEL_ERROR', 2);
