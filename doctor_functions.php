@@ -1661,7 +1661,7 @@ function doctor_format_prometheus($results, $now) {
  */
 function doctor_redact($text) {
 	$text = (string) $text;
-	$text = preg_replace('/(\b(?:Bearer|Basic)[ \t]+)[^\s;,"\'\r\n]+/i', '$1[redacted]', $text);
+	$text = preg_replace('/(\b(?:Bearer|Basic)[ \t]+)(?:\\\\[^\r\n]|[^\s;,"\'\\\\\r\n])+/i', '$1[redacted]', $text);
 	$keys = 'authorization|password|passwd|passphrase|pass|secret|token|community|api[_-]?key|auth[_-]?key|priv(?:ate)?[_-]?key';
 
 	// Only indented or empty lines continue a YAML scalar; a new log record

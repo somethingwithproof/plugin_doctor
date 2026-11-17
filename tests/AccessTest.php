@@ -158,3 +158,11 @@ test('web reports omit installation-wide RRD paths', function () {
 test('HTTP authorization credentials are redacted', function ($text) {
 	expect(doctor_redact($text))->not->toContain('sensitivevalue');
 })->with(['Authorization: Bearer sensitivevalue', 'Authorization: sensitivevalue', 'Authorization: Basic sensitivevalue', 'bearer sensitivevalue', '"Authorization": "Bearer sensitivevalue"']);
+
+test('credential schemes preserve escaped quoted secret boundaries', function ($scheme) {
+	foreach (['"', "'"] as $quote) {
+		$value = $scheme . ' abc' . chr(92) . $quote . 'sensitivevalue';
+		$text = 'password: ' . $quote . $value . $quote . '; host=localhost';
+		expect(doctor_redact($text))->toBe('password: ' . $quote . '[redacted]' . $quote . '; host=localhost');
+	}
+})->with(['Basic', 'Bearer']);
