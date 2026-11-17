@@ -20,7 +20,7 @@
 
 Cacti Doctor is a Cacti plugin that diagnoses an installation in one pass and applies small repairs only when an administrator asks for them.
 
-**Status: in development, before 1.0.** The latest release is [0.6.0](https://github.com/somethingwithproof/plugin_doctor/releases/tag/v0.6.0). This release adds role-scoped access, guided diagnosis, scoped RRD freshness checks, repair previews and audit history, accepted warning exceptions, and translations. See [CHANGELOG.md](CHANGELOG.md) for details.
+**Status: in development, before 1.0.** The latest release is [0.6.1](https://github.com/somethingwithproof/plugin_doctor/releases/tag/v0.6.1). This patch adds Hindi and Arabic catalogs and translated user guides to the role-scoped access, guided diagnosis, scoped RRD freshness checks, repair previews and audit history, accepted warning exceptions, and translations in 0.6.0. See [CHANGELOG.md](CHANGELOG.md) for details.
 
 ## Screenshots
 

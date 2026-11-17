@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## 0.6.1 - 2026-11-17
+
+- Add Hindi and Arabic catalogs and translated user guides.
+
 ## 0.6.0 - 2026-11-17
 
 - Add expiring repair previews, structured audit history, symptom investigations, scoped stale-RRD checks with deferred-write allowances, and expiring accepted warnings that preserve observed health.
