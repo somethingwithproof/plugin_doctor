@@ -1,0 +1,12 @@
+{
+  "locales": [
+    "zh-CN",
+    "hi-IN",
+    "es-ES",
+    "es-419",
+    "ar-SA"
+  ],
+  "sources": [
+    "README.md"
+  ]
+}
