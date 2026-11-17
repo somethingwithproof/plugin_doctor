@@ -1286,12 +1286,12 @@ msgid "Status"
 msgstr "状態"
 
 #: doctor_web.php
-msgid "Action"
-msgstr "アクション"
-
-#: doctor_web.php
 msgid "Details"
 msgstr "詳細"
+
+#: doctor_web.php
+msgid "Action"
+msgstr "アクション"
 
 #: doctor_web.php
 msgid "Acknowledged; health status unchanged."
