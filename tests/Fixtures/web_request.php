@@ -79,7 +79,9 @@ if (!empty($input['preview_first'])) {
 	$plan['actor'] = doctor_actor();
 	$_SESSION['doctor_repair_plan'] = $plan;
 	$input['plan'] = $plan['fingerprint'];
-	if (!empty($input['change_after_preview'])) { mkdir($fixtureRoot . '/cache'); }
+	if (!empty($input['change_after_preview'])) {
+		mkdir($fixtureRoot . '/cache');
+	}
 }
 $GLOBALS['doctor_test_audit_fail'] = !empty($input['audit_fail']);
 http_response_code(200);

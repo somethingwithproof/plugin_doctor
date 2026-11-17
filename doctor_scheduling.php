@@ -205,10 +205,15 @@ function doctor_retry_alerts($now, $retry = false) {
 	foreach ($pending['events'] as $id => $event) {
 		if ($event[1] === 'warn' && $event[0] !== 'fail') {
 			$check = doctor_apply_acceptances([doctor_result($id, '', 'warn', '', '')], $now, $policies);
-			if ($check[0]['accepted']) { unset($pending['events'][$id]); }
+			if ($check[0]['accepted']) {
+				unset($pending['events'][$id]);
+			}
 		}
 	}
-	if ($pending['events'] === []) { doctor_store_setting('doctor_alert_pending', ''); return; }
+	if ($pending['events'] === []) {
+		doctor_store_setting('doctor_alert_pending', '');
+		return;
+	}
 	if ($retry) {
 		$pending['attempts'] = 0;
 		$pending['next'] = $now;
@@ -248,7 +253,9 @@ function doctor_run_scheduled($results, $now) {
 	$tracked = doctor_apply_acceptances($tracked, $now);
 	$alertResults = $tracked;
 	foreach ($alertResults as &$r) {
-		if (!empty($r['accepted'])) { $r['status'] = 'accepted'; }
+		if (!empty($r['accepted'])) {
+			$r['status'] = 'accepted';
+		}
 	}
 	unset($r);
 	$alertState = read_config_option('doctor_alert_state', true);

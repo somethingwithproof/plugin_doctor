@@ -1620,8 +1620,14 @@ function doctor_format_nagios($results) {
 	}
 
 	$accepted = 0;
-	foreach ($results as $result) { if (doctor_warning_accepted($result)) { $accepted++; } }
-	if ($accepted > 0) { $parts[] = $accepted . ' accepted warnings'; }
+	foreach ($results as $result) {
+		if (doctor_warning_accepted($result)) {
+			$accepted++;
+		}
+	}
+	if ($accepted > 0) {
+		$parts[] = $accepted . ' accepted warnings';
+	}
 	$summary = $parts !== [] ? implode('; ', $parts) : count($results) . ' checks passed';
 	$perf    = 'pass=' . $counts['pass'] . ' warn=' . $counts['warn'] . ' fail=' . $counts['fail'];
 
@@ -1737,7 +1743,9 @@ function doctor_build_bundle($results, $context, $logLines) {
 	$lines[] = '== Symptom investigation';
 	foreach (doctor_symptoms() as $id => $label) {
 		$diagnosis = doctor_diagnose($id, $results);
-		if ($diagnosis['candidates'] !== []) { $lines[] = $label . "\n" . doctor_diagnosis_text($diagnosis); }
+		if ($diagnosis['candidates'] !== []) {
+			$lines[] = $label . "\n" . doctor_diagnosis_text($diagnosis);
+		}
 	}
 	$lines[] = '';
 	$lines[] = '== Cacti log (last ' . count($logLines) . ' lines)';

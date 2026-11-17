@@ -93,7 +93,9 @@ function doctor_web_results($results) {
 	$visible[] = doctor_visible_devices();
 	if (function_exists('get_allowed_devices')) {
 		$ids = [];
-		foreach (get_allowed_devices() as $device) { $ids[] = (int) $device['id']; }
+		foreach (get_allowed_devices() as $device) {
+			$ids[] = (int) $device['id'];
+		}
 		$visible[] = doctor_check_rrd_stale($ids);
 	}
 	$visible[] = doctor_check_php_configuration();

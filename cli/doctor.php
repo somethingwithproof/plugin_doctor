@@ -95,7 +95,8 @@ if (isset($options['bundle'])) {
 
 if (isset($options['repair'])) {
 	if (!isset(doctor_available_repairs()[(string) $options['repair']])) {
-		fwrite(STDERR, __('Unknown repair', 'doctor') . PHP_EOL); exit(2);
+		fwrite(STDERR, __('Unknown repair', 'doctor') . PHP_EOL);
+		exit(2);
 	}
 	$plan = doctor_repair_snapshot();
 	$plan['created'] = time();

@@ -46,7 +46,12 @@ test('unreadable future empty and sampled RRD sets are explicitly unassessed', f
 
 test('stale RRD details show the three oldest files and a distinct device count', function () {
 	$rows = [];
-	foreach ([1000, 2000, 3000, 4000] as $i => $age) { $r = doctor_rrd_source($age); $r['path'] = 'file' . $i; $r['host_id'] = $i % 2; $rows[] = $r; }
+	foreach ([1000, 2000, 3000, 4000] as $i => $age) {
+		$r = doctor_rrd_source($age);
+		$r['path'] = 'file' . $i;
+		$r['host_id'] = $i % 2;
+		$rows[] = $r;
+	}
 	$r = doctor_evaluate_rrd_stale($rows, 10000, 300, 3, 0, false);
 	expect($r['detail'])->toContain('4 stale files across 2 devices', 'file3', 'file2', 'file1')->not->toContain('file0');
 });
@@ -59,7 +64,9 @@ test('RRD collection applies active device and user filters using real file ages
 	$db->exec('CREATE TABLE host (id INTEGER, description TEXT, disabled TEXT, status INTEGER)');
 	$db->exec('CREATE TABLE data_source_profiles (id INTEGER, step INTEGER)');
 	$directory = doctor_test_directory();
-	$path = $directory . '/test.rrd'; file_put_contents($path, 'fixture'); touch($path, time() - 10000);
+	$path = $directory . '/test.rrd';
+	file_put_contents($path, 'fixture');
+	touch($path, time() - 10000);
 	for ($i = 1; $i <= 4; $i++) {
 		$db->prepare('INSERT INTO host VALUES (?, ?, ?, ?)')->execute([$i, 'device-' . $i, $i === 3 ? 'on' : '', $i === 4 ? 1 : 3]);
 		$db->prepare('INSERT INTO data_local VALUES (?, ?)')->execute([$i, $i]);

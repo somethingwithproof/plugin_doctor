@@ -88,10 +88,16 @@ function doctor_evaluate_rrd_stale($sources, $now, $pollInterval, $intervals, $d
 	}
 	usort($stale, function ($a, $b) { return $a['age'] === $b['age'] ? 0 : ($a['age'] > $b['age'] ? -1 : 1); });
 	$examples = [];
-	foreach (array_slice($stale, 0, 3) as $entry) { $examples[] = $entry['text']; }
+	foreach (array_slice($stale, 0, 3) as $entry) {
+		$examples[] = $entry['text'];
+	}
 	$detail = __('Checked %d files; %d stale files across %d devices; %d unavailable or future-dated files.', count($sources), count($stale), count($devices), $unknown, 'doctor');
-	if ($stale !== []) { $detail .= ' ' . implode('; ', $examples); }
-	if ($limited) { $detail .= ' ' . __('Limited to the first 500 active data sources; unsampled files are not assessed.', 'doctor'); }
+	if ($stale !== []) {
+		$detail .= ' ' . implode('; ', $examples);
+	}
+	if ($limited) {
+		$detail .= ' ' . __('Limited to the first 500 active data sources; unsampled files are not assessed.', 'doctor');
+	}
 	$detail .= ' ' . __('File age includes the collection interval and configured deferred-write allowance; verify the poller and flush process before changing data.', 'doctor');
 	$incomplete = $limited || $unknown > 0 || $sources === [];
 	return doctor_result('filesystem.rrd_stale', 'Filesystem', $stale !== [] || $incomplete ? 'warn' : 'pass', __('RRD update freshness', 'doctor'), $detail, '', $incomplete ? 'not_assessed' : 'assessed');

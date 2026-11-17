@@ -68,7 +68,9 @@ if ($action !== '' && $action !== 'default') {
 	} elseif ($action === 'accept' || $action === 'unaccept') {
 		$date = (string) get_nfilter_request_var('expires');
 		$expires = preg_match('/\A[0-9]{4}-[0-9]{2}-[0-9]{2}\z/', $date) ? strtotime($date . ' 00:00:00 UTC') : false;
-		if ($expires !== false && gmdate('Y-m-d', $expires) !== $date) { $expires = false; }
+		if ($expires !== false && gmdate('Y-m-d', $expires) !== $date) {
+			$expires = false;
+		}
 		if (($action === 'accept' && (empty($cached['time']) || time() < $cached['time'] || time() - $cached['time'] > doctor_schedule_interval() + 180))
 			|| !doctor_change_acceptance($results, (string) get_nfilter_request_var('check_id'), (string) get_nfilter_request_var('owner'),
 				(string) get_nfilter_request_var('reason'), $expires === false ? 0 : $expires, $action === 'unaccept')) {
@@ -244,11 +246,17 @@ if (doctor_can_configure()) {
 	form_end(false);
 	print '</td></tr>';
 	$known = [];
-	foreach ($results as $r) { $known[$r['id']] = true; }
+	foreach ($results as $r) {
+		$known[$r['id']] = true;
+	}
 	foreach (doctor_acceptances() as $policy) {
 		print '<tr><td>' . html_escape($policy['check_id'] . ': ' . $policy['owner'] . ' / ' . $policy['reason'] . ' / ' . gmdate('Y-m-d', $policy['expires']) . ' UTC') . ' ';
-		if ($policy['expires'] <= time()) { print html_escape(__('Expired', 'doctor')); }
-		if (!isset($known[$policy['check_id']])) { print ' ' . html_escape(__('Check not present in this report; verify its ID.', 'doctor')); }
+		if ($policy['expires'] <= time()) {
+			print html_escape(__('Expired', 'doctor'));
+		}
+		if (!isset($known[$policy['check_id']])) {
+			print ' ' . html_escape(__('Check not present in this report; verify its ID.', 'doctor'));
+		}
 		doctor_action_form($page, 'unaccept', ['check_id' => $policy['check_id']], __('Remove exception', 'doctor'));
 		print '</td></tr>';
 	}

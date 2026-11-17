@@ -45,11 +45,17 @@ function doctor_diagnose($symptom, $results, $fresh = true) {
 			[['doctor.schedule', 'doctor.alert_delivery'], __('Scheduled checks or mail delivery need attention.', 'doctor'), __('Verify scheduling and recipient settings, inspect retained delivery attempts, and send a Cacti test email.', 'doctor')]
 		]
 	];
-	if (!isset($rules[$symptom])) { return false; }
+	if (!isset($rules[$symptom])) {
+		return false;
+	}
 	$diagnosis = ['symptom' => $symptom, 'assessment' => 'inconclusive', 'candidates' => [], 'unassessed' => []];
-	if (!$fresh) { return $diagnosis; }
+	if (!$fresh) {
+		return $diagnosis;
+	}
 	$byId = [];
-	foreach ($results as $result) { $byId[$result['id']] = $result; }
+	foreach ($results as $result) {
+		$byId[$result['id']] = $result;
+	}
 	foreach ($rules[$symptom] as $rule) {
 		$evidence = [];
 		foreach ($rule[0] as $id) {
@@ -66,7 +72,9 @@ function doctor_diagnose($symptom, $results, $fresh = true) {
 			$diagnosis['candidates'][] = ['classification' => 'possible_cause', 'explanation' => $rule[1], 'evidence' => $evidence, 'next_step' => $rule[2]];
 		}
 	}
-	if ($diagnosis['candidates'] !== []) { $diagnosis['assessment'] = 'hypotheses'; }
+	if ($diagnosis['candidates'] !== []) {
+		$diagnosis['assessment'] = 'hypotheses';
+	}
 	return $diagnosis;
 }
 

@@ -71,7 +71,9 @@ if (!function_exists('db_execute_prepared')) {
 	function db_execute_prepared($sql, $params = [], $log = true) {
 		$GLOBALS['doctor_test_database'][] = ['sql' => $sql, 'params' => $params];
 		if (isset($GLOBALS['doctor_test_pdo']) && strpos($sql, 'plugin_doctor_') !== false) {
-			if (!empty($GLOBALS['doctor_test_audit_fail']) && strpos($sql, 'INSERT INTO plugin_doctor_audit') === 0) { return false; }
+			if (!empty($GLOBALS['doctor_test_audit_fail']) && strpos($sql, 'INSERT INTO plugin_doctor_audit') === 0) {
+				return false;
+			}
 			return $GLOBALS['doctor_test_pdo']->prepare($sql)->execute($params);
 		}
 		if (strpos($sql, 'INSERT INTO settings') === 0 && isset($params[0], $params[1])) {
@@ -159,7 +161,9 @@ function api_plugin_register_realm($plugin, $file, $display, $admin = true) {
 }
 
 function db_execute($sql, $log = true, $db_conn = false) {
-	if (!isset($GLOBALS['doctor_test_pdo'])) { return false; }
+	if (!isset($GLOBALS['doctor_test_pdo'])) {
+		return false;
+	}
 	return $GLOBALS['doctor_test_pdo']->exec($sql === 'START TRANSACTION' ? 'BEGIN' : $sql) !== false;
 }
 
