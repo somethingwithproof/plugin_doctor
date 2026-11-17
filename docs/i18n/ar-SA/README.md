@@ -1,4 +1,4 @@
-<!-- Source: README.md; SHA256: 1bbfbdbc38598edfb3fb738b511d90b79c13b5db149c1498e68f68e7ba86f459 -->
+<!-- Source: README.md; SHA256: 416fb3d835451b9392876f3db00aeba3a6a9527cb3a3ff766c51a4a8226a891c -->
 
 <!-- translations:start -->
 [English](../../../README.md) | [简体中文](../zh-CN/README.md) | [हिन्दी](../hi-IN/README.md) | [Español (España)](../es-ES/README.md) | [Español (Latinoamérica)](../es-419/README.md) | [العربية](README.md)
@@ -22,7 +22,7 @@
 
 Cacti Doctor إضافة لـ Cacti تشخّص التثبيت في مرور واحد وتطبّق إصلاحات صغيرة فقط عندما يطلبها مسؤول.
 
-**الحالة: قيد التطوير، قبل 1.0.** أحدث إصدار هو [0.5.1](https://github.com/somethingwithproof/plugin_doctor/releases/tag/v0.5.1). يشمل العمل منذ 0.5.1 الوصول المحدد بالأدوار والتشخيص الموجّه وفحوص حداثة RRD محددة النطاق ومعاينات الإصلاح وسجل التدقيق واستثناءات التحذيرات المقبولة والترجمات. تُتابع هذه التغييرات تحت Unreleased في [CHANGELOG.md](../../../CHANGELOG.md) وهي موجودة على develop.
+**الحالة: قيد التطوير، قبل 1.0.** أحدث إصدار هو [0.6.0](https://github.com/somethingwithproof/plugin_doctor/releases/tag/v0.6.0). يضيف هذا الإصدار الوصول المحدد بالأدوار والتشخيص الموجّه وفحوص حداثة RRD محددة النطاق ومعاينات الإصلاح وسجل التدقيق واستثناءات التحذيرات المقبولة والترجمات. راجع [CHANGELOG.md](../../../CHANGELOG.md) للتفاصيل.
 
 <a id="screenshots"></a>
 ## لقطات الشاشة

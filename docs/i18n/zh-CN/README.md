@@ -1,4 +1,4 @@
-<!-- Source: README.md; SHA256: 1bbfbdbc38598edfb3fb738b511d90b79c13b5db149c1498e68f68e7ba86f459 -->
+<!-- Source: README.md; SHA256: 416fb3d835451b9392876f3db00aeba3a6a9527cb3a3ff766c51a4a8226a891c -->
 
 <!-- translations:start -->
 [English](../../../README.md) | [简体中文](README.md) | [हिन्दी](../hi-IN/README.md) | [Español (España)](../es-ES/README.md) | [Español (Latinoamérica)](../es-419/README.md) | [العربية](../ar-SA/README.md)
@@ -22,7 +22,7 @@
 
 Cacti Doctor 是一个 Cacti 插件，一次运行即可诊断整个安装环境，并仅在管理员明确要求时执行小范围修复。
 
-**状态：开发中，尚未到 1.0。** 最新发布版本为 [0.5.1](https://github.com/somethingwithproof/plugin_doctor/releases/tag/v0.5.1)。0.5.1 以来的工作包括按角色限定的访问权限、引导式诊断、限定范围的 RRD 新鲜度检查、修复预览和审计历史、已接受警告的例外规则以及翻译。这些变更列于 [CHANGELOG.md](../../../CHANGELOG.md) 的 Unreleased 部分，位于 develop 分支。
+**状态：开发中，尚未到 1.0。** 最新发布版本为 [0.6.0](https://github.com/somethingwithproof/plugin_doctor/releases/tag/v0.6.0)。此版本增加了按角色限定的访问权限、引导式诊断、限定范围的 RRD 新鲜度检查、修复预览和审计历史、已接受警告的例外规则以及翻译。详情见 [CHANGELOG.md](../../../CHANGELOG.md)。
 
 <a id="screenshots"></a>
 ## 截图

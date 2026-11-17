@@ -1,4 +1,4 @@
-<!-- Source: README.md; SHA256: 1bbfbdbc38598edfb3fb738b511d90b79c13b5db149c1498e68f68e7ba86f459 -->
+<!-- Source: README.md; SHA256: 416fb3d835451b9392876f3db00aeba3a6a9527cb3a3ff766c51a4a8226a891c -->
 
 <!-- translations:start -->
 [English](../../../README.md) | [简体中文](../zh-CN/README.md) | [हिन्दी](README.md) | [Español (España)](../es-ES/README.md) | [Español (Latinoamérica)](../es-419/README.md) | [العربية](../ar-SA/README.md)
@@ -22,7 +22,7 @@
 
 Cacti Doctor एक Cacti प्लगइन है जो एक ही बार में इंस्टॉलेशन का निदान करता है और केवल प्रशासक के अनुरोध पर छोटे सुधार लागू करता है।
 
-**स्थिति: विकास में, 1.0 से पहले।** नवीनतम रिलीज़ [0.5.1](https://github.com/somethingwithproof/plugin_doctor/releases/tag/v0.5.1) है। 0.5.1 के बाद के काम में भूमिका के अनुसार पहुँच, निर्देशित निदान, सीमित दायरे की RRD ताज़गी जाँच, मरम्मत पूर्वावलोकन और ऑडिट इतिहास, स्वीकृत चेतावनी अपवाद तथा अनुवाद शामिल हैं। ये बदलाव [CHANGELOG.md](../../../CHANGELOG.md) के Unreleased भाग में दर्ज हैं और develop पर हैं।
+**स्थिति: विकास में, 1.0 से पहले।** नवीनतम रिलीज़ [0.6.0](https://github.com/somethingwithproof/plugin_doctor/releases/tag/v0.6.0) है। यह रिलीज़ भूमिका के अनुसार पहुँच, निर्देशित निदान, सीमित दायरे की RRD ताज़गी जाँच, मरम्मत पूर्वावलोकन और ऑडिट इतिहास, स्वीकृत चेतावनी अपवाद तथा अनुवाद जोड़ती है। विवरण के लिए [CHANGELOG.md](../../../CHANGELOG.md) देखें।
 
 <a id="screenshots"></a>
 ## स्क्रीनशॉट
