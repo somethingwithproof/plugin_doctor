@@ -6,6 +6,7 @@
 - Sample RRD freshness and RRD file checks on an hourly rotation and assess the sampled files, instead of reporting a permanent unassessed warning above 500 data sources or when any file is missing.
 - Fall back to cumulative database counters when a scheduled interval is too quiet, and reject intervals that span a restart or `FLUSH STATUS`.
 - Keep stale-RRD acknowledgments valid while file ages change, keep long quoted secrets within PCRE limits, and withhold text or refuse a support bundle when redaction cannot complete.
+- Keep scheduled runs completing when many checks change at once on Cacti before 1.2.26: the alert email lists the most severe changes and counts the rest.
 - Respect the 2048-character settings column before Cacti 1.2.26, group Prometheus metric families, sort undated web device outages last, and show real categories to Viewers.
 
 ## 0.6.1 - 2026-11-17

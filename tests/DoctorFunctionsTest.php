@@ -1063,6 +1063,29 @@ test('scheduled freshness reports missing and recent completions distinctly', fu
 	expect($recent['status'])->toBe('pass')->and($recent['detail'])->toContain('does not mean all checks passed');
 });
 
+test('a mass status change fits the settings column and every change is still reported', function () {
+	$results = [];
+	$state = [];
+	for ($i = 0; $i < 50; $i++) {
+		$id = sprintf('database.long_check_identifier_%02d', $i);
+		$results[] = doctor_result($id, 'Database health', $i < 5 ? 'fail' : 'warn', 'Check', '');
+		$state[] = $id . '=pass';
+	}
+	$GLOBALS['doctor_test_settings'] = ['doctor_state' => implode(',', $state), 'doctor_alert_emails' => 'ops@example.com', 'doctor_alert_warnings' => 'on', 'doctor_alert_pending' => ''];
+	$GLOBALS['doctor_test_mail'] = [];
+	$GLOBALS['doctor_schedule_lock_held'] = true;
+	doctor_run_scheduled($results, 1700000000);
+	$stored = $GLOBALS['doctor_test_settings']['doctor_alert_pending'];
+	$pending = doctor_alert_pending();
+	doctor_retry_alerts(1700000000);
+	unset($GLOBALS['doctor_schedule_lock_held']);
+	expect(strlen($stored))->toBeLessThanOrEqual(2048)
+		->and(count($pending['events']) + $pending['omitted'])->toBe(50)
+		->and($pending['events'])->toHaveKey('database.long_check_identifier_04')
+		->and($GLOBALS['doctor_test_mail'][0]['subject'])->toContain('50')
+		->and($GLOBALS['doctor_test_mail'][0]['body'])->toContain($pending['omitted'] . ' further status changes are not listed');
+});
+
 test('failed alert delivery retains transitions for a bounded retry', function () {
 	$GLOBALS['doctor_test_settings'] = [
 		'doctor_state' => 'runtime.disk=pass',

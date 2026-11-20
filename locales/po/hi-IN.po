@@ -1217,6 +1217,11 @@ msgid "%s: %s -> %s (latest change %s)"
 msgstr "%s: %s -> %s (नवीनतम परिवर्तन %s)"
 
 #: doctor_scheduling.php
+#, php-format
+msgid "%d further status changes are not listed because the alert queue reached its storage limit."
+msgstr "अलर्ट कतार अपनी भंडारण सीमा तक पहुँच गई है, इसलिए %d और स्थिति परिवर्तन सूचीबद्ध नहीं हैं।"
+
+#: doctor_scheduling.php
 msgid "Open Utilities > Doctor for current measurements, recommended actions, and verification steps."
 msgstr "वर्तमान मापन, अनुशंसित कार्रवाइयाँ और सत्यापन चरण देखने के लिए Utilities > Doctor खोलें।"
 

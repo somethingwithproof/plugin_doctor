@@ -186,6 +186,7 @@ function doctor_alert_pending() {
 		return [];
 	}
 	if (!isset($pending['events'], $pending['attempts'], $pending['next']) || !is_array($pending['events']) || count($pending['events']) > 64
+		|| (isset($pending['omitted']) && (!is_int($pending['omitted']) || $pending['omitted'] < 0))
 		|| !is_int($pending['attempts']) || $pending['attempts'] < 0 || $pending['attempts'] > 3 || !is_int($pending['next']) || $pending['next'] < 0) {
 		throw new RuntimeException(doctor_n_('Doctor alert state is invalid. Restore doctor_alert_pending from backup before retrying.'));
 	}
@@ -199,6 +200,34 @@ function doctor_alert_pending() {
 	return $pending;
 }
 
+/** Transitions that could not be stored individually, still counted for delivery. */
+function doctor_alert_omitted($pending) {
+	return isset($pending['omitted']) ? (int) $pending['omitted'] : 0;
+}
+
+/**
+ * Store the outbox within the settings column. When too many checks change at
+ * once, the least severe and oldest transitions are summarized as a count, so
+ * the run still completes and the email still reports every change.
+ */
+function doctor_store_alert_pending($pending) {
+	$rank = ['pass' => 0, 'accepted' => 0, 'warn' => 1, 'fail' => 2];
+	$json = json_encode($pending);
+	while (strlen($json) > doctor_setting_value_limit() && $pending['events'] !== []) {
+		$drop = null;
+		foreach ($pending['events'] as $id => $event) {
+			if ($drop === null || $rank[$event[1]] < $rank[$pending['events'][$drop][1]]
+				|| ($rank[$event[1]] === $rank[$pending['events'][$drop][1]] && $event[2] < $pending['events'][$drop][2])) {
+				$drop = $id;
+			}
+		}
+		unset($pending['events'][$drop]);
+		$pending['omitted'] = doctor_alert_omitted($pending) + 1;
+		$json = json_encode($pending);
+	}
+	doctor_store_setting('doctor_alert_pending', $json);
+}
+
 function doctor_check_alert_delivery($now) {
 	try {
 		$pending = doctor_alert_pending();
@@ -206,7 +235,7 @@ function doctor_check_alert_delivery($now) {
 		return doctor_result('doctor.alert_delivery', 'Doctor', 'warn', __('Alert delivery', 'doctor'), doctor_alert_error_text($error->getMessage()), '', 'not_assessed');
 	}
 	if ($pending !== []) {
-		$detail = __('%d check transitions await delivery; attempts: %d of 3.', count($pending['events']), $pending['attempts'], 'doctor');
+		$detail = __('%d check transitions await delivery; attempts: %d of 3.', count($pending['events']) + doctor_alert_omitted($pending), $pending['attempts'], 'doctor');
 		$detail .= ' ' . ($pending['attempts'] >= 3 ? __('Automatic retries exhausted. Correct Cacti mail settings, then run Doctor with --scheduled --retry-alerts as the poller user.', 'doctor') : __('Next eligible retry: %s UTC, after a primary poller cycle.', gmdate('Y-m-d H:i:s', $pending['next']), 'doctor'));
 		if (trim((string) read_config_option('doctor_alert_emails', true)) === '') {
 			$detail .= ' ' . __('No alert recipients are currently configured; pending transitions are retained.', 'doctor');
@@ -231,7 +260,7 @@ function doctor_retry_alerts($now, $retry = false) {
 			}
 		}
 	}
-	if ($pending['events'] === []) {
+	if ($pending['events'] === [] && doctor_alert_omitted($pending) === 0) {
 		doctor_store_setting('doctor_alert_pending', '');
 		return;
 	}
@@ -245,14 +274,17 @@ function doctor_retry_alerts($now, $retry = false) {
 	// Record the attempt before network I/O: interruption cannot cause a retry storm.
 	$pending['attempts']++;
 	$pending['next'] = $now + 300 * pow(3, $pending['attempts'] - 1);
-	doctor_store_setting('doctor_alert_pending', json_encode($pending));
+	doctor_store_alert_pending($pending);
 	$lines = [__('Doctor retained status changes (UTC). Repeated changes for one check are coalesced; an out-and-back transition is retained.', 'doctor'), ''];
 	foreach ($pending['events'] as $id => $event) {
 		$lines[] = __('%s: %s -> %s (latest change %s)', $id, $event[0], $event[1], gmdate('Y-m-d H:i:s', $event[2]), 'doctor');
 	}
+	if (doctor_alert_omitted($pending) > 0) {
+		$lines[] = __('%d further status changes are not listed because the alert queue reached its storage limit.', doctor_alert_omitted($pending), 'doctor');
+	}
 	$lines[] = '';
 	$lines[] = __('Open Utilities > Doctor for current measurements, recommended actions, and verification steps.', 'doctor');
-	$error = send_mail($recipients, '', __('Cacti Doctor: %d retained status changes', count($pending['events']), 'doctor'), implode("\n", $lines));
+	$error = send_mail($recipients, '', __('Cacti Doctor: %d retained status changes', count($pending['events']) + doctor_alert_omitted($pending), 'doctor'), implode("\n", $lines));
 	if ($error === '') {
 		doctor_store_setting('doctor_alert_pending', '');
 		doctor_store_setting('doctor_alert_last_success', (string) $now);
@@ -301,7 +333,7 @@ function doctor_run_scheduled($results, $now) {
 		// New transitions renew the delivery budget, unchanged failures do not.
 		$pending['attempts'] = 0;
 		$pending['next'] = $now;
-		doctor_store_setting('doctor_alert_pending', json_encode($pending));
+		doctor_store_alert_pending($pending);
 	}
 	// Retain only aggregate history; never persist device details or log excerpts for viewers.
 	$history = doctor_read_json_setting('doctor_report_history');

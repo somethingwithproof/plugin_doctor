@@ -1217,6 +1217,11 @@ msgid "%s: %s -> %s (latest change %s)"
 msgstr "%s：%s -> %s（最新の変更 %s）"
 
 #: doctor_scheduling.php
+#, php-format
+msgid "%d further status changes are not listed because the alert queue reached its storage limit."
+msgstr "アラートキューが保存上限に達したため、ほかに %d 件の状態変化は一覧に含まれていません。"
+
+#: doctor_scheduling.php
 msgid "Open Utilities > Doctor for current measurements, recommended actions, and verification steps."
 msgstr "現在の測定値、推奨される対処、確認手順については、ユーティリティ > Doctor を開いてください。"
 
