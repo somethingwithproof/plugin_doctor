@@ -55,7 +55,7 @@ function doctor_visible_devices() {
 	if (!function_exists('get_allowed_devices')) {
 		return doctor_result('devices.health', 'Devices', 'warn', __('Device availability', 'doctor'), __('Device permissions could not be evaluated.', 'doctor'), '', 'not_assessed');
 	}
-	$devices = get_allowed_devices("h.disabled = ''", 'status_fail_date, id');
+	$devices = get_allowed_devices("h.disabled = ''", 'COALESCE(UNIX_TIMESTAMP(status_fail_date), 0) <= 0, status_fail_date, id');
 	$counts = ['total' => 0, 'down' => 0, 'recovering' => 0];
 	$offenders = [];
 	foreach ($devices as $device) {
@@ -132,13 +132,15 @@ function doctor_viewer_results($now) {
 			continue;
 		}
 		$parts = explode('.', $id);
-		$results[] = doctor_result($id, ucfirst($parts[0]), $fresh ? $status : 'unknown', $id, '', '', $fresh ? 'assessed' : 'not_assessed');
+		$checkCategories = ['php.security_baseline' => 'Security', 'php.extensions' => 'Prerequisites', 'database.health_sample' => 'Database health'];
+		$categories = ['cacti' => 'Cacti', 'database' => 'Database', 'devices' => 'Devices', 'doctor' => 'Doctor', 'filesystem' => 'Filesystem', 'logging' => 'Logging', 'php' => 'PHP', 'poller' => 'Poller', 'binary' => 'Prerequisites'];
+		$results[] = doctor_result($id, isset($checkCategories[$id]) ? $checkCategories[$id] : (isset($categories[$parts[0]]) ? $categories[$parts[0]] : ucfirst($parts[0])), $fresh ? $status : 'unknown', $id, '', '', $fresh ? 'assessed' : 'not_assessed');
 	}
 	return ['results' => $results, 'time' => $completed, 'fresh' => $fresh];
 }
 
 function doctor_finding_fingerprint($result) {
-	return hash('sha256', json_encode([$result['id'], $result['status'], $result['detail']]));
+	return hash('sha256', json_encode([$result['id'], $result['status'], isset($result['evidence']) ? $result['evidence'] : $result['detail']]));
 }
 
 /** Acknowledgments are personal, expire when evidence changes, and never alter health or alerts. */

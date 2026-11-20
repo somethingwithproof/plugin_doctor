@@ -44,6 +44,18 @@ test('unreadable future empty and sampled RRD sets are explicitly unassessed', f
 	expect($r['status'])->toBe('warn')->and($r['assessment'])->toBe('not_assessed');
 })->with([[[doctor_rrd_source(false)], false], [[doctor_rrd_source(-5)], false], [[], false], [[doctor_rrd_source(0)], true]]);
 
+test('an acknowledgment of stale RRD files survives file ages advancing', function () {
+	$old = doctor_rrd_source(5000);
+	$old['local_data_id'] = 7;
+	$first = doctor_evaluate_rrd_stale([$old], 10000, 300, 3, 0, false);
+	$later = doctor_evaluate_rrd_stale([$old], 10600, 300, 3, 0, false);
+	$other = $old;
+	$other['local_data_id'] = 8;
+	expect($first['detail'])->not->toBe($later['detail'])
+		->and(doctor_finding_fingerprint($later))->toBe(doctor_finding_fingerprint($first))
+		->and(doctor_finding_fingerprint(doctor_evaluate_rrd_stale([$other], 10000, 300, 3, 0, false)))->not->toBe(doctor_finding_fingerprint($first));
+});
+
 test('stale RRD details show the three oldest files and a distinct device count', function () {
 	$rows = [];
 	foreach ([1000, 2000, 3000, 4000] as $i => $age) {

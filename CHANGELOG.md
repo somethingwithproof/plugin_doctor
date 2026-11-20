@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Keep acknowledgments of stale-RRD findings valid as file ages advance, and show a message when an acknowledgment is refused.
+- Report an unreadable Cacti log as a warning that was not assessed, and apply the launch throttle after a refused scheduled launch.
+- Use canonical categories and the CLI's outage ordering in the Viewer and device views, group Prometheus samples by metric family, and correct the log-excerpt realm and CLI exit-status documentation.
+
 ## 0.6.1 - 2026-11-17
 
 - Add Hindi and Arabic catalogs and translated user guides.

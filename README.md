@@ -147,7 +147,7 @@ The Utilities menu opens the page for the highest Doctor realm granted to the us
 
 Viewer data comes from scheduled checks. Enable scheduling before granting Viewer access; missing or overdue observations display **unknown**, never healthy. History retains the last 20 scheduled aggregate counts and excludes device status. Operators start fresh diagnostics explicitly; ordinary page refreshes use their session's last report.
 
-Device details and totals use the current user's device permissions. Log excerpts additionally require Cacti's View Cacti Log realm. Secrets are masked before diagnostic details are stored in the web session or rendered. CLI access continues to be governed by the operating-system account.
+Device details and totals use the current user's device permissions. Log excerpts additionally require Cacti's Log Administration realm. Secrets are masked before diagnostic details are stored in the web session or rendered. CLI access continues to be governed by the operating-system account.
 
 Acknowledgments are personal and audited. They apply only to the same finding and evidence; changed evidence requires a new acknowledgment. They never change pass/warn/fail status, suppress alerts, or mark a failing check healthy. This is separate from accepted-warning exceptions, which affect alert policy without changing the observed status and are described below.
 
@@ -169,7 +169,7 @@ Text output prints one line per check with its status, category, summary, and de
 |---|---|
 | `0` | No check failed, or the requested repair succeeded. Warnings do not change the exit status. |
 | `1` | At least one check failed, or a requested repair did not succeed. |
-| `2` | A repair was requested without `--yes`. |
+| `2` | Usage error: a repair run without `--yes` (`--preview` does not need it), an unknown repair ID, an unknown output format, an unsupported `--symptom` or format combination, or a Cacti installation that cannot be located. |
 
 Cacti raises `memory_limit` for every CLI script, so the PHP runtime configuration check is only meaningful on the web page.
 

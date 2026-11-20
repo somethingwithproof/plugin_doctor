@@ -1,4 +1,4 @@
-<!-- Source: README.md; SHA256: ccb8639a8123807ef63ae2d571b8f0cdac28973a3b212c83e3ee52ee8685fdcb -->
+<!-- Source: README.md; SHA256: e89e13b4e14c83d62cae3be084212215cc850b2fe0c10c667ced38aef04c6516 -->
 
 <!-- translations:start -->
 [English](../../../README.md) | [简体中文](README.md) | [हिन्दी](../hi-IN/README.md) | [Español (España)](../es-ES/README.md) | [Español (Latinoamérica)](../es-419/README.md) | [العربية](../ar-SA/README.md)
@@ -146,7 +146,7 @@ Utilities 菜单打开用户获授的最高 Doctor 权限域页面，包括组�
 
 Viewer 数据来自定时检查。授予 Viewer 访问前请启用调度；观测缺失或过期时显示**未知**，绝不显示健康。历史保留最近 20 次定时聚合计数，不包含设备状态。操作员必须明确启动新诊断；普通页面刷新使用其会话的上一份报告。
 
-设备详情和总计按当前用户的设备权限过滤。日志摘录还要求 Cacti 的 View Cacti Log 权限域。诊断详情存入 Web 会话或渲染前会遮蔽秘密。CLI 访问仍由操作系统账户控制。
+设备详情和总计按当前用户的设备权限过滤。日志摘录还要求 Cacti 的 Log Administration 权限域。诊断详情存入 Web 会话或渲染前会遮蔽秘密。CLI 访问仍由操作系统账户控制。
 
 确认记录是个人专用且会审计。它们仅适用于相同发现和证据；证据变化需要重新确认。确认不会更改 pass/warn/fail 状态、抑制告警或将失败检查标为健康。这与下文所述的已接受警告例外规则不同；后者影响告警策略，但不改变观测状态。
 
@@ -169,7 +169,7 @@ php plugins/doctor/cli/doctor.php --repair=runtime_directories --yes
 |---|---|
 | `0` | 没有检查失败，或请求的修复成功。警告不改变退出状态。 |
 | `1` | 至少一项检查失败，或请求的修复未成功。 |
-| `2` | 请求修复但未提供 `--yes`。 |
+| `2` | 用法错误：执行修复但未提供 `--yes`（`--preview` 无需该参数）、未知的修复 ID、未知的输出格式、不受支持的 `--symptom` 或格式组合，或找不到 Cacti 安装。 |
 
 Cacti 为每个 CLI 脚本提高 `memory_limit`，因此 PHP 运行时配置检查仅在网页上有意义。
 
