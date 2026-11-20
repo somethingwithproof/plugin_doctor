@@ -27,7 +27,7 @@ msgstr "Unbekanntes Format %s. Verwenden Sie text, json, nagios oder prometheus.
 #: cli/doctor.php
 #, php-format
 msgid "Redaction could not complete, so %s was not written."
-msgstr "Die Schwärzung konnte nicht abgeschlossen werden, daher wurde %s nicht geschrieben."
+msgstr "Die Maskierung konnte nicht abgeschlossen werden, daher wurde %s nicht geschrieben."
 
 #: cli/doctor.php
 #, php-format
@@ -804,7 +804,7 @@ msgstr "Boost hat zuletzt vor %d Sekunden geleert, dabei warten %d Zeilen."
 #: doctor_functions.php doctor_rrd.php
 #, php-format
 msgid "Checked a sample of %d active data sources that rotates hourly; a pass does not cover every file."
-msgstr "Geprüft wurde eine stündlich wechselnde Stichprobe von %d aktiven Datenquellen; ein Bestehen deckt nicht jede Datei ab."
+msgstr "Geprüft wurde eine stündlich wechselnde Stichprobe von %d aktiven Datenquellen; ein OK-Ergebnis deckt nicht jede Datei ab."
 
 #: doctor_functions.php
 #, php-format
@@ -1236,7 +1236,7 @@ msgstr "Der Doctor-Zeitplan läuft bereits oder die Datenbanksperre ist nicht ve
 
 #: doctor_web.php
 msgid "The finding could not be acknowledged. Run Doctor again, then acknowledge the current result."
-msgstr"Der Befund konnte nicht quittiert werden. Führen Sie Doctor erneut aus und quittieren Sie dann das aktuelle Ergebnis."
+msgstr"Der Befund konnte nicht bestätigt werden. Führen Sie Doctor erneut aus und bestätigen Sie dann das aktuelle Ergebnis."
 
 #: doctor_web.php
 msgid "The warning exception could not be saved. Use a fresh assessed warning, an owner, a reason and an expiry within 90 days."

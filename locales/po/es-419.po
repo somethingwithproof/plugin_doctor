@@ -27,7 +27,7 @@ msgstr "Formato %s desconocido. Use text, json, nagios o prometheus."
 #: cli/doctor.php
 #, php-format
 msgid "Redaction could not complete, so %s was not written."
-msgstr "No se pudo completar la censura de datos sensibles, así que no se escribió %s."
+msgstr "No se pudo completar el enmascaramiento de datos sensibles, así que no se escribió %s."
 
 #: cli/doctor.php
 #, php-format
@@ -1236,7 +1236,7 @@ msgstr "La programación de Doctor ya se está ejecutando o el bloqueo de la bas
 
 #: doctor_web.php
 msgid "The finding could not be acknowledged. Run Doctor again, then acknowledge the current result."
-msgstr"No se pudo confirmar el hallazgo. Ejecute Doctor de nuevo y confirme el resultado actual."
+msgstr"No se pudo reconocer el hallazgo. Ejecute Doctor de nuevo y reconozca el resultado actual."
 
 #: doctor_web.php
 msgid "The warning exception could not be saved. Use a fresh assessed warning, an owner, a reason and an expiry within 90 days."

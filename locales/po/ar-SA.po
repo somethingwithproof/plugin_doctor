@@ -27,7 +27,7 @@ msgstr "صيغة غير معروفة %s. استخدم text أو json أو nagios
 #: cli/doctor.php
 #, php-format
 msgid "Redaction could not complete, so %s was not written."
-msgstr "تعذّر إكمال الحجب، لذلك لم تُكتب %s."
+msgstr "تعذّر إكمال الحجب، لذلك لم يُكتب الملف %s."
 
 #: cli/doctor.php
 #, php-format
@@ -1236,7 +1236,7 @@ msgstr "جدولة Doctor تعمل بالفعل أو قفل قاعدة البي�
 
 #: doctor_web.php
 msgid "The finding could not be acknowledged. Run Doctor again, then acknowledge the current result."
-msgstr"تعذّر تأكيد الاطلاع على النتيجة. شغّل Doctor مرة أخرى، ثم أكّد الاطلاع على النتيجة الحالية."
+msgstr"تعذّر الإقرار بالنتيجة. شغّل Doctor مرة أخرى، ثم أقِرّ بالنتيجة الحالية."
 
 #: doctor_web.php
 msgid "The warning exception could not be saved. Use a fresh assessed warning, an owner, a reason and an expiry within 90 days."
