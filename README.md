@@ -169,7 +169,7 @@ Text output prints one line per check with its status, category, summary, and de
 |---|---|
 | `0` | No check failed, or the requested repair succeeded. Warnings do not change the exit status. |
 | `1` | At least one check failed, or a requested repair did not succeed. |
-| `2` | Usage error: a repair requested without `--yes`, an unknown repair ID, an unknown output format, an unsupported `--symptom` or format combination, or a Cacti installation that cannot be located. |
+| `2` | Usage error: a repair run without `--yes` (`--preview` does not need it), an unknown repair ID, an unknown output format, an unsupported `--symptom` or format combination, or a Cacti installation that cannot be located. |
 
 Cacti raises `memory_limit` for every CLI script, so the PHP runtime configuration check is only meaningful on the web page.
 

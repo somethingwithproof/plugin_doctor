@@ -1347,14 +1347,14 @@ function doctor_check_innodb() {
  * Reads at most $bytes from the end of the file so a multi-gigabyte log
  * cannot exhaust memory.
  *
- * @return array<int,string>
+ * @return array<int,string>|null Null when the log cannot be opened; an empty array is a readable but empty log.
  */
 function doctor_read_log_tail($path, $maxLines = 1000, $bytes = 2097152) {
 	$size   = @filesize($path);
 	$handle = $size !== false ? @fopen($path, 'rb') : false;
 
 	if ($handle === false) {
-		return [];
+		return null;
 	}
 
 	if ($size > $bytes) {
@@ -1412,7 +1412,14 @@ function doctor_check_recent_log_errors() {
 		return doctor_result('logging.recent_errors', 'Logging', 'warn', __('Recent log errors', 'doctor'), __('The Cacti log is not readable; see the Cacti log file check.', 'doctor'), '', 'not_assessed');
 	}
 
-	return doctor_evaluate_log_lines(doctor_read_log_tail($path));
+	$lines = doctor_read_log_tail($path);
+
+	// The file can vanish or become unreadable after the guard above; an empty result must not pass.
+	if ($lines === null) {
+		return doctor_result('logging.recent_errors', 'Logging', 'warn', __('Recent log errors', 'doctor'), __('The Cacti log is not readable; see the Cacti log file check.', 'doctor'), '', 'not_assessed');
+	}
+
+	return doctor_evaluate_log_lines($lines);
 }
 
 /**

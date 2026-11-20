@@ -1,4 +1,4 @@
-<!-- Source: README.md; SHA256: ba2823f7cfc69a960470bc562e323051ab7e8b7965f920cecaa4c4f0a745d2a2 -->
+<!-- Source: README.md; SHA256: e89e13b4e14c83d62cae3be084212215cc850b2fe0c10c667ced38aef04c6516 -->
 
 <!-- translations:start -->
 [English](../../../README.md) | [简体中文](../zh-CN/README.md) | [हिन्दी](../hi-IN/README.md) | [Español (España)](README.md) | [Español (Latinoamérica)](../es-419/README.md) | [العربية](../ar-SA/README.md)
@@ -169,7 +169,7 @@ La salida de texto imprime una línea por comprobación con estado, categoría, 
 |---|---|
 | `0` | Ninguna comprobación ha fallado o la reparación solicitada ha tenido éxito. Las advertencias no cambian el estado de salida. |
 | `1` | Al menos una comprobación ha fallado o una reparación solicitada no ha tenido éxito. |
-| `2` | Error de uso: reparación solicitada sin `--yes`, ID de reparación desconocido, formato de salida desconocido, combinación no admitida de `--symptom` o de formato, o instalación de Cacti no localizable. |
+| `2` | Error de uso: reparación ejecutada sin `--yes` (`--preview` no lo requiere), ID de reparación desconocido, formato de salida desconocido, combinación no admitida de `--symptom` o de formato, o instalación de Cacti no localizable. |
 
 Cacti aumenta `memory_limit` para todos los scripts CLI, por lo que la comprobación de configuración de ejecución de PHP solo es significativa en la página web.
 

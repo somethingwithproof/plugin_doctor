@@ -1,4 +1,4 @@
-<!-- Source: README.md; SHA256: ba2823f7cfc69a960470bc562e323051ab7e8b7965f920cecaa4c4f0a745d2a2 -->
+<!-- Source: README.md; SHA256: e89e13b4e14c83d62cae3be084212215cc850b2fe0c10c667ced38aef04c6516 -->
 
 <!-- translations:start -->
 [English](../../../README.md) | [简体中文](../zh-CN/README.md) | [हिन्दी](../hi-IN/README.md) | [Español (España)](../es-ES/README.md) | [Español (Latinoamérica)](../es-419/README.md) | [العربية](README.md)
@@ -169,7 +169,7 @@ php plugins/doctor/cli/doctor.php --repair=runtime_directories --yes
 |---|---|
 | `0` | لم يفشل فحص، أو نجح الإصلاح المطلوب. لا تغيّر التحذيرات حالة الخروج. |
 | `1` | فشل فحص واحد على الأقل، أو لم ينجح إصلاح مطلوب. |
-| `2` | خطأ في الاستخدام: طُلب إصلاح دون `--yes`، أو معرّف إصلاح غير معروف، أو تنسيق إخراج غير معروف، أو تركيبة غير مدعومة من `--symptom` أو التنسيق، أو تعذّر تحديد موقع تثبيت Cacti. |
+| `2` | خطأ في الاستخدام: نُفّذ إصلاح دون `--yes` (لا يحتاجه `--preview`)، أو معرّف إصلاح غير معروف، أو تنسيق إخراج غير معروف، أو تركيبة غير مدعومة من `--symptom` أو التنسيق، أو تعذّر تحديد موقع تثبيت Cacti. |
 
 يرفع Cacti قيمة `memory_limit` لكل برنامج نصي في CLI، لذا لا يكون فحص إعدادات تشغيل PHP ذا معنى إلا على صفحة الويب.
 

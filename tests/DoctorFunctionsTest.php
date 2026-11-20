@@ -1094,6 +1094,14 @@ test('an unreadable Cacti log is not assessed rather than passing', function () 
 	expect($result['status'])->toBe('warn')->and($result['assessment'])->toBe('not_assessed');
 });
 
+test('a log that cannot be opened is distinguished from an empty one', function () {
+	$dir = doctor_test_directory();
+	file_put_contents($dir . '/empty.log', '');
+
+	expect(doctor_read_log_tail($dir . '/missing.log'))->toBeNull()
+		->and(doctor_read_log_tail($dir . '/empty.log'))->toBe([]);
+});
+
 test('Prometheus samples are grouped by metric family', function () {
 	$results = [
 		doctor_result('poller.runtime', 'Poller', 'warn', 'Runtime', ''),
@@ -1106,6 +1114,15 @@ test('Prometheus samples are grouped by metric family', function () {
 			$names[] = preg_replace('/[{ ].*/', '', $line);
 		}
 	}
+
+	// Each family must be contiguous: collapsing consecutive duplicates must not repeat a name.
+	$sequence = [];
+	foreach ($names as $name) {
+		if (end($sequence) !== $name) {
+			$sequence[] = $name;
+		}
+	}
+	expect($sequence)->toBe(array_values(array_unique($names)));
 
 	expect(array_values(array_unique($names)))->toBe(['cacti_doctor_check_status', 'cacti_doctor_check_observed_status', 'cacti_doctor_check_accepted', 'cacti_doctor_checks', 'cacti_doctor_last_run_timestamp_seconds'])
 		->and(doctor_format_prometheus($results, 0))->toMatch('/TYPE cacti_doctor_check_observed_status gauge\ncacti_doctor_check_observed_status/');

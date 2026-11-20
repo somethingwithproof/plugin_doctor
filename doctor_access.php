@@ -132,8 +132,9 @@ function doctor_viewer_results($now) {
 			continue;
 		}
 		$parts = explode('.', $id);
+		$checkCategories = ['php.security_baseline' => 'Security', 'php.extensions' => 'Prerequisites', 'database.health_sample' => 'Database health'];
 		$categories = ['cacti' => 'Cacti', 'database' => 'Database', 'devices' => 'Devices', 'doctor' => 'Doctor', 'filesystem' => 'Filesystem', 'logging' => 'Logging', 'php' => 'PHP', 'poller' => 'Poller', 'binary' => 'Prerequisites'];
-		$results[] = doctor_result($id, isset($categories[$parts[0]]) ? $categories[$parts[0]] : ucfirst($parts[0]), $fresh ? $status : 'unknown', $id, '', '', $fresh ? 'assessed' : 'not_assessed');
+		$results[] = doctor_result($id, isset($checkCategories[$id]) ? $checkCategories[$id] : (isset($categories[$parts[0]]) ? $categories[$parts[0]] : ucfirst($parts[0])), $fresh ? $status : 'unknown', $id, '', '', $fresh ? 'assessed' : 'not_assessed');
 	}
 	return ['results' => $results, 'time' => $completed, 'fresh' => $fresh];
 }

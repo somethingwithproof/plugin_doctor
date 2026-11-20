@@ -83,6 +83,11 @@ test('viewer rows use the canonical category rather than the capitalized id pref
 	expect(array_column(doctor_viewer_results(1001)['results'], 'category'))->toBe(['PHP', 'Prerequisites', 'Poller']);
 });
 
+test('viewer rows use the producer category for checks whose prefix spans several categories', function () {
+	$GLOBALS['doctor_test_settings'] = ['doctor_schedule_enabled' => 'on', 'doctor_last_completed' => '1000', 'doctor_state' => 'php.security_baseline=pass;php.extensions=pass;database.health_sample=warn'];
+	expect(array_column(doctor_viewer_results(1001)['results'], 'category'))->toBe(['Security', 'Prerequisites', 'Database health']);
+});
+
 test('the web device list orders outages without a failure time last', function () {
 	$GLOBALS['doctor_test_allowed_devices'] = [];
 	doctor_visible_devices();

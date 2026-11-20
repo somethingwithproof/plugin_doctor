@@ -1,4 +1,4 @@
-<!-- Source: README.md; SHA256: ba2823f7cfc69a960470bc562e323051ab7e8b7965f920cecaa4c4f0a745d2a2 -->
+<!-- Source: README.md; SHA256: e89e13b4e14c83d62cae3be084212215cc850b2fe0c10c667ced38aef04c6516 -->
 
 <!-- translations:start -->
 [English](../../../README.md) | [简体中文](README.md) | [हिन्दी](../hi-IN/README.md) | [Español (España)](../es-ES/README.md) | [Español (Latinoamérica)](../es-419/README.md) | [العربية](../ar-SA/README.md)
@@ -169,7 +169,7 @@ php plugins/doctor/cli/doctor.php --repair=runtime_directories --yes
 |---|---|
 | `0` | 没有检查失败，或请求的修复成功。警告不改变退出状态。 |
 | `1` | 至少一项检查失败，或请求的修复未成功。 |
-| `2` | 用法错误：请求修复但未提供 `--yes`、未知的修复 ID、未知的输出格式、不受支持的 `--symptom` 或格式组合，或找不到 Cacti 安装。 |
+| `2` | 用法错误：执行修复但未提供 `--yes`（`--preview` 无需该参数）、未知的修复 ID、未知的输出格式、不受支持的 `--symptom` 或格式组合，或找不到 Cacti 安装。 |
 
 Cacti 为每个 CLI 脚本提高 `memory_limit`，因此 PHP 运行时配置检查仅在网页上有意义。
 
