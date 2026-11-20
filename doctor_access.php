@@ -55,7 +55,8 @@ function doctor_visible_devices() {
 	if (!function_exists('get_allowed_devices')) {
 		return doctor_result('devices.health', 'Devices', 'warn', __('Device availability', 'doctor'), __('Device permissions could not be evaluated.', 'doctor'), '', 'not_assessed');
 	}
-	$devices = get_allowed_devices("h.disabled = ''", 'status_fail_date, id');
+	// Match the CLI check: outages without a recorded failure time sort last.
+	$devices = get_allowed_devices("h.disabled = ''", 'COALESCE(UNIX_TIMESTAMP(h.status_fail_date), 0) <= 0, h.status_fail_date, h.id');
 	$counts = ['total' => 0, 'down' => 0, 'recovering' => 0];
 	$offenders = [];
 	foreach ($devices as $device) {
@@ -125,20 +126,20 @@ function doctor_run_web_checks() {
 function doctor_viewer_results($now) {
 	$completed = (int) read_config_option('doctor_last_completed', true);
 	$state = doctor_state_decode(read_config_option('doctor_state', true));
-	$fresh = read_config_option('doctor_schedule_enabled', true) === 'on' && $completed > 0 && $now >= $completed && $now - $completed <= doctor_schedule_interval() + 180;
+	$fresh = read_config_option('doctor_schedule_enabled', true) === 'on' && $completed > 0 && $now >= $completed && $now - $completed <= doctor_report_max_age();
 	$results = [];
 	foreach ($state as $id => $status) {
 		if (in_array($id, ['devices.health', 'filesystem.rrd_files', 'filesystem.rrd_stale'], true) || !preg_match('/\A[a-z0-9_.]+\z/', $id) || !in_array($status, ['pass', 'warn', 'fail'], true)) {
 			continue;
 		}
-		$parts = explode('.', $id);
-		$results[] = doctor_result($id, ucfirst($parts[0]), $fresh ? $status : 'unknown', $id, '', '', $fresh ? 'assessed' : 'not_assessed');
+		$results[] = doctor_result($id, doctor_check_category($id), $fresh ? $status : 'unknown', $id, '', '', $fresh ? 'assessed' : 'not_assessed');
 	}
 	return ['results' => $results, 'time' => $completed, 'fresh' => $fresh];
 }
 
+/** Checks whose detail changes every second supply stable evidence instead. */
 function doctor_finding_fingerprint($result) {
-	return hash('sha256', json_encode([$result['id'], $result['status'], $result['detail']]));
+	return hash('sha256', json_encode([$result['id'], $result['status'], isset($result['evidence']) ? $result['evidence'] : $result['detail']]));
 }
 
 /** Acknowledgments are personal, expire when evidence changes, and never alter health or alerts. */

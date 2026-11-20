@@ -39,10 +39,36 @@ test('Boost or external cache delay is added before declaring a file stale', fun
 		->and(doctor_evaluate_rrd_stale([doctor_rrd_source(8101)], 10000, 300, 3, 7200, false)['status'])->toBe('warn');
 });
 
-test('unreadable future empty and sampled RRD sets are explicitly unassessed', function ($sources, $limited) {
-	$r = doctor_evaluate_rrd_stale($sources, 10000, 300, 3, 0, $limited);
+test('RRD sets with no readable file are explicitly unassessed', function ($sources) {
+	$r = doctor_evaluate_rrd_stale($sources, 10000, 300, 3, 0, false);
 	expect($r['status'])->toBe('warn')->and($r['assessment'])->toBe('not_assessed');
-})->with([[[doctor_rrd_source(false)], false], [[doctor_rrd_source(-5)], false], [[], false], [[doctor_rrd_source(0)], true]]);
+})->with([[[doctor_rrd_source(false)]], [[doctor_rrd_source(-5)]]]);
+
+test('a capped sample or some missing files still assess the readable files', function ($sources, $limited) {
+	$r = doctor_evaluate_rrd_stale($sources, 10000, 300, 3, 0, $limited);
+	expect($r['status'])->toBe('pass')->and($r['assessment'])->toBe('assessed');
+})->with([[[doctor_rrd_source(0)], true], [[doctor_rrd_source(0), doctor_rrd_source(false)], false]]);
+
+test('no data sources is not applicable rather than a warning', function () {
+	$r = doctor_evaluate_rrd_stale([], 10000, 300, 3, 0, false);
+	expect($r['status'])->toBe('pass')->and($r['assessment'])->toBe('not_applicable');
+});
+
+test('the RRD sample rotates hourly and is stable within an hour', function () {
+	expect(doctor_sample_order('id', 3600 * 10))->toBe(doctor_sample_order('id', 3600 * 10 + 3599))
+		->and(doctor_sample_order('id', 3600 * 10))->not->toBe(doctor_sample_order('id', 3600 * 11));
+});
+
+test('stale RRD fingerprints ignore file ages that change every second', function () {
+	$a = doctor_evaluate_rrd_stale([doctor_rrd_source(5000)], 10000, 300, 3, 0, false);
+	$b = doctor_evaluate_rrd_stale([doctor_rrd_source(5001)], 10001, 300, 3, 0, false);
+	$other = doctor_rrd_source(5000);
+	$other['path'] = '/rra/other.rrd';
+	$c = doctor_evaluate_rrd_stale([$other], 10000, 300, 3, 0, false);
+	expect($a['detail'])->not->toBe($b['detail'])
+		->and(doctor_finding_fingerprint($a))->toBe(doctor_finding_fingerprint($b))
+		->and(doctor_finding_fingerprint($a))->not->toBe(doctor_finding_fingerprint($c));
+});
 
 test('stale RRD details show the three oldest files and a distinct device count', function () {
 	$rows = [];

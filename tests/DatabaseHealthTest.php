@@ -82,7 +82,7 @@ test('interval counters use deltas when a prior sample is available', function (
 		'queries' => 11000, 'slow_queries' => 1000
 	]);
 	$previous = ['captured' => $now - 3600, 'metrics' => [
-		'uptime' => 196400, 'innodb_buffer_pool_reads' => 100,
+		'uptime' => 196400, 'uptime_since_flush_status' => 82800, 'innodb_buffer_pool_reads' => 100,
 		'innodb_buffer_pool_read_requests' => 100000,
 		'created_tmp_tables' => 10000, 'created_tmp_disk_tables' => 2000,
 		'connections' => 10000, 'threads_created' => 1000,
@@ -94,12 +94,34 @@ test('interval counters use deltas when a prior sample is available', function (
 });
 
 test('counter decreases after an independent reset are reported as not assessed', function () {
-	$previous = ['captured' => time() - 3600, 'metrics' => ['uptime' => 172800, 'slow_queries' => 900, 'queries' => 9000]];
+	$previous = ['captured' => time() - 3600, 'metrics' => ['uptime' => 169200, 'uptime_since_flush_status' => 82800, 'slow_queries' => 900, 'queries' => 9000]];
 	$results = doctor_test_health_by_id(doctor_analyze_database_health(doctor_test_health_status(['slow_queries' => 10, 'queries' => 1000]), doctor_test_health_variables(), $previous));
 	expect($results['database.slow_queries']['status'])->toBe('warn')
 		->and($results['database.slow_queries']['assessment'])->toBe('not_assessed')
 		->and($results['database.slow_queries']['detail'])->toContain('reset');
 });
+
+test('a quiet interval falls back to cumulative counters instead of withholding advice', function () {
+	$current = doctor_test_health_status(['connections' => 50000, 'threads_created' => 100]);
+	$previous = ['captured' => time() - 3600, 'metrics' => ['uptime' => 169200, 'uptime_since_flush_status' => 82800, 'connections' => 49800, 'threads_created' => 99]];
+	$result = doctor_test_health_by_id(doctor_analyze_database_health($current, doctor_test_health_variables(), $previous))['database.thread_cache'];
+	expect($result['status'])->toBe('pass')
+		->and($result['assessment'])->toBe('assessed')
+		->and($result['detail'])->toContain('Cumulative threads_created / connections: 100 / 50000');
+});
+
+test('an interval is rejected when server clocks did not advance with wall time', function ($previous) {
+	$current = doctor_test_health_status(['uptime' => 200000, 'uptime_since_flush_status' => 200000, 'queries' => 50000, 'slow_queries' => 10]);
+	$results = doctor_test_health_by_id(doctor_analyze_database_health($current, doctor_test_health_variables(), $previous));
+	expect($results['database.slow_queries']['detail'])->toContain('Cumulative slow_queries / queries');
+})->with([
+	// A restart between samples a week apart, with counters grown past their old values.
+	[['captured' => time() - 7 * 86400, 'metrics' => ['uptime' => 90000, 'uptime_since_flush_status' => 90000, 'queries' => 5000, 'slow_queries' => 5]]],
+	// FLUSH STATUS an hour ago: uptime advanced, the flush clock did not.
+	[['captured' => time() - 3600, 'metrics' => ['uptime' => 196400, 'uptime_since_flush_status' => 199000, 'queries' => 40000, 'slow_queries' => 5]]],
+	// A sample older than two days is not an interval.
+	[['captured' => time() - 3 * 86400, 'metrics' => ['uptime' => 200000 - 3 * 86400, 'uptime_since_flush_status' => 200000 - 3 * 86400, 'queries' => 5000, 'slow_queries' => 5]]]
+]);
 
 test('missing prior interval counters retain a cumulative label', function () {
 	$previous = ['captured' => time() - 3600, 'metrics' => ['uptime' => 172800]];

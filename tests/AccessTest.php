@@ -59,6 +59,13 @@ test('action authorization checks method csrf realm and core permission', functi
 	[[], 'run', 'POST', true, 403], [[121], 'run', 'GET', true, 405]
 ]);
 
+test('web device outages without a failure time sort last like the CLI check', function () {
+	$GLOBALS['doctor_test_allowed_device_orders'] = [];
+	$GLOBALS['doctor_test_allowed_devices'] = [];
+	doctor_visible_devices();
+	expect($GLOBALS['doctor_test_allowed_device_orders'][0])->toBe('COALESCE(UNIX_TIMESTAMP(h.status_fail_date), 0) <= 0, h.status_fail_date, h.id');
+});
+
 test('registration keeps legacy grants on Administrator and does not merge realms', function () {
 	$GLOBALS['doctor_test_registrations'] = [];
 	expect(doctor_setup_realms())->toBeTrue();
@@ -73,8 +80,11 @@ test('viewer snapshots contain no global device status or diagnostics and expire
 	$GLOBALS['doctor_test_settings'] = ['doctor_schedule_enabled' => 'on', 'doctor_last_completed' => '1000', 'doctor_state' => 'database.clock=pass;devices.health=fail;poller.runtime=warn'];
 	$report = doctor_viewer_results(1001);
 	expect($report['fresh'])->toBeTrue()->and(array_column($report['results'], 'id'))->toBe(['database.clock', 'poller.runtime'])
+		->and(array_column($report['results'], 'category'))->toBe(['Database', 'Poller'])
 		->and(array_column($report['results'], 'detail'))->toBe(['', '']);
-	expect(array_column(doctor_viewer_results(5000)['results'], 'status'))->toBe(['unknown', 'unknown']);
+	// One interval, one polling cycle, and the worker limit with margin: 3600 + 300 + 180.
+	expect(doctor_viewer_results(1000 + 4080)['fresh'])->toBeTrue();
+	expect(array_column(doctor_viewer_results(1000 + 4081)['results'], 'status'))->toBe(['unknown', 'unknown']);
 	expect(doctor_viewer_results(999)['fresh'])->toBeFalse();
 });
 

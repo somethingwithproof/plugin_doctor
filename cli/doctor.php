@@ -82,7 +82,9 @@ if (isset($options['bundle'])) {
 	$logPath = (string) read_config_option('path_cactilog', true);
 	$logPath = $logPath !== '' ? $logPath : $cactiBase . '/log/cacti.log';
 	$bundle  = doctor_build_bundle(doctor_run_checks(), doctor_bundle_context(), doctor_read_log_tail($logPath, 200));
-	$error   = doctor_write_bundle((string) $options['bundle'], $bundle);
+	$error   = strpos($bundle, DOCTOR_REDACTION_FAILED) !== false
+		? __('Redaction could not complete, so %s was not written.', $options['bundle'], 'doctor')
+		: doctor_write_bundle((string) $options['bundle'], $bundle);
 
 	if ($error !== '') {
 		fwrite(STDERR, $error . PHP_EOL);

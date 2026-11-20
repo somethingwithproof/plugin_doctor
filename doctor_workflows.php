@@ -44,7 +44,7 @@ function doctor_audit($action, $payload) {
 		return false;
 	}
 	$json = doctor_redact($json);
-	if (!db_execute_prepared('INSERT INTO plugin_doctor_audit (created, actor, action, payload) VALUES (?, ?, ?, ?)', [time(), doctor_actor(), $action, $json], false)) {
+	if ($json === DOCTOR_REDACTION_FAILED || !db_execute_prepared('INSERT INTO plugin_doctor_audit (created, actor, action, payload) VALUES (?, ?, ?, ?)', [time(), doctor_actor(), $action, $json], false)) {
 		return false;
 	}
 	$id = (int) db_fetch_insert_id();

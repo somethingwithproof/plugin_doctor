@@ -147,6 +147,29 @@ function doctor_database_metrics($rows, $allowed) {
 }
 
 /**
+ * A prior sample measures an interval only when both server clocks advanced
+ * with wall time. A restart or FLUSH STATUS between samples resets them, even
+ * when the counters have since grown past their old values.
+ *
+ * @param array<string,float|null> $current
+ * @param array<string,mixed> $previous
+ */
+function doctor_database_interval_valid($current, $previous, $elapsed) {
+	if ($elapsed <= 0 || $elapsed > 2 * 86400) {
+		return false;
+	}
+
+	foreach (['uptime', 'uptime_since_flush_status'] as $clock) {
+		if (!isset($current[$clock], $previous[$clock]) || !is_numeric($previous[$clock])
+			|| abs(($current[$clock] - (float) $previous[$clock]) - $elapsed) > 300) {
+			return false;
+		}
+	}
+
+	return true;
+}
+
+/**
  * Advisory thresholds are investigation triggers, not configuration targets.
  * Cumulative counters cannot establish current load or available database RAM.
  *
@@ -165,8 +188,7 @@ function doctor_analyze_database_health($status, $variables, $previous = []) {
 	$results[] = doctor_result('database.health_sample', 'Database health', $sampleReady ? 'pass' : 'warn', __('Database observation window', 'doctor'), $sampleDetail, '', $sampleReady ? 'assessed' : 'not_assessed');
 	$sample = isset($previous['metrics'], $previous['captured']) && is_array($previous['metrics']) && is_numeric($previous['captured'])
 		? $previous : [];
-	$deltaReady = $sampleReady && $sample !== [] && isset($status['uptime'], $sample['metrics']['uptime'])
-		&& $status['uptime'] >= $sample['metrics']['uptime'] && isset($sample['captured']) && time() > (int) $sample['captured'];
+	$deltaReady = $sampleReady && $sample !== [] && doctor_database_interval_valid($status, $sample['metrics'], time() - (int) $sample['captured']);
 
 	$connectionStatus = 'warn';
 	$connectionDetail = __('Connection metrics are unavailable or invalid. Check access to SHOW GLOBAL STATUS and SHOW GLOBAL VARIABLES; do not treat missing metrics as an idle server.', 'doctor');
@@ -216,9 +238,13 @@ function doctor_analyze_database_health($status, $variables, $previous = []) {
 				if ($interval) {
 					$values = [$status[$numerator] - $sample['metrics'][$numerator], $status[$denominator] - $sample['metrics'][$denominator]];
 				}
-				if ($values[1] < $minimum || $values[0] > $values[1]) {
-				$detail = __('The interval sample is too small or counters reset; collect another representative interval before tuning.', 'doctor');
-				$results[] = doctor_result('database.' . $id, 'Database health', 'warn', $title, $detail, '', 'not_assessed');
+				if ($interval && $values[1] < $minimum) {
+					// A quiet interval adds nothing; the cumulative counters already met the minimum.
+					$values = [$status[$numerator], $status[$denominator]];
+					$interval = false;
+				} elseif ($values[0] > $values[1]) {
+					$detail = __('The interval sample is too small or counters reset; collect another representative interval before tuning.', 'doctor');
+					$results[] = doctor_result('database.' . $id, 'Database health', 'warn', $title, $detail, '', 'not_assessed');
 					continue;
 				}
 				$ratio = 100 * $values[0] / $values[1];
@@ -1174,11 +1200,18 @@ function doctor_check_boost() {
 	);
 }
 
-/** @return array<string,mixed> */
-function doctor_check_rrd_files($rra = null) {
+/**
+ * Bounded so large installations on network storage stay within the worker limit.
+ *
+ * @return array<string,mixed>
+ */
+function doctor_check_rrd_files($rra = null, $now = null) {
+	$cap     = 5000;
 	$rra     = $rra === null ? doctor_repair_directories()['rra'] : $rra;
-	$sources = db_fetch_assoc("SELECT local_data_id, data_source_path FROM data_template_data WHERE local_data_id > 0 AND active = 'on' AND data_source_path != ''", false);
+	$sources = db_fetch_assoc("SELECT local_data_id, data_source_path FROM data_template_data WHERE local_data_id > 0 AND active = 'on' AND data_source_path != '' ORDER BY " . doctor_sample_order('local_data_id', $now === null ? time() : $now) . ' LIMIT ' . ($cap + 1), false);
 	$sources = is_array($sources) ? $sources : [];
+	$limited = count($sources) > $cap;
+	$sources = array_slice($sources, 0, $cap);
 	$missing = [];
 
 	foreach ($sources as $source) {
@@ -1189,11 +1222,13 @@ function doctor_check_rrd_files($rra = null) {
 		}
 	}
 
+	$sampled = $limited ? ' ' . __('Checked a sample of %d active data sources that rotates hourly; a pass does not cover every file.', count($sources), 'doctor') : '';
+
 	if ($missing !== []) {
-		return doctor_result('filesystem.rrd_files', 'Filesystem', 'warn', __('RRD files', 'doctor'), __('%d of %d active data sources have no RRD file, for example %s. New data sources get one after their first poll; otherwise check the RRA directory and its permissions.', count($missing), count($sources), implode(', ', array_slice($missing, 0, 3)), 'doctor'));
+		return doctor_result('filesystem.rrd_files', 'Filesystem', 'warn', __('RRD files', 'doctor'), __('%d of %d active data sources have no RRD file, for example %s. New data sources get one after their first poll; otherwise check the RRA directory and its permissions.', count($missing), count($sources), implode(', ', array_slice($missing, 0, 3)), 'doctor') . $sampled);
 	}
 
-	return doctor_result('filesystem.rrd_files', 'Filesystem', 'pass', __('RRD files', 'doctor'), __('All %d active data sources have an RRD file.', count($sources), 'doctor'));
+	return doctor_result('filesystem.rrd_files', 'Filesystem', 'pass', __('RRD files', 'doctor'), __('All %d active data sources have an RRD file.', count($sources), 'doctor') . $sampled);
 }
 
 /** @return array<string,mixed> */
@@ -1645,21 +1680,28 @@ function doctor_prometheus_label($value) {
  * @param array<int,array<string,mixed>> $results
  */
 function doctor_format_prometheus($results, $now) {
-	$levels = ['pass' => 0, 'warn' => 1, 'fail' => 2];
-	$lines  = [
-		'# HELP cacti_doctor_check_status Actionable severity: 0 pass or accepted warning, 1 warn, 2 fail.',
-		'# TYPE cacti_doctor_check_status gauge',
-		'# HELP cacti_doctor_check_observed_status Observed severity, before warning exceptions: 0 pass, 1 warn, 2 fail.',
-		'# TYPE cacti_doctor_check_observed_status gauge',
-		'# HELP cacti_doctor_check_accepted Whether a current warning exception applies.',
-		'# TYPE cacti_doctor_check_accepted gauge'
+	$levels   = ['pass' => 0, 'warn' => 1, 'fail' => 2];
+	$families = [
+		'cacti_doctor_check_status' => 'Actionable severity: 0 pass or accepted warning, 1 warn, 2 fail.',
+		'cacti_doctor_check_observed_status' => 'Observed severity, before warning exceptions: 0 pass, 1 warn, 2 fail.',
+		'cacti_doctor_check_accepted' => 'Whether a current warning exception applies.'
 	];
+	$lines = [];
 
-	foreach ($results as $result) {
-		$labels = '{id="' . doctor_prometheus_label($result['id']) . '",category="' . doctor_prometheus_label($result['category']) . '"} ';
-		$lines[] = 'cacti_doctor_check_status' . $labels . (doctor_warning_accepted($result) ? 0 : $levels[$result['status']]);
-		$lines[] = 'cacti_doctor_check_observed_status' . $labels . $levels[$result['status']];
-		$lines[] = 'cacti_doctor_check_accepted' . $labels . (doctor_warning_accepted($result) ? 1 : 0);
+	// The exposition format requires each metric family's samples to form one group.
+	foreach ($families as $name => $help) {
+		$lines[] = '# HELP ' . $name . ' ' . $help;
+		$lines[] = '# TYPE ' . $name . ' gauge';
+
+		foreach ($results as $result) {
+			$accepted = doctor_warning_accepted($result);
+			$values   = [
+				'cacti_doctor_check_status' => $accepted ? 0 : $levels[$result['status']],
+				'cacti_doctor_check_observed_status' => $levels[$result['status']],
+				'cacti_doctor_check_accepted' => $accepted ? 1 : 0
+			];
+			$lines[] = $name . '{id="' . doctor_prometheus_label($result['id']) . '",category="' . doctor_prometheus_label($result['category']) . '"} ' . $values[$name];
+		}
 	}
 
 	$lines[] = '# HELP cacti_doctor_checks Number of Cacti Doctor checks by status.';
@@ -1676,46 +1718,78 @@ function doctor_format_prometheus($results, $now) {
 	return implode("\n", $lines) . "\n";
 }
 
+/** Replaces text whose redaction could not complete; it never carries the input. */
+define('DOCTOR_REDACTION_FAILED', '[Doctor withheld this text because redaction could not complete]');
+
 /**
  * Masks values that follow password, secret, token, or SNMP community and
- * key names, so a support bundle can be shared publicly.
+ * key names, so a support bundle can be shared publicly. When a pattern fails,
+ * such as on a PCRE resource limit, the whole text is withheld rather than
+ * returned partly redacted or silently empty.
  */
 function doctor_redact($text) {
-	$text = (string) $text;
+	$text = doctor_redact_patterns((string) $text);
+
+	return $text === null ? DOCTOR_REDACTION_FAILED : $text;
+}
+
+/** @return string|null null when any pattern failed */
+function doctor_redact_patterns($text) {
 	$text = preg_replace('/(\b(?:Bearer|Basic)[ \t]+)(?:\\\\[^\r\n]|[^\s;,"\'\\\\\r\n])+/i', '$1[redacted]', $text);
+	if ($text === null) {
+		return null;
+	}
+	// A leading word boundary keeps the key search linear in long words.
 	$keys = 'authorization|password|passwd|passphrase|pass|secret|token|community|api[_-]?key|auth[_-]?key|priv(?:ate)?[_-]?key';
 
 	// Only indented or empty lines continue a YAML scalar; a new log record
 	// must retain its own key for redaction. Accept log-style escapes as well
 	// as YAML doubled quotes, since bundle text does not identify its format.
 	$continuation = '(?:\r?\n(?![ \t]*["\']?\w*(?:' . $keys . ')\b["\']?[ \t]*[=:])(?=[ \t]|\r?$))';
-	$doubleQuoted = '"(?>\\\\(?:[^\r\n]|' . $continuation . ')|[^"\\\\\r\n]|' . $continuation . ')*';
-	$singleQuoted = '\'(?>\'\'|\\\\[^\r\n]|[^\'\\\\\r\n]|' . $continuation . ')*';
+	// Runs of plain characters are consumed possessively as one unit, so long
+	// values keep few backtracking points and stay within PCRE's JIT stack.
+	$doubleQuoted = '"(?>\\\\(?:[^\r\n]|' . $continuation . ')|[^"\\\\\r\n]++|' . $continuation . ')*';
+	$singleQuoted = '\'(?>\'\'|\\\\[^\r\n]|[^\'\\\\\r\n]++|' . $continuation . ')*';
 	// Prefer a complete scalar before falling back to a truncated record.
 	$quotedValue = $doubleQuoted . '"|' . $singleQuoted . '\\\\?\'|'
 		. $doubleQuoted . '\\\\?(?=\r?$)|' . $singleQuoted . '\\\\?(?=\r?$)';
-	$text = preg_replace_callback('/(\w*(?:' . $keys . ')\b["\']?\s*:\s*)(' . $quotedValue . ')/im', function ($matches) {
+	$text = preg_replace_callback('/(\b\w*(?:' . $keys . ')\b["\']?\s*:\s*)(' . $quotedValue . ')/im', function ($matches) {
 		$quote = $matches[2][0];
 
 		return $matches[1] . $quote . '[redacted]' . $quote;
 	}, $text);
+	if ($text === null) {
+		return null;
+	}
 
 	// Quoted value after a key (keyword, optionally prefixed by word chars so
 	// api_token / snmp_community match) + separator: JSON, YAML, and ini.
 	// Consume escaped characters together and fail closed at the line ending
 	// when a truncated log value has no closing quote.
-	$text = preg_replace('/(\w*(?:' . $keys . ')\b["\']?\s*[=:]\s*)(["\'])(?:\\\\[^\r\n]|(?!\2)[^\\\\\r\n])*+(?:\2|\\\\?(?=\r?$))/im', '$1$2[redacted]$2', $text);
+	$text = preg_replace('/(\b\w*(?:' . $keys . ')\b["\']?\s*[=:]\s*)(["\'])(?:\\\\[^\r\n]|(?!\2)[^\\\\\r\n])*+(?:\2|\\\\?(?=\r?$))/im', '$1$2[redacted]$2', $text);
+	if ($text === null) {
+		return null;
+	}
 
 	// Unquoted value after a key + "=" or ":" separator.
-	$text = preg_replace('/(\w*(?:' . $keys . ')\b["\']?\s*[=:]\s*)(?!["\'])[^\s;,"\'\r\n]+/i', '$1[redacted]', $text);
+	$text = preg_replace('/(\b\w*(?:' . $keys . ')\b["\']?\s*[=:]\s*)(?!["\'])[^\s;,"\'\r\n]+/i', '$1[redacted]', $text);
+	if ($text === null) {
+		return null;
+	}
 
 	// Keyword followed by a space-separated value with no separator (e.g. an SNMP
 	// community, or "DB_Pass s3cret"). Fail-closed: this can also redact the word
 	// after the keyword in prose, which is acceptable for a shareable bundle.
-	$text = preg_replace('/(\w*(?:' . $keys . ')\b\s+)(?!["\'])[^\s;,"\'\r\n]+/i', '$1[redacted]', $text);
+	$text = preg_replace('/(\b\w*(?:' . $keys . ')\b\s+)(?!["\'])[^\s;,"\'\r\n]+/i', '$1[redacted]', $text);
+	if ($text === null) {
+		return null;
+	}
 
 	// Password in a URL userinfo: scheme://user:PASSWORD@host.
 	$text = preg_replace('/(\b[a-z][a-z0-9+.\-]*:\/\/[^:\/@?#\s]+:)[^\/\s?#]+(@)/i', '$1[redacted]$2', $text);
+	if ($text === null) {
+		return null;
+	}
 
 	return $text;
 }
@@ -1960,6 +2034,43 @@ function doctor_category_label($category) {
 	];
 
 	return isset($labels[$category]) ? $labels[$category] : (string) $category;
+}
+
+/**
+ * Viewer snapshots keep only id=status pairs, so the category comes from the
+ * stable ID. Database health IDs are generated from rules, so they are the
+ * database default.
+ */
+function doctor_check_category($id) {
+	$exact = [
+		'database.charset'      => 'Prerequisites',
+		'database.clock'        => 'Database',
+		'database.connection'   => 'Database',
+		'database.core_tables'  => 'Database',
+		'database.innodb'       => 'Database',
+		'database.timezone'     => 'Prerequisites',
+		'database.version'      => 'Prerequisites',
+		'php.security_baseline' => 'Security',
+		'php.version'           => 'PHP'
+	];
+	$prefixes = [
+		'binary'     => 'Prerequisites',
+		'cacti'      => 'Cacti',
+		'database'   => 'Database health',
+		'devices'    => 'Devices',
+		'doctor'     => 'Doctor',
+		'filesystem' => 'Filesystem',
+		'logging'    => 'Logging',
+		'php'        => 'Prerequisites',
+		'poller'     => 'Poller'
+	];
+	$prefix = strtok((string) $id, '.');
+
+	if (isset($exact[$id])) {
+		return $exact[$id];
+	}
+
+	return isset($prefixes[$prefix]) ? $prefixes[$prefix] : ucfirst((string) $prefix);
 }
 
 /**

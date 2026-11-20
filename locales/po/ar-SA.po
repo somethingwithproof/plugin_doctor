@@ -26,6 +26,11 @@ msgstr "صيغة غير معروفة %s. استخدم text أو json أو nagios
 
 #: cli/doctor.php
 #, php-format
+msgid "Redaction could not complete, so %s was not written."
+msgstr "تعذّر إكمال الحجب، لذلك لم تُكتب %s."
+
+#: cli/doctor.php
+#, php-format
 msgid "Wrote %s. Review it before sharing; values after password, secret, token, and community names are masked."
 msgstr "تمت كتابة %s. راجعه قبل المشاركة؛ القيم بعد أسماء password وsecret وtoken وcommunity محجوبة."
 
@@ -796,6 +801,11 @@ msgstr "يحتوي poller_output_boost على %d صف، وهو أعلى من ح�
 msgid "Boost last flushed %d seconds ago with %d rows waiting."
 msgstr "كان آخر تفريغ لـ Boost منذ %d ثانية مع انتظار %d صف."
 
+#: doctor_functions.php doctor_rrd.php
+#, php-format
+msgid "Checked a sample of %d active data sources that rotates hourly; a pass does not cover every file."
+msgstr "فُحصت عينة من %d مصدر بيانات نشط تتغير كل ساعة؛ النجاح لا يشمل كل ملف."
+
 #: doctor_functions.php
 #, php-format
 msgid "%d of %d active data sources have no RRD file, for example %s. New data sources get one after their first poll; otherwise check the RRA directory and its permissions."
@@ -1128,10 +1138,6 @@ msgstr "فاصل الكتابة المؤجلة غير معروف؛ اضبطه ق
 #, php-format
 msgid "Checked %d files; %d stale files across %d devices; %d unavailable or future-dated files."
 msgstr "تم فحص %d ملف؛ يوجد %d ملف قديم على %d جهاز؛ و%d ملف غير متاح أو مؤرّخ في المستقبل."
-
-#: doctor_rrd.php
-msgid "Limited to the first 500 active data sources; unsampled files are not assessed."
-msgstr "يقتصر الفحص على أول 500 مصدر بيانات نشط؛ لا تُقيّم الملفات خارج العينة."
 
 #: doctor_rrd.php
 msgid "File age includes the collection interval and configured deferred-write allowance; verify the poller and flush process before changing data."
@@ -1525,3 +1531,6 @@ msgstr "تحذير حجم سجل Cacti (MB)"
 #: setup.php
 msgid "Warn when the Cacti log grows beyond this size, which usually means log rotation is not running."
 msgstr "التحذير عندما يتجاوز سجل Cacti هذا الحجم، مما يعني عادةً أن تدوير السجل لا يعمل."
+
+#~ msgid "Limited to the first 500 active data sources; unsampled files are not assessed."
+#~ msgstr "يقتصر الفحص على أول 500 مصدر بيانات نشط؛ لا تُقيّم الملفات خارج العينة."

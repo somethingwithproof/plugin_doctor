@@ -60,7 +60,7 @@ if ($action !== '' && $action !== 'default') {
 			cacti_log('Doctor diagnostics requested by user ' . (int) $_SESSION['sess_user_id'], false, 'DOCTOR');
 		}
 	} elseif ($action === 'acknowledge') {
-		if (empty($cached['time']) || time() < $cached['time'] || time() - $cached['time'] > doctor_schedule_interval() + 180
+		if (empty($cached['time']) || time() < $cached['time'] || time() - $cached['time'] > doctor_report_max_age()
 			|| !doctor_acknowledge($results, (string) get_nfilter_request_var('check_id'), (string) get_nfilter_request_var('fingerprint'))) {
 			http_response_code(409);
 			exit;
@@ -71,7 +71,7 @@ if ($action !== '' && $action !== 'default') {
 		if ($expires !== false && gmdate('Y-m-d', $expires) !== $date) {
 			$expires = false;
 		}
-		if (($action === 'accept' && (empty($cached['time']) || time() < $cached['time'] || time() - $cached['time'] > doctor_schedule_interval() + 180))
+		if (($action === 'accept' && (empty($cached['time']) || time() < $cached['time'] || time() - $cached['time'] > doctor_report_max_age()))
 			|| !doctor_change_acceptance($results, (string) get_nfilter_request_var('check_id'), (string) get_nfilter_request_var('owner'),
 				(string) get_nfilter_request_var('reason'), $expires === false ? 0 : $expires, $action === 'unaccept')) {
 			http_response_code(409);
@@ -107,7 +107,7 @@ if ($action !== '' && $action !== 'default') {
 }
 
 $observed = isset($cached['time']) ? (int) $cached['time'] : 0;
-$fresh = $observed > 0 && time() >= $observed && time() - $observed <= doctor_schedule_interval() + 180;
+$fresh = $observed > 0 && time() >= $observed && time() - $observed <= doctor_report_max_age();
 if ($access === 1) {
 	$view = doctor_viewer_results(time());
 	$results = $view['results'];
