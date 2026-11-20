@@ -110,6 +110,13 @@ test('a quiet interval falls back to cumulative counters instead of withholding 
 		->and($result['detail'])->toContain('Cumulative threads_created / connections: 100 / 50000');
 });
 
+test('inconsistent quiet intervals stay unassessed instead of falling back', function () {
+	$current = doctor_test_health_status(['connections' => 50000, 'threads_created' => 100]);
+	$previous = ['captured' => time() - 3600, 'metrics' => ['uptime' => 169200, 'uptime_since_flush_status' => 82800, 'connections' => 49990, 'threads_created' => 80]];
+	$result = doctor_test_health_by_id(doctor_analyze_database_health($current, doctor_test_health_variables(), $previous))['database.thread_cache'];
+	expect($result['status'])->toBe('warn')->and($result['assessment'])->toBe('not_assessed');
+});
+
 test('an interval is rejected when server clocks did not advance with wall time', function ($previous) {
 	$current = doctor_test_health_status(['uptime' => 200000, 'uptime_since_flush_status' => 200000, 'queries' => 50000, 'slow_queries' => 10]);
 	$results = doctor_test_health_by_id(doctor_analyze_database_health($current, doctor_test_health_variables(), $previous));
@@ -119,6 +126,8 @@ test('an interval is rejected when server clocks did not advance with wall time'
 	[['captured' => time() - 7 * 86400, 'metrics' => ['uptime' => 90000, 'uptime_since_flush_status' => 90000, 'queries' => 5000, 'slow_queries' => 5]]],
 	// FLUSH STATUS an hour ago: uptime advanced, the flush clock did not.
 	[['captured' => time() - 3600, 'metrics' => ['uptime' => 196400, 'uptime_since_flush_status' => 199000, 'queries' => 40000, 'slow_queries' => 5]]],
+	// Prior clocks within the tolerance: a restart 100 seconds after that sample looks continuous.
+	[['captured' => time() - 90000, 'metrics' => ['uptime' => 100, 'uptime_since_flush_status' => 100, 'queries' => 5000, 'slow_queries' => 5]], 89900],
 	// A sample older than two days is not an interval.
 	[['captured' => time() - 3 * 86400, 'metrics' => ['uptime' => 200000 - 3 * 86400, 'uptime_since_flush_status' => 200000 - 3 * 86400, 'queries' => 5000, 'slow_queries' => 5]]]
 ]);

@@ -320,7 +320,7 @@ function doctor_run_scheduled($results, $now) {
 }
 
 /** @return int CLI exit code; the supervisor bounds bootstrap, checks and mail. */
-function doctor_scheduled_worker($dueOnly = false, $retry = false) {
+function doctor_scheduled_worker($dueOnly = false, $retry = false, $alertsOnly = false) {
 	global $config;
 	if (isset($config['poller_id']) && (int) $config['poller_id'] > 1) {
 		cacti_log('Doctor scheduled checks run only on the primary poller.', false, 'DOCTOR');
@@ -338,7 +338,8 @@ function doctor_scheduled_worker($dueOnly = false, $retry = false) {
 		$started = (int) read_config_option('doctor_last_started', true);
 		// The poller hook applies failure backoff; an incomplete previous run is always retried here.
 		$runChecks = !$dueOnly || $completed <= 0 || $completed < $started || $now < $started || $now - $started >= doctor_schedule_due_after();
-		if ($dueOnly && (string) read_config_option('doctor_schedule_enabled', true) !== 'on') {
+		// An alert-only launch must not bypass the hook's check backoff.
+		if ($alertsOnly || ($dueOnly && (string) read_config_option('doctor_schedule_enabled', true) !== 'on')) {
 			$runChecks = false;
 		}
 		if ($runChecks) {
@@ -376,8 +377,13 @@ function doctor_poller_bottom() {
 	$completed = (int) read_config_option('doctor_last_completed', true);
 	$launched = (int) read_config_option('doctor_last_launch', true);
 	// Anchor the cadence on check launches and starts, not completions, so run
-	// time does not delay the next slot. Alert-only launches are tracked apart.
-	$anchor = max($launched, (int) read_config_option('doctor_last_started', true), (int) read_config_option('doctor_last_run', true));
+	// time does not delay the next slot. doctor_last_run is written after the
+	// checks finish, so it is only a fallback for installs that predate both.
+	// Alert-only launches are tracked apart.
+	$anchor = max($launched, (int) read_config_option('doctor_last_started', true));
+	if ($anchor <= 0) {
+		$anchor = (int) read_config_option('doctor_last_run', true);
+	}
 	$failures = max(0, (int) read_config_option('doctor_schedule_failures', true));
 	$failed = $anchor > 0 && $completed < $anchor;
 	if ($anchor <= 0 || $now < $anchor) {
@@ -413,5 +419,5 @@ function doctor_poller_bottom() {
 	} else {
 		set_config_option('doctor_last_alert_launch', (string) $now);
 	}
-	exec_background($php, '-q ' . cacti_escapeshellarg($config['base_path'] . '/plugins/doctor/cli/doctor.php') . ' --scheduled --due'); // nosemgrep: php.lang.security.exec-use.exec-use
+	exec_background($php, '-q ' . cacti_escapeshellarg($config['base_path'] . '/plugins/doctor/cli/doctor.php') . ' --scheduled --due' . ($checksDue ? '' : ' --alerts-only')); // nosemgrep: php.lang.security.exec-use.exec-use
 }

@@ -1164,7 +1164,22 @@ test('an alert retry launch does not move or fail the check schedule', function 
 	expect($GLOBALS['doctor_test_spawned'])->toHaveCount(1)
 		->and($GLOBALS['doctor_test_settings']['doctor_last_launch'])->toBe((string) ($now - 600))
 		->and($GLOBALS['doctor_test_settings']['doctor_last_alert_launch'])->toBe((string) $now)
-		->and(isset($GLOBALS['doctor_test_settings']['doctor_schedule_failures']))->toBeFalse();
+		->and(isset($GLOBALS['doctor_test_settings']['doctor_schedule_failures']))->toBeFalse()
+		->and($GLOBALS['doctor_test_spawned'][0])->toContain('--alerts-only');
+});
+
+test('the cadence ignores the completion-time doctor_last_run once launches are recorded', function () {
+	global $config;
+
+	$config['base_path'] = '/var/www/cacti';
+	$php = doctor_test_executable(doctor_test_directory(), 'php', 'exit 0');
+	$now = time();
+	$GLOBALS['doctor_test_spawned']  = [];
+	// 15-minute schedule, 60-second poller, 100-second run: due 870 s after the start.
+	$GLOBALS['doctor_test_settings'] = ['doctor_schedule_enabled' => 'on', 'doctor_schedule_interval' => '15', 'poller_interval' => '60', 'path_php_binary' => $php,
+		'doctor_last_launch' => (string) ($now - 900), 'doctor_last_started' => (string) ($now - 900), 'doctor_last_completed' => (string) ($now - 800), 'doctor_last_run' => (string) ($now - 800)];
+	doctor_poller_bottom();
+	expect($GLOBALS['doctor_test_spawned'])->toHaveCount(1)->and($GLOBALS['doctor_test_spawned'][0])->not->toContain('--alerts-only');
 });
 
 test('scheduled freshness allows one polling cycle beyond the interval', function () {

@@ -166,8 +166,14 @@ function doctor_change_acceptance($results, $id, $owner, $reason, $expires, $rem
 	if (!doctor_can_configure() || !preg_match('/\A[a-z0-9_.]{1,128}\z/', $id)) {
 		return false;
 	}
-	$owner = trim(doctor_redact($owner));
-	$reason = trim(doctor_redact($reason));
+	$owner = doctor_redact($owner);
+	$reason = doctor_redact($reason);
+	// A withheld field would be stored and audited in place of the real text.
+	if ($owner === DOCTOR_REDACTION_FAILED || $reason === DOCTOR_REDACTION_FAILED) {
+		return false;
+	}
+	$owner = trim($owner);
+	$reason = trim($reason);
 	if (!$remove) {
 		$found = false;
 		foreach ($results as $r) {

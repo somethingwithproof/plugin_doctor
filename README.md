@@ -216,7 +216,9 @@ Each candidate lists the observed checks and a next verification step. Candidate
 
 ## RRD update freshness
 
-`filesystem.rrd_stale` checks up to 500 active data sources, excluding disabled and down devices. On larger installations the sample changes every hour, so repeated runs cover different files. `filesystem.rrd_files` checks up to 5,000 data sources in the same way. It compares file modification times with the larger of the poller interval, source RRD step and profile step, multiplied by **RRD Stale Intervals** (default 3). It shows the three oldest stale files and the number of affected devices. Web results include only permitted devices.
+`filesystem.rrd_stale` checks up to 500 active data sources, excluding disabled and down devices. On larger installations the sample changes every hour, so repeated runs cover different files. It compares file modification times with the larger of the poller interval, source RRD step and profile step, multiplied by **RRD Stale Intervals** (default 3). It shows the three oldest stale files and the number of affected devices. Web results include only permitted devices.
+
+`filesystem.rrd_files` is a separate existence check. It looks for the RRD file of up to 5,000 active data sources, including those on disabled or down devices, and uses the same hourly sample.
 
 Boost adds twice its configured flush interval as a disk-write allowance. For another deferred writer, configure **Deferred RRD Write Allowance (seconds)**. An advertised `RRDCACHED_ADDRESS` without an allowance, or an invalid Boost interval, produces an unassessed result. Doctor never flushes a cache to perform this check. Modification time is evidence of disk activity, not proof of successful data collection. External caching that Doctor cannot detect must be configured explicitly.
 

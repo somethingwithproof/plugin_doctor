@@ -1,4 +1,4 @@
-<!-- Source: README.md; SHA256: 63cb789ef244aff39f002db8e644812b1b3fdb92d5b817cbf4a56de159e71c7d -->
+<!-- Source: README.md; SHA256: fbfcf2be52c97f8ab2538a93612a98371ad1922ac93895142cd9f79042e5aafd -->
 
 <!-- translations:start -->
 [English](../../../README.md) | [简体中文](README.md) | [हिन्दी](../hi-IN/README.md) | [Español (España)](../es-ES/README.md) | [Español (Latinoamérica)](../es-419/README.md) | [العربية](../ar-SA/README.md)
@@ -222,7 +222,9 @@ Doctor 包含一项修复 `runtime_directories`。它创建缺失的 Cacti 运�
 <a id="rrd-update-freshness"></a>
 ## RRD 更新新鲜度
 
-`filesystem.rrd_stale` 最多检查 500 个活动数据源，排除已禁用或宕机设备。在较大的安装中，样本每小时轮换，因此多次运行会覆盖不同文件。`filesystem.rrd_files` 以同样方式最多检查 5,000 个数据源。它将文件修改时间与轮询器间隔、数据源 RRD 步长和配置文件步长中的最大值乘以 **RRD Stale Intervals**（默认 3）比较。它显示最旧的三个过期文件及受影响设备数。Web 结果仅包含有权限的设备。
+`filesystem.rrd_stale` 最多检查 500 个活动数据源，排除已禁用或宕机设备。在较大的安装中，样本每小时轮换，因此多次运行会覆盖不同文件。它将文件修改时间与轮询器间隔、数据源 RRD 步长和配置文件步长中的最大值乘以 **RRD Stale Intervals**（默认 3）比较。它显示最旧的三个过期文件及受影响设备数。Web 结果仅包含有权限的设备。
+
+`filesystem.rrd_files` 是单独的存在性检查。它为最多 5,000 个活动数据源查找 RRD 文件，包括已禁用或宕机设备上的数据源，并使用相同的每小时轮换样本。
 
 Boost 添加其配置刷新间隔的两倍作为磁盘写入宽限。其他延迟写入器请配置 **Deferred RRD Write Allowance (seconds)**。若存在 `RRDCACHED_ADDRESS` 却没有宽限，或 Boost 间隔无效，则结果为未评估。Doctor 绝不会为此检查刷新缓存。修改时间仅是磁盘活动证据，不证明数据采集成功。Doctor 无法检测的外部缓存必须明确配置。
 

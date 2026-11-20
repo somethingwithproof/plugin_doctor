@@ -1,4 +1,4 @@
-<!-- Source: README.md; SHA256: 63cb789ef244aff39f002db8e644812b1b3fdb92d5b817cbf4a56de159e71c7d -->
+<!-- Source: README.md; SHA256: fbfcf2be52c97f8ab2538a93612a98371ad1922ac93895142cd9f79042e5aafd -->
 
 <!-- translations:start -->
 [English](../../../README.md) | [简体中文](../zh-CN/README.md) | [हिन्दी](../hi-IN/README.md) | [Español (España)](README.md) | [Español (Latinoamérica)](../es-419/README.md) | [العربية](../ar-SA/README.md)
@@ -222,7 +222,9 @@ Cada candidato enumera las comprobaciones observadas y el siguiente paso de veri
 <a id="rrd-update-freshness"></a>
 ## Vigencia de actualizaciones RRD
 
-`filesystem.rrd_stale` comprueba hasta 500 fuentes de datos activas, excluyendo dispositivos desactivados y caídos. En instalaciones grandes la muestra cambia cada hora, de modo que las ejecuciones sucesivas cubren ficheros distintos. `filesystem.rrd_files` comprueba hasta 5.000 fuentes de datos de la misma forma. Compara la hora de modificación del fichero con el mayor valor entre el intervalo del sondeador, el paso RRD de la fuente y el paso del perfil, multiplicado por **RRD Stale Intervals** (3 de forma predeterminada). Muestra los tres ficheros atrasados más antiguos y el número de dispositivos afectados. Los resultados web incluyen solo dispositivos permitidos.
+`filesystem.rrd_stale` comprueba hasta 500 fuentes de datos activas, excluyendo dispositivos desactivados y caídos. En instalaciones grandes la muestra cambia cada hora, de modo que las ejecuciones sucesivas cubren ficheros distintos. Compara la hora de modificación del fichero con el mayor valor entre el intervalo del sondeador, el paso RRD de la fuente y el paso del perfil, multiplicado por **RRD Stale Intervals** (3 de forma predeterminada). Muestra los tres ficheros atrasados más antiguos y el número de dispositivos afectados. Los resultados web incluyen solo dispositivos permitidos.
+
+`filesystem.rrd_files` es una comprobación de existencia independiente. Busca el fichero RRD de hasta 5.000 fuentes de datos activas, incluidas las de dispositivos desactivados o caídos, y usa la misma muestra que rota cada hora.
 
 Boost añade dos veces su intervalo de vaciado como margen de escritura en disco. Para otro sistema de escritura diferida, configure **Deferred RRD Write Allowance (seconds)**. Un `RRDCACHED_ADDRESS` anunciado sin margen, o un intervalo Boost no válido, produce un resultado no evaluado. Doctor nunca vacía una caché para esta comprobación. La hora de modificación demuestra actividad de disco, no una recopilación correcta. La caché externa que Doctor no pueda detectar debe configurarse explícitamente.
 

@@ -159,8 +159,10 @@ function doctor_database_interval_valid($current, $previous, $elapsed) {
 		return false;
 	}
 
+	// A prior clock within the tolerance cannot distinguish a restart soon
+	// after that sample from continuous uptime, so it is rejected too.
 	foreach (['uptime', 'uptime_since_flush_status'] as $clock) {
-		if (!isset($current[$clock], $previous[$clock]) || !is_numeric($previous[$clock])
+		if (!isset($current[$clock], $previous[$clock]) || !is_numeric($previous[$clock]) || (float) $previous[$clock] <= 300
 			|| abs(($current[$clock] - (float) $previous[$clock]) - $elapsed) > 300) {
 			return false;
 		}
@@ -238,14 +240,15 @@ function doctor_analyze_database_health($status, $variables, $previous = []) {
 				if ($interval) {
 					$values = [$status[$numerator] - $sample['metrics'][$numerator], $status[$denominator] - $sample['metrics'][$denominator]];
 				}
-				if ($interval && $values[1] < $minimum) {
-					// A quiet interval adds nothing; the cumulative counters already met the minimum.
-					$values = [$status[$numerator], $status[$denominator]];
-					$interval = false;
-				} elseif ($values[0] > $values[1]) {
+				if ($values[0] > $values[1]) {
 					$detail = __('The interval sample is too small or counters reset; collect another representative interval before tuning.', 'doctor');
 					$results[] = doctor_result('database.' . $id, 'Database health', 'warn', $title, $detail, '', 'not_assessed');
 					continue;
+				}
+				if ($interval && $values[1] < $minimum) {
+					// A consistent but quiet interval adds nothing; the cumulative counters already met the minimum.
+					$values = [$status[$numerator], $status[$denominator]];
+					$interval = false;
 				}
 				$ratio = 100 * $values[0] / $values[1];
 				$level = $ratio >= $limit ? 'warn' : 'pass';
@@ -1686,21 +1689,27 @@ function doctor_format_prometheus($results, $now) {
 		'cacti_doctor_check_observed_status' => 'Observed severity, before warning exceptions: 0 pass, 1 warn, 2 fail.',
 		'cacti_doctor_check_accepted' => 'Whether a current warning exception applies.'
 	];
-	$lines = [];
+	$lines    = [];
+	$samples  = [];
+
+	// Decide each exception once, so an expiry during export cannot split a check's samples.
+	foreach ($results as $result) {
+		$accepted  = doctor_warning_accepted($result);
+		$samples[] = [
+			'labels' => '{id="' . doctor_prometheus_label($result['id']) . '",category="' . doctor_prometheus_label($result['category']) . '"} ',
+			'cacti_doctor_check_status' => $accepted ? 0 : $levels[$result['status']],
+			'cacti_doctor_check_observed_status' => $levels[$result['status']],
+			'cacti_doctor_check_accepted' => $accepted ? 1 : 0
+		];
+	}
 
 	// The exposition format requires each metric family's samples to form one group.
 	foreach ($families as $name => $help) {
 		$lines[] = '# HELP ' . $name . ' ' . $help;
 		$lines[] = '# TYPE ' . $name . ' gauge';
 
-		foreach ($results as $result) {
-			$accepted = doctor_warning_accepted($result);
-			$values   = [
-				'cacti_doctor_check_status' => $accepted ? 0 : $levels[$result['status']],
-				'cacti_doctor_check_observed_status' => $levels[$result['status']],
-				'cacti_doctor_check_accepted' => $accepted ? 1 : 0
-			];
-			$lines[] = $name . '{id="' . doctor_prometheus_label($result['id']) . '",category="' . doctor_prometheus_label($result['category']) . '"} ' . $values[$name];
+		foreach ($samples as $sample) {
+			$lines[] = $name . $sample['labels'] . $sample[$name];
 		}
 	}
 
