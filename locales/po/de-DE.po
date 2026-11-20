@@ -26,6 +26,11 @@ msgstr "Unbekanntes Format %s. Verwenden Sie text, json, nagios oder prometheus.
 
 #: cli/doctor.php
 #, php-format
+msgid "Redaction could not complete, so %s was not written."
+msgstr "Die Schwärzung konnte nicht abgeschlossen werden, daher wurde %s nicht geschrieben."
+
+#: cli/doctor.php
+#, php-format
 msgid "Wrote %s. Review it before sharing; values after password, secret, token, and community names are masked."
 msgstr "%s geschrieben. Prüfen Sie die Datei vor der Weitergabe; Werte nach den Namen password, secret, token und community sind maskiert."
 
@@ -796,6 +801,11 @@ msgstr "poller_output_boost enthält %d Zeilen und liegt damit über dem Limit v
 msgid "Boost last flushed %d seconds ago with %d rows waiting."
 msgstr "Boost hat zuletzt vor %d Sekunden geleert, dabei warten %d Zeilen."
 
+#: doctor_functions.php doctor_rrd.php
+#, php-format
+msgid "Checked a sample of %d active data sources that rotates hourly; a pass does not cover every file."
+msgstr "Geprüft wurde eine stündlich wechselnde Stichprobe von %d aktiven Datenquellen; ein Bestehen deckt nicht jede Datei ab."
+
 #: doctor_functions.php
 #, php-format
 msgid "%d of %d active data sources have no RRD file, for example %s. New data sources get one after their first poll; otherwise check the RRA directory and its permissions."
@@ -1130,10 +1140,6 @@ msgid "Checked %d files; %d stale files across %d devices; %d unavailable or fut
 msgstr "%d Dateien geprüft; %d veraltete Dateien auf %d Geräten; %d nicht verfügbare oder in der Zukunft datierte Dateien."
 
 #: doctor_rrd.php
-msgid "Limited to the first 500 active data sources; unsampled files are not assessed."
-msgstr "Auf die ersten 500 aktiven Datenquellen begrenzt; nicht erfasste Dateien werden nicht bewertet."
-
-#: doctor_rrd.php
 msgid "File age includes the collection interval and configured deferred-write allowance; verify the poller and flush process before changing data."
 msgstr "Das Dateialter berücksichtigt das Erfassungsintervall und den konfigurierten Schreibaufschub; prüfen Sie Poller und Schreibprozess, bevor Sie Daten ändern."
 
@@ -1209,6 +1215,11 @@ msgstr "Doctor hat Statusänderungen aufbewahrt (UTC). Wiederholte Änderungen e
 #, php-format
 msgid "%s: %s -> %s (latest change %s)"
 msgstr "%s: %s -> %s (letzte Änderung %s)"
+
+#: doctor_scheduling.php
+#, php-format
+msgid "%d further status changes are not listed because the alert queue reached its storage limit."
+msgstr "%d weitere Statusänderungen werden nicht aufgeführt, weil die Alarmwarteschlange ihre Speichergrenze erreicht hat."
 
 #: doctor_scheduling.php
 msgid "Open Utilities > Doctor for current measurements, recommended actions, and verification steps."
@@ -1529,6 +1540,9 @@ msgstr "Warnung zur Größe des Cacti-Protokolls (MB)"
 #: setup.php
 msgid "Warn when the Cacti log grows beyond this size, which usually means log rotation is not running."
 msgstr "Warnen, wenn das Cacti-Protokoll über diese Größe hinauswächst, was meist bedeutet, dass die Protokollrotation nicht läuft."
+
+#~ msgid "Limited to the first 500 active data sources; unsampled files are not assessed."
+#~ msgstr "Auf die ersten 500 aktiven Datenquellen begrenzt; nicht erfasste Dateien werden nicht bewertet."
 
 #~ msgid "Diagnostics are read-only. Repairs only run after an authenticated, CSRF-protected POST and are logged to the Cacti log."
 #~ msgstr "Diagnosen sind schreibgeschützt. Reparaturen werden nur nach einem authentifizierten, CSRF-geschützten POST ausgeführt und im Cacti-Protokoll festgehalten."

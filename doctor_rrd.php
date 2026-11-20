@@ -17,6 +17,17 @@
  * more details.
  */
 
+/**
+ * ORDER BY fragment for a bounded sample that rotates hourly. An affine hash
+ * modulo a prime spreads IDs evenly, so successive runs cover different
+ * sources instead of always the oldest ones. Portable integer arithmetic only.
+ */
+function doctor_sample_order($column, $now) {
+	$prime = 4294967311;
+	$salt = (int) fmod(floor($now / 3600) * 2654435761, $prime);
+	return '(' . $column . ' * 2654435761 + ' . $salt . ') % ' . $prime . ', ' . $column;
+}
+
 /** Inspect a bounded sample without flushing Boost or contacting an RRD daemon. */
 function doctor_check_rrd_stale($allowedDevices = null, $now = null) {
 	$now = $now === null ? time() : $now;
@@ -34,7 +45,7 @@ function doctor_check_rrd_stale($allowedDevices = null, $now = null) {
 		LEFT JOIN data_source_profiles AS dsp ON dsp.id = dtd.data_source_profile_id
 		WHERE dtd.local_data_id > 0 AND dtd.active = 'on' AND dtd.data_source_path != ''
 		AND (h.disabled = '' OR h.disabled IS NULL) AND h.status != 1" . $where . '
-		ORDER BY dtd.local_data_id LIMIT 501';
+		ORDER BY ' . doctor_sample_order('dtd.local_data_id', $now) . ' LIMIT 501';
 	$sources = db_fetch_assoc($sql, false);
 	if (!is_array($sources)) {
 		return doctor_result('filesystem.rrd_stale', 'Filesystem', 'warn', __('RRD update freshness', 'doctor'), __('Data source freshness could not be assessed.', 'doctor'), '', 'not_assessed');
@@ -98,13 +109,14 @@ function doctor_evaluate_rrd_stale($sources, $now, $pollInterval, $intervals, $d
 		$detail .= ' ' . implode('; ', $examples);
 	}
 	if ($limited) {
-		$detail .= ' ' . __('Limited to the first 500 active data sources; unsampled files are not assessed.', 'doctor');
+		$detail .= ' ' . __('Checked a sample of %d active data sources that rotates hourly; a pass does not cover every file.', count($sources), 'doctor');
 	}
 	$detail .= ' ' . __('File age includes the collection interval and configured deferred-write allowance; verify the poller and flush process before changing data.', 'doctor');
-	$incomplete = $limited || $unknown > 0 || $sources === [];
-	$result = doctor_result('filesystem.rrd_stale', 'Filesystem', $stale !== [] || $incomplete ? 'warn' : 'pass', __('RRD update freshness', 'doctor'), $detail, '', $incomplete ? 'not_assessed' : 'assessed');
+	// Missing files are reported by filesystem.rrd_files; only a sample with no readable file is unassessed.
+	$assessment = $sources === [] ? 'not_applicable' : ($unknown === count($sources) ? 'not_assessed' : 'assessed');
+	$result = doctor_result('filesystem.rrd_stale', 'Filesystem', $stale !== [] || $assessment === 'not_assessed' ? 'warn' : 'pass', __('RRD update freshness', 'doctor'), $detail, '', $assessment);
 	// File ages in the detail grow every second, so an acknowledgment must bind to the stale set instead.
 	sort($staleIds);
-	$result['evidence'] = json_encode([$staleIds, $unknown, $limited]);
+	$result['evidence'] = json_encode($staleIds);
 	return $result;
 }

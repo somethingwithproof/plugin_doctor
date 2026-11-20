@@ -25,6 +25,11 @@ msgstr ""
 
 #: cli/doctor.php
 #, php-format
+msgid "Redaction could not complete, so %s was not written."
+msgstr ""
+
+#: cli/doctor.php
+#, php-format
 msgid "Wrote %s. Review it before sharing; values after password, secret, token, and community names are masked."
 msgstr ""
 
@@ -795,6 +800,11 @@ msgstr ""
 msgid "Boost last flushed %d seconds ago with %d rows waiting."
 msgstr ""
 
+#: doctor_functions.php doctor_rrd.php
+#, php-format
+msgid "Checked a sample of %d active data sources that rotates hourly; a pass does not cover every file."
+msgstr ""
+
 #: doctor_functions.php
 #, php-format
 msgid "%d of %d active data sources have no RRD file, for example %s. New data sources get one after their first poll; otherwise check the RRA directory and its permissions."
@@ -1129,10 +1139,6 @@ msgid "Checked %d files; %d stale files across %d devices; %d unavailable or fut
 msgstr ""
 
 #: doctor_rrd.php
-msgid "Limited to the first 500 active data sources; unsampled files are not assessed."
-msgstr ""
-
-#: doctor_rrd.php
 msgid "File age includes the collection interval and configured deferred-write allowance; verify the poller and flush process before changing data."
 msgstr ""
 
@@ -1207,6 +1213,11 @@ msgstr ""
 #: doctor_scheduling.php
 #, php-format
 msgid "%s: %s -> %s (latest change %s)"
+msgstr ""
+
+#: doctor_scheduling.php
+#, php-format
+msgid "%d further status changes are not listed because the alert queue reached its storage limit."
 msgstr ""
 
 #: doctor_scheduling.php

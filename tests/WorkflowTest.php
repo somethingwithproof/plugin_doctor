@@ -65,6 +65,20 @@ test('invalid warning exceptions and unknown checks are refused', function ($sta
 	['warn', 'assessed', 'database.clock', 'Ops', 'Reason', 91 * 86400]
 ]);
 
+test('an exception whose owner or reason cannot be redacted is refused before any write', function () {
+	$r = [doctor_result('database.clock', 'Database', 'warn', 'Clock', '')];
+	$jit = ini_get('pcre.jit');
+	$limit = ini_get('pcre.backtrack_limit');
+	ini_set('pcre.jit', '0');
+	ini_set('pcre.backtrack_limit', '5');
+	$refused = doctor_change_acceptance($r, 'database.clock', 'Ops', 'Reason', time() + 3600);
+	ini_set('pcre.jit', $jit);
+	ini_set('pcre.backtrack_limit', $limit);
+	$audits = $GLOBALS['doctor_test_pdo']->query('SELECT COUNT(*) FROM plugin_doctor_audit')->fetchColumn();
+	expect($refused)->toBeFalse()->and(doctor_acceptances())->toBe([])->and((int) $audits)->toBe(0)
+		->and(doctor_change_acceptance($r, 'database.clock', 'Ops', 'Reason', time() + 3600))->toBeTrue();
+});
+
 test('audit failure rolls back an exception', function () {
 	$GLOBALS['doctor_test_audit_fail'] = true;
 	expect(doctor_change_acceptance([doctor_result('x', 'Test', 'warn', '', '')], 'x', 'Ops', 'Reason', time() + 3600))->toBeFalse()->and(doctor_acceptances())->toBe([]);

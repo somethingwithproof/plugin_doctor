@@ -26,6 +26,11 @@ msgstr "अज्ञात प्रारूप %s। text, json, nagios या
 
 #: cli/doctor.php
 #, php-format
+msgid "Redaction could not complete, so %s was not written."
+msgstr "गोपनीय मान छिपाने का काम पूरा नहीं हो सका, इसलिए %s नहीं लिखा गया।"
+
+#: cli/doctor.php
+#, php-format
 msgid "Wrote %s. Review it before sharing; values after password, secret, token, and community names are masked."
 msgstr "%s लिखा गया। साझा करने से पहले समीक्षा करें; password, secret, token और community नामों के बाद के मान छिपाए गए हैं।"
 
@@ -796,6 +801,11 @@ msgstr "poller_output_boost में %d पंक्तियाँ हैं, 
 msgid "Boost last flushed %d seconds ago with %d rows waiting."
 msgstr "Boost ने पिछली बार %d सेकंड पहले फ़्लश किया; %d पंक्तियाँ प्रतीक्षा में हैं।"
 
+#: doctor_functions.php doctor_rrd.php
+#, php-format
+msgid "Checked a sample of %d active data sources that rotates hourly; a pass does not cover every file."
+msgstr "हर घंटे बदलने वाले %d सक्रिय डेटा स्रोतों के नमूने की जाँच की गई; सफल परिणाम हर फ़ाइल को शामिल नहीं करता।"
+
 #: doctor_functions.php
 #, php-format
 msgid "%d of %d active data sources have no RRD file, for example %s. New data sources get one after their first poll; otherwise check the RRA directory and its permissions."
@@ -1130,10 +1140,6 @@ msgid "Checked %d files; %d stale files across %d devices; %d unavailable or fut
 msgstr "%d फ़ाइलें जाँचीं; %d पुरानी फ़ाइलें %d डिवाइसों पर हैं; %d फ़ाइलें अनुपलब्ध या भविष्य के समय वाली हैं।"
 
 #: doctor_rrd.php
-msgid "Limited to the first 500 active data sources; unsampled files are not assessed."
-msgstr "पहले 500 सक्रिय डेटा स्रोतों तक सीमित; नमूने से बाहर की फ़ाइलों का आकलन नहीं होता।"
-
-#: doctor_rrd.php
 msgid "File age includes the collection interval and configured deferred-write allowance; verify the poller and flush process before changing data."
 msgstr "फ़ाइल की आयु में संग्रह अंतराल और कॉन्फ़िगर की गई विलंबित लेखन छूट शामिल है; डेटा बदलने से पहले पोलर और फ़्लश प्रक्रिया सत्यापित करें।"
 
@@ -1209,6 +1215,11 @@ msgstr "Doctor के संचित स्थिति-परिवर्त�
 #, php-format
 msgid "%s: %s -> %s (latest change %s)"
 msgstr "%s: %s -> %s (नवीनतम परिवर्तन %s)"
+
+#: doctor_scheduling.php
+#, php-format
+msgid "%d further status changes are not listed because the alert queue reached its storage limit."
+msgstr "अलर्ट कतार अपनी भंडारण सीमा तक पहुँच गई है, इसलिए %d और स्थिति परिवर्तन सूचीबद्ध नहीं हैं।"
 
 #: doctor_scheduling.php
 msgid "Open Utilities > Doctor for current measurements, recommended actions, and verification steps."
@@ -1529,3 +1540,6 @@ msgstr "Cacti लॉग आकार चेतावनी (MB)"
 #: setup.php
 msgid "Warn when the Cacti log grows beyond this size, which usually means log rotation is not running."
 msgstr "Cacti लॉग इस आकार से बड़ा होने पर चेतावनी दें; इसका सामान्यतः अर्थ है कि लॉग रोटेशन नहीं चल रहा।"
+
+#~ msgid "Limited to the first 500 active data sources; unsampled files are not assessed."
+#~ msgstr "पहले 500 सक्रिय डेटा स्रोतों तक सीमित; नमूने से बाहर की फ़ाइलों का आकलन नहीं होता।"

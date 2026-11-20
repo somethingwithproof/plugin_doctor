@@ -2,9 +2,13 @@
 
 ## Unreleased
 
-- Keep acknowledgments of stale-RRD findings valid as file ages advance, and show a message when an acknowledgment is refused.
-- Report an unreadable Cacti log as a warning that was not assessed, and apply the launch throttle after a refused scheduled launch.
-- Use canonical categories and the CLI's outage ordering in the Viewer and device views, group Prometheus samples by metric family, and correct the log-excerpt realm and CLI exit-status documentation.
+- Keep scheduled checks on their configured cadence instead of slipping one polling cycle per run, treat results as current for the interval plus one polling cycle, and back off retries after incomplete runs.
+- Sample RRD freshness and RRD file checks on an hourly rotation and assess the sampled files, instead of reporting a permanent unassessed warning above 500 data sources or when any file is missing.
+- Fall back to cumulative database counters when a scheduled interval is too quiet, and reject intervals that span a restart or `FLUSH STATUS`.
+- Keep stale-RRD acknowledgments valid while file ages change, keep long quoted secrets within PCRE limits, and withhold text or refuse a support bundle when redaction cannot complete.
+- Keep scheduled runs completing when many checks change at once on Cacti before 1.2.26: the alert email lists the most severe changes and counts the rest.
+- Report an unreadable Cacti log as a warning that was not assessed, show a message when an acknowledgment is refused, and apply the launch throttle after a refused scheduled launch.
+- Respect the 2048-character settings column before Cacti 1.2.26, group Prometheus metric families, sort undated web device outages last, show real categories to Viewers, and correct the log-excerpt realm and CLI exit-status documentation.
 
 ## 0.6.1 - 2026-11-17
 

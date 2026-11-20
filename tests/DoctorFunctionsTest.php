@@ -571,17 +571,21 @@ test('the Boost check reads Cacti settings and the boost table', function () {
 	expect(doctor_check_boost()['status'])->toBe('warn');
 });
 
+function doctor_test_rrd_files_sql() {
+	return "SELECT local_data_id, data_source_path FROM data_template_data WHERE local_data_id > 0 AND active = 'on' AND data_source_path != '' ORDER BY " . doctor_sample_order('local_data_id', 1700000000) . ' LIMIT 5001';
+}
+
 test('active data sources without an RRD file warn with a sample', function () {
 	$rra = doctor_test_directory();
 	touch($rra . '/present_1.rrd');
 	$GLOBALS['doctor_test_rows'] = [
-		"SELECT local_data_id, data_source_path FROM data_template_data WHERE local_data_id > 0 AND active = 'on' AND data_source_path != ''" => [
+		doctor_test_rrd_files_sql() => [
 			['local_data_id' => '1', 'data_source_path' => '<path_rra>/present_1.rrd'],
 			['local_data_id' => '2', 'data_source_path' => '<path_rra>/missing_2.rrd']
 		]
 	];
 
-	$result = doctor_check_rrd_files($rra);
+	$result = doctor_check_rrd_files($rra, 1700000000);
 
 	expect($result['id'])->toBe('filesystem.rrd_files')
 		->and($result['status'])->toBe('warn')
@@ -594,12 +598,12 @@ test('all RRD files present passes', function () {
 	$rra = doctor_test_directory();
 	touch($rra . '/present_1.rrd');
 	$GLOBALS['doctor_test_rows'] = [
-		"SELECT local_data_id, data_source_path FROM data_template_data WHERE local_data_id > 0 AND active = 'on' AND data_source_path != ''" => [
+		doctor_test_rrd_files_sql() => [
 			['local_data_id' => '1', 'data_source_path' => '<path_rra>/present_1.rrd']
 		]
 	];
 
-	expect(doctor_check_rrd_files($rra)['status'])->toBe('pass');
+	expect(doctor_check_rrd_files($rra, 1700000000)['status'])->toBe('pass');
 });
 
 test('disk space thresholds warn below 10 percent and fail below 2 percent', function () {
@@ -817,6 +821,46 @@ test('Prometheus output exposes one gauge per check and the totals', function ()
 		->and($text)->toContain('cacti_doctor_last_run_timestamp_seconds 1700000000');
 });
 
+test('Prometheus output keeps each metric family in one group', function () {
+	$results = [doctor_result('a.one', 'Test', 'pass', 'A', ''), doctor_result('a.two', 'Test', 'warn', 'B', '')];
+	$names = [];
+	foreach (explode("\n", trim(doctor_format_prometheus($results, 1700000000))) as $line) {
+		$names[] = preg_replace('/^# (?:HELP|TYPE) (\S+).*$|^([a-z_]+)[{ ].*$/', '$1$2', $line);
+	}
+	$groups = [];
+	foreach ($names as $i => $name) {
+		if ($i === 0 || $names[$i - 1] !== $name) {
+			$groups[] = $name;
+		}
+	}
+	expect($groups)->toBe(array_values(array_unique($groups)));
+});
+
+test('long quoted secrets are redacted rather than emptying the text', function () {
+	foreach (['password: "%s"', 'password: "%s', "secret: '%s'\nhost: x"] as $format) {
+		$text = doctor_redact(sprintf($format, str_repeat('x', 64000)));
+		expect($text)->toStartWith(substr($format, 0, strpos($format, '%s')) . '[redacted]')->not->toContain('xxxx');
+	}
+});
+
+test('redaction withholds the text when a pattern fails', function () {
+	$jit = ini_get('pcre.jit');
+	$limit = ini_get('pcre.backtrack_limit');
+	ini_set('pcre.jit', '0');
+	ini_set('pcre.backtrack_limit', '5');
+	$text = doctor_redact('password: "' . str_repeat('ab\\"', 50) . '"');
+	ini_set('pcre.jit', $jit);
+	ini_set('pcre.backtrack_limit', $limit);
+	expect($text)->toBe(DOCTOR_REDACTION_FAILED);
+});
+
+test('derived categories match the categories checks report', function () {
+	$GLOBALS['doctor_test_settings'] = ['poller_type' => '2'];
+	foreach (doctor_run_checks() as $result) {
+		expect(doctor_check_category($result['id']))->toBe($result['category'], $result['id']);
+	}
+});
+
 test('secrets are redacted from bundle text', function () {
 	$text = doctor_redact("DB_Pass s3cret\n\$database_password = 'hunter2';\nSNMP community=public01 host=1.2.3.4\npassword: abc\ntoken=xyz");
 
@@ -1019,6 +1063,29 @@ test('scheduled freshness reports missing and recent completions distinctly', fu
 	expect($recent['status'])->toBe('pass')->and($recent['detail'])->toContain('does not mean all checks passed');
 });
 
+test('a mass status change fits the settings column and every change is still reported', function () {
+	$results = [];
+	$state = [];
+	for ($i = 0; $i < 50; $i++) {
+		$id = sprintf('database.long_check_identifier_%02d', $i);
+		$results[] = doctor_result($id, 'Database health', $i < 5 ? 'fail' : 'warn', 'Check', '');
+		$state[] = $id . '=pass';
+	}
+	$GLOBALS['doctor_test_settings'] = ['doctor_state' => implode(',', $state), 'doctor_alert_emails' => 'ops@example.com', 'doctor_alert_warnings' => 'on', 'doctor_alert_pending' => ''];
+	$GLOBALS['doctor_test_mail'] = [];
+	$GLOBALS['doctor_schedule_lock_held'] = true;
+	doctor_run_scheduled($results, 1700000000);
+	$stored = $GLOBALS['doctor_test_settings']['doctor_alert_pending'];
+	$pending = doctor_alert_pending();
+	doctor_retry_alerts(1700000000);
+	unset($GLOBALS['doctor_schedule_lock_held']);
+	expect(strlen($stored))->toBeLessThanOrEqual(2048)
+		->and(count($pending['events']) + $pending['omitted'])->toBe(50)
+		->and($pending['events'])->toHaveKey('database.long_check_identifier_04')
+		->and($GLOBALS['doctor_test_mail'][0]['subject'])->toContain('50')
+		->and($GLOBALS['doctor_test_mail'][0]['body'])->toContain($pending['omitted'] . ' further status changes are not listed');
+});
+
 test('failed alert delivery retains transitions for a bounded retry', function () {
 	$GLOBALS['doctor_test_settings'] = [
 		'doctor_state' => 'runtime.disk=pass',
@@ -1062,6 +1129,98 @@ test('the poller hook starts a background run only when scheduling is on and a r
 		->and($GLOBALS['doctor_test_spawned'][0])->toContain('/var/www/cacti/plugins/doctor/cli/doctor.php')
 		->and($GLOBALS['doctor_test_spawned'][0])->toContain('--scheduled')
 		->and((int) $GLOBALS['doctor_test_settings']['doctor_last_run'])->toBeGreaterThan(time() - 60);
+});
+
+test('the poller hook keeps the requested cadence instead of slipping a polling cycle', function () {
+	global $config;
+
+	$config['base_path'] = '/var/www/cacti';
+	$php = doctor_test_executable(doctor_test_directory(), 'php', 'exit 0');
+	$now = time();
+	// 15-minute schedule, 5-minute poller: the next slot opens 750 seconds after the last start.
+	$base = ['doctor_schedule_enabled' => 'on', 'doctor_schedule_interval' => '15', 'poller_interval' => '300', 'path_php_binary' => $php];
+
+	$GLOBALS['doctor_test_spawned']  = [];
+	$GLOBALS['doctor_test_settings'] = $base + ['doctor_last_started' => (string) ($now - 600), 'doctor_last_completed' => (string) ($now - 580), 'doctor_last_launch' => (string) ($now - 600)];
+	doctor_poller_bottom();
+	expect($GLOBALS['doctor_test_spawned'])->toBe([]);
+
+	// The completion stamp includes run time; it must not push the slot to the next poll.
+	$GLOBALS['doctor_test_settings'] = $base + ['doctor_last_started' => (string) ($now - 900), 'doctor_last_completed' => (string) ($now - 880), 'doctor_last_launch' => (string) ($now - 900)];
+	doctor_poller_bottom();
+	expect($GLOBALS['doctor_test_spawned'])->toHaveCount(1)
+		->and($GLOBALS['doctor_test_settings']['doctor_schedule_failures'])->toBe('0');
+});
+
+test('the poller hook backs off after incomplete runs', function () {
+	global $config;
+
+	$config['base_path'] = '/var/www/cacti';
+	$php = doctor_test_executable(doctor_test_directory(), 'php', 'exit 0');
+	$now = time();
+	$base = ['doctor_schedule_enabled' => 'on', 'doctor_schedule_interval' => '1440', 'poller_interval' => '300', 'path_php_binary' => $php, 'doctor_last_completed' => (string) ($now - 90000)];
+
+	// Third consecutive failure: wait 5 * 2^2 = 20 minutes, not every polling cycle.
+	$GLOBALS['doctor_test_spawned']  = [];
+	$GLOBALS['doctor_test_settings'] = $base + ['doctor_last_started' => (string) ($now - 900), 'doctor_last_launch' => (string) ($now - 900), 'doctor_schedule_failures' => '2'];
+	doctor_poller_bottom();
+	expect($GLOBALS['doctor_test_spawned'])->toBe([]);
+
+	$GLOBALS['doctor_test_settings']['doctor_last_started'] = (string) ($now - 1200);
+	$GLOBALS['doctor_test_settings']['doctor_last_launch'] = (string) ($now - 1200);
+	doctor_poller_bottom();
+	expect($GLOBALS['doctor_test_spawned'])->toHaveCount(1)
+		->and($GLOBALS['doctor_test_settings']['doctor_schedule_failures'])->toBe('3');
+});
+
+test('an alert retry launch does not move or fail the check schedule', function () {
+	global $config;
+
+	$config['base_path'] = '/var/www/cacti';
+	$php = doctor_test_executable(doctor_test_directory(), 'php', 'exit 0');
+	$now = time();
+	$GLOBALS['doctor_test_spawned']  = [];
+	$GLOBALS['doctor_test_settings'] = ['doctor_schedule_enabled' => 'on', 'doctor_schedule_interval' => '60', 'poller_interval' => '300', 'path_php_binary' => $php,
+		'doctor_alert_emails' => 'ops@example.com', 'doctor_last_started' => (string) ($now - 600), 'doctor_last_completed' => (string) ($now - 580), 'doctor_last_launch' => (string) ($now - 600),
+		'doctor_alert_pending' => json_encode(['events' => ['poller.freshness' => ['pass', 'fail', $now - 600]], 'attempts' => 1, 'next' => $now - 1])];
+	doctor_poller_bottom();
+	expect($GLOBALS['doctor_test_spawned'])->toHaveCount(1)
+		->and($GLOBALS['doctor_test_settings']['doctor_last_launch'])->toBe((string) ($now - 600))
+		->and($GLOBALS['doctor_test_settings']['doctor_last_alert_launch'])->toBe((string) $now)
+		->and(isset($GLOBALS['doctor_test_settings']['doctor_schedule_failures']))->toBeFalse()
+		->and($GLOBALS['doctor_test_spawned'][0])->toContain('--alerts-only');
+});
+
+test('the cadence ignores the completion-time doctor_last_run once launches are recorded', function () {
+	global $config;
+
+	$config['base_path'] = '/var/www/cacti';
+	$php = doctor_test_executable(doctor_test_directory(), 'php', 'exit 0');
+	$now = time();
+	$GLOBALS['doctor_test_spawned']  = [];
+	// 15-minute schedule, 60-second poller, 100-second run: due 870 s after the start.
+	$GLOBALS['doctor_test_settings'] = ['doctor_schedule_enabled' => 'on', 'doctor_schedule_interval' => '15', 'poller_interval' => '60', 'path_php_binary' => $php,
+		'doctor_last_launch' => (string) ($now - 900), 'doctor_last_started' => (string) ($now - 900), 'doctor_last_completed' => (string) ($now - 800), 'doctor_last_run' => (string) ($now - 800)];
+	doctor_poller_bottom();
+	expect($GLOBALS['doctor_test_spawned'])->toHaveCount(1)->and($GLOBALS['doctor_test_spawned'][0])->not->toContain('--alerts-only');
+});
+
+test('scheduled freshness allows one polling cycle beyond the interval', function () {
+	$now = time();
+	$GLOBALS['doctor_test_settings'] = ['doctor_schedule_enabled' => 'on', 'doctor_schedule_interval' => '15', 'poller_interval' => '300', 'doctor_last_started' => (string) ($now - 1250), 'doctor_last_completed' => (string) ($now - 1230)];
+	expect(doctor_check_schedule($now)['status'])->toBe('pass');
+	$GLOBALS['doctor_test_settings']['doctor_last_completed'] = (string) ($now - 1381);
+	expect(doctor_check_schedule($now)['status'])->toBe('warn');
+});
+
+test('settings writes respect the smaller column on Cacti releases before 1.2.26', function () {
+	$thrown = false;
+	try {
+		doctor_store_setting('doctor_test', str_repeat('x', 2049));
+	} catch (RuntimeException $error) {
+		$thrown = true;
+	}
+	expect(doctor_setting_value_limit())->toBe(2048)->and($thrown)->toBeTrue();
 });
 
 test('the poller hook will not launch a misnamed PHP binary', function () {

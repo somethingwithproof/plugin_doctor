@@ -1,4 +1,4 @@
-<!-- Source: README.md; SHA256: e89e13b4e14c83d62cae3be084212215cc850b2fe0c10c667ced38aef04c6516 -->
+<!-- Source: README.md; SHA256: 851aec2768af6b0c9a21a3b0e62f902110b83588ad544fe6b87897cb61f82ace -->
 
 <!-- translations:start -->
 [English](../../../README.md) | [简体中文](README.md) | [हिन्दी](../hi-IN/README.md) | [Español (España)](../es-ES/README.md) | [Español (Latinoamérica)](../es-419/README.md) | [العربية](../ar-SA/README.md)
@@ -63,7 +63,7 @@ Cacti 问题通常表现为症状：空白图表、轮询器停止、插件无�
 | 按角色限定的访问及脱敏的 Web 报告 | [doctor_access.php](../../../doctor_access.php), [doctor_web.php](../../../doctor_web.php) | [AccessTest.php](../../../tests/AccessTest.php), [WebAccessTest.php](../../../tests/WebAccessTest.php) |
 | 按症状引导的排查 | [doctor_diagnosis.php](../../../doctor_diagnosis.php) | [DiagnosisTest.php](../../../tests/DiagnosisTest.php) |
 | RRD 新鲜度及延迟写入处理 | [doctor_rrd.php](../../../doctor_rrd.php) | [RrdFreshnessTest.php](../../../tests/RrdFreshnessTest.php) |
-| 修复预览、审计历史及已接受的警告 | [doctor_workflows.php](../../../doctor_workflows.php), [doctor_operator.php](../../../doctor_operator.php) | [WorkflowTest.php](../../../tests/WorkflowTest.php) |
+| 修复预览、审计历史及已接受的警告 | [doctor_workflows.php](../../../doctor_workflows.php), [doctor_web.php](../../../doctor_web.php) | [WorkflowTest.php](../../../tests/WorkflowTest.php) |
 | 计划检查及告警状态转换 | [doctor_scheduling.php](../../../doctor_scheduling.php) | [DoctorFunctionsTest.php](../../../tests/DoctorFunctionsTest.php), [WorkflowTest.php](../../../tests/WorkflowTest.php) |
 
 这些引用指出实现及测试覆盖范围，并不表示当前修订的每项 CI 作业都已通过。请检查您计划部署的修订对应的工作流运行结果。
@@ -148,7 +148,7 @@ Viewer 数据来自定时检查。授予 Viewer 访问前请启用调度；观�
 
 设备详情和总计按当前用户的设备权限过滤。日志摘录还要求 Cacti 的 Log Administration 权限域。诊断详情存入 Web 会话或渲染前会遮蔽秘密。CLI 访问仍由操作系统账户控制。
 
-确认记录是个人专用且会审计。它们仅适用于相同发现和证据；证据变化需要重新确认。确认不会更改 pass/warn/fail 状态、抑制告警或将失败检查标为健康。这与下文所述的已接受警告例外规则不同；后者影响告警策略，但不改变观测状态。
+确认记录是个人专用的，并会记入 Cacti 日志。它们仅适用于相同发现和证据；证据变化需要重新确认。确认不会更改 pass/warn/fail 状态、抑制告警或将失败检查标为健康。这与下文所述的已接受警告例外规则不同；后者影响告警策略，但不改变观测状态。
 
 每项操作都需要 POST 和有效 CSRF 令牌。修复会显示单独确认页，Cancel 链接不会提交表单，并在 Cacti 日志中记录操作者和结果。
 
@@ -180,7 +180,7 @@ Cacti 为每个 CLI 脚本提高 `memory_limit`，因此 PHP 运行时配置检�
 
 每次运行记录各检查的观测状态。有效的警告例外影响告警策略，但不改变观测。检查开始失败或停止失败时，Doctor 将变化写入 Cacti 日志；若设置了 **Alert Email Addresses**，则通过 Cacti 邮件配置向这些地址发信。**Alert on Warnings** 增加进入和离开警告状态的通知。首次运行仅记录基线。
 
-定时报告在主轮询器上运行，受数据库咨询锁保护，工作进程上限为两分钟。Doctor 报告最后启动和成功完成时间，使结果缺失或过期可见。失败的告警投递保留最多三次重试，间隔逐渐增加；之后请修正 Cacti 邮件设置，并以轮询器用户运行 `php plugins/doctor/cli/doctor.php --scheduled --retry-alerts`。邮件服务器接受不代表送达收件箱。
+定时报告在主轮询器上运行，受数据库咨询锁保护，工作进程上限为两分钟。Doctor 报告最后启动和成功完成时间，使结果缺失或过期可见。结果在间隔加一个轮询周期再加三分钟内视为最新。未完成的运行会在 5、10、20 分钟及更长时间后重试，最长不超过正常间隔。失败的告警投递保留最多三次重试，间隔逐渐增加；之后请修正 Cacti 邮件设置，并以轮询器用户运行 `php plugins/doctor/cli/doctor.php --scheduled --retry-alerts`。邮件服务器接受不代表送达收件箱。
 
 同一选项卡设置轮询器运行时长（间隔的 80%）、RRA 空闲空间（低于 10% 警告、低于 2% 失败）、数据库时钟偏差（超过 5 秒警告、超过 60 秒失败）及 Cacti 日志大小（100 MB）的阈值。空值或无效值会回退到这些默认值。
 
@@ -222,11 +222,13 @@ Doctor 包含一项修复 `runtime_directories`。它创建缺失的 Cacti 运�
 <a id="rrd-update-freshness"></a>
 ## RRD 更新新鲜度
 
-`filesystem.rrd_stale` 按 ID 最多检查前 500 个活动数据源，排除已禁用或宕机设备。它将文件修改时间与轮询器间隔、数据源 RRD 步长和配置文件步长中的最大值乘以 **RRD Stale Intervals**（默认 3）比较。它显示最旧的三个过期文件及受影响设备数。Web 结果仅包含有权限的设备。
+`filesystem.rrd_stale` 最多检查 500 个活动数据源，排除已禁用或宕机设备。在较大的安装中，样本每小时轮换，因此多次运行会覆盖不同文件。它将文件修改时间与轮询器间隔、数据源 RRD 步长和配置文件步长中的最大值乘以 **RRD Stale Intervals**（默认 3）比较。它显示最旧的三个过期文件及受影响设备数。Web 结果仅包含有权限的设备。
+
+`filesystem.rrd_files` 是单独的存在性检查。它为最多 5,000 个活动数据源查找 RRD 文件，包括已禁用或宕机设备上的数据源，并使用相同的每小时轮换样本。
 
 Boost 添加其配置刷新间隔的两倍作为磁盘写入宽限。其他延迟写入器请配置 **Deferred RRD Write Allowance (seconds)**。若存在 `RRDCACHED_ADDRESS` 却没有宽限，或 Boost 间隔无效，则结果为未评估。Doctor 绝不会为此检查刷新缓存。修改时间仅是磁盘活动证据，不证明数据采集成功。Doctor 无法检测的外部缓存必须明确配置。
 
-缺失、不可读或未来时间的文件，以及样本数量受限时，报告为覆盖不完整，而非安装健康。未采样文件不作评估。
+缺失、不可读和未来时间的文件会计入详情。仅当没有任何样本文件可读时，结果才为未评估。抽样结果会说明它只覆盖安装的一部分；通过并不涵盖未采样的文件。
 
 <a id="repair-previews-and-audit-history"></a>
 ## 修复预览和审计历史

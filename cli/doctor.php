@@ -34,13 +34,13 @@ if (!is_file($cactiBase . '/include/cli_check.php')) {
 	exit(2);
 }
 
-$options = getopt('', ['json', 'format:', 'bundle:', 'scheduled', 'scheduled-worker', 'due', 'retry-alerts', 'repair:', 'preview', 'symptom:', 'yes', 'help']);
+$options = getopt('', ['json', 'format:', 'bundle:', 'scheduled', 'scheduled-worker', 'due', 'retry-alerts', 'alerts-only', 'repair:', 'preview', 'symptom:', 'yes', 'help']);
 
 // Supervise bootstrap too: a stalled connection must not leave a worker forever.
 if (isset($options['scheduled'])) {
 	include_once dirname(__DIR__) . '/doctor_scheduling.php';
 	$arguments = [PHP_BINARY, __FILE__, '--scheduled-worker'];
-	foreach (['due', 'retry-alerts'] as $flag) {
+	foreach (['due', 'retry-alerts', 'alerts-only'] as $flag) {
 		if (isset($options[$flag])) {
 			$arguments[] = '--' . $flag;
 		}
@@ -75,7 +75,7 @@ if (!in_array($format, ['text', 'json', 'nagios', 'prometheus'], true)) {
 }
 
 if (isset($options['scheduled-worker'])) {
-	exit(doctor_scheduled_worker(isset($options['due']), isset($options['retry-alerts'])));
+	exit(doctor_scheduled_worker(isset($options['due']), isset($options['retry-alerts']), isset($options['alerts-only'])));
 }
 
 if (isset($options['bundle'])) {
@@ -84,7 +84,9 @@ if (isset($options['bundle'])) {
 	// An unreadable log returns null; the bundle is still written with an empty log section.
 	$logTail = doctor_read_log_tail($logPath, 200);
 	$bundle  = doctor_build_bundle(doctor_run_checks(), doctor_bundle_context(), $logTail === null ? [] : $logTail);
-	$error   = doctor_write_bundle((string) $options['bundle'], $bundle);
+	$error   = strpos($bundle, DOCTOR_REDACTION_FAILED) !== false
+		? __('Redaction could not complete, so %s was not written.', $options['bundle'], 'doctor')
+		: doctor_write_bundle((string) $options['bundle'], $bundle);
 
 	if ($error !== '') {
 		fwrite(STDERR, $error . PHP_EOL);

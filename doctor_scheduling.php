@@ -99,9 +99,15 @@ function doctor_schedule_lock_sql() {
 	return "CONCAT('doctor:', LEFT(SHA2(DATABASE(), 256), 56))";
 }
 
+/** Cacti 1.2.26 widened settings.value from 2048 to 4096 characters; unknown versions get the smaller limit. */
+function doctor_setting_value_limit() {
+	$version = defined('CACTI_VERSION') ? (string) CACTI_VERSION : '';
+	return $version !== '' && version_compare(doctor_short_version($version), '1.2.26', '>=') ? 4096 : 2048;
+}
+
 /** Fail closed if a reconnect lost the session lock, including inside a write. */
 function doctor_store_setting($name, $value) {
-	if (!is_string($value) || strlen($value) > 4000) {
+	if (!is_string($value) || strlen($value) > doctor_setting_value_limit()) {
 		throw new RuntimeException('Doctor state exceeds the supported settings size.');
 	}
 	if (empty($GLOBALS['doctor_schedule_lock_held'])) {
@@ -118,7 +124,7 @@ function doctor_store_setting($name, $value) {
 /** @return array<string,mixed> */
 function doctor_read_json_setting($name) {
 	$text = read_config_option($name, true);
-	if (!is_string($text) || strlen($text) > 4000) {
+	if (!is_string($text) || strlen($text) > 4096) {
 		return [];
 	}
 	$value = json_decode($text, true);
@@ -130,6 +136,21 @@ function doctor_schedule_interval() {
 	return in_array($minutes, ['15', '60', '360', '1440'], true) ? (int) $minutes * 60 : 3600;
 }
 
+/**
+ * Seconds after a run starts before the next one is due. Runs start from the
+ * poller hook, so waiting a full interval from the previous start or finish
+ * would always slip one polling cycle; half a cycle of slack keeps the cadence.
+ */
+function doctor_schedule_due_after() {
+	$interval = doctor_schedule_interval();
+	return $interval - (int) floor(min(doctor_poller_interval(), $interval) / 2);
+}
+
+/** A report stays current for one interval, one polling cycle, and the worker limit with margin. */
+function doctor_report_max_age() {
+	return doctor_schedule_interval() + doctor_poller_interval() + 180;
+}
+
 /** @return array<string,mixed> */
 function doctor_check_schedule($now) {
 	if ((string) read_config_option('doctor_schedule_enabled', true) !== 'on') {
@@ -139,7 +160,7 @@ function doctor_check_schedule($now) {
 	$completed = (int) read_config_option('doctor_last_completed', true);
 	$age = $now - $completed;
 	$detail = __('Last started: %s; last completed: %s.', $started > 0 ? __('%s UTC', gmdate('Y-m-d H:i:s', $started), 'doctor') : __('never', 'doctor'), $completed > 0 ? __('%s UTC', gmdate('Y-m-d H:i:s', $completed), 'doctor') : __('never', 'doctor'), 'doctor');
-	if ($completed <= 0 || $age < 0 || $age > doctor_schedule_interval() + 180 || ($started > $completed && $now - $started > 180)) {
+	if ($completed <= 0 || $age < 0 || $age > doctor_report_max_age() || ($started > $completed && $now - $started > 180)) {
 		return doctor_result('doctor.schedule', 'Doctor', 'warn', __('Scheduled report freshness', 'doctor'), $detail . ' ' . __('Results are missing or stale. Check the primary poller and DOCTOR log for startup, timeout, or persistence errors.', 'doctor'), '', 'not_assessed');
 	}
 	return doctor_result('doctor.schedule', 'Doctor', 'pass', __('Scheduled report freshness', 'doctor'), $detail . ' ' . __('A completed diagnostic run is recent; this does not mean all checks passed.', 'doctor'));
@@ -165,6 +186,7 @@ function doctor_alert_pending() {
 		return [];
 	}
 	if (!isset($pending['events'], $pending['attempts'], $pending['next']) || !is_array($pending['events']) || count($pending['events']) > 64
+		|| (isset($pending['omitted']) && (!is_int($pending['omitted']) || $pending['omitted'] < 0))
 		|| !is_int($pending['attempts']) || $pending['attempts'] < 0 || $pending['attempts'] > 3 || !is_int($pending['next']) || $pending['next'] < 0) {
 		throw new RuntimeException(doctor_n_('Doctor alert state is invalid. Restore doctor_alert_pending from backup before retrying.'));
 	}
@@ -178,6 +200,34 @@ function doctor_alert_pending() {
 	return $pending;
 }
 
+/** Transitions that could not be stored individually, still counted for delivery. */
+function doctor_alert_omitted($pending) {
+	return isset($pending['omitted']) ? (int) $pending['omitted'] : 0;
+}
+
+/**
+ * Store the outbox within the settings column. When too many checks change at
+ * once, the least severe and oldest transitions are summarized as a count, so
+ * the run still completes and the email still reports every change.
+ */
+function doctor_store_alert_pending($pending) {
+	$rank = ['pass' => 0, 'accepted' => 0, 'warn' => 1, 'fail' => 2];
+	$json = json_encode($pending);
+	while (strlen($json) > doctor_setting_value_limit() && $pending['events'] !== []) {
+		$drop = null;
+		foreach ($pending['events'] as $id => $event) {
+			if ($drop === null || $rank[$event[1]] < $rank[$pending['events'][$drop][1]]
+				|| ($rank[$event[1]] === $rank[$pending['events'][$drop][1]] && $event[2] < $pending['events'][$drop][2])) {
+				$drop = $id;
+			}
+		}
+		unset($pending['events'][$drop]);
+		$pending['omitted'] = doctor_alert_omitted($pending) + 1;
+		$json = json_encode($pending);
+	}
+	doctor_store_setting('doctor_alert_pending', $json);
+}
+
 function doctor_check_alert_delivery($now) {
 	try {
 		$pending = doctor_alert_pending();
@@ -185,7 +235,7 @@ function doctor_check_alert_delivery($now) {
 		return doctor_result('doctor.alert_delivery', 'Doctor', 'warn', __('Alert delivery', 'doctor'), doctor_alert_error_text($error->getMessage()), '', 'not_assessed');
 	}
 	if ($pending !== []) {
-		$detail = __('%d check transitions await delivery; attempts: %d of 3.', count($pending['events']), $pending['attempts'], 'doctor');
+		$detail = __('%d check transitions await delivery; attempts: %d of 3.', count($pending['events']) + doctor_alert_omitted($pending), $pending['attempts'], 'doctor');
 		$detail .= ' ' . ($pending['attempts'] >= 3 ? __('Automatic retries exhausted. Correct Cacti mail settings, then run Doctor with --scheduled --retry-alerts as the poller user.', 'doctor') : __('Next eligible retry: %s UTC, after a primary poller cycle.', gmdate('Y-m-d H:i:s', $pending['next']), 'doctor'));
 		if (trim((string) read_config_option('doctor_alert_emails', true)) === '') {
 			$detail .= ' ' . __('No alert recipients are currently configured; pending transitions are retained.', 'doctor');
@@ -210,7 +260,7 @@ function doctor_retry_alerts($now, $retry = false) {
 			}
 		}
 	}
-	if ($pending['events'] === []) {
+	if ($pending['events'] === [] && doctor_alert_omitted($pending) === 0) {
 		doctor_store_setting('doctor_alert_pending', '');
 		return;
 	}
@@ -224,14 +274,17 @@ function doctor_retry_alerts($now, $retry = false) {
 	// Record the attempt before network I/O: interruption cannot cause a retry storm.
 	$pending['attempts']++;
 	$pending['next'] = $now + 300 * pow(3, $pending['attempts'] - 1);
-	doctor_store_setting('doctor_alert_pending', json_encode($pending));
+	doctor_store_alert_pending($pending);
 	$lines = [__('Doctor retained status changes (UTC). Repeated changes for one check are coalesced; an out-and-back transition is retained.', 'doctor'), ''];
 	foreach ($pending['events'] as $id => $event) {
 		$lines[] = __('%s: %s -> %s (latest change %s)', $id, $event[0], $event[1], gmdate('Y-m-d H:i:s', $event[2]), 'doctor');
 	}
+	if (doctor_alert_omitted($pending) > 0) {
+		$lines[] = __('%d further status changes are not listed because the alert queue reached its storage limit.', doctor_alert_omitted($pending), 'doctor');
+	}
 	$lines[] = '';
 	$lines[] = __('Open Utilities > Doctor for current measurements, recommended actions, and verification steps.', 'doctor');
-	$error = send_mail($recipients, '', __('Cacti Doctor: %d retained status changes', count($pending['events']), 'doctor'), implode("\n", $lines));
+	$error = send_mail($recipients, '', __('Cacti Doctor: %d retained status changes', count($pending['events']) + doctor_alert_omitted($pending), 'doctor'), implode("\n", $lines));
 	if ($error === '') {
 		doctor_store_setting('doctor_alert_pending', '');
 		doctor_store_setting('doctor_alert_last_success', (string) $now);
@@ -280,7 +333,7 @@ function doctor_run_scheduled($results, $now) {
 		// New transitions renew the delivery budget, unchanged failures do not.
 		$pending['attempts'] = 0;
 		$pending['next'] = $now;
-		doctor_store_setting('doctor_alert_pending', json_encode($pending));
+		doctor_store_alert_pending($pending);
 	}
 	// Retain only aggregate history; never persist device details or log excerpts for viewers.
 	$history = doctor_read_json_setting('doctor_report_history');
@@ -299,7 +352,7 @@ function doctor_run_scheduled($results, $now) {
 }
 
 /** @return int CLI exit code; the supervisor bounds bootstrap, checks and mail. */
-function doctor_scheduled_worker($dueOnly = false, $retry = false) {
+function doctor_scheduled_worker($dueOnly = false, $retry = false, $alertsOnly = false) {
 	global $config;
 	if (isset($config['poller_id']) && (int) $config['poller_id'] > 1) {
 		cacti_log('Doctor scheduled checks run only on the primary poller.', false, 'DOCTOR');
@@ -314,8 +367,11 @@ function doctor_scheduled_worker($dueOnly = false, $retry = false) {
 	try {
 		$now = time();
 		$completed = (int) read_config_option('doctor_last_completed', true);
-		$runChecks = !$dueOnly || ($completed <= 0 || $now < $completed || $now - $completed >= doctor_schedule_interval());
-		if ($dueOnly && (string) read_config_option('doctor_schedule_enabled', true) !== 'on') {
+		$started = (int) read_config_option('doctor_last_started', true);
+		// The poller hook applies failure backoff; an incomplete previous run is always retried here.
+		$runChecks = !$dueOnly || $completed <= 0 || $completed < $started || $now < $started || $now - $started >= doctor_schedule_due_after();
+		// An alert-only launch must not bypass the hook's check backoff.
+		if ($alertsOnly || ($dueOnly && (string) read_config_option('doctor_schedule_enabled', true) !== 'on')) {
 			$runChecks = false;
 		}
 		if ($runChecks) {
@@ -351,19 +407,35 @@ function doctor_poller_bottom() {
 	}
 	$now = time();
 	$completed = (int) read_config_option('doctor_last_completed', true);
-	$lastRun = (int) read_config_option('doctor_last_run', true);
-	$due = $completed > 0
-		? ($now < $completed || $now - $completed >= doctor_schedule_interval())
-		: ($lastRun <= 0 || $now < $lastRun || $now - $lastRun >= doctor_schedule_interval());
+	$launched = (int) read_config_option('doctor_last_launch', true);
+	// Anchor the cadence on check launches and starts, not completions, so run
+	// time does not delay the next slot. doctor_last_run is written after the
+	// checks finish, so it is only a fallback for installs that predate both.
+	// Alert-only launches are tracked apart.
+	$anchor = max($launched, (int) read_config_option('doctor_last_started', true));
+	if ($anchor <= 0) {
+		$anchor = (int) read_config_option('doctor_last_run', true);
+	}
+	$failures = max(0, (int) read_config_option('doctor_schedule_failures', true));
+	$failed = $anchor > 0 && $completed < $anchor;
+	if ($anchor <= 0 || $now < $anchor) {
+		$checksDue = true;
+	} elseif ($failed) {
+		// Retry an incomplete run after 5, 10, 20... minutes, never later than its normal slot.
+		$checksDue = $now - $anchor >= min(doctor_schedule_due_after(), 300 * pow(2, min($failures, 8)));
+	} else {
+		$checksDue = $now - $anchor >= doctor_schedule_due_after();
+	}
+	$alertsDue = false;
 	try {
 		$pending = doctor_alert_pending();
-		$due = $due || ($pending !== [] && $pending['attempts'] < 3 && $pending['next'] <= $now && trim((string) read_config_option('doctor_alert_emails', true)) !== '');
+		$alertsDue = $pending !== [] && $pending['attempts'] < 3 && $pending['next'] <= $now && trim((string) read_config_option('doctor_alert_emails', true)) !== '';
 	} catch (Exception $error) {
 		cacti_log($error->getMessage(), false, 'DOCTOR');
 	}
 	// A launch is not evidence of completion. The worker lock handles concurrent hooks.
-	$launched = (int) read_config_option('doctor_last_launch', true);
-	if (!$due || ($launched > $now || $now - $launched < 180)) {
+	$lastLaunch = max($launched, (int) read_config_option('doctor_last_alert_launch', true));
+	if ((!$checksDue && !$alertsDue) || ($now >= $lastLaunch && $now - $lastLaunch < 180)) {
 		return;
 	}
 	$php = (string) read_config_option('path_php_binary', true);
@@ -374,7 +446,12 @@ function doctor_poller_bottom() {
 		set_config_option('doctor_last_launch', (string) $now);
 		return;
 	}
-	set_config_option('doctor_last_launch', (string) $now);
-	set_config_option('doctor_last_run', (string) $now);
-	exec_background($php, '-q ' . cacti_escapeshellarg($config['base_path'] . '/plugins/doctor/cli/doctor.php') . ' --scheduled --due'); // nosemgrep: php.lang.security.exec-use.exec-use
+	if ($checksDue) {
+		set_config_option('doctor_schedule_failures', $failed ? (string) ($failures + 1) : '0');
+		set_config_option('doctor_last_launch', (string) $now);
+		set_config_option('doctor_last_run', (string) $now);
+	} else {
+		set_config_option('doctor_last_alert_launch', (string) $now);
+	}
+	exec_background($php, '-q ' . cacti_escapeshellarg($config['base_path'] . '/plugins/doctor/cli/doctor.php') . ' --scheduled --due' . ($checksDue ? '' : ' --alerts-only')); // nosemgrep: php.lang.security.exec-use.exec-use
 }

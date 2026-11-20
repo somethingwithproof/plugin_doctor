@@ -44,7 +44,7 @@ function doctor_audit($action, $payload) {
 		return false;
 	}
 	$json = doctor_redact($json);
-	if (!db_execute_prepared('INSERT INTO plugin_doctor_audit (created, actor, action, payload) VALUES (?, ?, ?, ?)', [time(), doctor_actor(), $action, $json], false)) {
+	if ($json === DOCTOR_REDACTION_FAILED || !db_execute_prepared('INSERT INTO plugin_doctor_audit (created, actor, action, payload) VALUES (?, ?, ?, ?)', [time(), doctor_actor(), $action, $json], false)) {
 		return false;
 	}
 	$id = (int) db_fetch_insert_id();
@@ -166,8 +166,14 @@ function doctor_change_acceptance($results, $id, $owner, $reason, $expires, $rem
 	if (!doctor_can_configure() || !preg_match('/\A[a-z0-9_.]{1,128}\z/', $id)) {
 		return false;
 	}
-	$owner = trim(doctor_redact($owner));
-	$reason = trim(doctor_redact($reason));
+	$owner = doctor_redact($owner);
+	$reason = doctor_redact($reason);
+	// A withheld field would be stored and audited in place of the real text.
+	if ($owner === DOCTOR_REDACTION_FAILED || $reason === DOCTOR_REDACTION_FAILED) {
+		return false;
+	}
+	$owner = trim($owner);
+	$reason = trim($reason);
 	if (!$remove) {
 		$found = false;
 		foreach ($results as $r) {
