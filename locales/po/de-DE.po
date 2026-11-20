@@ -1224,6 +1224,10 @@ msgid "Doctor schedule is already running or the database lock is unavailable."
 msgstr "Der Doctor-Zeitplan läuft bereits oder die Datenbanksperre ist nicht verfügbar."
 
 #: doctor_web.php
+msgid "The finding could not be acknowledged. Run Doctor again, then acknowledge the current result."
+msgstr"Der Befund konnte nicht quittiert werden. Führen Sie Doctor erneut aus und quittieren Sie dann das aktuelle Ergebnis."
+
+#: doctor_web.php
 msgid "The warning exception could not be saved. Use a fresh assessed warning, an owner, a reason and an expiry within 90 days."
 msgstr "Die Warnungsausnahme konnte nicht gespeichert werden. Verwenden Sie eine aktuelle bewertete Warnung, einen Verantwortlichen, einen Grund und einen Ablauf innerhalb von 90 Tagen."
 

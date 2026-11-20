@@ -1409,7 +1409,7 @@ function doctor_check_recent_log_errors() {
 	$path = $path !== '' ? $path : doctor_base_path() . '/log/cacti.log';
 
 	if (!is_file($path) || !is_readable($path)) {
-		return doctor_result('logging.recent_errors', 'Logging', 'pass', __('Recent log errors', 'doctor'), __('The Cacti log is not readable; see the Cacti log file check.', 'doctor'));
+		return doctor_result('logging.recent_errors', 'Logging', 'warn', __('Recent log errors', 'doctor'), __('The Cacti log is not readable; see the Cacti log file check.', 'doctor'), '', 'not_assessed');
 	}
 
 	return doctor_evaluate_log_lines(doctor_read_log_tail($path));
@@ -1655,12 +1655,21 @@ function doctor_format_prometheus($results, $now) {
 		'# TYPE cacti_doctor_check_accepted gauge'
 	];
 
+	$samples = ['status' => [], 'observed_status' => [], 'accepted' => []];
+
 	foreach ($results as $result) {
 		$labels = '{id="' . doctor_prometheus_label($result['id']) . '",category="' . doctor_prometheus_label($result['category']) . '"} ';
-		$lines[] = 'cacti_doctor_check_status' . $labels . (doctor_warning_accepted($result) ? 0 : $levels[$result['status']]);
-		$lines[] = 'cacti_doctor_check_observed_status' . $labels . $levels[$result['status']];
-		$lines[] = 'cacti_doctor_check_accepted' . $labels . (doctor_warning_accepted($result) ? 1 : 0);
+		$samples['status'][] = 'cacti_doctor_check_status' . $labels . (doctor_warning_accepted($result) ? 0 : $levels[$result['status']]);
+		$samples['observed_status'][] = 'cacti_doctor_check_observed_status' . $labels . $levels[$result['status']];
+		$samples['accepted'][] = 'cacti_doctor_check_accepted' . $labels . (doctor_warning_accepted($result) ? 1 : 0);
 	}
+
+	// The text format wants every sample of a family together, directly after its TYPE line.
+	$lines = array_merge(
+		array_slice($lines, 0, 2), $samples['status'],
+		array_slice($lines, 2, 2), $samples['observed_status'],
+		array_slice($lines, 4, 2), $samples['accepted']
+	);
 
 	$lines[] = '# HELP cacti_doctor_checks Number of Cacti Doctor checks by status.';
 	$lines[] = '# TYPE cacti_doctor_checks gauge';

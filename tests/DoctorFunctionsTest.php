@@ -1073,6 +1073,44 @@ test('the poller hook will not launch a misnamed PHP binary', function () {
 	expect($GLOBALS['doctor_test_spawned'])->toBe([]);
 });
 
+test('a refused launch is throttled instead of logged every poller cycle', function () {
+	$GLOBALS['doctor_test_spawned']  = [];
+	$GLOBALS['doctor_test_log']      = [];
+	$GLOBALS['doctor_test_settings'] = ['doctor_schedule_enabled' => 'on', 'path_php_binary' => '/tmp/payload'];
+
+	doctor_poller_bottom();
+	doctor_poller_bottom();
+
+	expect($GLOBALS['doctor_test_spawned'])->toBe([])
+		->and(array_filter($GLOBALS['doctor_test_log'], function ($line) { return strpos($line, 'scheduled checks skipped') !== false; }))->toHaveCount(1)
+		->and((int) $GLOBALS['doctor_test_settings']['doctor_last_launch'])->toBeGreaterThan(time() - 60);
+});
+
+test('an unreadable Cacti log is not assessed rather than passing', function () {
+	$GLOBALS['doctor_test_settings'] = ['path_cactilog' => doctor_test_directory() . '/missing.log'];
+
+	$result = doctor_check_recent_log_errors();
+
+	expect($result['status'])->toBe('warn')->and($result['assessment'])->toBe('not_assessed');
+});
+
+test('Prometheus samples are grouped by metric family', function () {
+	$results = [
+		doctor_result('poller.runtime', 'Poller', 'warn', 'Runtime', ''),
+		doctor_result('database.clock', 'Database', 'pass', 'Clock', '')
+	];
+
+	$names = [];
+	foreach (explode("\n", doctor_format_prometheus($results, 1700000000)) as $line) {
+		if ($line !== '' && $line[0] !== '#') {
+			$names[] = preg_replace('/[{ ].*/', '', $line);
+		}
+	}
+
+	expect(array_values(array_unique($names)))->toBe(['cacti_doctor_check_status', 'cacti_doctor_check_observed_status', 'cacti_doctor_check_accepted', 'cacti_doctor_checks', 'cacti_doctor_last_run_timestamp_seconds'])
+		->and(doctor_format_prometheus($results, 0))->toMatch('/TYPE cacti_doctor_check_observed_status gauge\ncacti_doctor_check_observed_status/');
+});
+
 test('down devices warn and are listed oldest first', function () {
 	$offenders = [
 		['description' => 'Core router', 'hostname' => '10.0.0.1', 'failed' => '1700000000', 'status_last_error' => 'SNMP timeout'],

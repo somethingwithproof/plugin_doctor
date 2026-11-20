@@ -1224,6 +1224,10 @@ msgid "Doctor schedule is already running or the database lock is unavailable."
 msgstr "Doctor शेड्यूल पहले से चल रहा है या डेटाबेस लॉक अनुपलब्ध है।"
 
 #: doctor_web.php
+msgid "The finding could not be acknowledged. Run Doctor again, then acknowledge the current result."
+msgstr"निष्कर्ष की पावती दर्ज नहीं हो सकी। Doctor दोबारा चलाएँ, फिर वर्तमान परिणाम की पावती दें।"
+
+#: doctor_web.php
 msgid "The warning exception could not be saved. Use a fresh assessed warning, an owner, a reason and an expiry within 90 days."
 msgstr "चेतावनी अपवाद सहेजा नहीं जा सका। हाल में आकलित चेतावनी, स्वामी, कारण और 90 दिनों के भीतर समाप्ति का उपयोग करें।"
 

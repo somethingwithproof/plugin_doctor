@@ -1,4 +1,4 @@
-<!-- Source: README.md; SHA256: ccb8639a8123807ef63ae2d571b8f0cdac28973a3b212c83e3ee52ee8685fdcb -->
+<!-- Source: README.md; SHA256: ba2823f7cfc69a960470bc562e323051ab7e8b7965f920cecaa4c4f0a745d2a2 -->
 
 <!-- translations:start -->
 [English](../../../README.md) | [简体中文](../zh-CN/README.md) | [हिन्दी](../hi-IN/README.md) | [Español (España)](../es-ES/README.md) | [Español (Latinoamérica)](README.md) | [العربية](../ar-SA/README.md)
@@ -146,7 +146,7 @@ El menú Utilities abre la página del ámbito Doctor más alto concedido al usu
 
 Los datos de Viewer proceden de comprobaciones programadas. Active la programación antes de conceder acceso Viewer; las observaciones ausentes o atrasadas muestran **desconocido**, nunca saludable. El historial conserva los últimos 20 recuentos agregados programados y excluye el estado de dispositivos. Los operadores inician diagnósticos nuevos de forma explícita; las actualizaciones normales de la página usan el último informe de su sesión.
 
-Los detalles y totales de dispositivos usan los permisos del usuario actual. Los extractos de registro requieren además el ámbito View Cacti Log. Los secretos se ocultan antes de almacenar detalles en la sesión web o mostrarlos. El acceso CLI sigue regido por la cuenta del sistema operativo.
+Los detalles y totales de dispositivos usan los permisos del usuario actual. Los extractos de registro requieren además el ámbito Log Administration. Los secretos se ocultan antes de almacenar detalles en la sesión web o mostrarlos. El acceso CLI sigue regido por la cuenta del sistema operativo.
 
 Los acuses son personales y auditados. Solo se aplican al mismo hallazgo y evidencia; si cambia la evidencia se necesita otro acuse. Nunca cambian el estado pass/warn/fail, suprimen alertas ni hacen saludable una comprobación fallida. Esto es independiente de las excepciones de advertencias aceptadas, que afectan a la política de alertas sin cambiar el estado observado y se describen más abajo.
 
@@ -169,7 +169,7 @@ La salida de texto imprime una línea por comprobación con estado, categoría, 
 |---|---|
 | `0` | Ninguna comprobación ha fallado o la reparación solicitada ha tenido éxito. Las advertencias no cambian el estado de salida. |
 | `1` | Al menos una comprobación ha fallado o una reparación solicitada no ha tenido éxito. |
-| `2` | Se ha solicitado una reparación sin `--yes`. |
+| `2` | Error de uso: reparación solicitada sin `--yes`, ID de reparación desconocido, formato de salida desconocido, combinación no admitida de `--symptom` o de formato, o instalación de Cacti no localizable. |
 
 Cacti aumenta `memory_limit` para todos los scripts CLI, por lo que la comprobación de configuración de ejecución de PHP solo es significativa en la página web.
 

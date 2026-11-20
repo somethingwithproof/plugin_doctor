@@ -72,6 +72,7 @@ function doctor_evaluate_rrd_stale($sources, $now, $pollInterval, $intervals, $d
 	$stale = [];
 	$unknown = 0;
 	$devices = [];
+	$staleIds = [];
 	foreach ($sources as $source) {
 		$step = max($pollInterval, (int) $source['rrd_step'], (int) $source['profile_step']);
 		$threshold = $step * $intervals + $deferred;
@@ -83,6 +84,7 @@ function doctor_evaluate_rrd_stale($sources, $now, $pollInterval, $intervals, $d
 		$age = $now - $mtime;
 		if ($age > $threshold) {
 			$devices[$source['host_id']] = true;
+			$staleIds[] = isset($source['local_data_id']) ? (int) $source['local_data_id'] : $source['path'];
 			$stale[] = ['age' => $age, 'text' => $source['description'] . ': ' . $source['path'] . ' (' . $age . 's)'];
 		}
 	}
@@ -100,5 +102,9 @@ function doctor_evaluate_rrd_stale($sources, $now, $pollInterval, $intervals, $d
 	}
 	$detail .= ' ' . __('File age includes the collection interval and configured deferred-write allowance; verify the poller and flush process before changing data.', 'doctor');
 	$incomplete = $limited || $unknown > 0 || $sources === [];
-	return doctor_result('filesystem.rrd_stale', 'Filesystem', $stale !== [] || $incomplete ? 'warn' : 'pass', __('RRD update freshness', 'doctor'), $detail, '', $incomplete ? 'not_assessed' : 'assessed');
+	$result = doctor_result('filesystem.rrd_stale', 'Filesystem', $stale !== [] || $incomplete ? 'warn' : 'pass', __('RRD update freshness', 'doctor'), $detail, '', $incomplete ? 'not_assessed' : 'assessed');
+	// File ages in the detail grow every second, so an acknowledgment must bind to the stale set instead.
+	sort($staleIds);
+	$result['evidence'] = json_encode([$staleIds, $unknown, $limited]);
+	return $result;
 }

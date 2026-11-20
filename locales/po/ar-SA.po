@@ -1224,6 +1224,10 @@ msgid "Doctor schedule is already running or the database lock is unavailable."
 msgstr "جدولة Doctor تعمل بالفعل أو قفل قاعدة البيانات غير متاح."
 
 #: doctor_web.php
+msgid "The finding could not be acknowledged. Run Doctor again, then acknowledge the current result."
+msgstr"تعذّر تأكيد الاطلاع على النتيجة. شغّل Doctor مرة أخرى، ثم أكّد الاطلاع على النتيجة الحالية."
+
+#: doctor_web.php
 msgid "The warning exception could not be saved. Use a fresh assessed warning, an owner, a reason and an expiry within 90 days."
 msgstr "تعذّر حفظ استثناء التحذير. استخدم تحذيرًا حديثًا جرى تقييمه، ومالكًا، وسببًا، وانتهاء صلاحية خلال 90 يومًا."
 
