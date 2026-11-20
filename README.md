@@ -61,7 +61,7 @@ Every check has a stable ID, such as `database.timezone` or `binary.rrdtool`, so
 | Role-scoped access and redacted web reports | [doctor_access.php](doctor_access.php), [doctor_web.php](doctor_web.php) | [AccessTest.php](tests/AccessTest.php), [WebAccessTest.php](tests/WebAccessTest.php) |
 | Guided symptom investigations | [doctor_diagnosis.php](doctor_diagnosis.php) | [DiagnosisTest.php](tests/DiagnosisTest.php) |
 | RRD freshness and deferred-write handling | [doctor_rrd.php](doctor_rrd.php) | [RrdFreshnessTest.php](tests/RrdFreshnessTest.php) |
-| Repair previews, audit history, and accepted warnings | [doctor_workflows.php](doctor_workflows.php), [doctor_operator.php](doctor_operator.php) | [WorkflowTest.php](tests/WorkflowTest.php) |
+| Repair previews, audit history, and accepted warnings | [doctor_workflows.php](doctor_workflows.php), [doctor_web.php](doctor_web.php) | [WorkflowTest.php](tests/WorkflowTest.php) |
 | Scheduled checks and alert transitions | [doctor_scheduling.php](doctor_scheduling.php) | [DoctorFunctionsTest.php](tests/DoctorFunctionsTest.php), [WorkflowTest.php](tests/WorkflowTest.php) |
 
 These references identify the implementation and test coverage; they do not say
@@ -149,7 +149,7 @@ Viewer data comes from scheduled checks. Enable scheduling before granting Viewe
 
 Device details and totals use the current user's device permissions. Log excerpts additionally require Cacti's View Cacti Log realm. Secrets are masked before diagnostic details are stored in the web session or rendered. CLI access continues to be governed by the operating-system account.
 
-Acknowledgments are personal and audited. They apply only to the same finding and evidence; changed evidence requires a new acknowledgment. They never change pass/warn/fail status, suppress alerts, or mark a failing check healthy. This is separate from accepted-warning exceptions, which affect alert policy without changing the observed status and are described below.
+Acknowledgments are personal and recorded in the Cacti log. They apply only to the same finding and evidence; changed evidence requires a new acknowledgment. They never change pass/warn/fail status, suppress alerts, or mark a failing check healthy. This is separate from accepted-warning exceptions, which affect alert policy without changing the observed status and are described below.
 
 Every action requires POST and a valid CSRF token. Repairs present a separate confirmation page with a non-submitting Cancel link, and record the acting user and result in the Cacti log.
 
@@ -179,7 +179,7 @@ Under **Configuration > Settings > Doctor**, turn on **Run Checks on a Schedule*
 
 Each run records every check's observed status. Active warning exceptions affect alert policy without changing that observation. When a check starts or stops failing, Doctor writes the change to the Cacti log and, if **Alert Email Addresses** is set, emails those addresses through Cacti's mail settings. **Alert on Warnings** adds changes into and out of warnings. The first run only records a baseline.
 
-Scheduled reports run on the primary poller under a database advisory lock and have a two-minute worker limit. Doctor reports the last start and successful completion so missing or stale results are visible. Failed alert delivery is retained for up to three retries with increasing delays; after that, correct Cacti's mail settings and run `php plugins/doctor/cli/doctor.php --scheduled --retry-alerts` as the poller user. Mail-server acceptance does not confirm inbox delivery.
+Scheduled reports run on the primary poller under a database advisory lock and have a two-minute worker limit. Doctor reports the last start and successful completion so missing or stale results are visible. Results count as current for the interval plus one polling cycle and three minutes. A run that does not complete is retried after 5, 10, 20 and more minutes, up to the normal interval. Failed alert delivery is retained for up to three retries with increasing delays; after that, correct Cacti's mail settings and run `php plugins/doctor/cli/doctor.php --scheduled --retry-alerts` as the poller user. Mail-server acceptance does not confirm inbox delivery.
 
 The same tab sets the thresholds for poller run time (80% of the interval), RRA free disk space (warn below 10%, fail below 2%), database clock drift (warn over 5 seconds, fail over 60), and Cacti log size (100 MB). Empty or invalid values fall back to these defaults.
 
@@ -216,11 +216,11 @@ Each candidate lists the observed checks and a next verification step. Candidate
 
 ## RRD update freshness
 
-`filesystem.rrd_stale` checks up to the first 500 active data sources by ID, excluding disabled and down devices. It compares file modification times with the larger of the poller interval, source RRD step and profile step, multiplied by **RRD Stale Intervals** (default 3). It shows the three oldest stale files and the number of affected devices. Web results include only permitted devices.
+`filesystem.rrd_stale` checks up to 500 active data sources, excluding disabled and down devices. On larger installations the sample changes every hour, so repeated runs cover different files. `filesystem.rrd_files` checks up to 5,000 data sources in the same way. It compares file modification times with the larger of the poller interval, source RRD step and profile step, multiplied by **RRD Stale Intervals** (default 3). It shows the three oldest stale files and the number of affected devices. Web results include only permitted devices.
 
 Boost adds twice its configured flush interval as a disk-write allowance. For another deferred writer, configure **Deferred RRD Write Allowance (seconds)**. An advertised `RRDCACHED_ADDRESS` without an allowance, or an invalid Boost interval, produces an unassessed result. Doctor never flushes a cache to perform this check. Modification time is evidence of disk activity, not proof of successful data collection. External caching that Doctor cannot detect must be configured explicitly.
 
-Missing, unreadable or future-dated files and a capped sample are reported as incomplete coverage rather than a healthy installation. Unsampled files are not assessed.
+Missing, unreadable and future-dated files are counted in the detail. The result is unassessed only when no sampled file is readable. A sampled result says that it covers only part of the installation; a pass does not cover unsampled files.
 
 ## Repair previews and audit history
 

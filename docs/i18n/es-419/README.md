@@ -1,4 +1,4 @@
-<!-- Source: README.md; SHA256: ccb8639a8123807ef63ae2d571b8f0cdac28973a3b212c83e3ee52ee8685fdcb -->
+<!-- Source: README.md; SHA256: 63cb789ef244aff39f002db8e644812b1b3fdb92d5b817cbf4a56de159e71c7d -->
 
 <!-- translations:start -->
 [English](../../../README.md) | [简体中文](../zh-CN/README.md) | [हिन्दी](../hi-IN/README.md) | [Español (España)](../es-ES/README.md) | [Español (Latinoamérica)](README.md) | [العربية](../ar-SA/README.md)
@@ -63,7 +63,7 @@ Cada comprobación tiene un ID estable, como `database.timezone` o `binary.rrdto
 | Acceso según el rol e informes web con datos sensibles ocultos | [doctor_access.php](../../../doctor_access.php), [doctor_web.php](../../../doctor_web.php) | [AccessTest.php](../../../tests/AccessTest.php), [WebAccessTest.php](../../../tests/WebAccessTest.php) |
 | Investigaciones guiadas por síntomas | [doctor_diagnosis.php](../../../doctor_diagnosis.php) | [DiagnosisTest.php](../../../tests/DiagnosisTest.php) |
 | Actualidad de RRD y gestión de escrituras diferidas | [doctor_rrd.php](../../../doctor_rrd.php) | [RrdFreshnessTest.php](../../../tests/RrdFreshnessTest.php) |
-| Vistas previas de reparaciones, historial de auditoría y advertencias aceptadas | [doctor_workflows.php](../../../doctor_workflows.php), [doctor_operator.php](../../../doctor_operator.php) | [WorkflowTest.php](../../../tests/WorkflowTest.php) |
+| Vistas previas de reparaciones, historial de auditoría y advertencias aceptadas | [doctor_workflows.php](../../../doctor_workflows.php), [doctor_web.php](../../../doctor_web.php) | [WorkflowTest.php](../../../tests/WorkflowTest.php) |
 | Comprobaciones programadas y transiciones de alertas | [doctor_scheduling.php](../../../doctor_scheduling.php) | [DoctorFunctionsTest.php](../../../tests/DoctorFunctionsTest.php), [WorkflowTest.php](../../../tests/WorkflowTest.php) |
 
 Estas referencias identifican la implementación y la cobertura de pruebas; no afirman que todos los trabajos de CI hayan pasado para la revisión actual. Consulte la ejecución del flujo de trabajo de la revisión que vaya a desplegar.
@@ -148,7 +148,7 @@ Los datos de Viewer proceden de comprobaciones programadas. Active la programaci
 
 Los detalles y totales de dispositivos usan los permisos del usuario actual. Los extractos de registro requieren además el ámbito View Cacti Log. Los secretos se ocultan antes de almacenar detalles en la sesión web o mostrarlos. El acceso CLI sigue regido por la cuenta del sistema operativo.
 
-Los acuses son personales y auditados. Solo se aplican al mismo hallazgo y evidencia; si cambia la evidencia se necesita otro acuse. Nunca cambian el estado pass/warn/fail, suprimen alertas ni hacen saludable una comprobación fallida. Esto es independiente de las excepciones de advertencias aceptadas, que afectan a la política de alertas sin cambiar el estado observado y se describen más abajo.
+Los acuses son personales y se anotan en el registro de Cacti. Solo se aplican al mismo hallazgo y evidencia; si cambia la evidencia se necesita otro acuse. Nunca cambian el estado pass/warn/fail, suprimen alertas ni hacen saludable una comprobación fallida. Esto es independiente de las excepciones de advertencias aceptadas, que afectan a la política de alertas sin cambiar el estado observado y se describen más abajo.
 
 Cada acción requiere POST y un token CSRF válido. Las reparaciones presentan una página de confirmación separada con un enlace Cancel que no envía formularios, y registran el usuario actuante y el resultado en el registro de Cacti.
 
@@ -180,7 +180,7 @@ En **Configuration > Settings > Doctor**, active **Run Checks on a Schedule** y 
 
 Cada ejecución registra el estado observado de cada comprobación. Las excepciones activas de advertencias afectan a la política de alertas sin cambiar esa observación. Cuando una comprobación empieza o deja de fallar, Doctor registra el cambio en Cacti y, si se han configurado **Alert Email Addresses**, envía correo a esas direcciones mediante los ajustes de correo de Cacti. **Alert on Warnings** añade las entradas y salidas del estado de advertencia. La primera ejecución solo registra una referencia inicial.
 
-Los informes programados se ejecutan en el sondeador principal bajo un bloqueo asesor de base de datos y tienen un límite de proceso de dos minutos. Doctor informa del último inicio y finalización correcta para hacer visibles los resultados ausentes o atrasados. Los envíos de alertas fallidos se conservan para hasta tres reintentos con demoras crecientes; después, corrija los ajustes de correo de Cacti y ejecute `php plugins/doctor/cli/doctor.php --scheduled --retry-alerts` como usuario del sondeador. La aceptación por el servidor de correo no confirma la entrega en la bandeja de entrada.
+Los informes programados se ejecutan en el sondeador principal bajo un bloqueo asesor de base de datos y tienen un límite de proceso de dos minutos. Doctor informa del último inicio y finalización correcta para hacer visibles los resultados ausentes o atrasados. Los resultados se consideran actuales durante el intervalo más un ciclo de sondeo y tres minutos. Una ejecución que no termina se reintenta después de 5, 10, 20 o más minutos, hasta el intervalo normal. Los envíos de alertas fallidos se conservan para hasta tres reintentos con demoras crecientes; después, corrija los ajustes de correo de Cacti y ejecute `php plugins/doctor/cli/doctor.php --scheduled --retry-alerts` como usuario del sondeador. La aceptación por el servidor de correo no confirma la entrega en la bandeja de entrada.
 
 La misma pestaña establece los umbrales de duración del sondeador (80% del intervalo), espacio libre de RRA (aviso por debajo del 10%, fallo por debajo del 2%), desfase de la base de datos (aviso por encima de 5 segundos, fallo por encima de 60) y tamaño del registro de Cacti (100 MB). Los valores vacíos o no válidos usan estos valores predeterminados.
 
@@ -222,11 +222,11 @@ Cada candidato enumera las comprobaciones observadas y el siguiente paso de veri
 <a id="rrd-update-freshness"></a>
 ## Vigencia de actualizaciones RRD
 
-`filesystem.rrd_stale` comprueba hasta las primeras 500 fuentes de datos activas por ID, excluyendo dispositivos desactivados y caídos. Compara la hora de modificación del archivo con el mayor valor entre el intervalo del sondeador, el paso RRD de la fuente y el paso del perfil, multiplicado por **RRD Stale Intervals** (3 de forma predeterminada). Muestra los tres archivos atrasados más antiguos y el número de dispositivos afectados. Los resultados web incluyen solo dispositivos permitidos.
+`filesystem.rrd_stale` comprueba hasta 500 fuentes de datos activas, excluyendo dispositivos desactivados y caídos. En instalaciones grandes la muestra cambia cada hora, así que las ejecuciones sucesivas cubren archivos distintos. `filesystem.rrd_files` comprueba hasta 5,000 fuentes de datos de la misma forma. Compara la hora de modificación del archivo con el mayor valor entre el intervalo del sondeador, el paso RRD de la fuente y el paso del perfil, multiplicado por **RRD Stale Intervals** (3 de forma predeterminada). Muestra los tres archivos atrasados más antiguos y el número de dispositivos afectados. Los resultados web incluyen solo dispositivos permitidos.
 
 Boost añade dos veces su intervalo de vaciado como margen de escritura en disco. Para otro sistema de escritura diferida, configure **Deferred RRD Write Allowance (seconds)**. Un `RRDCACHED_ADDRESS` anunciado sin margen, o un intervalo Boost no válido, produce un resultado no evaluado. Doctor nunca vacía una caché para esta comprobación. La hora de modificación demuestra actividad de disco, no una recopilación correcta. La caché externa que Doctor no pueda detectar debe configurarse explícitamente.
 
-Los archivos ausentes, ilegibles o con fecha futura y una muestra limitada se notifican como cobertura incompleta, no como instalación saludable. Los archivos fuera de la muestra no se evalúan.
+Los archivos ausentes, ilegibles o con fecha futura se cuentan en el detalle. El resultado solo queda sin evaluar cuando no se puede leer ningún archivo de la muestra. Un resultado por muestreo indica que solo cubre parte de la instalación; un resultado correcto no cubre los archivos fuera de la muestra.
 
 <a id="repair-previews-and-audit-history"></a>
 ## Vista previa de reparaciones e historial de auditoría
