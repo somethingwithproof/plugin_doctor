@@ -37,11 +37,14 @@ command -v xgettext >/dev/null 2>&1 || { echo "ERROR: Unable to locate xgettext 
 VERSION=$(sed -n 's/^version *= *//p' INFO)
 
 generate() {
+	# POSIX sh has no local variables; the name only documents the argument.
+	output=$1
+
 	# shellcheck disable=SC2046
 	xgettext --no-wrap --add-location=file --from-code=UTF-8 --copyright-holder="Thomas Vincent" \
 		--package-name="doctor" --package-version="$VERSION" --msgid-bugs-address="https://github.com/somethingwithproof/plugin_doctor/issues" \
 		-F -L PHP -k__gettext -k__ -k__n:1,2 -k__x:1c,2 -k__xn:1c,2,3 -k__esc -k__esc_n:1,2 -k__esc_x:1c,2 -k__esc_xn:1c,2,3 -k__date -kdoctor_n_ -kdoctor_repair_message \
-		-o "$1" $(find . -maxdepth 2 -name '*.php' -not -path './tests/*' -not -path './vendor/*' | sort)
+		-o "$output" $(find . -maxdepth 2 -name '*.php' -not -path './tests/*' -not -path './vendor/*' | sort)
 
 	# The two sed expressions below write the template's own SPDX header.
 	# REUSE-IgnoreStart
@@ -52,7 +55,7 @@ generate() {
 		-e 's/FULL NAME <EMAIL@ADDRESS>/Thomas Vincent <thomasvincent@gmail.com>/' \
 		-e 's/LANGUAGE <LL@li.org>/Thomas Vincent <thomasvincent@gmail.com>/' \
 		-e 's/CHARSET/UTF-8/' \
-		-e '/^"POT-Creation-Date:/d' "$1" > "$1.tmp" && mv "$1.tmp" "$1"
+		-e '/^"POT-Creation-Date:/d' "$output" > "$output.tmp" && mv "$output.tmp" "$output"
 	# REUSE-IgnoreEnd
 }
 
