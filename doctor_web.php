@@ -63,7 +63,7 @@ if ($action !== '' && $action !== 'default') {
 		if (empty($cached['time']) || time() < $cached['time'] || time() - $cached['time'] > doctor_report_max_age()
 			|| !doctor_acknowledge($results, (string) get_nfilter_request_var('check_id'), (string) get_nfilter_request_var('fingerprint'))) {
 			http_response_code(409);
-			exit;
+			$error = __('The finding could not be acknowledged. Run Doctor again, then acknowledge the current result.', 'doctor');
 		}
 	} elseif ($action === 'accept' || $action === 'unaccept') {
 		$date = (string) get_nfilter_request_var('expires');

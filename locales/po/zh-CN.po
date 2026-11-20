@@ -1235,6 +1235,10 @@ msgid "Doctor schedule is already running or the database lock is unavailable."
 msgstr "Doctor 计划任务已在运行，或数据库锁不可用。"
 
 #: doctor_web.php
+msgid "The finding could not be acknowledged. Run Doctor again, then acknowledge the current result."
+msgstr"无法确认该发现。请重新运行 Doctor，然后确认当前结果。"
+
+#: doctor_web.php
 msgid "The warning exception could not be saved. Use a fresh assessed warning, an owner, a reason and an expiry within 90 days."
 msgstr "无法保存警告例外。请使用最新且已评估的警告，并提供负责人、原因以及 90 天内的到期时间。"
 

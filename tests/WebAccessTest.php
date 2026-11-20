@@ -58,7 +58,7 @@ test('an administrator must confirm before an allow-listed repair runs', functio
 
 test('stale reports cannot be acknowledged by a forged POST', function () {
 	$result = doctor_web_request([121], 'acknowledge', 'POST', true, ['age' => 86400, 'check_id' => 'database.clock', 'fingerprint' => hash('sha256', json_encode(['database.clock', 'fail', 'private detail']))]);
-	expect($result['status'])->toBe(409)->and($result['log'])->toBe([]);
+	expect($result['status'])->toBe(409)->and($result['log'])->toBe([])->and($result['html'])->toContain('could not be acknowledged');
 });
 
 

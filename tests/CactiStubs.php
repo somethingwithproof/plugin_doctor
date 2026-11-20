@@ -153,6 +153,8 @@ function is_realm_allowed($realm, $check_user = false) {
 
 function get_allowed_devices($sql_where = '', $sql_order = 'description', $sql_limit = '', &$total_rows = 0, $user_id = 0, $device_id = 0) {
 	$GLOBALS['doctor_test_allowed_device_orders'][] = $sql_order;
+	$GLOBALS['doctor_test_device_order'] = $sql_order;
+
 	return isset($GLOBALS['doctor_test_allowed_devices']) ? $GLOBALS['doctor_test_allowed_devices'] : [];
 }
 

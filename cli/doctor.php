@@ -81,7 +81,9 @@ if (isset($options['scheduled-worker'])) {
 if (isset($options['bundle'])) {
 	$logPath = (string) read_config_option('path_cactilog', true);
 	$logPath = $logPath !== '' ? $logPath : $cactiBase . '/log/cacti.log';
-	$bundle  = doctor_build_bundle(doctor_run_checks(), doctor_bundle_context(), doctor_read_log_tail($logPath, 200));
+	// An unreadable log returns null; the bundle is still written with an empty log section.
+	$logTail = doctor_read_log_tail($logPath, 200);
+	$bundle  = doctor_build_bundle(doctor_run_checks(), doctor_bundle_context(), $logTail === null ? [] : $logTail);
 	$error   = strpos($bundle, DOCTOR_REDACTION_FAILED) !== false
 		? __('Redaction could not complete, so %s was not written.', $options['bundle'], 'doctor')
 		: doctor_write_bundle((string) $options['bundle'], $bundle);

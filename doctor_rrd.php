@@ -83,6 +83,7 @@ function doctor_evaluate_rrd_stale($sources, $now, $pollInterval, $intervals, $d
 	$stale = [];
 	$unknown = 0;
 	$devices = [];
+	$staleIds = [];
 	foreach ($sources as $source) {
 		$step = max($pollInterval, (int) $source['rrd_step'], (int) $source['profile_step']);
 		$threshold = $step * $intervals + $deferred;
@@ -94,13 +95,11 @@ function doctor_evaluate_rrd_stale($sources, $now, $pollInterval, $intervals, $d
 		$age = $now - $mtime;
 		if ($age > $threshold) {
 			$devices[$source['host_id']] = true;
-			$stale[] = ['age' => $age, 'path' => $source['path'], 'text' => $source['description'] . ': ' . $source['path'] . ' (' . $age . 's)'];
+			$staleIds[] = isset($source['local_data_id']) ? (int) $source['local_data_id'] : $source['path'];
+			$stale[] = ['age' => $age, 'text' => $source['description'] . ': ' . $source['path'] . ' (' . $age . 's)'];
 		}
 	}
 	usort($stale, function ($a, $b) { return $a['age'] === $b['age'] ? 0 : ($a['age'] > $b['age'] ? -1 : 1); });
-	// File ages change every second, so acknowledgments key on which files are stale.
-	$paths = array_map(function ($entry) { return $entry['path']; }, $stale);
-	sort($paths);
 	$examples = [];
 	foreach (array_slice($stale, 0, 3) as $entry) {
 		$examples[] = $entry['text'];
@@ -116,6 +115,8 @@ function doctor_evaluate_rrd_stale($sources, $now, $pollInterval, $intervals, $d
 	// Missing files are reported by filesystem.rrd_files; only a sample with no readable file is unassessed.
 	$assessment = $sources === [] ? 'not_applicable' : ($unknown === count($sources) ? 'not_assessed' : 'assessed');
 	$result = doctor_result('filesystem.rrd_stale', 'Filesystem', $stale !== [] || $assessment === 'not_assessed' ? 'warn' : 'pass', __('RRD update freshness', 'doctor'), $detail, '', $assessment);
-	$result['evidence'] = hash('sha256', implode("\n", $paths));
+	// File ages in the detail grow every second, so an acknowledgment must bind to the stale set instead.
+	sort($staleIds);
+	$result['evidence'] = json_encode($staleIds);
 	return $result;
 }

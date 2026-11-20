@@ -88,6 +88,22 @@ test('viewer snapshots contain no global device status or diagnostics and expire
 	expect(doctor_viewer_results(999)['fresh'])->toBeFalse();
 });
 
+test('viewer rows use the canonical category rather than the capitalized id prefix', function () {
+	$GLOBALS['doctor_test_settings'] = ['doctor_schedule_enabled' => 'on', 'doctor_last_completed' => '1000', 'doctor_state' => 'php.version=pass;binary.snmpget=pass;poller.runtime=warn'];
+	expect(array_column(doctor_viewer_results(1001)['results'], 'category'))->toBe(['PHP', 'Prerequisites', 'Poller']);
+});
+
+test('viewer rows use the producer category for checks whose prefix spans several categories', function () {
+	$GLOBALS['doctor_test_settings'] = ['doctor_schedule_enabled' => 'on', 'doctor_last_completed' => '1000', 'doctor_state' => 'php.security_baseline=pass;php.extensions=pass;database.health_sample=warn'];
+	expect(array_column(doctor_viewer_results(1001)['results'], 'category'))->toBe(['Security', 'Prerequisites', 'Database health']);
+});
+
+test('the web device list orders outages without a failure time last', function () {
+	$GLOBALS['doctor_test_allowed_devices'] = [];
+	doctor_visible_devices();
+	expect($GLOBALS['doctor_test_device_order'])->toContain('UNIX_TIMESTAMP(h.status_fail_date)');
+});
+
 test('web reports redact secrets and replace global device and log information', function () {
 	$GLOBALS['doctor_test_allowed_devices'] = [['id' => 9, 'status' => 1, 'description' => 'Allowed device', 'hostname' => 'allowed.example', 'status_fail_date' => '2026-11-01', 'status_last_error' => 'community=secret']];
 	$input = [

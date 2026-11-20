@@ -442,6 +442,8 @@ function doctor_poller_bottom() {
 	$refusal = doctor_binary_execution_refusal('path_php_binary', $php, doctor_running_as_root());
 	if ($refusal !== '') {
 		cacti_log('Doctor scheduled checks skipped: ' . $refusal, false, 'DOCTOR');
+		// Without a launch time the refusal would be logged every poller cycle.
+		set_config_option('doctor_last_launch', (string) $now);
 		return;
 	}
 	if ($checksDue) {
