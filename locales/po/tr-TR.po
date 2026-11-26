@@ -942,25 +942,25 @@ msgstr "Etkin %d cihazın tümü çalışıyor."
 #: doctor_functions.php
 #, php-format
 msgid "%d of %d enabled devices are down and %d recovering."
-msgstr "%d / %d etkin cihaz devre dışı ve %d tanesi kurtarılıyor."
+msgstr "%d / %d etkin cihaz erişilemiyor ve %d tanesi kurtarılıyor."
 
 #: doctor_functions.php
 msgid "The down devices could not be listed."
-msgstr "Devre dışı cihazlar listelenemedi."
+msgstr "Erişilemeyen cihazlar listelenemedi."
 
 #: doctor_functions.php
 #, php-format
 msgid "%s down since %s"
-msgstr "%s, %s tarihinden beri devre dışı"
+msgstr "%s, %s tarihinden beri erişilemiyor"
 
 #: doctor_functions.php
 #, php-format
 msgid "Longest down: %s."
-msgstr "En uzun süre devre dışı kalan: %s."
+msgstr "En uzun süre erişilemeyen: %s."
 
 #: doctor_functions.php
 msgid "With most devices down, check the poller host's network and SNMP settings first."
-msgstr "Çoğu cihaz devre dışı olduğundan, önce poller ana bilgisayarının ağ ve SNMP ayarlarını kontrol edin."
+msgstr "Çoğu cihaza erişilemediğinden, önce poller ana bilgisayarının ağ ve SNMP ayarlarını kontrol edin."
 
 #: doctor_functions.php
 msgid "Doctor could not read device status from the host table."

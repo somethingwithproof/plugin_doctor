@@ -1175,7 +1175,7 @@ msgstr "Ukończony przebieg diagnostyczny jest aktualny; nie oznacza to, że wsz
 
 #: doctor_scheduling.php
 msgid "Doctor alert state is invalid. Restore doctor_alert_pending from backup before retrying."
-msgstr "Stan alertu Doctor jest nieprawidłowy. Przed ponowieniem przywróć tabelę doctor_alert_pending z kopii zapasowej."
+msgstr "Stan alertu Doctor jest nieprawidłowy. Przed ponowieniem przywróć doctor_alert_pending z kopii zapasowej."
 
 #: doctor_scheduling.php
 msgid "Doctor alert transitions are invalid; no email was sent."

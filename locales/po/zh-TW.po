@@ -1132,7 +1132,7 @@ msgstr "RRD 更新新鮮度"
 
 #: doctor_rrd.php
 msgid "The deferred-write interval is unknown; configure it before judging file age."
-msgstr "延遲寫入間隔未知；請先進行設定再判斷檔案存在時間。"
+msgstr "延遲寫入間隔未知；請先進行設定再判斷距離檔案上次更新的時間。"
 
 #: doctor_rrd.php
 #, php-format
@@ -1141,7 +1141,7 @@ msgstr "已檢查 %d 個檔案；共有 %d 個過時檔案分佈於 %d 台裝置
 
 #: doctor_rrd.php
 msgid "File age includes the collection interval and configured deferred-write allowance; verify the poller and flush process before changing data."
-msgstr "檔案存在時間包含收集間隔與已設定的延遲寫入容許時間；變更資料前請先確認輪詢器與排清程序。"
+msgstr "距離檔案上次更新的時間包含收集間隔與已設定的延遲寫入容許時間；變更資料前請先確認輪詢器與排清程序。"
 
 #: doctor_scheduling.php
 msgid "Scheduled checks are disabled. Enable them in Settings > Doctor to retain samples and alert on changes."
