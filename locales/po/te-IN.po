@@ -1,0 +1,1542 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
+# SPDX-FileCopyrightText: 2026 Thomas Vincent <thomasvincent@gmail.com>
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: doctor 0.6.1\n"
+"Report-Msgid-Bugs-To: https://github.com/somethingwithproof/plugin_doctor/issues\n"
+"PO-Revision-Date: 2026-11-26 00:00+0000\n"
+"Last-Translator: Thomas Vincent <thomasvincent@gmail.com>\n"
+"Language-Team: Thomas Vincent <thomasvincent@gmail.com>\n"
+"Language: te-IN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: cli/doctor.php
+#, php-format
+msgid "Available repairs: %s"
+msgstr "అందుబాటులో ఉన్న మరమ్మతులు: %s"
+
+#: cli/doctor.php
+#, php-format
+msgid "Unknown format %s. Use text, json, nagios, or prometheus."
+msgstr "తెలియని ఫార్మాట్ %s. text, json, nagios, లేదా prometheus ఉపయోగించండి."
+
+#: cli/doctor.php
+#, php-format
+msgid "Redaction could not complete, so %s was not written."
+msgstr "రిడాక్షన్ పూర్తి కాలేదు, కాబట్టి %s వ్రాయబడలేదు."
+
+#: cli/doctor.php
+#, php-format
+msgid "Wrote %s. Review it before sharing; values after password, secret, token, and community names are masked."
+msgstr "%s వ్రాయబడింది. భాగస్వామ్యం చేసే ముందు దాన్ని సమీక్షించండి; password, secret, token, మరియు community పేర్ల తర్వాత ఉన్న విలువలు మాస్క్ చేయబడ్డాయి."
+
+#: cli/doctor.php doctor_functions.php
+msgid "Unknown repair"
+msgstr "తెలియని మరమ్మతు"
+
+#: cli/doctor.php
+msgid "Refusing to repair without --yes."
+msgstr "--yes లేకుండా మరమ్మతు చేయడానికి నిరాకరించబడింది."
+
+#: cli/doctor.php
+msgid "Select a supported symptom and text or JSON output."
+msgstr "మద్దతు ఉన్న లక్షణం మరియు text లేదా JSON అవుట్‌పుట్‌ను ఎంచుకోండి."
+
+#: cli/doctor.php doctor_web.php
+msgid "Accepted warning"
+msgstr "ఆమోదించబడిన హెచ్చరిక"
+
+#: doctor_access.php doctor_functions.php
+msgid "Device availability"
+msgstr "పరికర లభ్యత"
+
+#: doctor_access.php
+msgid "Device permissions could not be evaluated."
+msgstr "పరికర అనుమతులను మూల్యాంకనం చేయడం సాధ్యం కాలేదు."
+
+#: doctor_access.php
+msgid "The configured PHP CLI cannot run Doctor checks."
+msgstr "కాన్ఫిగర్ చేసిన PHP CLI Doctor తనిఖీలను అమలు చేయలేదు."
+
+#: doctor_access.php
+msgid "Doctor checks failed or exceeded their time limit. Review the Doctor log."
+msgstr "Doctor తనిఖీలు విఫలమయ్యాయి లేదా వాటి సమయ పరిమితిని మించిపోయాయి. Doctor లాగ్‌ను సమీక్షించండి."
+
+#: doctor_diagnosis.php
+msgid "Graphs stopped updating"
+msgstr "గ్రాఫ్‌లు నవీకరించడం ఆగిపోయాయి"
+
+#: doctor_diagnosis.php
+msgid "Polling is slow"
+msgstr "పోలింగ్ నెమ్మదిగా ఉంది"
+
+#: doctor_diagnosis.php
+msgid "Devices are missing or unavailable"
+msgstr "పరికరాలు లేవు లేదా అందుబాటులో లేవు"
+
+#: doctor_diagnosis.php
+msgid "Doctor alerts are missing"
+msgstr "Doctor హెచ్చరికలు లేవు"
+
+#: doctor_diagnosis.php
+msgid "Check the poller scheduler and the affected poller log, then verify a new completed cycle."
+msgstr "పోలర్ షెడ్యూలర్ మరియు ప్రభావితమైన పోలర్ లాగ్‌ను తనిఖీ చేసి, కొత్తగా పూర్తయిన సైకిల్‌ను ధృవీకరించండి."
+
+#: doctor_diagnosis.php
+msgid "Collection may have stopped."
+msgstr "సేకరణ ఆగిపోయి ఉండవచ్చు."
+
+#: doctor_diagnosis.php
+msgid "Collected values may not be reaching disk."
+msgstr "సేకరించిన విలువలు డిస్క్‌కు చేరకపోవచ్చు."
+
+#: doctor_diagnosis.php
+msgid "Inspect the output queue and Boost flush history; verify that the queue drains and RRD timestamps advance."
+msgstr "అవుట్‌పుట్ క్యూ మరియు Boost ఫ్లష్ చరిత్రను పరిశీలించండి; క్యూ ఖాళీ అవుతుందని మరియు RRD టైమ్‌స్టాంప్‌లు ముందుకు సాగుతున్నాయని ధృవీకరించండి."
+
+#: doctor_diagnosis.php
+msgid "Check storage capacity, runtime-directory permissions and the last RRD update; account for deferred writes."
+msgstr "నిల్వ సామర్థ్యం, రన్‌టైమ్-డైరెక్టరీ అనుమతులు మరియు చివరి RRD నవీకరణను తనిఖీ చేయండి; వాయిదా వేసిన వ్రాతలను పరిగణనలోకి తీసుకోండి."
+
+#: doctor_diagnosis.php
+msgid "RRD storage needs investigation."
+msgstr "RRD నిల్వపై పరిశోధన అవసరం."
+
+#: doctor_diagnosis.php
+msgid "Collection work may be exceeding its time budget."
+msgstr "సేకరణ పని దాని సమయ పరిమితిని మించిపోతుండవచ్చు."
+
+#: doctor_diagnosis.php
+msgid "Compare cycle duration with the polling interval and inspect device timeouts before increasing concurrency."
+msgstr "సమకాలీనతను పెంచే ముందు సైకిల్ వ్యవధిని పోలింగ్ విరామంతో పోల్చి, పరికరం టైమ్‌అవుట్‌లను పరిశీలించండి."
+
+#: doctor_diagnosis.php
+msgid "Compare database counters during a slow cycle and inspect query plans before changing server limits."
+msgstr "సర్వర్ పరిమితులను మార్చే ముందు నెమ్మదైన సైకిల్ సమయంలో డేటాబేస్ కౌంటర్లను పోల్చి, క్వెరీ ప్లాన్‌లను పరిశీలించండి."
+
+#: doctor_diagnosis.php
+msgid "Database pressure may be contributing to slow polling."
+msgstr "నెమ్మదైన పోలింగ్‌కు డేటాబేస్ ఒత్తిడి కారణమవుతుండవచ్చు."
+
+#: doctor_diagnosis.php
+msgid "Collection prerequisites or reachability may be failing."
+msgstr "సేకరణ ముందస్తు అవసరాలు లేదా చేరుకోగల సామర్థ్యం విఫలమవుతుండవచ్చు."
+
+#: doctor_diagnosis.php
+msgid "Verify the affected device permissions, reachability, credentials and assigned poller using Cacti diagnostics."
+msgstr "Cacti డయాగ్నస్టిక్స్ ఉపయోగించి ప్రభావిత పరికరం అనుమతులు, చేరుకోగల సామర్థ్యం, ఆధారాలు మరియు కేటాయించిన పోలర్‌ను ధృవీకరించండి."
+
+#: doctor_diagnosis.php
+msgid "Scheduled checks or mail delivery need attention."
+msgstr "షెడ్యూల్ చేసిన తనిఖీలు లేదా మెయిల్ డెలివరీపై శ్రద్ధ అవసరం."
+
+#: doctor_diagnosis.php
+msgid "Verify scheduling and recipient settings, inspect retained delivery attempts, and send a Cacti test email."
+msgstr "షెడ్యూలింగ్ మరియు గ్రహీత సెట్టింగ్లను ధృవీకరించండి, నిల్వ ఉన్న డెలివరీ ప్రయత్నాలను పరిశీలించండి మరియు Cacti పరీక్ష ఇమెయిల్ పంపండి."
+
+#: doctor_diagnosis.php
+msgid "Possible causes require verification; matching checks do not establish a root cause."
+msgstr "సంభావ్య కారణాలకు ధృవీకరణ అవసరం; సరిపోయే తనిఖీలు మూల కారణాన్ని నిర్ధారించవు."
+
+#: doctor_diagnosis.php
+msgid "No cause is established by the available observations. Run fresh diagnostics and investigate the symptom directly."
+msgstr "అందుబాటులో ఉన్న పరిశీలనల ద్వారా ఏ కారణమూ నిర్ధారించబడలేదు. కొత్త డయాగ్నస్టిక్స్‌ను అమలు చేసి, లక్షణాన్ని నేరుగా పరిశోధించండి."
+
+#: doctor_functions.php
+msgid "At least 24 hours since server startup and FLUSH STATUS. Counters are cumulative and may have different reset histories; confirm trends during a representative workload before tuning."
+msgstr "సర్వర్ ప్రారంభమైనప్పటి నుండి మరియు FLUSH STATUS నుండి కనీసం 24 గంటలు అయింది. కౌంటర్లు సంచితమైనవి మరియు వేర్వేరు రీసెట్ చరిత్రలను కలిగి ఉండవచ్చు; ట్యూనింగ్ చేయడానికి ముందు ప్రాతినిధ్య వర్క్‌లోడ్ సమయంలో ధోరణులను నిర్ధారించండి."
+
+#: doctor_functions.php
+msgid "Cumulative tuning advice is deferred: obtain valid uptime and at least 24 hours since startup and FLUSH STATUS. Missing metrics or an inconsistent sample cannot establish database health."
+msgstr "సంచిత ట్యూనింగ్ సలహా వాయిదా వేయబడింది: చెల్లుబాటు అయ్యే అప్‌టైమ్ మరియు ప్రారంభం మరియు FLUSH STATUS నుండి కనీసం 24 గంటలు పొందండి. లేని మెట్రిక్‌లు లేదా అస్థిరమైన నమూనా డేటాబేస్ ఆరోగ్యాన్ని నిర్ధారించలేవు."
+
+#: doctor_functions.php
+msgid "Database observation window"
+msgstr "డేటాబేస్ పరిశీలన వ్యవధి"
+
+#: doctor_functions.php
+msgid "Connection metrics are unavailable or invalid. Check access to SHOW GLOBAL STATUS and SHOW GLOBAL VARIABLES; do not treat missing metrics as an idle server."
+msgstr "కనెక్షన్ మెట్రిక్‌లు అందుబాటులో లేవు లేదా చెల్లనివి. SHOW GLOBAL STATUS మరియు SHOW GLOBAL VARIABLESకు ప్రాప్యతను తనిఖీ చేయండి; లేని మెట్రిక్‌లను నిష్క్రియ సర్వర్‌గా పరిగణించవద్దు."
+
+#: doctor_functions.php
+#, php-format
+msgid "Current connections: %.0f / %.0f (%s); recorded peak: %.0f (%s of the current limit)."
+msgstr "ప్రస్తుత కనెక్షన్లు: %.0f / %.0f (%s); నమోదైన గరిష్ట స్థాయి: %.0f (ప్రస్తుత పరిమితిలో %s)."
+
+#: doctor_functions.php
+msgid "Review connection pooling and poller concurrency. Check database-host memory headroom before raising max_connections; the historical peak may reflect an older limit."
+msgstr "కనెక్షన్ పూలింగ్ మరియు పోలర్ సమకాలీనతను సమీక్షించండి. max_connectionsను పెంచే ముందు డేటాబేస్-హోస్ట్ మెమరీ హెడ్‌రూమ్‌ను తనిఖీ చేయండి; చారిత్రక గరిష్ట స్థాయి పాత పరిమితిని ప్రతిబింబించవచ్చు."
+
+#: doctor_functions.php
+msgid "Connection capacity"
+msgstr "కనెక్షన్ సామర్థ్యం"
+
+#: doctor_functions.php
+msgid "InnoDB buffer pool reads"
+msgstr "InnoDB బఫర్ పూల్ రీడ్‌లు"
+
+#: doctor_functions.php
+msgid "Review query plans and the working set. Consider innodb_buffer_pool_size only after measuring memory available on the database host; a cumulative miss ratio alone does not prove memory pressure."
+msgstr "క్వెరీ ప్లాన్‌లు మరియు వర్కింగ్ సెట్‌ను సమీక్షించండి. డేటాబేస్ హోస్ట్‌లో అందుబాటులో ఉన్న మెమరీని కొలిచిన తర్వాత మాత్రమే innodb_buffer_pool_sizeను పరిగణించండి; కేవలం సంచిత మిస్ నిష్పత్తి మాత్రమే మెమరీ ఒత్తిడిని నిరూపించదు."
+
+#: doctor_functions.php
+msgid "On-disk temporary tables"
+msgstr "డిస్క్‌పై తాత్కాలిక టేబుళ్లు"
+
+#: doctor_functions.php
+msgid "Review query plans, sorting, grouping, and temporary-table data types before changing memory limits. Some tables must use disk; memory limits and accounting differ between MySQL and MariaDB versions."
+msgstr "మెమరీ పరిమితులను మార్చే ముందు క్వెరీ ప్లాన్‌లు, సార్టింగ్, గ్రూపింగ్ మరియు తాత్కాలిక-టేబుల్ డేటా రకాలను సమీక్షించండి. కొన్ని టేబుళ్లు తప్పనిసరిగా డిస్క్‌ను ఉపయోగించాలి; MySQL మరియు MariaDB వెర్షన్ల మధ్య మెమరీ పరిమితులు మరియు గణన విభిన్నంగా ఉంటాయి."
+
+#: doctor_functions.php
+msgid "Connection thread creation"
+msgstr "కనెక్షన్ థ్రెడ్ సృష్టి"
+
+#: doctor_functions.php
+msgid "Review connection reuse and thread_cache_size. Check the server thread-handling mode before tuning; thread-pool implementations do not behave like one-thread-per-connection servers."
+msgstr "కనెక్షన్ పునర్వినియోగం మరియు thread_cache_sizeను సమీక్షించండి. ట్యూనింగ్ చేయడానికి ముందు సర్వర్ థ్రెడ్-హ్యాండ్లింగ్ మోడ్‌ను తనిఖీ చేయండి; థ్రెడ్-పూల్ అమలులు కనెక్షన్‌కు-ఒక-థ్రెడ్ సర్వర్ల వలె ప్రవర్తించవు."
+
+#: doctor_functions.php
+msgid "Review slow-query logging, long_query_time, and query plans before changing server buffers. This counter depends on the configured slow-query threshold and does not identify individual statements."
+msgstr "సర్వర్ బఫర్లను మార్చే ముందు నెమ్మదైన-క్వెరీ లాగింగ్, long_query_time మరియు క్వెరీ ప్లాన్‌లను సమీక్షించండి. ఈ కౌంటర్ కాన్ఫిగర్ చేసిన నెమ్మదైన-క్వెరీ పరిమితిపై ఆధారపడి ఉంటుంది మరియు వ్యక్తిగత స్టేట్‌మెంట్‌లను గుర్తించదు."
+
+#: doctor_functions.php
+msgid "Slow statements"
+msgstr "నెమ్మదైన స్టేట్‌మెంట్‌లు"
+
+#: doctor_functions.php
+msgid "Cumulative advice deferred until the observation window is sufficient."
+msgstr "పరిశీలన వ్యవధి సరిపోయే వరకు సంచిత సలహా వాయిదా వేయబడింది."
+
+#: doctor_functions.php
+msgid "Thread-cache advice is not assessed: thread_handling is unavailable or is not one-thread-per-connection. Review the active thread-pool implementation instead."
+msgstr "థ్రెడ్-క్యాష్ సలహా అంచనా వేయబడలేదు: thread_handling అందుబాటులో లేదు లేదా కనెక్షన్‌కు-ఒక-థ్రెడ్ కాదు. బదులుగా యాక్టివ్ థ్రెడ్-పూల్ అమలును సమీక్షించండి."
+
+#: doctor_functions.php
+#, php-format
+msgid "Required counters are missing or invalid: %s, %s. Check server-version support and monitoring permissions."
+msgstr "అవసరమైన కౌంటర్లు లేవు లేదా చెల్లనివి: %s, %s. సర్వర్-వెర్షన్ మద్దతు మరియు పర్యవేక్షణ అనుమతులను తనిఖీ చేయండి."
+
+#: doctor_functions.php
+msgid "A counter reset since the prior sample; collect another representative interval before tuning."
+msgstr "మునుపటి నమూనా నుండి ఒక కౌంటర్ రీసెట్ చేయబడింది; ట్యూనింగ్ చేయడానికి ముందు మరొక ప్రాతినిధ్య విరామాన్ని సేకరించండి."
+
+#: doctor_functions.php
+#, php-format
+msgid "Insufficient activity: %.0f %s; at least %d observations are needed for this advisory."
+msgstr "తగినంత కార్యాచరణ లేదు: %.0f %s; ఈ సలహా కోసం కనీసం %d పరిశీలనలు అవసరం."
+
+#: doctor_functions.php
+msgid "Counters are inconsistent or were reset independently. Collect a new representative sample before tuning."
+msgstr "కౌంటర్లు అస్థిరంగా ఉన్నాయి లేదా స్వతంత్రంగా రీసెట్ చేయబడ్డాయి. ట్యూనింగ్ చేయడానికి ముందు కొత్త ప్రాతినిధ్య నమూనాను సేకరించండి."
+
+#: doctor_functions.php
+msgid "The interval sample is too small or counters reset; collect another representative interval before tuning."
+msgstr "విరామ నమూనా చాలా చిన్నది లేదా కౌంటర్లు రీసెట్ అయ్యాయి; ట్యూనింగ్ చేయడానికి ముందు మరొక ప్రాతినిధ్య విరామాన్ని సేకరించండి."
+
+#: doctor_functions.php
+#, php-format
+msgid "Interval %s / %s: %.0f / %.0f (%s); investigation threshold: %s."
+msgstr "విరామం %s / %s: %.0f / %.0f (%s); పరిశోధన పరిమితి: %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "Cumulative %s / %s: %.0f / %.0f (%s); investigation threshold: %s."
+msgstr "సంచితం %s / %s: %.0f / %.0f (%s); పరిశోధన పరిమితి: %s."
+
+#: doctor_functions.php
+msgid "This counter can omit memory-mapped temporary files on MySQL; a low ratio does not rule out disk use."
+msgstr "ఈ కౌంటర్ MySQLలో మెమరీ-మ్యాప్డ్ తాత్కాలిక ఫైళ్లను వదిలివేయవచ్చు; తక్కువ నిష్పత్తి డిస్క్ వినియోగాన్ని తోసిపుచ్చదు."
+
+#: doctor_functions.php
+msgid "Redo-log advice deferred until the observation window is sufficient and Innodb_log_waits is available."
+msgstr "పరిశీలన వ్యవధి సరిపోయే వరకు మరియు Innodb_log_waits అందుబాటులో ఉండే వరకు రీడూ-లాగ్ సలహా వాయిదా వేయబడింది."
+
+#: doctor_functions.php
+#, php-format
+msgid "Cumulative Innodb_log_waits: %.0f."
+msgstr "సంచిత Innodb_log_waits: %.0f."
+
+#: doctor_functions.php
+msgid "Investigate transaction sizes, log-buffer pressure, and storage latency. Recheck the rate under load before considering innodb_log_buffer_size; this historical count is not evidence of a current stall."
+msgstr "లావాదేవీ పరిమాణాలు, లాగ్-బఫర్ ఒత్తిడి మరియు నిల్వ జాప్యాన్ని పరిశోధించండి. innodb_log_buffer_sizeను పరిగణించే ముందు లోడ్ కింద రేటును మళ్లీ తనిఖీ చేయండి; ఈ చారిత్రక గణన ప్రస్తుత నిలిపివేతకు రుజువు కాదు."
+
+#: doctor_functions.php
+msgid "InnoDB log-buffer waits"
+msgstr "InnoDB లాగ్-బఫర్ నిరీక్షణలు"
+
+#: doctor_functions.php
+msgid "installed Cacti composer.json"
+msgstr "ఇన్‌స్టాల్ చేసిన Cacti composer.json"
+
+#: doctor_functions.php
+#, php-format
+msgid "Cacti %s installer requirement"
+msgstr "Cacti %s ఇన్‌స్టాలర్ అవసరం"
+
+#: doctor_functions.php
+msgid "PHP compatibility with installed Cacti"
+msgstr "ఇన్‌స్టాల్ చేసిన Cactiతో PHP అనుకూలత"
+
+#: doctor_functions.php
+#, php-format
+msgid "Running PHP %s; installed Cacti %s."
+msgstr "నడుస్తున్న PHP %s; ఇన్‌స్టాల్ చేసిన Cacti %s."
+
+#: doctor_functions.php
+msgid "Could not establish Cacti's PHP requirement. Check the installed Cacti composer.json or release documentation; Doctor does not assume compatibility."
+msgstr "Cacti యొక్క PHP అవసరాన్ని నిర్ధారించలేకపోయింది. ఇన్‌స్టాల్ చేసిన Cacti composer.json లేదా విడుదల డాక్యుమెంటేషన్‌ను తనిఖీ చేయండి; Doctor అనుకూలతను ఊహించదు."
+
+#: doctor_functions.php
+#, php-format
+msgid "PHP >= %s and < %s"
+msgstr "PHP >= %s మరియు < %s"
+
+#: doctor_functions.php
+#, php-format
+msgid "PHP >= %s"
+msgstr "PHP >= %s"
+
+#: doctor_functions.php
+#, php-format
+msgid "Requires %s (%s). Running PHP meets that requirement."
+msgstr "%s (%s) అవసరం. నడుస్తున్న PHP ఆ అవసరాన్ని తీరుస్తుంది."
+
+#: doctor_functions.php
+#, php-format
+msgid "Requires %s (%s). Running PHP does not meet that requirement."
+msgstr "%s (%s) అవసరం. నడుస్తున్న PHP ఆ అవసరాన్ని తీర్చదు."
+
+#: doctor_functions.php
+#, php-format
+msgid "Detected %s; Doctor requires Cacti 1.2.20 or newer."
+msgstr "%s గుర్తించబడింది; Doctorకు Cacti 1.2.20 లేదా కొత్తది అవసరం."
+
+#: doctor_functions.php
+msgid "Supported Cacti version"
+msgstr "మద్దతు ఉన్న Cacti వెర్షన్"
+
+#: doctor_functions.php
+msgid "PHP upstream security support"
+msgstr "PHP అప్‌స్ట్రీమ్ భద్రతా మద్దతు"
+
+#: doctor_functions.php
+msgid "This checks the PHP release branch, not whether this patch release is up to date or whether your OS vendor backports fixes. Cacti compatibility is checked separately."
+msgstr "ఇది ఈ ప్యాచ్ విడుదల తాజాగా ఉందో లేదో లేదా మీ OS విక్రేత పరిష్కారాలను బ్యాక్‌పోర్ట్ చేస్తారో లేదో కాకుండా, PHP విడుదల బ్రాంచ్‌ను తనిఖీ చేస్తుంది. Cacti అనుకూలత విడిగా తనిఖీ చేయబడుతుంది."
+
+#: doctor_functions.php
+#, php-format
+msgid "Running PHP %s; upstream security-support status is unknown or this is a prerelease. Check https://www.php.net/supported-versions.php and update Doctor's support data."
+msgstr "నడుస్తున్న PHP %s; అప్‌స్ట్రీమ్ భద్రతా-మద్దతు స్థితి తెలియదు లేదా ఇది ముందస్తు విడుదల. https://www.php.net/supported-versions.php ని తనిఖీ చేసి, Doctor మద్దతు డేటాను నవీకరించండి."
+
+#: doctor_functions.php
+#, php-format
+msgid "Running PHP %s; PHP %s receives upstream security fixes through %s."
+msgstr "నడుస్తున్న PHP %s; PHP %s కు %s వరకు అప్‌స్ట్రీమ్ భద్రతా పరిష్కారాలు అందుతాయి."
+
+#: doctor_functions.php
+#, php-format
+msgid "Running PHP %s; PHP %s no longer receives upstream security fixes; support ended %s. Upgrade to a supported PHP branch compatible with your Cacti installation, or confirm security maintenance with your OS vendor."
+msgstr "నడుస్తున్న PHP %s; PHP %s కు ఇకపై అప్‌స్ట్రీమ్ భద్రతా పరిష్కారాలు అందవు; మద్దతు %s నాడు ముగిసింది. మీ Cacti ఇన్‌స్టాలేషన్‌కు అనుకూలమైన మద్దతు ఉన్న PHP బ్రాంచ్‌కు అప్‌గ్రేడ్ చేయండి లేదా మీ OS విక్రేతతో భద్రతా నిర్వహణను నిర్ధారించండి."
+
+#: doctor_functions.php
+msgid "Required current CLI PHP extensions"
+msgstr "అవసరమైన ప్రస్తుత CLI PHP ఎక్స్‌టెన్షన్లు"
+
+#: doctor_functions.php
+msgid "Required web PHP extensions"
+msgstr "అవసరమైన వెబ్ PHP ఎక్స్‌టెన్షన్లు"
+
+#: doctor_functions.php
+#, php-format
+msgid "Missing: %s. Install them through the operating system package manager."
+msgstr "లేవు: %s. ఆపరేటింగ్ సిస్టమ్ ప్యాకేజీ మేనేజర్ ద్వారా వాటిని ఇన్‌స్టాల్ చేయండి."
+
+#: doctor_functions.php
+msgid "All PHP extensions required by the Cacti installer are loaded in this PHP context."
+msgstr "Cacti ఇన్‌స్టాలర్‌కు అవసరమైన అన్ని PHP ఎక్స్‌టెన్షన్లు ఈ PHP సందర్భంలో లోడ్ చేయబడ్డాయి."
+
+#: doctor_functions.php
+msgid "Doctor does not execute configured binaries while running as root."
+msgstr "rootగా నడుస్తున్నప్పుడు Doctor కాన్ఫిగర్ చేసిన బైనరీలను అమలు చేయదు."
+
+#: doctor_functions.php
+#, php-format
+msgid "The file name %s is not expected for %s, so Doctor did not execute it."
+msgstr "%s ఫైల్ పేరు %s కోసం ఆశించినది కాదు, కాబట్టి Doctor దానిని అమలు చేయలేదు."
+
+#: doctor_functions.php
+msgid "Doctor is running as root, so permission checks describe root rather than the web server or poller account, configured binaries are not executed, and repairs are refused. Run Doctor as the Cacti poller user."
+msgstr "Doctor rootగా నడుస్తోంది, కాబట్టి అనుమతి తనిఖీలు వెబ్ సర్వర్ లేదా పోలర్ ఖాతాకు బదులుగా rootను వివరిస్తాయి, కాన్ఫిగర్ చేసిన బైనరీలు అమలు చేయబడవు మరియు మరమ్మతులు తిరస్కరించబడతాయి. Cacti పోలర్ వినియోగదారుగా Doctorను అమలు చేయండి."
+
+#: doctor_functions.php
+msgid "Doctor privileges"
+msgstr "Doctor అధికారాలు"
+
+#: doctor_functions.php
+msgid "Doctor is running without root privileges."
+msgstr "Doctor root అధికారాలు లేకుండా నడుస్తోంది."
+
+#: doctor_functions.php
+msgid "Required CLI PHP extensions"
+msgstr "అవసరమైన CLI PHP ఎక్స్‌టెన్షన్లు"
+
+#: doctor_functions.php
+msgid "The configured PHP CLI executable is unavailable, so its extensions cannot be checked."
+msgstr "కాన్ఫిగర్ చేసిన PHP CLI ఎగ్జిక్యూటబుల్ అందుబాటులో లేదు, కాబట్టి దాని ఎక్స్‌టెన్షన్లను తనిఖీ చేయలేము."
+
+#: doctor_functions.php
+msgid "shell_exec() is disabled, so Doctor cannot compare the CLI PHP extensions with Cacti requirements."
+msgstr "shell_exec() నిలిపివేయబడింది, కాబట్టి Doctor CLI PHP ఎక్స్‌టెన్షన్లను Cacti అవసరాలతో పోల్చలేదు."
+
+#: doctor_functions.php
+msgid "The configured PHP CLI executable did not return a valid extension list."
+msgstr "కాన్ఫిగర్ చేసిన PHP CLI ఎగ్జిక్యూటబుల్ చెల్లుబాటు అయ్యే ఎక్స్‌టెన్షన్ జాబితాను తిరిగి ఇవ్వలేదు."
+
+#: doctor_functions.php
+#, php-format
+msgid "Missing from CLI PHP: %s. The web and CLI PHP configurations are separate on many systems."
+msgstr "CLI PHPలో లేవు: %s. అనేక సిస్టమ్‌లలో వెబ్ మరియు CLI PHP కాన్ఫిగరేషన్లు వేర్వేరుగా ఉంటాయి."
+
+#: doctor_functions.php
+msgid "The configured PHP CLI has every extension required by Cacti."
+msgstr "కాన్ఫిగర్ చేసిన PHP CLI లో Cactiకి అవసరమైన ప్రతి ఎక్స్‌టెన్షన్ ఉంది."
+
+#: doctor_functions.php
+msgid "GD TrueType support"
+msgstr "GD TrueType మద్దతు"
+
+#: doctor_functions.php
+msgid "Recommended PHP features"
+msgstr "సిఫార్సు చేయబడిన PHP ఫీచర్లు"
+
+#: doctor_functions.php
+#, php-format
+msgid "Unavailable: %s. Cacti can run without these features, but related functionality may be limited."
+msgstr "అందుబాటులో లేవు: %s. ఈ ఫీచర్లు లేకుండానే Cacti నడుస్తుంది, కానీ సంబంధిత కార్యాచరణ పరిమితం కావచ్చు."
+
+#: doctor_functions.php
+msgid "The optional gettext, SNMP, and GD TrueType features are available."
+msgstr "ఐచ్ఛిక gettext, SNMP మరియు GD TrueType ఫీచర్లు అందుబాటులో ఉన్నాయి."
+
+#: doctor_functions.php
+#, php-format
+msgid "memory_limit is %s (%dM or more is recommended)"
+msgstr "memory_limit విలువ %s (%dM లేదా అంతకంటే ఎక్కువ సిఫార్సు చేయబడింది)"
+
+#: doctor_functions.php
+#, php-format
+msgid "max_execution_time is %d seconds (60 or more is recommended)"
+msgstr "max_execution_time విలువ %d సెకన్లు (60 లేదా అంతకంటే ఎక్కువ సిఫార్సు చేయబడింది)"
+
+#: doctor_functions.php
+msgid "date.timezone is not set"
+msgstr "date.timezone సెట్ చేయబడలేదు"
+
+#: doctor_functions.php
+msgid "unset"
+msgstr "సెట్ చేయబడలేదు"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s. Current values: %s"
+msgstr "%s. ప్రస్తుత విలువలు: %s"
+
+#: doctor_functions.php
+msgid "PHP runtime configuration"
+msgstr "PHP రన్‌టైమ్ కాన్ఫిగరేషన్"
+
+#: doctor_functions.php
+msgid "Database connection"
+msgstr "డేటాబేస్ కనెక్షన్"
+
+#: doctor_functions.php
+#, php-format
+msgid "Query failed: %s"
+msgstr "క్వెరీ విఫలమైంది: %s"
+
+#: doctor_functions.php
+msgid "A read-only query completed successfully."
+msgstr "రీడ్-ఓన్లీ క్వెరీ విజయవంతంగా పూర్తయింది."
+
+#: doctor_functions.php
+msgid "The database returned an unexpected result."
+msgstr "డేటాబేస్ ఊహించని ఫలితాన్ని ఇచ్చింది."
+
+#: doctor_functions.php
+#, php-format
+msgid "Doctor could not determine the database server version from %s."
+msgstr "%s నుండి డేటాబేస్ సర్వర్ వెర్షన్‌ను Doctor నిర్ణయించలేకపోయింది."
+
+#: doctor_functions.php
+msgid "Supported database server"
+msgstr "మద్దతు ఉన్న డేటాబేస్ సర్వర్"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s %s detected; this Cacti branch recommends %s %s or newer."
+msgstr "%s %s గుర్తించబడింది; ఈ Cacti బ్రాంచ్ %s %s లేదా కొత్తది సిఫార్సు చేస్తుంది."
+
+#: doctor_functions.php
+#, php-format
+msgid "Database character set is %s and collation is %s. Cacti requires utf8mb4."
+msgstr "డేటాబేస్ క్యారెక్టర్ సెట్ %s మరియు కొలేషన్ %s. Cactiకి utf8mb4 అవసరం."
+
+#: doctor_functions.php
+msgid "unknown"
+msgstr "తెలియదు"
+
+#: doctor_functions.php
+msgid "Database character set"
+msgstr "డేటాబేస్ క్యారెక్టర్ సెట్"
+
+#: doctor_functions.php
+msgid "Database timezone support"
+msgstr "డేటాబేస్ టైమ్‌జోన్ మద్దతు"
+
+#: doctor_functions.php
+msgid "The Cacti database account cannot read mysql.time_zone_name. Grant SELECT access and populate the database timezone tables."
+msgstr "Cacti డేటాబేస్ ఖాతా mysql.time_zone_nameను చదవలేదు. SELECT ప్రాప్యతను మంజూరు చేసి, డేటాబేస్ టైమ్‌జోన్ టేబుళ్లను పూరించండి."
+
+#: doctor_functions.php
+#, php-format
+msgid "The database timezone table is accessible and contains %d entries."
+msgstr "డేటాబేస్ టైమ్‌జోన్ టేబుల్ అందుబాటులో ఉంది మరియు %d నమోదులను కలిగి ఉంది."
+
+#: doctor_functions.php
+msgid "The database timezone table is accessible but empty. Populate the system timezone tables."
+msgstr "డేటాబేస్ టైమ్‌జోన్ టేబుల్ అందుబాటులో ఉంది కానీ ఖాళీగా ఉంది. సిస్టమ్ టైమ్‌జోన్ టేబుళ్లను పూరించండి."
+
+#: doctor_functions.php
+msgid "Core tables used by Cacti are present."
+msgstr "Cacti ఉపయోగించే కోర్ టేబుళ్లు ఉన్నాయి."
+
+#: doctor_functions.php
+#, php-format
+msgid "Missing core tables: %s. Restore or upgrade the database before attempting other repairs."
+msgstr "కోర్ టేబుళ్లు లేవు: %s. ఇతర మరమ్మతులకు ప్రయత్నించే ముందు డేటాబేస్‌ను పునరుద్ధరించండి లేదా అప్‌గ్రేడ్ చేయండి."
+
+#: doctor_functions.php
+msgid "Core database tables"
+msgstr "కోర్ డేటాబేస్ టేబుళ్లు"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s is missing (%s)"
+msgstr "%s లేదు (%s)"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s is not writable (%s)"
+msgstr "%s వ్రాయదగినది కాదు (%s)"
+
+#: doctor_functions.php
+msgid "Runtime directories"
+msgstr "రన్‌టైమ్ డైరెక్టరీలు"
+
+#: doctor_functions.php
+msgid "The cache, log, and RRA directories exist and are writable."
+msgstr "క్యాష్, లాగ్ మరియు RRA డైరెక్టరీలు ఉన్నాయి మరియు వ్రాయదగినవి."
+
+#: doctor_functions.php
+msgid "Cacti configuration file"
+msgstr "Cacti కాన్ఫిగరేషన్ ఫైల్"
+
+#: doctor_functions.php
+msgid "include/config.php is missing or unreadable."
+msgstr "include/config.php లేదు లేదా చదవలేనిది."
+
+#: doctor_functions.php
+msgid "include/config.php is readable. POSIX mode-bit checks do not apply on Windows."
+msgstr "include/config.php చదవదగినది. Windowsలో POSIX మోడ్-బిట్ తనిఖీలు వర్తించవు."
+
+#: doctor_functions.php
+msgid "include/config.php is writable by other users. Remove world-write permission because this file contains database credentials."
+msgstr "include/config.php ఇతర వినియోగదారులచే వ్రాయదగినది. ఈ ఫైల్‌లో డేటాబేస్ ఆధారాలు ఉన్నందున అందరికీ వ్రాసే అనుమతిని తీసివేయండి."
+
+#: doctor_functions.php
+msgid "include/config.php is group-writable. Confirm that every member of the owning group is trusted."
+msgstr "include/config.php సమూహం ద్వారా వ్రాయదగినది. యజమాని సమూహంలోని ప్రతి సభ్యుడు విశ్వసనీయుడని నిర్ధారించండి."
+
+#: doctor_functions.php
+msgid "include/config.php is readable by all local users and contains database credentials. Restrict it to the owner and the web server group."
+msgstr "include/config.php స్థానిక వినియోగదారులందరికీ చదవదగినది మరియు డేటాబేస్ ఆధారాలను కలిగి ఉంది. దానిని యజమాని మరియు వెబ్ సర్వర్ సమూహానికి పరిమితం చేయండి."
+
+#: doctor_functions.php
+msgid "include/config.php is readable and is not world-readable, group-writable, or world-writable."
+msgstr "include/config.php చదవదగినది మరియు అందరికీ చదవదగినది, సమూహం ద్వారా వ్రాయదగినది లేదా అందరికీ వ్రాయదగినది కాదు."
+
+#: doctor_functions.php
+msgid "Cacti log file"
+msgstr "Cacti లాగ్ ఫైల్"
+
+#: doctor_functions.php
+msgid "The log file does not exist. Its parent directory is not writable."
+msgstr "లాగ్ ఫైల్ లేదు. దాని పేరెంట్ డైరెక్టరీ వ్రాయదగినది కాదు."
+
+#: doctor_functions.php
+msgid "The log file does not exist. Its parent directory is writable, so Cacti can create it."
+msgstr "లాగ్ ఫైల్ లేదు. దాని పేరెంట్ డైరెక్టరీ వ్రాయదగినది, కాబట్టి Cacti దానిని సృష్టించగలదు."
+
+#: doctor_functions.php
+msgid "The configured log path must be a readable and writable regular file."
+msgstr "కాన్ఫిగర్ చేసిన లాగ్ మార్గం తప్పనిసరిగా చదవదగిన మరియు వ్రాయదగిన సాధారణ ఫైల్ అయి ఉండాలి."
+
+#: doctor_functions.php
+#, php-format
+msgid "The log is readable and writable and is %s MiB."
+msgstr "లాగ్ చదవదగినది మరియు వ్రాయదగినది మరియు %s MiB పరిమాణంలో ఉంది."
+
+#: doctor_functions.php
+msgid "The log is readable and writable."
+msgstr "లాగ్ చదవదగినది మరియు వ్రాయదగినది."
+
+#: doctor_functions.php
+msgid "Verify that Cacti log rotation is enabled."
+msgstr "Cacti లాగ్ రొటేషన్ ప్రారంభించబడిందని ధృవీకరించండి."
+
+#: doctor_functions.php
+#, php-format
+msgid "Executable found at %s."
+msgstr "%s వద్ద ఎగ్జిక్యూటబుల్ కనుగొనబడింది."
+
+#: doctor_functions.php
+#, php-format
+msgid "The %s setting is empty, missing, or not executable."
+msgstr "%s సెట్టింగ్ ఖాళీగా ఉంది, లేదు లేదా అమలు చేయదగినది కాదు."
+
+#: doctor_functions.php
+#, php-format
+msgid "The %s setting is empty, missing, or not executable: %s"
+msgstr "%s సెట్టింగ్ ఖాళీగా ఉంది, లేదు లేదా అమలు చేయదగినది కాదు: %s"
+
+#: doctor_functions.php
+msgid "Doctor could not determine its version."
+msgstr "Doctor దాని వెర్షన్‌ను నిర్ణయించలేకపోయింది."
+
+#: doctor_functions.php
+#, php-format
+msgid "Detected version %s."
+msgstr "గుర్తించబడిన వెర్షన్ %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "Detected version %s; version %s or newer is recommended."
+msgstr "గుర్తించబడిన వెర్షన్ %s; వెర్షన్ %s లేదా కొత్తది సిఫార్సు చేయబడింది."
+
+#: doctor_functions.php
+#, php-format
+msgid "Detected version %s; version %s or newer is required."
+msgstr "గుర్తించబడిన వెర్షన్ %s; వెర్షన్ %s లేదా కొత్తది అవసరం."
+
+#: doctor_functions.php
+#, php-format
+msgid "Detected version %s; minimum is %s."
+msgstr "గుర్తించబడిన వెర్షన్ %s; కనీసం %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "%s executable"
+msgstr "%s ఎగ్జిక్యూటబుల్"
+
+#: doctor_functions.php
+msgid "poller_type is not cmd.php or Spine"
+msgstr "poller_type అనేది cmd.php లేదా Spine కాదు"
+
+#: doctor_functions.php
+msgid "poller_interval is not a supported value"
+msgstr "poller_interval మద్దతు ఉన్న విలువ కాదు"
+
+#: doctor_functions.php
+msgid "Poller configuration"
+msgstr "పోలర్ కాన్ఫిగరేషన్"
+
+#: doctor_functions.php
+#, php-format
+msgid "Poller is %s with a %d-second interval."
+msgstr "పోలర్ %s, %d-సెకన్ల విరామంతో ఉంది."
+
+#: doctor_functions.php
+msgid "Main poller freshness"
+msgstr "ప్రధాన పోలర్ తాజాదనం"
+
+#: doctor_functions.php
+msgid "No completed main-poller run was found. This can be expected before the first poll."
+msgstr "పూర్తయిన ప్రధాన-పోలర్ రన్ ఏదీ కనుగొనబడలేదు. మొదటి పోల్‌కు ముందు ఇది ఊహించదగినది."
+
+#: doctor_functions.php
+#, php-format
+msgid "Last completed run was %d seconds ago; failure threshold is %d seconds."
+msgstr "చివరిగా పూర్తయిన రన్ %d సెకన్ల క్రితం జరిగింది; వైఫల్య పరిమితి %d సెకన్లు."
+
+#: doctor_functions.php
+msgid "Database schema version"
+msgstr "డేటాబేస్ స్కీమా వెర్షన్"
+
+#: doctor_functions.php
+msgid "The version table is empty or unreadable, so the schema version is unknown."
+msgstr "version టేబుల్ ఖాళీగా ఉంది లేదా చదవలేనిది, కాబట్టి స్కీమా వెర్షన్ తెలియదు."
+
+#: doctor_functions.php
+msgid "The version table still reads new_install, so the installer never finished. Open install/ in a browser to complete it."
+msgstr "version టేబుల్ ఇంకా new_install అని చూపుతోంది, కాబట్టి ఇన్‌స్టాలర్ ఎప్పుడూ పూర్తి కాలేదు. దీనిని పూర్తి చేయడానికి బ్రౌజర్‌లో install/ ను తెరవండి."
+
+#: doctor_functions.php
+#, php-format
+msgid "The database schema is at %s but the installed code is %s. Open install/ in a browser to finish the upgrade."
+msgstr "డేటాబేస్ స్కీమా %s వద్ద ఉంది కానీ ఇన్‌స్టాల్ చేసిన కోడ్ %s వద్ద ఉంది. అప్‌గ్రేడ్‌ను పూర్తి చేయడానికి బ్రౌజర్‌లో install/ ను తెరవండి."
+
+#: doctor_functions.php
+#, php-format
+msgid "The database schema (%s) is newer than the installed code (%s). The code may have been rolled back."
+msgstr "డేటాబేస్ స్కీమా (%s) ఇన్‌స్టాల్ చేసిన కోడ్ (%s) కంటే కొత్తది. కోడ్ వెనక్కి తిప్పబడి ఉండవచ్చు."
+
+#: doctor_functions.php
+#, php-format
+msgid "The database schema (%s) matches the installed code."
+msgstr "డేటాబేస్ స్కీమా (%s) ఇన్‌స్టాల్ చేసిన కోడ్‌తో సరిపోలుతుంది."
+
+#: doctor_functions.php
+msgid "Main poller run time"
+msgstr "ప్రధాన పోలర్ రన్ సమయం"
+
+#: doctor_functions.php
+msgid "No completed run time is recorded yet."
+msgstr "పూర్తయిన రన్ సమయం ఇంకా నమోదు కాలేదు."
+
+#: doctor_functions.php
+#, php-format
+msgid "The last main-poller run took %s seconds of the %d-second interval."
+msgstr "చివరి ప్రధాన-పోలర్ రన్ %s సెకన్లు తీసుకుంది (%d-సెకన్ల విరామంలో)."
+
+#: doctor_functions.php
+msgid "Runs that outlast the interval overlap and lose data; add poller processes or threads, or use Spine."
+msgstr "విరామం కంటే ఎక్కువ సమయం పట్టే రన్లు అతివ్యాప్తి చెంది డేటాను కోల్పోతాయి; పోలర్ ప్రాసెస్‌లు లేదా థ్రెడ్‌లను జోడించండి, లేదా Spine ఉపయోగించండి."
+
+#: doctor_functions.php
+msgid "Little headroom remains before polls overlap."
+msgstr "పోల్స్ అతివ్యాప్తి చెందడానికి ముందు తక్కువ వెసులుబాటు మాత్రమే మిగిలి ఉంది."
+
+#: doctor_functions.php
+#, php-format
+msgid "%d poller_output rows are older than two polling intervals and were never written to RRD files. Check the Cacti log for \"Poller Output Table not Empty\" and confirm max_heap_table_size is large enough."
+msgstr "%d poller_output అడ్డువరుసలు రెండు పోలింగ్ విరామాల కంటే పాతవి మరియు RRD ఫైళ్లకు ఎప్పుడూ వ్రాయబడలేదు. \"Poller Output Table not Empty\" కోసం Cacti లాగ్‌ను తనిఖీ చేసి, max_heap_table_size తగినంత పెద్దదిగా ఉందని నిర్ధారించండి."
+
+#: doctor_functions.php
+msgid "Unprocessed poller output"
+msgstr "ప్రాసెస్ చేయని పోలర్ అవుట్‌పుట్"
+
+#: doctor_functions.php
+msgid "No stale rows remain in poller_output."
+msgstr "poller_outputలో పాత అడ్డువరుసలు ఏవీ మిగిలి లేవు."
+
+#: doctor_functions.php
+msgid "No remote pollers are enabled."
+msgstr "రిమోట్ పోలర్లు ఏవీ ప్రారంభించబడలేదు."
+
+#: doctor_functions.php
+msgid "Remote pollers"
+msgstr "రిమోట్ పోలర్లు"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s (ID %s) has never reported"
+msgstr "%s (ID %s) ఎప్పుడూ నివేదించలేదు"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s (ID %s) last reported %d seconds ago"
+msgstr "%s (ID %s) చివరిగా %d సెకన్ల క్రితం నివేదించింది"
+
+#: doctor_functions.php
+#, php-format
+msgid "The failure threshold is %d seconds."
+msgstr "వైఫల్య పరిమితి %d సెకన్లు."
+
+#: doctor_functions.php
+#, php-format
+msgid "%d enabled remote pollers reported within %d seconds."
+msgstr "%d ప్రారంభించబడిన రిమోట్ పోలర్లు %d సెకన్లలోపు నివేదించాయి."
+
+#: doctor_functions.php
+msgid "Enabled plugin files"
+msgstr "ప్రారంభించబడిన ప్లగిన్ ఫైళ్లు"
+
+#: doctor_functions.php
+#, php-format
+msgid "Enabled plugins are missing from %s: %s. Restore their files or disable them in Plugin Management."
+msgstr "%s నుండి ప్రారంభించబడిన ప్లగిన్లు లేవు: %s. వాటి ఫైళ్లను పునరుద్ధరించండి లేదా ప్లగిన్ నిర్వహణలో వాటిని నిలిపివేయండి."
+
+#: doctor_functions.php
+msgid "Every enabled plugin has its setup.php in place."
+msgstr "ప్రారంభించబడిన ప్రతి ప్లగిన్‌కు దాని setup.php సరైన స్థానంలో ఉంది."
+
+#: doctor_functions.php
+msgid "Boost RRD updates"
+msgstr "Boost RRD అప్‌డేట్‌లు"
+
+#: doctor_functions.php
+msgid "Boost is disabled, so the poller writes RRD files directly."
+msgstr "Boost నిలిపివేయబడింది, కాబట్టి పోలర్ RRD ఫైళ్లను నేరుగా వ్రాస్తుంది."
+
+#: doctor_functions.php
+msgid "Boost is enabled but has no recorded run. This can be expected before its first flush."
+msgstr "Boost ప్రారంభించబడింది కానీ నమోదైన రన్ లేదు. దాని మొదటి ఫ్లష్‌కు ముందు ఇది ఊహించదగినదే."
+
+#: doctor_functions.php
+#, php-format
+msgid "Boost last flushed %d seconds ago, more than twice its %d-minute interval. Graphs stop updating until it runs; check the Cacti log for BOOST errors."
+msgstr "Boost చివరిసారి %d సెకన్ల క్రితం ఫ్లష్ చేసింది, ఇది దాని %d-నిమిషాల విరామానికి రెండింతల కంటే ఎక్కువ. ఇది రన్ అయ్యే వరకు గ్రాఫ్‌ల అప్‌డేట్ ఆగిపోతుంది; BOOST లోపాల కోసం Cacti లాగ్‌ను తనిఖీ చేయండి."
+
+#: doctor_functions.php
+#, php-format
+msgid "poller_output_boost holds %d rows, above the %d-row limit that forces a flush. Boost is falling behind."
+msgstr "poller_output_boost లో %d అడ్డువరుసలు ఉన్నాయి, ఇది ఫ్లష్‌ను బలవంతం చేసే %d-అడ్డువరుసల పరిమితి కంటే ఎక్కువ. Boost వెనుకబడి ఉంది."
+
+#: doctor_functions.php
+#, php-format
+msgid "Boost last flushed %d seconds ago with %d rows waiting."
+msgstr "Boost చివరిసారి %d సెకన్ల క్రితం ఫ్లష్ చేసింది, ఇంకా %d అడ్డువరుసలు వేచి ఉన్నాయి."
+
+#: doctor_functions.php doctor_rrd.php
+#, php-format
+msgid "Checked a sample of %d active data sources that rotates hourly; a pass does not cover every file."
+msgstr "గంటకు ఒకసారి మారే %d క్రియాశీల డేటా సోర్స్‌ల నమూనాను తనిఖీ చేయడం జరిగింది; ఒక పాస్‌లో ప్రతి ఫైల్ కవర్ కాదు."
+
+#: doctor_functions.php
+#, php-format
+msgid "%d of %d active data sources have no RRD file, for example %s. New data sources get one after their first poll; otherwise check the RRA directory and its permissions."
+msgstr "%d (మొత్తం %d లో) క్రియాశీల డేటా సోర్స్‌లకు RRD ఫైల్ లేదు, ఉదాహరణకు %s. కొత్త డేటా సోర్స్‌లకు మొదటి పోల్ తర్వాత ఒకటి లభిస్తుంది; లేకపోతే RRA డైరెక్టరీ మరియు దాని అనుమతులను తనిఖీ చేయండి."
+
+#: doctor_functions.php
+msgid "RRD files"
+msgstr "RRD ఫైళ్లు"
+
+#: doctor_functions.php
+#, php-format
+msgid "All %d active data sources have an RRD file."
+msgstr "మొత్తం %d క్రియాశీల డేటా సోర్స్‌లకూ RRD ఫైల్ ఉంది."
+
+#: doctor_functions.php
+#, php-format
+msgid "Doctor could not measure free space for %s."
+msgstr "%s కోసం ఖాళీ స్థలాన్ని Doctor కొలవలేకపోయింది."
+
+#: doctor_functions.php
+msgid "RRA disk space"
+msgstr "RRA డిస్క్ స్థలం"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s (%s GiB) free on the file system holding %s."
+msgstr "%s (%s GiB) %s ని కలిగి ఉన్న ఫైల్ సిస్టమ్‌లో ఖాళీగా ఉంది."
+
+#: doctor_functions.php
+msgid "RRD updates fail silently when the disk fills."
+msgstr "డిస్క్ నిండినప్పుడు RRD అప్‌డేట్‌లు నిశ్శబ్దంగా విఫలమవుతాయి."
+
+#: doctor_functions.php
+msgid "Database clock"
+msgstr "డేటాబేస్ గడియారం"
+
+#: doctor_functions.php
+msgid "Doctor could not read the database clock."
+msgstr "Doctor డేటాబేస్ గడియారాన్ని చదవలేకపోయింది."
+
+#: doctor_functions.php
+#, php-format
+msgid "The database and PHP clocks differ by %d seconds."
+msgstr "డేటాబేస్ మరియు PHP గడియారాల మధ్య %d సెకన్ల వ్యత్యాసం ఉంది."
+
+#: doctor_functions.php
+msgid "Poll timestamps will be misaligned; synchronise both hosts with NTP."
+msgstr "పోల్ టైమ్‌స్టాంప్‌లు అసమన్వయమవుతాయి; రెండు హోస్ట్‌లను NTP తో సమకాలీకరించండి."
+
+#: doctor_functions.php
+msgid "Synchronise both hosts with NTP."
+msgstr "రెండు హోస్ట్‌లను NTP తో సమకాలీకరించండి."
+
+#: doctor_functions.php
+msgid "Spine configuration"
+msgstr "Spine కాన్ఫిగరేషన్"
+
+#: doctor_functions.php
+msgid "Spine is not the configured poller."
+msgstr "Spine కాన్ఫిగర్ చేయబడిన పోలర్ కాదు."
+
+#: doctor_functions.php
+msgid "path_spine_config is not set, so Spine uses its compiled-in search path and Doctor cannot verify which file it reads."
+msgstr "path_spine_config సెట్ చేయబడలేదు, కాబట్టి Spine దాని కంపైల్ చేసిన శోధన మార్గాన్ని ఉపయోగిస్తుంది మరియు అది ఏ ఫైల్‌ను చదువుతుందో Doctor ధృవీకరించలేకపోతుంది."
+
+#: doctor_functions.php
+#, php-format
+msgid "The Spine configuration file is missing or unreadable: %s."
+msgstr "Spine కాన్ఫిగరేషన్ ఫైల్ లేదు లేదా చదవడానికి వీలులేదు: %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "DB_Database is %s but Cacti uses %s"
+msgstr "DB_Database విలువ %s కానీ Cacti %s ని ఉపయోగిస్తోంది"
+
+#: doctor_functions.php
+#, php-format
+msgid "DB_User is %s but Cacti uses %s"
+msgstr "DB_User విలువ %s కానీ Cacti %s ని ఉపయోగిస్తోంది"
+
+#: doctor_functions.php
+msgid "the file is world-readable and holds the database password"
+msgstr "ఈ ఫైల్ అందరికీ చదవగలిగేలా ఉంది మరియు డేటాబేస్ పాస్‌వర్డ్‌ను కలిగి ఉంది"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s uses the same database and user as Cacti."
+msgstr "%s, Cacti ఉపయోగించే అదే డేటాబేస్ మరియు వినియోగదారుని ఉపయోగిస్తుంది."
+
+#: doctor_functions.php
+#, php-format
+msgid "%s is %s"
+msgstr "%s విలువ %s"
+
+#: doctor_functions.php
+msgid "Cacti recommends ON; doublewrite may stay off only on ZFS or similar journaling storage."
+msgstr "Cacti ON ని సిఫార్సు చేస్తుంది; ZFS లేదా అటువంటి జర్నలింగ్ స్టోరేజ్‌లో మాత్రమే doublewrite ఆఫ్‌లో ఉండవచ్చు."
+
+#: doctor_functions.php
+msgid "InnoDB safety settings"
+msgstr "InnoDB భద్రతా సెట్టింగ్లు"
+
+#: doctor_functions.php
+msgid "innodb_file_per_table and innodb_doublewrite are enabled."
+msgstr "innodb_file_per_table మరియు innodb_doublewrite ప్రారంభించబడ్డాయి."
+
+#: doctor_functions.php
+#, php-format
+msgid "None of the last %d log lines report an error."
+msgstr "చివరి %d లాగ్ పంక్తులలో ఏదీ లోపాన్ని నివేదించలేదు."
+
+#: doctor_functions.php
+msgid "Recent log errors"
+msgstr "ఇటీవలి లాగ్ లోపాలు"
+
+#: doctor_functions.php
+#, php-format
+msgid "%d of the last %d log lines report an error. Most frequent (%dx): %s"
+msgstr "%d (చివరి %d లాగ్ పంక్తులలో) లోపాన్ని నివేదిస్తున్నాయి. అత్యధికంగా (%dx): %s"
+
+#: doctor_functions.php
+msgid "The Cacti log is not readable; see the Cacti log file check."
+msgstr "Cacti లాగ్ చదవడానికి వీలులేదు; Cacti లాగ్ ఫైల్ తనిఖీని చూడండి."
+
+#: doctor_functions.php
+msgid "No enabled devices are configured."
+msgstr "ప్రారంభించబడిన పరికరాలు ఏవీ కాన్ఫిగర్ చేయబడలేదు."
+
+#: doctor_functions.php
+#, php-format
+msgid "All %d enabled devices are up."
+msgstr "ప్రారంభించబడిన మొత్తం %d పరికరాలు అందుబాటులో ఉన్నాయి."
+
+#: doctor_functions.php
+#, php-format
+msgid "%d of %d enabled devices are down and %d recovering."
+msgstr "%d (మొత్తం %d ప్రారంభించబడిన పరికరాలలో) అందుబాటులో లేవు (డౌన్) మరియు %d పునరుద్ధరించబడుతున్నాయి."
+
+#: doctor_functions.php
+msgid "The down devices could not be listed."
+msgstr "అందుబాటులో లేని (డౌన్) పరికరాలను జాబితా చేయలేకపోయాము."
+
+#: doctor_functions.php
+#, php-format
+msgid "%s down since %s"
+msgstr "%s, %s నుండి అందుబాటులో లేదు (డౌన్)"
+
+#: doctor_functions.php
+#, php-format
+msgid "Longest down: %s."
+msgstr "అత్యధిక సమయం అందుబాటులో లేనిది (డౌన్): %s."
+
+#: doctor_functions.php
+msgid "With most devices down, check the poller host's network and SNMP settings first."
+msgstr "చాలా పరికరాలు అందుబాటులో లేనందున (డౌన్), ముందుగా పోలర్ హోస్ట్ యొక్క నెట్‌వర్క్ మరియు SNMP సెట్టింగ్లను తనిఖీ చేయండి."
+
+#: doctor_functions.php
+msgid "Doctor could not read device status from the host table."
+msgstr "Doctor, host పట్టిక నుండి పరికర స్థితిని చదవలేకపోయింది."
+
+#: doctor_functions.php
+#, php-format
+msgid "Cacti Doctor on %s: %d failed, %d warnings"
+msgstr "%s పై Cacti Doctor: %d విఫలమయ్యాయి, %d హెచ్చరికలు"
+
+#: doctor_functions.php
+#, php-format
+msgid "%d Cacti Doctor checks changed status on %s."
+msgstr "%d Cacti Doctor తనిఖీల స్థితి %s పై మారింది."
+
+#: doctor_functions.php
+#, php-format
+msgid "Totals: %d passed, %d warnings, %d failed."
+msgstr "మొత్తం: %d ఉత్తీర్ణత, %d హెచ్చరికలు, %d విఫలమయ్యాయి."
+
+#: doctor_functions.php
+#, php-format
+msgid "Refusing to overwrite %s."
+msgstr "%s ని ఓవర్‌రైట్ చేయడానికి నిరాకరించబడుతోంది."
+
+#: doctor_functions.php
+#, php-format
+msgid "Cannot create %s."
+msgstr "%s ని సృష్టించడం సాధ్యం కాలేదు."
+
+#: doctor_functions.php
+#, php-format
+msgid "Could not make %s private."
+msgstr "%s ని ప్రైవేట్‌గా చేయలేకపోయాము."
+
+#: doctor_functions.php
+#, php-format
+msgid "Writing %s failed."
+msgstr "%s ని వ్రాయడం విఫలమైంది."
+
+#: doctor_functions.php
+msgid "Repair runtime directories"
+msgstr "రన్‌టైమ్ డైరెక్టరీలను మరమ్మతు చేయండి"
+
+#: doctor_functions.php
+msgid "Create missing cache, log, and RRA directories and add owner read/write/execute permission without removing existing permissions."
+msgstr "లేని క్యాష్, లాగ్ మరియు RRA డైరెక్టరీలను సృష్టించండి మరియు ఇప్పటికే ఉన్న అనుమతులను తొలగించకుండా యజమాని చదవడం/వ్రాయడం/అమలు చేయడం అనుమతిని జోడించండి."
+
+#: doctor_functions.php
+msgid "The requested repair is not allow-listed."
+msgstr "అభ్యర్థించిన మరమ్మతు అనుమతించబడిన జాబితాలో లేదు."
+
+#: doctor_functions.php
+msgid "No repair handler is registered."
+msgstr "మరమ్మతు హ్యాండ్లర్ ఏదీ నమోదు చేయబడలేదు."
+
+#: doctor_functions.php
+msgid "Repair unavailable"
+msgstr "మరమ్మతు అందుబాటులో లేదు"
+
+#: doctor_functions.php
+msgid "Repairs are refused while running as root. Run Doctor as the Cacti poller user."
+msgstr "root గా నడుస్తున్నప్పుడు మరమ్మతులు నిరాకరించబడతాయి. Cacti పోలర్ వినియోగదారుగా Doctor ని నడపండి."
+
+#: doctor_functions.php
+msgid "The Cacti base directory cannot be resolved."
+msgstr "Cacti బేస్ డైరెక్టరీని పరిష్కరించడం సాధ్యం కాలేదు."
+
+#: doctor_functions.php
+#, php-format
+msgid "%s: path is outside the Cacti installation"
+msgstr "%s: మార్గం Cacti ఇన్‌స్టాలేషన్ వెలుపల ఉంది"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s: symbolic links are not repaired"
+msgstr "%s: సింబాలిక్ లింక్‌లు మరమ్మతు చేయబడవు"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s: directory creation failed"
+msgstr "%s: డైరెక్టరీ సృష్టి విఫలమైంది"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s: could not add owner permissions"
+msgstr "%s: యజమాని అనుమతులను జోడించలేకపోయాము"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s: still not a writable directory"
+msgstr "%s: ఇప్పటికీ వ్రాయదగిన డైరెక్టరీ కాదు"
+
+#: doctor_functions.php
+msgid "Runtime directories now exist and are writable by the current process."
+msgstr "రన్‌టైమ్ డైరెక్టరీలు ఇప్పుడు ఉన్నాయి మరియు ప్రస్తుత ప్రక్రియ ద్వారా వ్రాయదగినవిగా ఉన్నాయి."
+
+#: doctor_functions.php
+msgid "Cacti"
+msgstr "Cacti"
+
+#: doctor_functions.php
+msgid "Database"
+msgstr "డేటాబేస్"
+
+#: doctor_functions.php
+msgid "Database health"
+msgstr "డేటాబేస్ ఆరోగ్యం"
+
+#: doctor_functions.php
+msgid "Devices"
+msgstr "పరికరాలు"
+
+#: doctor_functions.php setup.php
+msgid "Doctor"
+msgstr "Doctor"
+
+#: doctor_functions.php
+msgid "Filesystem"
+msgstr "ఫైల్‌సిస్టమ్"
+
+#: doctor_functions.php
+msgid "Logging"
+msgstr "లాగింగ్"
+
+#: doctor_functions.php
+msgid "PHP"
+msgstr "PHP"
+
+#: doctor_functions.php
+msgid "Poller"
+msgstr "పోలర్"
+
+#: doctor_functions.php
+msgid "Prerequisites"
+msgstr "ముందస్తు అవసరాలు"
+
+#: doctor_functions.php
+msgid "Repair"
+msgstr "మరమ్మతు"
+
+#: doctor_functions.php
+msgid "Security"
+msgstr "భద్రత"
+
+#: doctor_functions.php
+msgid "PASS"
+msgstr "ఉత్తీర్ణత"
+
+#: doctor_functions.php
+msgid "WARN"
+msgstr "హెచ్చరిక"
+
+#: doctor_functions.php
+msgid "FAIL"
+msgstr "విఫలం"
+
+#: doctor_functions.php
+msgid "UNKNOWN"
+msgstr "తెలియదు"
+
+#: doctor_rrd.php
+msgid "Data source freshness could not be assessed."
+msgstr "డేటా సోర్స్ తాజాదనాన్ని అంచనా వేయలేకపోయాము."
+
+#: doctor_rrd.php
+msgid "RRD update freshness"
+msgstr "RRD అప్‌డేట్ తాజాదనం"
+
+#: doctor_rrd.php
+msgid "The deferred-write interval is unknown; configure it before judging file age."
+msgstr "వాయిదా వేసిన-వ్రాత విరామం తెలియదు; చివరి అప్‌డేట్ నుండి గడిచిన సమయాన్ని అంచనా వేసే ముందు దాన్ని కాన్ఫిగర్ చేయండి."
+
+#: doctor_rrd.php
+#, php-format
+msgid "Checked %d files; %d stale files across %d devices; %d unavailable or future-dated files."
+msgstr "%d ఫైళ్లు తనిఖీ చేయబడ్డాయి; %d పాతబడిన ఫైళ్లు %d పరికరాలలో ఉన్నాయి; %d అందుబాటులో లేని లేదా భవిష్యత్ తేదీ గల ఫైళ్లు."
+
+#: doctor_rrd.php
+msgid "File age includes the collection interval and configured deferred-write allowance; verify the poller and flush process before changing data."
+msgstr "చివరి అప్‌డేట్ నుండి గడిచిన సమయంలో సేకరణ విరామం మరియు కాన్ఫిగర్ చేసిన వాయిదా-వ్రాత అనుమతి ఉంటాయి; డేటాను మార్చే ముందు పోలర్ మరియు ఫ్లష్ ప్రక్రియను ధృవీకరించండి."
+
+#: doctor_scheduling.php
+msgid "Scheduled checks are disabled. Enable them in Settings > Doctor to retain samples and alert on changes."
+msgstr "షెడ్యూల్ చేసిన తనిఖీలు నిలిపివేయబడ్డాయి. నమూనాలను నిలుపుకోవడానికి మరియు మార్పులపై హెచ్చరించడానికి సెట్టింగ్లు > Doctor లో వాటిని ప్రారంభించండి."
+
+#: doctor_scheduling.php
+msgid "Scheduled report freshness"
+msgstr "షెడ్యూల్ చేసిన నివేదిక తాజాదనం"
+
+#: doctor_scheduling.php
+#, php-format
+msgid "%s UTC"
+msgstr "%s UTC"
+
+#: doctor_scheduling.php
+#, php-format
+msgid "Last started: %s; last completed: %s."
+msgstr "చివరిసారి ప్రారంభించినది: %s; చివరిసారి పూర్తయినది: %s."
+
+#: doctor_scheduling.php
+msgid "never"
+msgstr "ఎప్పుడూ లేదు"
+
+#: doctor_scheduling.php
+msgid "Results are missing or stale. Check the primary poller and DOCTOR log for startup, timeout, or persistence errors."
+msgstr "ఫలితాలు లేవు లేదా పాతబడినవి. ప్రారంభం, సమయం ముగింపు లేదా నిల్వ లోపాల కోసం ప్రాథమిక పోలర్ మరియు DOCTOR లాగ్‌ను తనిఖీ చేయండి."
+
+#: doctor_scheduling.php
+msgid "A completed diagnostic run is recent; this does not mean all checks passed."
+msgstr "పూర్తయిన డయాగ్నస్టిక్ రన్ ఇటీవలిది; దీని అర్థం అన్ని తనిఖీలు ఉత్తీర్ణమయ్యాయని కాదు."
+
+#: doctor_scheduling.php
+msgid "Doctor alert state is invalid. Restore doctor_alert_pending from backup before retrying."
+msgstr "Doctor హెచ్చరిక స్థితి చెల్లదు. మళ్లీ ప్రయత్నించే ముందు బ్యాకప్ నుండి doctor_alert_pending ని పునరుద్ధరించండి."
+
+#: doctor_scheduling.php
+msgid "Doctor alert transitions are invalid; no email was sent."
+msgstr "Doctor హెచ్చరిక మార్పులు చెల్లవు; ఇమెయిల్ పంపబడలేదు."
+
+#: doctor_scheduling.php
+msgid "Alert delivery"
+msgstr "హెచ్చరిక డెలివరీ"
+
+#: doctor_scheduling.php
+#, php-format
+msgid "%d check transitions await delivery; attempts: %d of 3."
+msgstr "%d తనిఖీ మార్పులు డెలివరీ కోసం వేచి ఉన్నాయి; ప్రయత్నాలు: %d (3 లో)."
+
+#: doctor_scheduling.php
+msgid "Automatic retries exhausted. Correct Cacti mail settings, then run Doctor with --scheduled --retry-alerts as the poller user."
+msgstr "స్వయంచాలక పునఃప్రయత్నాలు ముగిశాయి. Cacti మెయిల్ సెట్టింగ్లను సరిదిద్ది, ఆపై పోలర్ వినియోగదారుగా --scheduled --retry-alerts తో Doctor ని నడపండి."
+
+#: doctor_scheduling.php
+#, php-format
+msgid "Next eligible retry: %s UTC, after a primary poller cycle."
+msgstr "తదుపరి అర్హమైన పునఃప్రయత్నం: %s UTC, ప్రాథమిక పోలర్ సైకిల్ తర్వాత."
+
+#: doctor_scheduling.php
+msgid "No alert recipients are currently configured; pending transitions are retained."
+msgstr "ప్రస్తుతం హెచ్చరిక గ్రహీతలు ఎవరూ కాన్ఫిగర్ చేయబడలేదు; పెండింగ్‌లో ఉన్న మార్పులు నిలుపుకోబడ్డాయి."
+
+#: doctor_scheduling.php
+msgid "No retained alert is awaiting delivery. Mail-server acceptance does not prove inbox delivery."
+msgstr "నిలుపుకోబడిన హెచ్చరిక ఏదీ డెలివరీ కోసం వేచి లేదు. మెయిల్-సర్వర్ ఆమోదం ఇన్‌బాక్స్ డెలివరీని నిరూపించదు."
+
+#: doctor_scheduling.php
+msgid "Doctor retained status changes (UTC). Repeated changes for one check are coalesced; an out-and-back transition is retained."
+msgstr "Doctor నిలుపుకున్న స్థితి మార్పులు (UTC). ఒకే తనిఖీ కోసం పునరావృత మార్పులు విలీనం చేయబడతాయి; తిరిగి వెనక్కి మారే మార్పు నిలుపుకోబడుతుంది."
+
+#: doctor_scheduling.php
+#, php-format
+msgid "%s: %s -> %s (latest change %s)"
+msgstr "%s: %s -> %s (తాజా మార్పు %s)"
+
+#: doctor_scheduling.php
+#, php-format
+msgid "%d further status changes are not listed because the alert queue reached its storage limit."
+msgstr "హెచ్చరిక క్యూ దాని నిల్వ పరిమితికి చేరుకున్నందున మరో %d స్థితి మార్పులు జాబితా చేయబడలేదు."
+
+#: doctor_scheduling.php
+msgid "Open Utilities > Doctor for current measurements, recommended actions, and verification steps."
+msgstr "ప్రస్తుత కొలతలు, సిఫార్సు చేసిన చర్యలు మరియు ధృవీకరణ దశల కోసం యుటిలిటీలు > Doctor ని తెరవండి."
+
+#: doctor_scheduling.php
+#, php-format
+msgid "Cacti Doctor: %d retained status changes"
+msgstr "Cacti Doctor: %d నిలుపుకోబడిన స్థితి మార్పులు"
+
+#: doctor_scheduling.php
+msgid "Doctor schedule is already running or the database lock is unavailable."
+msgstr "Doctor షెడ్యూల్ ఇప్పటికే నడుస్తోంది లేదా డేటాబేస్ లాక్ అందుబాటులో లేదు."
+
+#: doctor_web.php
+msgid "The finding could not be acknowledged. Run Doctor again, then acknowledge the current result."
+msgstr "ఈ అంశాన్ని అంగీకరించడం సాధ్యం కాలేదు. Doctor ని మళ్లీ నడిపి, ఆపై ప్రస్తుత ఫలితాన్ని అంగీకరించండి."
+
+#: doctor_web.php
+msgid "The warning exception could not be saved. Use a fresh assessed warning, an owner, a reason and an expiry within 90 days."
+msgstr "హెచ్చరిక మినహాయింపును సేవ్ చేయడం సాధ్యం కాలేదు. తాజా అంచనా వేసిన హెచ్చరిక, యజమాని, కారణం మరియు 90 రోజులలోపు గడువును ఉపయోగించండి."
+
+#: doctor_web.php
+msgid "Confirm repair"
+msgstr "మరమ్మతును నిర్ధారించండి"
+
+#: doctor_web.php
+msgid "Approval expires after five minutes and is invalidated by a changed filesystem. The acting account must be able to create directories or change owner permissions."
+msgstr "ఆమోదం ఐదు నిమిషాల తర్వాత గడువు ముగుస్తుంది మరియు మారిన ఫైల్‌సిస్టమ్ ద్వారా చెల్లనిదిగా అవుతుంది. పనిచేసే ఖాతా డైరెక్టరీలను సృష్టించగలగాలి లేదా యజమాని అనుమతులను మార్చగలగాలి."
+
+#: doctor_web.php
+msgid "Repair prerequisites are not met. No changes will be made."
+msgstr "మరమ్మతు ముందస్తు అవసరాలు తీరలేదు. ఎటువంటి మార్పులు చేయబడవు."
+
+#: doctor_web.php
+msgid "Cancel"
+msgstr "రద్దు చేయండి"
+
+#: doctor_web.php
+#, php-format
+msgid "Last observation: %s UTC."
+msgstr "చివరి పరిశీలన: %s UTC."
+
+#: doctor_web.php
+msgid "No completed diagnostic report is available."
+msgstr "పూర్తయిన డయాగ్నస్టిక్ నివేదిక ఏదీ అందుబాటులో లేదు."
+
+#: doctor_web.php
+msgid "Health is unknown: observations are missing or stale."
+msgstr "ఆరోగ్యం తెలియదు: పరిశీలనలు లేవు లేదా పాతబడినవి."
+
+#: doctor_web.php
+msgid "Run diagnostic checks"
+msgstr "డయాగ్నస్టిక్ తనిఖీలను నడపండి"
+
+#: doctor_web.php
+msgid "Doctor settings"
+msgstr "Doctor సెట్టింగ్లు"
+
+#: doctor_web.php setup.php
+msgid "Cacti Doctor"
+msgstr "Cacti Doctor"
+
+#: doctor_web.php
+#, php-format
+msgid "Installation health: %d passed, %d warnings, %d failed"
+msgstr "ఇన్‌స్టాలేషన్ ఆరోగ్యం: %d ఉత్తీర్ణత, %d హెచ్చరికలు, %d విఫలమయ్యాయి"
+
+#: doctor_web.php
+msgid "Category"
+msgstr "వర్గం"
+
+#: doctor_web.php
+msgid "Check"
+msgstr "తనిఖీ"
+
+#: doctor_web.php
+msgid "Status"
+msgstr "స్థితి"
+
+#: doctor_web.php
+msgid "Details"
+msgstr "వివరాలు"
+
+#: doctor_web.php
+msgid "Action"
+msgstr "చర్య"
+
+#: doctor_web.php
+msgid "Acknowledged; health status unchanged."
+msgstr "అంగీకరించబడింది; ఆరోగ్య స్థితి మారలేదు."
+
+#: doctor_web.php
+msgid "Acknowledge"
+msgstr "అంగీకరించండి"
+
+#: doctor_web.php
+#, php-format
+msgid "Owner: %s; review by %s UTC. Reason: %s"
+msgstr "యజమాని: %s; %s UTC నాటికి సమీక్షించండి. కారణం: %s"
+
+#: doctor_web.php
+msgid "Investigate a symptom"
+msgstr "లక్షణాన్ని పరిశోధించండి"
+
+#: doctor_web.php
+msgid "Investigate"
+msgstr "పరిశోధించండి"
+
+#: doctor_web.php
+msgid "Recent scheduled checks"
+msgstr "ఇటీవలి షెడ్యూల్ చేసిన తనిఖీలు"
+
+#: doctor_web.php
+msgid "Failed"
+msgstr "విఫలమైంది"
+
+#: doctor_web.php
+msgid "Observation (UTC)"
+msgstr "పరిశీలన (UTC)"
+
+#: doctor_web.php
+msgid "Passed"
+msgstr "ఉత్తీర్ణమైంది"
+
+#: doctor_web.php
+msgid "Warnings"
+msgstr "హెచ్చరికలు"
+
+#: doctor_web.php
+msgid "Warning exceptions"
+msgstr "హెచ్చరిక మినహాయింపులు"
+
+#: doctor_web.php
+msgid "Owner"
+msgstr "యజమాని"
+
+#: doctor_web.php
+msgid "Reason"
+msgstr "కారణం"
+
+#: doctor_web.php
+msgid "Review date (UTC)"
+msgstr "సమీక్ష తేదీ (UTC)"
+
+#: doctor_web.php
+msgid "Accept warning"
+msgstr "హెచ్చరికను అంగీకరించండి"
+
+#: doctor_web.php
+msgid "Expired"
+msgstr "గడువు ముగిసింది"
+
+#: doctor_web.php
+msgid "Check not present in this report; verify its ID."
+msgstr "ఈ నివేదికలో తనిఖీ లేదు; దాని ID ని ధృవీకరించండి."
+
+#: doctor_web.php
+msgid "Remove exception"
+msgstr "మినహాయింపును తొలగించండి"
+
+#: doctor_web.php
+msgid "Audit history"
+msgstr "ఆడిట్ చరిత్ర"
+
+#: doctor_workflows.php
+msgid "Repair refused"
+msgstr "మరమ్మతు నిరాకరించబడింది"
+
+#: doctor_workflows.php
+msgid "The approved plan is expired or the filesystem changed. Preview the repair again."
+msgstr "ఆమోదించబడిన ప్రణాళిక గడువు ముగిసింది లేదా ఫైల్‌సిస్టమ్ మారింది. మరమ్మతును మళ్లీ ప్రివ్యూ చేయండి."
+
+#: doctor_workflows.php
+msgid "The audit record could not be saved. No repair was attempted."
+msgstr "ఆడిట్ రికార్డును సేవ్ చేయడం సాధ్యం కాలేదు. మరమ్మతు ప్రయత్నించబడలేదు."
+
+#: doctor_workflows.php
+msgid "The completion audit failed; inspect the filesystem and the started audit record."
+msgstr "పూర్తి ఆడిట్ విఫలమైంది; ఫైల్‌సిస్టమ్ మరియు ప్రారంభించిన ఆడిట్ రికార్డును పరిశీలించండి."
+
+#: setup.php
+msgid "Doctor Administrator"
+msgstr "Doctor నిర్వాహకుడు"
+
+#: setup.php
+msgid "Doctor Operator"
+msgstr "Doctor ఆపరేటర్"
+
+#: setup.php
+msgid "Doctor Viewer"
+msgstr "Doctor వీక్షకుడు"
+
+#: setup.php
+msgid "Utilities"
+msgstr "యుటిలిటీలు"
+
+#: setup.php
+msgid "System Administration"
+msgstr "సిస్టమ్ నిర్వహణ"
+
+#: setup.php
+msgid "Scheduled Checks"
+msgstr "షెడ్యూల్ చేసిన తనిఖీలు"
+
+#: setup.php
+msgid "Run Checks on a Schedule"
+msgstr "షెడ్యూల్ ప్రకారం తనిఖీలను నడపండి"
+
+#: setup.php
+msgid "Run every Doctor check in the background after the poller and record each check's status."
+msgstr "పోలర్ తర్వాత నేపథ్యంలో ప్రతి Doctor తనిఖీని నడపండి మరియు ప్రతి తనిఖీ స్థితిని నమోదు చేయండి."
+
+#: setup.php
+msgid "Check Interval"
+msgstr "తనిఖీ విరామం"
+
+#: setup.php
+msgid "How often the scheduled checks run."
+msgstr "షెడ్యూల్ చేసిన తనిఖీలు ఎంత తరచుగా నడుస్తాయి."
+
+#: setup.php
+msgid "Every 15 Minutes"
+msgstr "ప్రతి 15 నిమిషాలకు"
+
+#: setup.php
+msgid "Every Hour"
+msgstr "ప్రతి గంటకు"
+
+#: setup.php
+msgid "Every 6 Hours"
+msgstr "ప్రతి 6 గంటలకు"
+
+#: setup.php
+msgid "Every Day"
+msgstr "ప్రతి రోజు"
+
+#: setup.php
+msgid "Alert Email Addresses"
+msgstr "హెచ్చరిక ఇమెయిల్ చిరునామాలు"
+
+#: setup.php
+msgid "Comma-separated addresses to email when a check starts or stops failing. Leave empty to only log changes to the Cacti log."
+msgstr "తనిఖీ విఫలమవడం ప్రారంభమైనప్పుడు లేదా ఆగినప్పుడు ఇమెయిల్ చేయడానికి కామాతో వేరు చేయబడిన చిరునామాలు. మార్పులను Cacti లాగ్‌కు మాత్రమే లాగ్ చేయడానికి ఖాళీగా వదిలేయండి."
+
+#: setup.php
+msgid "Alert on Warnings"
+msgstr "హెచ్చరికలపై అలర్ట్ చేయి"
+
+#: setup.php
+msgid "Also alert when a check moves into or out of a warning."
+msgstr "తనిఖీ హెచ్చరిక స్థితిలోకి వెళ్ళినప్పుడు లేదా బయటకు వచ్చినప్పుడు కూడా అలర్ట్ చేయండి."
+
+#: setup.php
+msgid "Thresholds"
+msgstr "పరిమితులు"
+
+#: setup.php
+msgid "Poller Run Time Warning (percent)"
+msgstr "పోలర్ అమలు సమయ హెచ్చరిక (శాతం)"
+
+#: setup.php
+msgid "Warn when the last main-poller run used this share of the polling interval. Runs that take the whole interval always fail."
+msgstr "చివరి ప్రధాన పోలర్ అమలు పోలింగ్ విరామంలో ఈ వాటాను ఉపయోగించినప్పుడు హెచ్చరించండి. మొత్తం విరామాన్ని తీసుకునే అమలులు ఎల్లప్పుడూ విఫలమవుతాయి."
+
+#: setup.php
+msgid "RRA Disk Free Warning (percent)"
+msgstr "RRA డిస్క్ ఖాళీ స్థల హెచ్చరిక (శాతం)"
+
+#: setup.php
+msgid "Warn when free space on the RRA file system drops below this percentage."
+msgstr "RRA ఫైల్ సిస్టమ్‌లో ఖాళీ స్థలం ఈ శాతం కంటే తగ్గినప్పుడు హెచ్చరించండి."
+
+#: setup.php
+msgid "Fail when free space on the RRA file system drops below this percentage."
+msgstr "RRA ఫైల్ సిస్టమ్‌లో ఖాళీ స్థలం ఈ శాతం కంటే తగ్గినప్పుడు విఫలమైనట్లు చూపండి."
+
+#: setup.php
+msgid "RRA Disk Free Failure (percent)"
+msgstr "RRA డిస్క్ ఖాళీ స్థల వైఫల్యం (శాతం)"
+
+#: setup.php
+msgid "Clock Drift Warning (seconds)"
+msgstr "గడియార వ్యత్యాస హెచ్చరిక (సెకన్లు)"
+
+#: setup.php
+msgid "Warn when the database and PHP clocks differ by more than this."
+msgstr "డేటాబేస్ మరియు PHP గడియారాలు దీనికంటే ఎక్కువ తేడా చూపినప్పుడు హెచ్చరించండి."
+
+#: setup.php
+msgid "Clock Drift Failure (seconds)"
+msgstr "గడియార వ్యత్యాస వైఫల్యం (సెకన్లు)"
+
+#: setup.php
+msgid "Fail when the database and PHP clocks differ by more than this."
+msgstr "డేటాబేస్ మరియు PHP గడియారాలు దీనికంటే ఎక్కువ తేడా చూపినప్పుడు విఫలమైనట్లు చూపండి."
+
+#: setup.php
+msgid "RRD Stale Intervals"
+msgstr "RRD పాతబడిన విరామాలు"
+
+#: setup.php
+msgid "Warn after this many collection intervals without a file update (1 to 100)."
+msgstr "ఫైల్ నవీకరణ లేకుండా ఇన్ని సేకరణ విరామాల తర్వాత హెచ్చరించండి (1 నుండి 100)."
+
+#: setup.php
+msgid "Additional disk-write delay for external caching (0 to 86400). Boost adds its own allowance."
+msgstr "బాహ్య క్యాషింగ్ కోసం అదనపు డిస్క్-రైట్ ఆలస్యం (0 నుండి 86400). Boost తన సొంత వెసులుబాటును జోడిస్తుంది."
+
+#: setup.php
+msgid "Deferred RRD Write Allowance (seconds)"
+msgstr "ఆలస్యమైన RRD రైట్ వెసులుబాటు (సెకన్లు)"
+
+#: setup.php
+msgid "Cacti Log Size Warning (MB)"
+msgstr "Cacti లాగ్ పరిమాణ హెచ్చరిక (MB)"
+
+#: setup.php
+msgid "Warn when the Cacti log grows beyond this size, which usually means log rotation is not running."
+msgstr "Cacti లాగ్ ఈ పరిమాణం కంటే ఎక్కువగా పెరిగినప్పుడు హెచ్చరించండి, దీని అర్థం సాధారణంగా లాగ్ రొటేషన్ అమలు కావడం లేదని."

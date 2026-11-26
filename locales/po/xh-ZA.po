@@ -1,0 +1,1542 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
+# SPDX-FileCopyrightText: 2026 Thomas Vincent <thomasvincent@gmail.com>
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: doctor 0.6.1\n"
+"Report-Msgid-Bugs-To: https://github.com/somethingwithproof/plugin_doctor/issues\n"
+"PO-Revision-Date: 2026-11-26 00:00+0000\n"
+"Last-Translator: Thomas Vincent <thomasvincent@gmail.com>\n"
+"Language-Team: Thomas Vincent <thomasvincent@gmail.com>\n"
+"Language: xh-ZA\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: cli/doctor.php
+#, php-format
+msgid "Available repairs: %s"
+msgstr "Ukulungiswa okufumanekayo: %s"
+
+#: cli/doctor.php
+#, php-format
+msgid "Unknown format %s. Use text, json, nagios, or prometheus."
+msgstr "Ifomathi engaziwayo %s. Sebenzisa i-text, json, nagios, okanye prometheus."
+
+#: cli/doctor.php
+#, php-format
+msgid "Redaction could not complete, so %s was not written."
+msgstr "Ukucinywa kweenkcukacha eziyimfihlo akukwazanga kugqitywa, ngoko ke %s ayibhalwanga."
+
+#: cli/doctor.php
+#, php-format
+msgid "Wrote %s. Review it before sharing; values after password, secret, token, and community names are masked."
+msgstr "Kubhalwe %s. Yijonge phambi kokuba wabelane ngayo; amaxabiso emva kwamagama e-password, secret, token, kunye ne-community afihliwe."
+
+#: cli/doctor.php doctor_functions.php
+msgid "Unknown repair"
+msgstr "Ukulungiswa okungaziwayo"
+
+#: cli/doctor.php
+msgid "Refusing to repair without --yes."
+msgstr "Iyala ukulungisa ngaphandle kwe --yes."
+
+#: cli/doctor.php
+msgid "Select a supported symptom and text or JSON output."
+msgstr "Khetha uphawu oluxhaswayo kunye nesiphumo se-text okanye se-JSON."
+
+#: cli/doctor.php doctor_web.php
+msgid "Accepted warning"
+msgstr "Isilumkiso esamkelekileyo"
+
+#: doctor_access.php doctor_functions.php
+msgid "Device availability"
+msgstr "Ukufumaneka kwesixhobo"
+
+#: doctor_access.php
+msgid "Device permissions could not be evaluated."
+msgstr "Iimvume zesixhobo azikwazanga kuvavanywa."
+
+#: doctor_access.php
+msgid "The configured PHP CLI cannot run Doctor checks."
+msgstr "I-PHP CLI eqwalaselweyo ayinako ukuqhuba iitshekhi ze-Doctor."
+
+#: doctor_access.php
+msgid "Doctor checks failed or exceeded their time limit. Review the Doctor log."
+msgstr "Iitshekhi ze-Doctor zisilele okanye zigqithe kumda wazo wexesha. Jonga ilogi ye-Doctor."
+
+#: doctor_diagnosis.php
+msgid "Graphs stopped updating"
+msgstr "Iigrafu ziyekile ukuhlaziywa"
+
+#: doctor_diagnosis.php
+msgid "Polling is slow"
+msgstr "Ukuphola kuyacotha"
+
+#: doctor_diagnosis.php
+msgid "Devices are missing or unavailable"
+msgstr "Izixhobo azikho okanye azifumaneki"
+
+#: doctor_diagnosis.php
+msgid "Doctor alerts are missing"
+msgstr "Izilumkiso ze-Doctor ziyashota"
+
+#: doctor_diagnosis.php
+msgid "Check the poller scheduler and the affected poller log, then verify a new completed cycle."
+msgstr "Khangela umcwangcisi we-poller kunye nelogi ye-poller echaphazelekayo, uze uqinisekise umjikelo omtsha ogqityiweyo."
+
+#: doctor_diagnosis.php
+msgid "Collection may have stopped."
+msgstr "Ukuqokelelwa kweenkcukacha kunokuba kumile."
+
+#: doctor_diagnosis.php
+msgid "Collected values may not be reaching disk."
+msgstr "Amaxabiso aqokelelweyo anokungafiki kwidiski."
+
+#: doctor_diagnosis.php
+msgid "Inspect the output queue and Boost flush history; verify that the queue drains and RRD timestamps advance."
+msgstr "Hlola umgca wemveliso kunye nembali yokukhutshwa kwe-Boost; qinisekisa ukuba umgca uyaphela kwaye amaxesha e-RRD aya phambili."
+
+#: doctor_diagnosis.php
+msgid "Check storage capacity, runtime-directory permissions and the last RRD update; account for deferred writes."
+msgstr "Khangela umthamo wokugcina, iimvume zesikhombisi sexesha lokusebenza kunye nohlaziyo lokugqibela lwe-RRD; qwalasela ukubhalwa okulibazisekileyo."
+
+#: doctor_diagnosis.php
+msgid "RRD storage needs investigation."
+msgstr "Ukugcinwa kwe-RRD kufuna uphando."
+
+#: doctor_diagnosis.php
+msgid "Collection work may be exceeding its time budget."
+msgstr "Umsebenzi wokuqokelela unokuba ugqitha kwixesha lawo elimiselweyo."
+
+#: doctor_diagnosis.php
+msgid "Compare cycle duration with the polling interval and inspect device timeouts before increasing concurrency."
+msgstr "Thelekisa ubude bomjikelo kunye nekhefu le-polling uze uhlole ukuphelelwa lixesha kwesixhobo ngaphambi kokwandisa ukusebenza ngaxeshanye."
+
+#: doctor_diagnosis.php
+msgid "Compare database counters during a slow cycle and inspect query plans before changing server limits."
+msgstr "Thelekisa izibali zesiseko sedatha ngexesha lomjikelo ocothayo uze uhlole izicwangciso zezicelo phambi kokutshintsha imida yeseva."
+
+#: doctor_diagnosis.php
+msgid "Database pressure may be contributing to slow polling."
+msgstr "Uxinzelelo lwesiseko sedatha lunokuba negalelo ekucotheni kwe-polling."
+
+#: doctor_diagnosis.php
+msgid "Collection prerequisites or reachability may be failing."
+msgstr "Iimfuneko zokuqokelela okanye ukufikeleleka kunokuba kuyasilela."
+
+#: doctor_diagnosis.php
+msgid "Verify the affected device permissions, reachability, credentials and assigned poller using Cacti diagnostics."
+msgstr "Qinisekisa iimvume zesixhobo esichaphazelekayo, ukufikeleleka, iziqinisekiso zokungena kunye ne-poller eyabelweyo usebenzisa uxilongo lwe-Cacti."
+
+#: doctor_diagnosis.php
+msgid "Scheduled checks or mail delivery need attention."
+msgstr "Ukuhlolwa okucwangcisiweyo okanye ukuhanjiswa kweposi kufuna ingqwalasela."
+
+#: doctor_diagnosis.php
+msgid "Verify scheduling and recipient settings, inspect retained delivery attempts, and send a Cacti test email."
+msgstr "Qinisekisa iisetingi zokucwangcisa kunye nezomamkeli, hlola iinzame zokuhambisa ezigciniweyo, uze uthumele i-imeyile yovavanyo ye-Cacti."
+
+#: doctor_diagnosis.php
+msgid "Possible causes require verification; matching checks do not establish a root cause."
+msgstr "Unobangela onokubakho ufuna ukuqinisekiswa; ukuhlolwa okuhambelanayo akuqinisekisi unobangela osisiseko."
+
+#: doctor_diagnosis.php
+msgid "No cause is established by the available observations. Run fresh diagnostics and investigate the symptom directly."
+msgstr "Akukho nobangela uqinisekisiweyo ngokuqwalaselwa okukhoyo. Qhuba uxilongo olutsha uze uphande uphawu ngokuthe ngqo."
+
+#: doctor_functions.php
+msgid "At least 24 hours since server startup and FLUSH STATUS. Counters are cumulative and may have different reset histories; confirm trends during a representative workload before tuning."
+msgstr "Ubuncinane iiyure ezingama-24 ukusukela ekuqalisweni kweseva kunye ne-FLUSH STATUS. Izibali ziqokelelana kwaye zinokuba neembali ezahlukeneyo zokuseta kwakhona; qinisekisa iindlela zokuhamba ngexesha lomthwalo womsebenzi omelayo phambi kokulungisa."
+
+#: doctor_functions.php
+msgid "Cumulative tuning advice is deferred: obtain valid uptime and at least 24 hours since startup and FLUSH STATUS. Missing metrics or an inconsistent sample cannot establish database health."
+msgstr "Ingcebiso yolungiso oluqokelelanayo ilibazisiwe: fumana ixesha lokusebenza elisemthethweni kunye nobuncinane iiyure ezingama-24 ukusukela ekuqalisweni kunye ne-FLUSH STATUS. Imilinganiselo eshotayo okanye isampulu engahambelaniyo ayinakumisela impilo yesiseko sedatha."
+
+#: doctor_functions.php
+msgid "Database observation window"
+msgstr "Ifestile yokuqwalasela isiseko sedatha"
+
+#: doctor_functions.php
+msgid "Connection metrics are unavailable or invalid. Check access to SHOW GLOBAL STATUS and SHOW GLOBAL VARIABLES; do not treat missing metrics as an idle server."
+msgstr "Imilinganiselo yoqhagamshelo ayifumaneki okanye ayisebenzi. Khangela ufikelelo kwi-SHOW GLOBAL STATUS nakwi-SHOW GLOBAL VARIABLES; musa ukuthatha imilinganiselo eshotayo njengeseva engasebenziyo."
+
+#: doctor_functions.php
+#, php-format
+msgid "Current connections: %.0f / %.0f (%s); recorded peak: %.0f (%s of the current limit)."
+msgstr "Uqhagamshelo lwangoku: %.0f / %.0f (%s); incopho erekhodiweyo: %.0f (%s yomda wangoku)."
+
+#: doctor_functions.php
+msgid "Review connection pooling and poller concurrency. Check database-host memory headroom before raising max_connections; the historical peak may reflect an older limit."
+msgstr "Phonononga ukuqokelelwa koqhagamshelo kunye nokusebenza ngaxeshanye kwe-poller. Khangela indawo eseleyo yememori yenginginya yesiseko sedatha phambi kokunyusa i-max_connections; incopho yembali inokubonisa umda omdala."
+
+#: doctor_functions.php
+msgid "Connection capacity"
+msgstr "Umthamo woqhagamshelo"
+
+#: doctor_functions.php
+msgid "InnoDB buffer pool reads"
+msgstr "Ukufundwa kwe-InnoDB buffer pool"
+
+#: doctor_functions.php
+msgid "Review query plans and the working set. Consider innodb_buffer_pool_size only after measuring memory available on the database host; a cumulative miss ratio alone does not prove memory pressure."
+msgstr "Phonononga izicwangciso zezicelo kunye neseti esebenzayo. Qwalasela i-innodb_buffer_pool_size kuphela emva kokulinganisa imemori efumanekayo kwinginginya yesiseko sedatha; umlinganiselo wokuphoswa oqokelelanayo wedwa awubonisi uxinzelelo lwememori."
+
+#: doctor_functions.php
+msgid "On-disk temporary tables"
+msgstr "Iitheyibhile zexeshana ezikwidiski"
+
+#: doctor_functions.php
+msgid "Review query plans, sorting, grouping, and temporary-table data types before changing memory limits. Some tables must use disk; memory limits and accounting differ between MySQL and MariaDB versions."
+msgstr "Phonononga izicwangciso zezicelo, ukuhlela, ukuhlanganisa, kunye neentlobo zedatha zeteyibhile yexeshana phambi kokutshintsha imida yememori. Ezinye iitheyibhile kufuneka zisebenzise idiski; imida yememori kunye nokubalwa kwayo kuyahluka phakathi kweenguqulelo ze-MySQL kunye ne-MariaDB."
+
+#: doctor_functions.php
+msgid "Connection thread creation"
+msgstr "Ukudalwa kwemisonto yoqhagamshelo"
+
+#: doctor_functions.php
+msgid "Review connection reuse and thread_cache_size. Check the server thread-handling mode before tuning; thread-pool implementations do not behave like one-thread-per-connection servers."
+msgstr "Phonononga ukusetyenziswa kwakhona koqhagamshelo kunye ne-thread_cache_size. Khangela imo yokuphatha imisonto yeseva phambi kokulungisa; ukwenziwa kwe-thread-pool akuziphathi njengeeseva ezisebenzisa umsonto omnye ngoqhagamshelo ngalunye."
+
+#: doctor_functions.php
+msgid "Review slow-query logging, long_query_time, and query plans before changing server buffers. This counter depends on the configured slow-query threshold and does not identify individual statements."
+msgstr "Phonononga ukurekhodwa kwezicelo ezicothayo, i-long_query_time, kunye nezicwangciso zezicelo phambi kokutshintsha iibhafa zeseva. Esi sibali sixhomekeke kumda wesicelo esicothayo oqwalaselweyo kwaye asichongi iingxelo ezizimeleyo."
+
+#: doctor_functions.php
+msgid "Slow statements"
+msgstr "Iingxelo ezicothayo"
+
+#: doctor_functions.php
+msgid "Cumulative advice deferred until the observation window is sufficient."
+msgstr "Ingcebiso eqokelelanayo ilibazisiwe de ifestile yokuqwalasela ibe yaneleyo."
+
+#: doctor_functions.php
+msgid "Thread-cache advice is not assessed: thread_handling is unavailable or is not one-thread-per-connection. Review the active thread-pool implementation instead."
+msgstr "Ingcebiso ye-thread-cache ayihlolwanga: i-thread_handling ayifumaneki okanye ayingomsonto omnye ngoqhagamshelo ngalunye. Phonononga ukwenziwa kwe-thread-pool esebenzayo endaweni yoko."
+
+#: doctor_functions.php
+#, php-format
+msgid "Required counters are missing or invalid: %s, %s. Check server-version support and monitoring permissions."
+msgstr "Izibali ezifunekayo ziyashota okanye azisebenzi: %s, %s. Khangela inkxaso yenguqulelo yeseva kunye neemvume zokubeka iliso."
+
+#: doctor_functions.php
+msgid "A counter reset since the prior sample; collect another representative interval before tuning."
+msgstr "Isibali sasetwa kwakhona ukusukela kwisampulu yangaphambili; qokelela elinye ikhefu elimelayo phambi kokulungisa."
+
+#: doctor_functions.php
+#, php-format
+msgid "Insufficient activity: %.0f %s; at least %d observations are needed for this advisory."
+msgstr "Umsebenzi awonelanga: %.0f %s; ubuncinane kufuneka ukuqwalaselwa okungu-%d kule ngcebiso."
+
+#: doctor_functions.php
+msgid "Counters are inconsistent or were reset independently. Collect a new representative sample before tuning."
+msgstr "Izibali azihambelani okanye zasetwa kwakhona ngokuzimeleyo. Qokelela isampulu entsha emelayo phambi kokulungisa."
+
+#: doctor_functions.php
+msgid "The interval sample is too small or counters reset; collect another representative interval before tuning."
+msgstr "Isampulu yekhefu incinci kakhulu okanye izibali zisetwe kwakhona; qokelela elinye ikhefu elimelayo phambi kokulungisa."
+
+#: doctor_functions.php
+#, php-format
+msgid "Interval %s / %s: %.0f / %.0f (%s); investigation threshold: %s."
+msgstr "Ikhefu %s / %s: %.0f / %.0f (%s); umda wophando: %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "Cumulative %s / %s: %.0f / %.0f (%s); investigation threshold: %s."
+msgstr "Uqokelelano %s / %s: %.0f / %.0f (%s); umda wophando: %s."
+
+#: doctor_functions.php
+msgid "This counter can omit memory-mapped temporary files on MySQL; a low ratio does not rule out disk use."
+msgstr "Esi sibali sinokushiya ngaphandle iifayile zexeshana ezibalwe kwimemori kwi-MySQL; umlinganiselo ophantsi awukhupheli ngaphandle ukusetyenziswa kwediski."
+
+#: doctor_functions.php
+msgid "Redo-log advice deferred until the observation window is sufficient and Innodb_log_waits is available."
+msgstr "Ingcebiso ye-redo-log ilibazisiwe de ifestile yokuqwalasela yanele kwaye i-Innodb_log_waits ifumaneke."
+
+#: doctor_functions.php
+#, php-format
+msgid "Cumulative Innodb_log_waits: %.0f."
+msgstr "I-Innodb_log_waits eqokelelanayo: %.0f."
+
+#: doctor_functions.php
+msgid "Investigate transaction sizes, log-buffer pressure, and storage latency. Recheck the rate under load before considering innodb_log_buffer_size; this historical count is not evidence of a current stall."
+msgstr "Phanda ubungakanani beentengiselwano, uxinzelelo lwe-log-buffer, kunye nokulibaziseka kokugcinwa. Khangela kwakhona isantya phantsi komthwalo phambi kokuqwalasela i-innodb_log_buffer_size; eli nani lembali alibubungqina bokuma kwangoku."
+
+#: doctor_functions.php
+msgid "InnoDB log-buffer waits"
+msgstr "Ukulinda kwe-InnoDB log-buffer"
+
+#: doctor_functions.php
+msgid "installed Cacti composer.json"
+msgstr "i-composer.json ye-Cacti efakiweyo"
+
+#: doctor_functions.php
+#, php-format
+msgid "Cacti %s installer requirement"
+msgstr "Imfuneko yesifaki se-Cacti %s"
+
+#: doctor_functions.php
+msgid "PHP compatibility with installed Cacti"
+msgstr "Ukuhambelana kwe-PHP kunye ne-Cacti efakiweyo"
+
+#: doctor_functions.php
+#, php-format
+msgid "Running PHP %s; installed Cacti %s."
+msgstr "I-PHP esebenzayo yi-%s; i-Cacti efakiweyo yi-%s."
+
+#: doctor_functions.php
+msgid "Could not establish Cacti's PHP requirement. Check the installed Cacti composer.json or release documentation; Doctor does not assume compatibility."
+msgstr "Ayikwazanga ukumisela imfuneko ye-PHP ye-Cacti. Khangela i-composer.json ye-Cacti efakiweyo okanye amaxwebhu okukhutshwa; i-Doctor ayicingeli ukuhambelana."
+
+#: doctor_functions.php
+#, php-format
+msgid "PHP >= %s and < %s"
+msgstr "PHP >= %s kunye < %s"
+
+#: doctor_functions.php
+#, php-format
+msgid "PHP >= %s"
+msgstr "PHP >= %s"
+
+#: doctor_functions.php
+#, php-format
+msgid "Requires %s (%s). Running PHP meets that requirement."
+msgstr "Ifuna i-%s (%s). I-PHP esebenzayo iyahlangabezana naloo mfuneko."
+
+#: doctor_functions.php
+#, php-format
+msgid "Requires %s (%s). Running PHP does not meet that requirement."
+msgstr "Ifuna i-%s (%s). I-PHP esebenzayo ayihlangabezani naloo mfuneko."
+
+#: doctor_functions.php
+#, php-format
+msgid "Detected %s; Doctor requires Cacti 1.2.20 or newer."
+msgstr "Kufunyenwe i-%s; i-Doctor ifuna i-Cacti 1.2.20 okanye entsha."
+
+#: doctor_functions.php
+msgid "Supported Cacti version"
+msgstr "Inguqulelo ye-Cacti exhaswayo"
+
+#: doctor_functions.php
+msgid "PHP upstream security support"
+msgstr "Inkxaso yokhuseleko engundoqo ye-PHP"
+
+#: doctor_functions.php
+msgid "This checks the PHP release branch, not whether this patch release is up to date or whether your OS vendor backports fixes. Cacti compatibility is checked separately."
+msgstr "Oku kuhlolwa kusebenza kwibrenshi yokukhutshwa kwe-PHP, hayi ukuba olu khupho lwe-patch luhlaziywe na okanye umthengisi wakho we-OS ubuyisela izilungiso na. Ukuhambelana kwe-Cacti kuhlolwa ngokwahlukeneyo."
+
+#: doctor_functions.php
+#, php-format
+msgid "Running PHP %s; upstream security-support status is unknown or this is a prerelease. Check https://www.php.net/supported-versions.php and update Doctor's support data."
+msgstr "I-PHP esebenzayo yi-%s; ubume benkxaso yokhuseleko engundoqo abwaziwa okanye oku lukhupho lwangaphambi kwexesha. Khangela i-https://www.php.net/supported-versions.php uze uhlaziye idatha yenkxaso ye-Doctor."
+
+#: doctor_functions.php
+#, php-format
+msgid "Running PHP %s; PHP %s receives upstream security fixes through %s."
+msgstr "I-PHP esebenzayo yi-%s; i-PHP %s ifumana izilungiso zokhuseleko ezingundoqo kude kube yi-%s."
+
+#: doctor_functions.php
+#, php-format
+msgid "Running PHP %s; PHP %s no longer receives upstream security fixes; support ended %s. Upgrade to a supported PHP branch compatible with your Cacti installation, or confirm security maintenance with your OS vendor."
+msgstr "I-PHP esebenzayo yi-%s; i-PHP %s ayisafumani zilungiso zokhuseleko zingundoqo; inkxaso iphele nge-%s. Nyusela kwibrenshi ye-PHP exhaswayo ehambelana nofakelo lwakho lwe-Cacti, okanye uqinisekise ukugcinwa kokhuseleko kumthengisi wakho we-OS."
+
+#: doctor_functions.php
+msgid "Required current CLI PHP extensions"
+msgstr "Izandiso ze-CLI PHP zangoku ezifunekayo"
+
+#: doctor_functions.php
+msgid "Required web PHP extensions"
+msgstr "Izandiso ze-web PHP ezifunekayo"
+
+#: doctor_functions.php
+#, php-format
+msgid "Missing: %s. Install them through the operating system package manager."
+msgstr "Ziyashota: %s. Zifake ngomlawuli wephakheji wenkqubo yokusebenza."
+
+#: doctor_functions.php
+msgid "All PHP extensions required by the Cacti installer are loaded in this PHP context."
+msgstr "Zonke izandiso ze-PHP ezifunwa sisifaki se-Cacti zilayishiwe kule meko ye-PHP."
+
+#: doctor_functions.php
+msgid "Doctor does not execute configured binaries while running as root."
+msgstr "I-Doctor ayiqhubi iibhayinari eziqwalaselweyo ngelixa isebenza njenge-root."
+
+#: doctor_functions.php
+#, php-format
+msgid "The file name %s is not expected for %s, so Doctor did not execute it."
+msgstr "Igama lefayile elingu-%s alilindelekanga kwi-%s, ngoko ke i-Doctor ayiliqhubanga."
+
+#: doctor_functions.php
+msgid "Doctor is running as root, so permission checks describe root rather than the web server or poller account, configured binaries are not executed, and repairs are refused. Run Doctor as the Cacti poller user."
+msgstr "I-Doctor isebenza njenge-root, ngoko ke ukuhlolwa kweemvume kuchaza i-root endaweni yeseva yewebhu okanye iakhawunti ye-poller, iibhayinari eziqwalaselweyo aziqhutshwa, kwaye ulungiso luyaliwa. Qhuba i-Doctor njengomsebenzisi we-poller ye-Cacti."
+
+#: doctor_functions.php
+msgid "Doctor privileges"
+msgstr "Amalungelo e-Doctor"
+
+#: doctor_functions.php
+msgid "Doctor is running without root privileges."
+msgstr "I-Doctor isebenza ngaphandle kwamalungelo e-root."
+
+#: doctor_functions.php
+msgid "Required CLI PHP extensions"
+msgstr "Izandiso ze-CLI PHP ezifunekayo"
+
+#: doctor_functions.php
+msgid "The configured PHP CLI executable is unavailable, so its extensions cannot be checked."
+msgstr "Isixhobo esiqhutshwayo se-PHP CLI esiqwalaselweyo asifumaneki, ngoko ke izandiso zaso azinakuhlolwa."
+
+#: doctor_functions.php
+msgid "shell_exec() is disabled, so Doctor cannot compare the CLI PHP extensions with Cacti requirements."
+msgstr "I-shell_exec() ikhubaziwe, ngoko ke i-Doctor ayinakuthelekisa izandiso ze-CLI PHP neemfuneko ze-Cacti."
+
+#: doctor_functions.php
+msgid "The configured PHP CLI executable did not return a valid extension list."
+msgstr "Isixhobo esiqhutshwayo se-PHP CLI esiqwalaselweyo asibuyisanga uluhlu lwezandiso olusebenzayo."
+
+#: doctor_functions.php
+#, php-format
+msgid "Missing from CLI PHP: %s. The web and CLI PHP configurations are separate on many systems."
+msgstr "Ziyashota kwi-CLI PHP: %s. Uqwalaselo lwewebhu kunye ne-CLI PHP lwahlukile kwiinkqubo ezininzi."
+
+#: doctor_functions.php
+msgid "The configured PHP CLI has every extension required by Cacti."
+msgstr "I-PHP CLI eqwalaselweyo inazo zonke izandiso ezifunwa yi-Cacti."
+
+#: doctor_functions.php
+msgid "GD TrueType support"
+msgstr "Inkxaso ye-GD TrueType"
+
+#: doctor_functions.php
+msgid "Recommended PHP features"
+msgstr "Iimpawu ze-PHP ezicetyiswayo"
+
+#: doctor_functions.php
+#, php-format
+msgid "Unavailable: %s. Cacti can run without these features, but related functionality may be limited."
+msgstr "Azifumaneki: %s. I-Cacti ingasebenza ngaphandle kwezi mpawu, kodwa ukusebenza okunxulumeneyo kunokuthintelwa."
+
+#: doctor_functions.php
+msgid "The optional gettext, SNMP, and GD TrueType features are available."
+msgstr "Iimpawu ezikhethwayo ze-gettext, SNMP, kunye ne-GD TrueType ziyafumaneka."
+
+#: doctor_functions.php
+#, php-format
+msgid "memory_limit is %s (%dM or more is recommended)"
+msgstr "i-memory_limit ngu-%s (kucetyiswa i-%dM okanye ngaphezulu)"
+
+#: doctor_functions.php
+#, php-format
+msgid "max_execution_time is %d seconds (60 or more is recommended)"
+msgstr "i-max_execution_time yimizuzwana engu-%d (kucetyiswa ama-60 okanye ngaphezulu)"
+
+#: doctor_functions.php
+msgid "date.timezone is not set"
+msgstr "i-date.timezone ayisetwanga"
+
+#: doctor_functions.php
+msgid "unset"
+msgstr "ayisetwanga"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s. Current values: %s"
+msgstr "%s. Amaxabiso angoku: %s"
+
+#: doctor_functions.php
+msgid "PHP runtime configuration"
+msgstr "Uqwalaselo lwexesha lokusebenza lwe-PHP"
+
+#: doctor_functions.php
+msgid "Database connection"
+msgstr "Uqhagamshelo lwesiseko sedatha"
+
+#: doctor_functions.php
+#, php-format
+msgid "Query failed: %s"
+msgstr "Isicelo sisilele: %s"
+
+#: doctor_functions.php
+msgid "A read-only query completed successfully."
+msgstr "Isicelo sokufunda kuphela sigqitywe ngempumelelo."
+
+#: doctor_functions.php
+msgid "The database returned an unexpected result."
+msgstr "Isiseko sedatha sibuyise isiphumo esingalindelekanga."
+
+#: doctor_functions.php
+#, php-format
+msgid "Doctor could not determine the database server version from %s."
+msgstr "I-Doctor ayikwazanga ukumisela inguqulelo yeseva yesiseko sedatha kwi-%s."
+
+#: doctor_functions.php
+msgid "Supported database server"
+msgstr "Iseva yesiseko sedatha exhaswayo"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s %s detected; this Cacti branch recommends %s %s or newer."
+msgstr "Kufunyenwe i-%s %s; le brenshi ye-Cacti icebisa i-%s %s okanye entsha."
+
+#: doctor_functions.php
+#, php-format
+msgid "Database character set is %s and collation is %s. Cacti requires utf8mb4."
+msgstr "Iseti yoonobumba yesiseko sedatha ngu-%s kwaye i-collation ngu-%s. I-Cacti ifuna i-utf8mb4."
+
+#: doctor_functions.php
+msgid "unknown"
+msgstr "akwaziwa"
+
+#: doctor_functions.php
+msgid "Database character set"
+msgstr "Iseti yoonobumba yesiseko sedatha"
+
+#: doctor_functions.php
+msgid "Database timezone support"
+msgstr "Inkxaso yendawo yexesha yesiseko sedatha"
+
+#: doctor_functions.php
+msgid "The Cacti database account cannot read mysql.time_zone_name. Grant SELECT access and populate the database timezone tables."
+msgstr "Iakhawunti yesiseko sedatha ye-Cacti ayinakuyifunda i-mysql.time_zone_name. Nika ufikelelo lwe-SELECT uze ugcwalise iitheyibhile zendawo yexesha zesiseko sedatha."
+
+#: doctor_functions.php
+#, php-format
+msgid "The database timezone table is accessible and contains %d entries."
+msgstr "Itheyibhile yendawo yexesha yesiseko sedatha iyafikeleleka kwaye inamangeno angu-%d."
+
+#: doctor_functions.php
+msgid "The database timezone table is accessible but empty. Populate the system timezone tables."
+msgstr "Itheyibhile yendawo yexesha yesiseko sedatha iyafikeleleka kodwa ayinanto. Gcwalisa iitheyibhile zendawo yexesha zenkqubo."
+
+#: doctor_functions.php
+msgid "Core tables used by Cacti are present."
+msgstr "Iitheyibhile ezingundoqo ezisetyenziswa yi-Cacti zikhona."
+
+#: doctor_functions.php
+#, php-format
+msgid "Missing core tables: %s. Restore or upgrade the database before attempting other repairs."
+msgstr "Iitheyibhile ezingundoqo ezishotayo: %s. Buyisela okanye unyuse isiseko sedatha phambi kokuzama olunye ulungiso."
+
+#: doctor_functions.php
+msgid "Core database tables"
+msgstr "Iitheyibhile ezingundoqo zesiseko sedatha"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s is missing (%s)"
+msgstr "%s iyashota (%s)"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s is not writable (%s)"
+msgstr "%s ayibhaleki (%s)"
+
+#: doctor_functions.php
+msgid "Runtime directories"
+msgstr "Izikhombisi zexesha lokusebenza"
+
+#: doctor_functions.php
+msgid "The cache, log, and RRA directories exist and are writable."
+msgstr "Izikhombisi ze-cache, ilogi, kunye ne-RRA zikhona kwaye ziyabhaleka."
+
+#: doctor_functions.php
+msgid "Cacti configuration file"
+msgstr "Ifayile yoqwalaselo lwe-Cacti"
+
+#: doctor_functions.php
+msgid "include/config.php is missing or unreadable."
+msgstr "i-include/config.php iyashota okanye ayifundeki."
+
+#: doctor_functions.php
+msgid "include/config.php is readable. POSIX mode-bit checks do not apply on Windows."
+msgstr "i-include/config.php iyafundeka. Ukuhlolwa kwe-POSIX mode-bit akusebenzi kwi-Windows."
+
+#: doctor_functions.php
+msgid "include/config.php is writable by other users. Remove world-write permission because this file contains database credentials."
+msgstr "i-include/config.php iyabhaleka ngabanye abasebenzisi. Susa imvume yokubhala yomntu wonke kuba le fayile iqulethe iziqinisekiso zokungena kwisiseko sedatha."
+
+#: doctor_functions.php
+msgid "include/config.php is group-writable. Confirm that every member of the owning group is trusted."
+msgstr "i-include/config.php iyabhaleka liqela. Qinisekisa ukuba ilungu ngalinye leqela eliyilawulayo lithembekile."
+
+#: doctor_functions.php
+msgid "include/config.php is readable by all local users and contains database credentials. Restrict it to the owner and the web server group."
+msgstr "i-include/config.php iyafundeka ngabo bonke abasebenzisi bendawo kwaye iqulethe iziqinisekiso zokungena kwisiseko sedatha. Yithintele kumnini nakwiqela leseva yewebhu."
+
+#: doctor_functions.php
+msgid "include/config.php is readable and is not world-readable, group-writable, or world-writable."
+msgstr "i-include/config.php iyafundeka kwaye ayifundeki ngumntu wonke, ayibhaleki liqela, okanye ayibhaleki ngumntu wonke."
+
+#: doctor_functions.php
+msgid "Cacti log file"
+msgstr "Ifayile yelogi ye-Cacti"
+
+#: doctor_functions.php
+msgid "The log file does not exist. Its parent directory is not writable."
+msgstr "Ifayile yelogi ayikho. Isikhombisi sayo esingumzali asibhaleki."
+
+#: doctor_functions.php
+msgid "The log file does not exist. Its parent directory is writable, so Cacti can create it."
+msgstr "Ifayile yelogi ayikho. Isikhombisi sayo esingumzali siyabhaleka, ngoko ke i-Cacti ingayidala."
+
+#: doctor_functions.php
+msgid "The configured log path must be a readable and writable regular file."
+msgstr "Indlela yelogi eqwalaselweyo kufuneka ibe yifayile eqhelekileyo efundekayo nebhalekayo."
+
+#: doctor_functions.php
+#, php-format
+msgid "The log is readable and writable and is %s MiB."
+msgstr "Ilogi iyafundeka kwaye iyabhaleka kwaye yi-%s MiB."
+
+#: doctor_functions.php
+msgid "The log is readable and writable."
+msgstr "Ilogi iyafundeka kwaye iyabhaleka."
+
+#: doctor_functions.php
+msgid "Verify that Cacti log rotation is enabled."
+msgstr "Qinisekisa ukuba ukujikeleziswa kwelogi ye-Cacti kuvuliwe."
+
+#: doctor_functions.php
+#, php-format
+msgid "Executable found at %s."
+msgstr "Isixhobo esiqhutshwayo sifunyenwe kwi-%s."
+
+#: doctor_functions.php
+#, php-format
+msgid "The %s setting is empty, missing, or not executable."
+msgstr "Isetingi ye-%s ayinanto, iyashota, okanye ayiqhutshwa."
+
+#: doctor_functions.php
+#, php-format
+msgid "The %s setting is empty, missing, or not executable: %s"
+msgstr "Isetingi ye-%s ayinanto, iyashota, okanye ayiqhutshwa: %s"
+
+#: doctor_functions.php
+msgid "Doctor could not determine its version."
+msgstr "I-Doctor ayikwazanga ukumisela inguqulelo yayo."
+
+#: doctor_functions.php
+#, php-format
+msgid "Detected version %s."
+msgstr "Kufunyenwe inguqulelo %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "Detected version %s; version %s or newer is recommended."
+msgstr "Kufunyenwe inguqulelo %s; kucetyiswa inguqulelo %s okanye entsha."
+
+#: doctor_functions.php
+#, php-format
+msgid "Detected version %s; version %s or newer is required."
+msgstr "Kufunyenwe inguqulelo %s; kufuneka inguqulelo %s okanye entsha."
+
+#: doctor_functions.php
+#, php-format
+msgid "Detected version %s; minimum is %s."
+msgstr "Kufunyenwe inguqulelo %s; ubuncinane ngu-%s."
+
+#: doctor_functions.php
+#, php-format
+msgid "%s executable"
+msgstr "Isixhobo esiqhutshwayo se-%s"
+
+#: doctor_functions.php
+msgid "poller_type is not cmd.php or Spine"
+msgstr "i-poller_type ayikho kwi-cmd.php okanye i-Spine"
+
+#: doctor_functions.php
+msgid "poller_interval is not a supported value"
+msgstr "i-poller_interval ayiloxabiso elixhaswayo"
+
+#: doctor_functions.php
+msgid "Poller configuration"
+msgstr "Uqwalaselo lwe-poller"
+
+#: doctor_functions.php
+#, php-format
+msgid "Poller is %s with a %d-second interval."
+msgstr "I-poller yi-%s enekhefu lemizuzwana engu-%d."
+
+#: doctor_functions.php
+msgid "Main poller freshness"
+msgstr "Ubutsha be-poller engundoqo"
+
+#: doctor_functions.php
+msgid "No completed main-poller run was found. This can be expected before the first poll."
+msgstr "Akukho msebenzi ugqityiweyo we-poller engundoqo ofunyenweyo. Oku kunokulindelwa phambi kwe-poll yokuqala."
+
+#: doctor_functions.php
+#, php-format
+msgid "Last completed run was %d seconds ago; failure threshold is %d seconds."
+msgstr "Umsebenzi wokugqibela ogqityiweyo ubuyimizuzwana engu-%d edlulileyo; umda wokusilela yimizuzwana engu-%d."
+
+#: doctor_functions.php
+msgid "Database schema version"
+msgstr "Inguqulelo yeskimu sesiseko sedatha"
+
+#: doctor_functions.php
+msgid "The version table is empty or unreadable, so the schema version is unknown."
+msgstr "Itheyibhile yenguqulelo ayinanto okanye ayifundeki, ngoko ke inguqulelo yeskimu ayaziwa."
+
+#: doctor_functions.php
+msgid "The version table still reads new_install, so the installer never finished. Open install/ in a browser to complete it."
+msgstr "Itheyibhile yenguqulelo isafunda i-new_install, ngoko ke isifaki asizange sigqibe. Vula i-install/ kwisikhangeli ukuze uyigqibe."
+
+#: doctor_functions.php
+#, php-format
+msgid "The database schema is at %s but the installed code is %s. Open install/ in a browser to finish the upgrade."
+msgstr "Iskimu sesiseko sedatha sikwi-%s kodwa ikhowudi efakiweyo ikwi-%s. Vula i-install/ kwisikhangeli ukuze ugqibezele ukunyuselwa."
+
+#: doctor_functions.php
+#, php-format
+msgid "The database schema (%s) is newer than the installed code (%s). The code may have been rolled back."
+msgstr "Iskimu sesiseko sedatha (%s) sitsha kunekhowudi efakiweyo (%s). Ikhowudi inokuba ibuyiselwe umva."
+
+#: doctor_functions.php
+#, php-format
+msgid "The database schema (%s) matches the installed code."
+msgstr "Iskimu sesiseko sedatha (%s) sihambelana nekhowudi efakiweyo."
+
+#: doctor_functions.php
+msgid "Main poller run time"
+msgstr "Ixesha lokusebenza kwe-poller engundoqo"
+
+#: doctor_functions.php
+msgid "No completed run time is recorded yet."
+msgstr "Akukho xesha lokusebenza eligqityiweyo lirekhodiweyo okwangoku."
+
+#: doctor_functions.php
+#, php-format
+msgid "The last main-poller run took %s seconds of the %d-second interval."
+msgstr "Umsebenzi wokugqibela we-poller engundoqo uthathe imizuzwana engu-%s kwikhefu lemizuzwana engu-%d."
+
+#: doctor_functions.php
+msgid "Runs that outlast the interval overlap and lose data; add poller processes or threads, or use Spine."
+msgstr "Imisebenzi edlula kwikhefu iyadibana kwaye ilahlekelwe yidatha; yongeza iinkqubo ze-poller okanye imisonto, okanye usebenzise i-Spine."
+
+#: doctor_functions.php
+msgid "Little headroom remains before polls overlap."
+msgstr "Kusele indawo encinci phambi kokuba ii-poll zidibane."
+
+#: doctor_functions.php
+#, php-format
+msgid "%d poller_output rows are older than two polling intervals and were never written to RRD files. Check the Cacti log for \"Poller Output Table not Empty\" and confirm max_heap_table_size is large enough."
+msgstr "Imiqolo ye-poller_output engu-%d midala kunamakhefu amabini e-polling kwaye ayizange ibhalwe kwiifayile ze-RRD. Khangela ilogi ye-Cacti ukuze ufumane u-\"Poller Output Table not Empty\" uze uqinisekise ukuba i-max_heap_table_size inkulu ngokwaneleyo."
+
+#: doctor_functions.php
+msgid "Unprocessed poller output"
+msgstr "Imveliso ye-poller engaqhutywanga"
+
+#: doctor_functions.php
+msgid "No stale rows remain in poller_output."
+msgstr "Akukho miqolo midala eseleyo kwi-poller_output."
+
+#: doctor_functions.php
+msgid "No remote pollers are enabled."
+msgstr "Akukho zi-poller ezikude zivuliweyo."
+
+#: doctor_functions.php
+msgid "Remote pollers"
+msgstr "Ii-poller ezikude"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s (ID %s) has never reported"
+msgstr "%s (ID %s) ayizange inike ingxelo"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s (ID %s) last reported %d seconds ago"
+msgstr "%s (ID %s) igqibele ukunika ingxelo kwimizuzwana engu-%d edlulileyo"
+
+#: doctor_functions.php
+#, php-format
+msgid "The failure threshold is %d seconds."
+msgstr "Umda wokusilela yimizuzwana engu-%d."
+
+#: doctor_functions.php
+#, php-format
+msgid "%d enabled remote pollers reported within %d seconds."
+msgstr "Ii-poller ezikude ezivuliweyo ezingu-%d zinike ingxelo ngaphakathi kwimizuzwana engu-%d."
+
+#: doctor_functions.php
+msgid "Enabled plugin files"
+msgstr "Iifayile ze-plugin ezivuliweyo"
+
+#: doctor_functions.php
+#, php-format
+msgid "Enabled plugins are missing from %s: %s. Restore their files or disable them in Plugin Management."
+msgstr "Ii-plugin ezivuliweyo ziyashota kwi-%s: %s. Buyisela iifayile zazo okanye uzikhubaze kuLawulo lwe-Plugin."
+
+#: doctor_functions.php
+msgid "Every enabled plugin has its setup.php in place."
+msgstr "Zonke iiplagin ezinikwe amandla zine-setup.php yazo endaweni efanelekileyo."
+
+#: doctor_functions.php
+msgid "Boost RRD updates"
+msgstr "Uhlaziyo lwe-Boost RRD"
+
+#: doctor_functions.php
+msgid "Boost is disabled, so the poller writes RRD files directly."
+msgstr "I-Boost ikhubaziwe, ngoko ke i-poller ibhala iifayile ze-RRD ngokuthe ngqo."
+
+#: doctor_functions.php
+msgid "Boost is enabled but has no recorded run. This can be expected before its first flush."
+msgstr "I-Boost inikwe amandla kodwa ayinakusebenza okurekhodiweyo. Oku kunokulindeleka phambi kokukhupha kwayo kokuqala."
+
+#: doctor_functions.php
+#, php-format
+msgid "Boost last flushed %d seconds ago, more than twice its %d-minute interval. Graphs stop updating until it runs; check the Cacti log for BOOST errors."
+msgstr "I-Boost igqibele ukukhupha kwimizuzwana eyi-%d edlulileyo, ngaphezu kokuphindwe kabini kwesithuba sayo semizuzu eyi-%d. Iigrafu ziyayeka ukuhlaziywa de isebenze; khangela ilogi ye-Cacti ukuba kukho iimpazamo ze-BOOST."
+
+#: doctor_functions.php
+#, php-format
+msgid "poller_output_boost holds %d rows, above the %d-row limit that forces a flush. Boost is falling behind."
+msgstr "I-poller_output_boost igcina imiqolo eyi-%d, ngaphezu komda wemiqolo eyi-%d onyanzelisa ukukhupha. I-Boost ishiyeka ngasemva."
+
+#: doctor_functions.php
+#, php-format
+msgid "Boost last flushed %d seconds ago with %d rows waiting."
+msgstr "I-Boost igqibele ukukhupha kwimizuzwana eyi-%d edlulileyo inemiqolo eyi-%d elindileyo."
+
+#: doctor_functions.php doctor_rrd.php
+#, php-format
+msgid "Checked a sample of %d active data sources that rotates hourly; a pass does not cover every file."
+msgstr "Kukhangelwe isampulu yemithombo yedatha esebenzayo eyi-%d ejikeleza ngeyure; ukujonga okukodwa akugubungeli zonke iifayile."
+
+#: doctor_functions.php
+#, php-format
+msgid "%d of %d active data sources have no RRD file, for example %s. New data sources get one after their first poll; otherwise check the RRA directory and its permissions."
+msgstr "Imithombo yedatha esebenzayo eyi-%d kweyi-%d ayinayo ifayile ye-RRD, umzekelo %s. Imithombo yedatha emitsha ifumana enye emva kovavanyo lwayo lokuqala; kungenjalo khangela ulawulo lwe-RRA kunye neemvume zalo."
+
+#: doctor_functions.php
+msgid "RRD files"
+msgstr "Iifayile ze-RRD"
+
+#: doctor_functions.php
+#, php-format
+msgid "All %d active data sources have an RRD file."
+msgstr "Yonke imithombo yedatha esebenzayo eyi-%d inefayile ye-RRD."
+
+#: doctor_functions.php
+#, php-format
+msgid "Doctor could not measure free space for %s."
+msgstr "I-Doctor ayikwazanga ukulinganisa isithuba esikhululekileyo se-%s."
+
+#: doctor_functions.php
+msgid "RRA disk space"
+msgstr "Isithuba sediski ye-RRA"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s (%s GiB) free on the file system holding %s."
+msgstr "%s (%s GiB) ekhululekileyo kwisistim yefayile egcina %s."
+
+#: doctor_functions.php
+msgid "RRD updates fail silently when the disk fills."
+msgstr "Uhlaziyo lwe-RRD lusilela ngokuzolileyo xa idiski izala."
+
+#: doctor_functions.php
+msgid "Database clock"
+msgstr "Iwotshi yedatabase"
+
+#: doctor_functions.php
+msgid "Doctor could not read the database clock."
+msgstr "I-Doctor ayikwazanga ukufunda iwotshi yedatabase."
+
+#: doctor_functions.php
+#, php-format
+msgid "The database and PHP clocks differ by %d seconds."
+msgstr "Iiwotshi zedatabase kunye ne-PHP ziyahluka ngemizuzwana eyi-%d."
+
+#: doctor_functions.php
+msgid "Poll timestamps will be misaligned; synchronise both hosts with NTP."
+msgstr "Izitembu zexesha zovavanyo aziyi kulungelelana; ungqamanise zombini ii-host nge-NTP."
+
+#: doctor_functions.php
+msgid "Synchronise both hosts with NTP."
+msgstr "Ungqamanise zombini ii-host nge-NTP."
+
+#: doctor_functions.php
+msgid "Spine configuration"
+msgstr "Uqwalaselo lwe-Spine"
+
+#: doctor_functions.php
+msgid "Spine is not the configured poller."
+msgstr "I-Spine asiyiyo i-poller eqwalaselweyo."
+
+#: doctor_functions.php
+msgid "path_spine_config is not set, so Spine uses its compiled-in search path and Doctor cannot verify which file it reads."
+msgstr "I-path_spine_config ayimiselwanga, ngoko ke i-Spine isebenzisa indlela yayo yokukhangela ehlanganisiweyo kwaye i-Doctor ayikwazi ukuqinisekisa ukuba yeyiphi ifayile eyifundayo."
+
+#: doctor_functions.php
+#, php-format
+msgid "The Spine configuration file is missing or unreadable: %s."
+msgstr "Ifayile yoqwalaselo lwe-Spine ilahlekile okanye ayifundeki: %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "DB_Database is %s but Cacti uses %s"
+msgstr "I-DB_Database yi-%s kodwa i-Cacti isebenzisa i-%s"
+
+#: doctor_functions.php
+#, php-format
+msgid "DB_User is %s but Cacti uses %s"
+msgstr "I-DB_User ngu-%s kodwa i-Cacti isebenzisa u-%s"
+
+#: doctor_functions.php
+msgid "the file is world-readable and holds the database password"
+msgstr "ifayile ifundeka nguye wonke umntu kwaye igcina igama lokugqitha ledatabase"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s uses the same database and user as Cacti."
+msgstr "I-%s isebenzisa idatabase efanayo kunye nomsebenzisi ofanayo ne-Cacti."
+
+#: doctor_functions.php
+#, php-format
+msgid "%s is %s"
+msgstr "I-%s yi-%s"
+
+#: doctor_functions.php
+msgid "Cacti recommends ON; doublewrite may stay off only on ZFS or similar journaling storage."
+msgstr "I-Cacti icebisa i-ON; i-doublewrite inokuhlala icinyiwe kuphela kwi-ZFS okanye kwindawo yokugcina yejornaling efanayo."
+
+#: doctor_functions.php
+msgid "InnoDB safety settings"
+msgstr "Iisetingi zokhuseleko ze-InnoDB"
+
+#: doctor_functions.php
+msgid "innodb_file_per_table and innodb_doublewrite are enabled."
+msgstr "I-innodb_file_per_table kunye ne-innodb_doublewrite zinikwe amandla."
+
+#: doctor_functions.php
+#, php-format
+msgid "None of the last %d log lines report an error."
+msgstr "Akukho nanye kwimigca yokugqibela eyi-%d yelogi exela impazamo."
+
+#: doctor_functions.php
+msgid "Recent log errors"
+msgstr "Iimpazamo zelogi zakutshanje"
+
+#: doctor_functions.php
+#, php-format
+msgid "%d of the last %d log lines report an error. Most frequent (%dx): %s"
+msgstr "Imigca eyi-%d kwimigca yokugqibela eyi-%d yelogi ixela impazamo. Eyona ixhaphakileyo (%dx): %s"
+
+#: doctor_functions.php
+msgid "The Cacti log is not readable; see the Cacti log file check."
+msgstr "Ilogi ye-Cacti ayifundeki; jonga uvavanyo lwefayile yelogi ye-Cacti."
+
+#: doctor_functions.php
+msgid "No enabled devices are configured."
+msgstr "Akukho zixhobo zinikwe amandla eziqwalaselweyo."
+
+#: doctor_functions.php
+#, php-format
+msgid "All %d enabled devices are up."
+msgstr "Zonke izixhobo ezinikwe amandla eziyi-%d ziyasebenza kwaye ziyafikeleleka."
+
+#: doctor_functions.php
+#, php-format
+msgid "%d of %d enabled devices are down and %d recovering."
+msgstr "Izixhobo ezinikwe amandla eziyi-%d kweziyi-%d azifikeleleki kwaye eziyi-%d ziyachacha."
+
+#: doctor_functions.php
+msgid "The down devices could not be listed."
+msgstr "Izixhobo ezingafikelelekiyo azikwazanga kudweliswa."
+
+#: doctor_functions.php
+#, php-format
+msgid "%s down since %s"
+msgstr "%s ayifikeleleki ukususela nge-%s"
+
+#: doctor_functions.php
+#, php-format
+msgid "Longest down: %s."
+msgstr "Eyona ithathe ixesha elide ingafikeleleki: %s."
+
+#: doctor_functions.php
+msgid "With most devices down, check the poller host's network and SNMP settings first."
+msgstr "Njengoko izixhobo ezininzi zingafikeleleki, khangela uthungelwano lwe-host ye-poller kunye neesetingi ze-SNMP kuqala."
+
+#: doctor_functions.php
+msgid "Doctor could not read device status from the host table."
+msgstr "I-Doctor ayikwazanga ukufunda imo yesixhobo kwitheyibhile ye-host."
+
+#: doctor_functions.php
+#, php-format
+msgid "Cacti Doctor on %s: %d failed, %d warnings"
+msgstr "I-Cacti Doctor kwi-%s: eziyi-%d zisilele, izilumkiso eziyi-%d"
+
+#: doctor_functions.php
+#, php-format
+msgid "%d Cacti Doctor checks changed status on %s."
+msgstr "Uvavanyo lwe-Cacti Doctor oluyi-%d lutshintshe imo kwi-%s."
+
+#: doctor_functions.php
+#, php-format
+msgid "Totals: %d passed, %d warnings, %d failed."
+msgstr "Iyonke: eziyi-%d ziphumelele, izilumkiso eziyi-%d, eziyi-%d zisilele."
+
+#: doctor_functions.php
+#, php-format
+msgid "Refusing to overwrite %s."
+msgstr "Uyala ukubhala ngaphezulu kwe-%s."
+
+#: doctor_functions.php
+#, php-format
+msgid "Cannot create %s."
+msgstr "Ayikwazi ukudala %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "Could not make %s private."
+msgstr "Ayikwazanga ukwenza %s ibe yabucala."
+
+#: doctor_functions.php
+#, php-format
+msgid "Writing %s failed."
+msgstr "Ukubhala %s kusilele."
+
+#: doctor_functions.php
+msgid "Repair runtime directories"
+msgstr "Lungisa ulawulo lwexesha lokusebenza"
+
+#: doctor_functions.php
+msgid "Create missing cache, log, and RRA directories and add owner read/write/execute permission without removing existing permissions."
+msgstr "Dala ulawulo lwe-cache, ilogi, kunye ne-RRA olulahlekileyo kwaye wongeze imvume yomnini yokufunda/ukubhala/ukusebenzisa ngaphandle kokususa iimvume ezikhoyo."
+
+#: doctor_functions.php
+msgid "The requested repair is not allow-listed."
+msgstr "Ulungiso oluceliweyo alukho kuluhlu oluvunyelweyo."
+
+#: doctor_functions.php
+msgid "No repair handler is registered."
+msgstr "Akukho mphathi wolungiso obhalisiweyo."
+
+#: doctor_functions.php
+msgid "Repair unavailable"
+msgstr "Ulungiso alufumaneki"
+
+#: doctor_functions.php
+msgid "Repairs are refused while running as root. Run Doctor as the Cacti poller user."
+msgstr "Ulungiso luyaliwa xa usebenza njengo-root. Sebenzisa i-Doctor njengomsebenzisi we-Cacti poller."
+
+#: doctor_functions.php
+msgid "The Cacti base directory cannot be resolved."
+msgstr "Ulawulo olusisiseko lwe-Cacti alunakusonjululwa."
+
+#: doctor_functions.php
+#, php-format
+msgid "%s: path is outside the Cacti installation"
+msgstr "%s: indlela ingaphandle kofakelo lwe-Cacti"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s: symbolic links are not repaired"
+msgstr "%s: amakhonkco e-symbolic awalungiswa"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s: directory creation failed"
+msgstr "%s: ukudalwa kolawulo kusilele"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s: could not add owner permissions"
+msgstr "%s: ayikwazanga ukongeza iimvume zomnini"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s: still not a writable directory"
+msgstr "%s: ayikabi lulawulo olubhalekayo"
+
+#: doctor_functions.php
+msgid "Runtime directories now exist and are writable by the current process."
+msgstr "Ulawulo lwexesha lokusebenza ngoku lukhona kwaye lubhaleka yinkqubo yangoku."
+
+#: doctor_functions.php
+msgid "Cacti"
+msgstr "Cacti"
+
+#: doctor_functions.php
+msgid "Database"
+msgstr "Idatabase"
+
+#: doctor_functions.php
+msgid "Database health"
+msgstr "Impilo yedatabase"
+
+#: doctor_functions.php
+msgid "Devices"
+msgstr "Izixhobo"
+
+#: doctor_functions.php setup.php
+msgid "Doctor"
+msgstr "Doctor"
+
+#: doctor_functions.php
+msgid "Filesystem"
+msgstr "Isistim yefayile"
+
+#: doctor_functions.php
+msgid "Logging"
+msgstr "Ukurekhoda kwilogi"
+
+#: doctor_functions.php
+msgid "PHP"
+msgstr "PHP"
+
+#: doctor_functions.php
+msgid "Poller"
+msgstr "Poller"
+
+#: doctor_functions.php
+msgid "Prerequisites"
+msgstr "Iimfuneko zangaphambili"
+
+#: doctor_functions.php
+msgid "Repair"
+msgstr "Lungisa"
+
+#: doctor_functions.php
+msgid "Security"
+msgstr "Ukhuseleko"
+
+#: doctor_functions.php
+msgid "PASS"
+msgstr "PHUMELELE"
+
+#: doctor_functions.php
+msgid "WARN"
+msgstr "ISILUMKISO"
+
+#: doctor_functions.php
+msgid "FAIL"
+msgstr "SILELE"
+
+#: doctor_functions.php
+msgid "UNKNOWN"
+msgstr "AKWAZIWA"
+
+#: doctor_rrd.php
+msgid "Data source freshness could not be assessed."
+msgstr "Ukuhlaziyeka komthombo wedatha akukwazanga kuvavanywa."
+
+#: doctor_rrd.php
+msgid "RRD update freshness"
+msgstr "Ukuhlaziyeka kohlaziyo lwe-RRD"
+
+#: doctor_rrd.php
+msgid "The deferred-write interval is unknown; configure it before judging file age."
+msgstr "Isithuba sokubhala okulibazisekileyo asaziwa; siqwalasele phambi kokuvavanya ixesha ukususela kuhlaziyo lokugqibela lwefayile."
+
+#: doctor_rrd.php
+#, php-format
+msgid "Checked %d files; %d stale files across %d devices; %d unavailable or future-dated files."
+msgstr "Kukhangelwe iifayile eziyi-%d; iifayile eziphelelwe lixesha eziyi-%d kwizixhobo eziyi-%d; iifayile ezingafumanekiyo okanye ezinomhla wexesha elizayo eziyi-%d."
+
+#: doctor_rrd.php
+msgid "File age includes the collection interval and configured deferred-write allowance; verify the poller and flush process before changing data."
+msgstr "Ixesha ukususela kuhlaziyo lokugqibela lwefayile liquka isithuba sokuqokelela kunye nesibonelelo sokubhala okulibazisekileyo esiqwalaselweyo; qinisekisa i-poller kunye nenkqubo yokukhupha phambi kokutshintsha idatha."
+
+#: doctor_scheduling.php
+msgid "Scheduled checks are disabled. Enable them in Settings > Doctor to retain samples and alert on changes."
+msgstr "Uvavanyo olucwangcisiweyo lukhubaziwe. Luvumele kwi-Iisetingi > Doctor ukugcina iisampulu kunye nokulumkisa ngeenguqu."
+
+#: doctor_scheduling.php
+msgid "Scheduled report freshness"
+msgstr "Ukuhlaziyeka kwengxelo ecwangcisiweyo"
+
+#: doctor_scheduling.php
+#, php-format
+msgid "%s UTC"
+msgstr "%s UTC"
+
+#: doctor_scheduling.php
+#, php-format
+msgid "Last started: %s; last completed: %s."
+msgstr "Iqalwe okokugqibela: %s; igqitywe okokugqibela: %s."
+
+#: doctor_scheduling.php
+msgid "never"
+msgstr "zange"
+
+#: doctor_scheduling.php
+msgid "Results are missing or stale. Check the primary poller and DOCTOR log for startup, timeout, or persistence errors."
+msgstr "Iziphumo zilahlekile okanye ziphelelwe lixesha. Khangela i-poller eyintloko kunye nelogi ye-DOCTOR ukuba kukho iimpazamo zokuqalisa, zokuphelelwa lixesha, okanye zokugcinwa."
+
+#: doctor_scheduling.php
+msgid "A completed diagnostic run is recent; this does not mean all checks passed."
+msgstr "Uqhutywo lovavanyo olugqityiweyo lolwakutshanje; oku akuthethi ukuba lonke uvavanyo luphumelele."
+
+#: doctor_scheduling.php
+msgid "Doctor alert state is invalid. Restore doctor_alert_pending from backup before retrying."
+msgstr "Imo yesilumkiso ye-Doctor ayisebenzi. Buyisela i-doctor_alert_pending kwi-backup phambi kokuzama kwakhona."
+
+#: doctor_scheduling.php
+msgid "Doctor alert transitions are invalid; no email was sent."
+msgstr "Iinguqu zezilumkiso ze-Doctor azisebenzi; akukho i-imeyile ithunyelweyo."
+
+#: doctor_scheduling.php
+msgid "Alert delivery"
+msgstr "Ukuthunyelwa kwezilumkiso"
+
+#: doctor_scheduling.php
+#, php-format
+msgid "%d check transitions await delivery; attempts: %d of 3."
+msgstr "Iinguqu zovavanyo eziyi-%d zilinde ukuthunyelwa; iinzame: %d kwezi-3."
+
+#: doctor_scheduling.php
+msgid "Automatic retries exhausted. Correct Cacti mail settings, then run Doctor with --scheduled --retry-alerts as the poller user."
+msgstr "Iinzame ezizenzekelayo ziphelile. Lungisa iisetingi ze-imeyile ze-Cacti, uze usebenzise i-Doctor nge --scheduled --retry-alerts njengomsebenzisi we-poller."
+
+#: doctor_scheduling.php
+#, php-format
+msgid "Next eligible retry: %s UTC, after a primary poller cycle."
+msgstr "Uzamo olulandelayo olufanelekileyo: %s UTC, emva komjikelo we-poller eyintloko."
+
+#: doctor_scheduling.php
+msgid "No alert recipients are currently configured; pending transitions are retained."
+msgstr "Akukho bamkeli bezilumkiso abaqwalaselweyo ngoku; iinguqu ezilindileyo zigciniwe."
+
+#: doctor_scheduling.php
+msgid "No retained alert is awaiting delivery. Mail-server acceptance does not prove inbox delivery."
+msgstr "Akukho silumkiso sigciniweyo esilinde ukuthunyelwa. Ukwamkelwa yiseva ye-imeyile akuqinisekisi ukufika kwi-inbox."
+
+#: doctor_scheduling.php
+msgid "Doctor retained status changes (UTC). Repeated changes for one check are coalesced; an out-and-back transition is retained."
+msgstr "Iinguqu zemo ezigciniweyo ze-Doctor (UTC). Iinguqu eziphindaphindiweyo zovavanyo olunye ziyadityaniswa; inguqu yokuphuma nokubuya iyagcinwa."
+
+#: doctor_scheduling.php
+#, php-format
+msgid "%s: %s -> %s (latest change %s)"
+msgstr "%s: %s -> %s (inguqu yamva nje %s)"
+
+#: doctor_scheduling.php
+#, php-format
+msgid "%d further status changes are not listed because the alert queue reached its storage limit."
+msgstr "Ezinye iinguqu zemo eziyi-%d azidweliswanga kuba umgca wezilumkiso ufikelele kumda wawo wokugcina."
+
+#: doctor_scheduling.php
+msgid "Open Utilities > Doctor for current measurements, recommended actions, and verification steps."
+msgstr "Vula Izixhobo > Doctor ukufumana imilinganiselo yangoku, izenzo ezicetyiswayo, kunye namanyathelo okuqinisekisa."
+
+#: doctor_scheduling.php
+#, php-format
+msgid "Cacti Doctor: %d retained status changes"
+msgstr "Cacti Doctor: iinguqu zemo ezigciniweyo eziyi-%d"
+
+#: doctor_scheduling.php
+msgid "Doctor schedule is already running or the database lock is unavailable."
+msgstr "Ucwangciso lwe-Doctor sele lusebenza okanye isitshixo sedatabase asifumaneki."
+
+#: doctor_web.php
+msgid "The finding could not be acknowledged. Run Doctor again, then acknowledge the current result."
+msgstr "Okufunyenweyo akukwazanga kuvunywa. Sebenzisa i-Doctor kwakhona, uze uvume isiphumo sangoku."
+
+#: doctor_web.php
+msgid "The warning exception could not be saved. Use a fresh assessed warning, an owner, a reason and an expiry within 90 days."
+msgstr "Ukungabandakanywa kwesilumkiso akukwazanga kugcinwa. Sebenzisa isilumkiso esitsha esivavanyiweyo, umnini, isizathu kunye nomhla wokuphelelwa phakathi kweentsuku ezingama-90."
+
+#: doctor_web.php
+msgid "Confirm repair"
+msgstr "Qinisekisa ulungiso"
+
+#: doctor_web.php
+msgid "Approval expires after five minutes and is invalidated by a changed filesystem. The acting account must be able to create directories or change owner permissions."
+msgstr "Imvume iphelelwa emva kwemizuzu emihlanu kwaye iyacinywa yisistim yefayile etshintshiweyo. Iakhawunti esebenzayo kufuneka ikwazi ukudala ulawulo okanye ukutshintsha iimvume zomnini."
+
+#: doctor_web.php
+msgid "Repair prerequisites are not met. No changes will be made."
+msgstr "Iimfuneko zangaphambili zolungiso azifezekiswanga. Akukho nguqu ziya kwenziwa."
+
+#: doctor_web.php
+msgid "Cancel"
+msgstr "Rhoxisa"
+
+#: doctor_web.php
+#, php-format
+msgid "Last observation: %s UTC."
+msgstr "Uqwalaselo lokugqibela: %s UTC."
+
+#: doctor_web.php
+msgid "No completed diagnostic report is available."
+msgstr "Akukho ngxelo yovavanyo egqityiweyo efumanekayo."
+
+#: doctor_web.php
+msgid "Health is unknown: observations are missing or stale."
+msgstr "Impilo ayaziwa: uqwalaselo lulahlekile okanye luphelelwe lixesha."
+
+#: doctor_web.php
+msgid "Run diagnostic checks"
+msgstr "Qhuba uvavanyo loxilongo"
+
+#: doctor_web.php
+msgid "Doctor settings"
+msgstr "Iisetingi ze-Doctor"
+
+#: doctor_web.php setup.php
+msgid "Cacti Doctor"
+msgstr "Cacti Doctor"
+
+#: doctor_web.php
+#, php-format
+msgid "Installation health: %d passed, %d warnings, %d failed"
+msgstr "Impilo yofakelo: eziyi-%d ziphumelele, izilumkiso eziyi-%d, eziyi-%d zisilele"
+
+#: doctor_web.php
+msgid "Category"
+msgstr "Udidi"
+
+#: doctor_web.php
+msgid "Check"
+msgstr "Uvavanyo"
+
+#: doctor_web.php
+msgid "Status"
+msgstr "Imeko"
+
+#: doctor_web.php
+msgid "Details"
+msgstr "Iinkcukacha"
+
+#: doctor_web.php
+msgid "Action"
+msgstr "Isenzo"
+
+#: doctor_web.php
+msgid "Acknowledged; health status unchanged."
+msgstr "Kuvunyiwe; imo yempilo ayitshintshanga."
+
+#: doctor_web.php
+msgid "Acknowledge"
+msgstr "Vuma"
+
+#: doctor_web.php
+#, php-format
+msgid "Owner: %s; review by %s UTC. Reason: %s"
+msgstr "Umnini: %s; hlola nge-%s UTC. Isizathu: %s"
+
+#: doctor_web.php
+msgid "Investigate a symptom"
+msgstr "Phanda uphawu"
+
+#: doctor_web.php
+msgid "Investigate"
+msgstr "Phanda"
+
+#: doctor_web.php
+msgid "Recent scheduled checks"
+msgstr "Uvavanyo olucwangcisiweyo lwakutshanje"
+
+#: doctor_web.php
+msgid "Failed"
+msgstr "Isilele"
+
+#: doctor_web.php
+msgid "Observation (UTC)"
+msgstr "Uqwalaselo (UTC)"
+
+#: doctor_web.php
+msgid "Passed"
+msgstr "Iphumelele"
+
+#: doctor_web.php
+msgid "Warnings"
+msgstr "Izilumkiso"
+
+#: doctor_web.php
+msgid "Warning exceptions"
+msgstr "Okungabandakanywayo kwizilumkiso"
+
+#: doctor_web.php
+msgid "Owner"
+msgstr "Umnini"
+
+#: doctor_web.php
+msgid "Reason"
+msgstr "Isizathu"
+
+#: doctor_web.php
+msgid "Review date (UTC)"
+msgstr "Umhla wokuhlola (UTC)"
+
+#: doctor_web.php
+msgid "Accept warning"
+msgstr "Yamkela isilumkiso"
+
+#: doctor_web.php
+msgid "Expired"
+msgstr "Iphelelwe lixesha"
+
+#: doctor_web.php
+msgid "Check not present in this report; verify its ID."
+msgstr "Uvavanyo alukho kule ngxelo; qinisekisa i-ID yalo."
+
+#: doctor_web.php
+msgid "Remove exception"
+msgstr "Susa ukungabandakanywa"
+
+#: doctor_web.php
+msgid "Audit history"
+msgstr "Imbali yophicotho"
+
+#: doctor_workflows.php
+msgid "Repair refused"
+msgstr "Ulungiso lwaliwe"
+
+#: doctor_workflows.php
+msgid "The approved plan is expired or the filesystem changed. Preview the repair again."
+msgstr "Isicwangciso esivunyiweyo siphelelwe lixesha okanye isistim yefayile itshintshile. Jonga kwakhona ulungiso kwangaphambili."
+
+#: doctor_workflows.php
+msgid "The audit record could not be saved. No repair was attempted."
+msgstr "Irekhodi yophicotho ayikwazanga kugcinwa. Akukho lungiso luzanyiweyo."
+
+#: doctor_workflows.php
+msgid "The completion audit failed; inspect the filesystem and the started audit record."
+msgstr "Uphicotho lokugqiba lusilele; hlola isistim yefayile kunye nerekhodi yophicotho eqalisiweyo."
+
+#: setup.php
+msgid "Doctor Administrator"
+msgstr "Umlawuli we-Doctor"
+
+#: setup.php
+msgid "Doctor Operator"
+msgstr "Umsebenzisi we-Doctor"
+
+#: setup.php
+msgid "Doctor Viewer"
+msgstr "Umbukeli we-Doctor"
+
+#: setup.php
+msgid "Utilities"
+msgstr "Izixhobo"
+
+#: setup.php
+msgid "System Administration"
+msgstr "Ulawulo lweSistim"
+
+#: setup.php
+msgid "Scheduled Checks"
+msgstr "Uvavanyo oluCwangcisiweyo"
+
+#: setup.php
+msgid "Run Checks on a Schedule"
+msgstr "Qhuba Uvavanyo ngokweShedyuli"
+
+#: setup.php
+msgid "Run every Doctor check in the background after the poller and record each check's status."
+msgstr "Qhuba lonke uvavanyo lwe-Doctor ngasemva emva kwe-poller kwaye urekhode imo yovavanyo ngalunye."
+
+#: setup.php
+msgid "Check Interval"
+msgstr "Isithuba soVavanyo"
+
+#: setup.php
+msgid "How often the scheduled checks run."
+msgstr "Ukuba uvavanyo olucwangcisiweyo lusebenza kangaphi."
+
+#: setup.php
+msgid "Every 15 Minutes"
+msgstr "Rhoqo ngeMizuzu eyi-15"
+
+#: setup.php
+msgid "Every Hour"
+msgstr "Rhoqo ngeYure"
+
+#: setup.php
+msgid "Every 6 Hours"
+msgstr "Rhoqo ngeYure ezi-6"
+
+#: setup.php
+msgid "Every Day"
+msgstr "Rhoqo ngoSuku"
+
+#: setup.php
+msgid "Alert Email Addresses"
+msgstr "Iidilesi ze-imeyile zeZilumkiso"
+
+#: setup.php
+msgid "Comma-separated addresses to email when a check starts or stops failing. Leave empty to only log changes to the Cacti log."
+msgstr "Iidilesi ezahlulwe ngekoma zokuthumela i-imeyile xa uvavanyo luqala okanye luyeka ukusilela. Shiya kungenanto ukurekhoda kuphela iinguqu kwilogi ye-Cacti."
+
+#: setup.php
+msgid "Alert on Warnings"
+msgstr "Lumkisa ngeZilumkiso"
+
+#: setup.php
+msgid "Also alert when a check moves into or out of a warning."
+msgstr "Kwakhona thumela isaziso xa uvavanyo lungena okanye luphuma kwisilumkiso."
+
+#: setup.php
+msgid "Thresholds"
+msgstr "Imida"
+
+#: setup.php
+msgid "Poller Run Time Warning (percent)"
+msgstr "Isilumkiso seXesha lokuSebenza kwePoller (ipesenti)"
+
+#: setup.php
+msgid "Warn when the last main-poller run used this share of the polling interval. Runs that take the whole interval always fail."
+msgstr "Lumkisa xa ukusebenza kokugqibela kwepoller ephambili kusebenzise esi sabelo sexesha lovavanyo. Imisebenzi ethatha lonke ixesha ihlala isilela."
+
+#: setup.php
+msgid "RRA Disk Free Warning (percent)"
+msgstr "Isilumkiso seSithuba esiSimahla kwiDiski ye-RRA (ipesenti)"
+
+#: setup.php
+msgid "Warn when free space on the RRA file system drops below this percentage."
+msgstr "Lumkisa xa isithuba esivulekileyo kwinkqubo yeefayile ze-RRA sihla ngaphantsi kwale pesenti."
+
+#: setup.php
+msgid "Fail when free space on the RRA file system drops below this percentage."
+msgstr "Silela xa isithuba esivulekileyo kwinkqubo yeefayile ze-RRA sihla ngaphantsi kwale pesenti."
+
+#: setup.php
+msgid "RRA Disk Free Failure (percent)"
+msgstr "Ukusilela kweSithuba esiSimahla kwiDiski ye-RRA (ipesenti)"
+
+#: setup.php
+msgid "Clock Drift Warning (seconds)"
+msgstr "Isilumkiso sokuTenxa kweWotshi (imizuzwana)"
+
+#: setup.php
+msgid "Warn when the database and PHP clocks differ by more than this."
+msgstr "Lumkisa xa iiwotshi zedathabheyisi neze-PHP zahluka ngokungaphezulu koku."
+
+#: setup.php
+msgid "Clock Drift Failure (seconds)"
+msgstr "Ukusilela kokuTenxa kweWotshi (imizuzwana)"
+
+#: setup.php
+msgid "Fail when the database and PHP clocks differ by more than this."
+msgstr "Silela xa iiwotshi zedathabheyisi neze-PHP zahluka ngokungaphezulu koku."
+
+#: setup.php
+msgid "RRD Stale Intervals"
+msgstr "Amaxesha e-RRD engaHlaziywanga"
+
+#: setup.php
+msgid "Warn after this many collection intervals without a file update (1 to 100)."
+msgstr "Lumkisa emva kwala maxesha mangaka okuqokelela ngaphandle kohlaziyo lwefayile (1 ukuya ku-100)."
+
+#: setup.php
+msgid "Additional disk-write delay for external caching (0 to 86400). Boost adds its own allowance."
+msgstr "Ulibaziseko olongezelelweyo lokubhala kwidiski lokugcina kwikheshe yangaphandle (0 ukuya ku-86400). I-Boost yongeza esayo isabelo."
+
+#: setup.php
+msgid "Deferred RRD Write Allowance (seconds)"
+msgstr "Isabelo sokuBhala i-RRD okuLityazisiweyo (imizuzwana)"
+
+#: setup.php
+msgid "Cacti Log Size Warning (MB)"
+msgstr "Isilumkiso soBungakanani beLogi yeCacti (MB)"
+
+#: setup.php
+msgid "Warn when the Cacti log grows beyond this size, which usually means log rotation is not running."
+msgstr "Lumkisa xa ilogi yeCacti ikhula ngaphaya kobu bungakanani, nto leyo edla ngokuthetha ukuba ukujikeleziswa kwelogi akusebenzi."

@@ -1,0 +1,1542 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
+# SPDX-FileCopyrightText: 2026 Thomas Vincent <thomasvincent@gmail.com>
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: doctor 0.6.1\n"
+"Report-Msgid-Bugs-To: https://github.com/somethingwithproof/plugin_doctor/issues\n"
+"PO-Revision-Date: 2026-11-26 00:00+0000\n"
+"Last-Translator: Thomas Vincent <thomasvincent@gmail.com>\n"
+"Language-Team: Thomas Vincent <thomasvincent@gmail.com>\n"
+"Language: rw-RW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: cli/doctor.php
+#, php-format
+msgid "Available repairs: %s"
+msgstr "Ibikorwa byo gusana biboneka: %s"
+
+#: cli/doctor.php
+#, php-format
+msgid "Unknown format %s. Use text, json, nagios, or prometheus."
+msgstr "Imiterere itazwi %s. Koresha text, json, nagios, cyangwa prometheus."
+
+#: cli/doctor.php
+#, php-format
+msgid "Redaction could not complete, so %s was not written."
+msgstr "Guhisha amakuru y'ibanga ntibyashoboye kurangira, bityo %s ntiyanditswe."
+
+#: cli/doctor.php
+#, php-format
+msgid "Wrote %s. Review it before sharing; values after password, secret, token, and community names are masked."
+msgstr "Handitswe %s. Yisuzume mbere yo kuyisangiza abandi; indangagaciro zikurikira ijambobanga, ibanga, token, n'amazina ya community byahishwe."
+
+#: cli/doctor.php doctor_functions.php
+msgid "Unknown repair"
+msgstr "Igikorwa cyo gusana kitazwi"
+
+#: cli/doctor.php
+msgid "Refusing to repair without --yes."
+msgstr "Kwanga gusana nta --yes."
+
+#: cli/doctor.php
+msgid "Select a supported symptom and text or JSON output."
+msgstr "Hitamo ikimenyetso cyemewe n'ibisohoka mu buryo bwa text cyangwa JSON."
+
+#: cli/doctor.php doctor_web.php
+msgid "Accepted warning"
+msgstr "Iburira ryemewe"
+
+#: doctor_access.php doctor_functions.php
+msgid "Device availability"
+msgstr "Ukuboneka kw'igikoresho"
+
+#: doctor_access.php
+msgid "Device permissions could not be evaluated."
+msgstr "Uburenganzira bw'igikoresho ntibwashoboye gusuzumwa."
+
+#: doctor_access.php
+msgid "The configured PHP CLI cannot run Doctor checks."
+msgstr "PHP CLI yashyizweho ntishobora gukora igenzura rya Doctor."
+
+#: doctor_access.php
+msgid "Doctor checks failed or exceeded their time limit. Review the Doctor log."
+msgstr "Igenzura rya Doctor ryatsinzwe cyangwa ryarenze igihe cyaryo ntarengwa. Suzuma inyandiko-mvugo ya Doctor."
+
+#: doctor_diagnosis.php
+msgid "Graphs stopped updating"
+msgstr "Ibishushanyo byahagaritse kuvugururwa"
+
+#: doctor_diagnosis.php
+msgid "Polling is slow"
+msgstr "Ikusanyamakuru riragenda gahoro"
+
+#: doctor_diagnosis.php
+msgid "Devices are missing or unavailable"
+msgstr "Ibikoresho birabura cyangwa ntibiboneka"
+
+#: doctor_diagnosis.php
+msgid "Doctor alerts are missing"
+msgstr "Impuruza za Doctor zirabura"
+
+#: doctor_diagnosis.php
+msgid "Check the poller scheduler and the affected poller log, then verify a new completed cycle."
+msgstr "Genzura gahunda ya poller n'inyandiko-mvugo ya poller yagize ikibazo, hanyuma wemeze ko hari umuzenguruko mushya warangiye."
+
+#: doctor_diagnosis.php
+msgid "Collection may have stopped."
+msgstr "Ikusanyamakuru rishobora kuba ryarahagaze."
+
+#: doctor_diagnosis.php
+msgid "Collected values may not be reaching disk."
+msgstr "Ibipimo byakusanyijwe bishobora kuba bitagera kuri disiki."
+
+#: doctor_diagnosis.php
+msgid "Inspect the output queue and Boost flush history; verify that the queue drains and RRD timestamps advance."
+msgstr "Genzura umurongo w'ibisohoka n'amateka yo koza kwa Boost; wemeze ko umurongo ugenda ugabanuka kandi ibihe bya RRD bijya imbere."
+
+#: doctor_diagnosis.php
+msgid "Check storage capacity, runtime-directory permissions and the last RRD update; account for deferred writes."
+msgstr "Genzura ubushobozi bw'ububiko, uburenganzira bw'ububiko bw'imikorere n'ivugurura rya RRD riheruka; wite no ku nyandiko zasubitswe."
+
+#: doctor_diagnosis.php
+msgid "RRD storage needs investigation."
+msgstr "Ububiko bwa RRD bukeneye isuzuma."
+
+#: doctor_diagnosis.php
+msgid "Collection work may be exceeding its time budget."
+msgstr "Igikorwa cyo gukusanya gishobora kuba kirengeje igihe cyagenewe."
+
+#: doctor_diagnosis.php
+msgid "Compare cycle duration with the polling interval and inspect device timeouts before increasing concurrency."
+msgstr "Gereranya uburebure bw'umuzenguruko n'intera yo gukusanya kandi ugenzure igihe ibikoresho bitinda mbere yo kongera ibikorwa bikorerwa icyarimwe."
+
+#: doctor_diagnosis.php
+msgid "Compare database counters during a slow cycle and inspect query plans before changing server limits."
+msgstr "Gereranya ibipimo by'ububiko bw'amakuru mu muzenguruko utinda kandi ugenzure gahunda z'ibibazo mbere yo guhindura imipaka ya seriveri."
+
+#: doctor_diagnosis.php
+msgid "Database pressure may be contributing to slow polling."
+msgstr "Umuvuduko mwinshi ku bubiko bw'amakuru ushobora kuba ugira uruhare mu itinda ryo gukusanya."
+
+#: doctor_diagnosis.php
+msgid "Collection prerequisites or reachability may be failing."
+msgstr "Ibisabwa mbere byo gukusanya cyangwa uburyo bwo kugera ku bikoresho bishobora kuba bidakora."
+
+#: doctor_diagnosis.php
+msgid "Verify the affected device permissions, reachability, credentials and assigned poller using Cacti diagnostics."
+msgstr "Emeza uburenganzira bw'igikoresho cyagize ikibazo, uburyo bwo kukigeraho, ibyangombwa byo kwinjira na poller yahawe ukoresheje isuzuma rya Cacti."
+
+#: doctor_diagnosis.php
+msgid "Scheduled checks or mail delivery need attention."
+msgstr "Isuzuma ryagenwe ku gihe cyangwa iyoherezwa ry'ubutumwa bw'imeli bikeneye kwitabwaho."
+
+#: doctor_diagnosis.php
+msgid "Verify scheduling and recipient settings, inspect retained delivery attempts, and send a Cacti test email."
+msgstr "Emeza igenamiterere rya gahunda n'abakira ubutumwa, ugenzure ibigeragezo byo kohereza byabitswe, kandi wohereze imeli y'igerageza ya Cacti."
+
+#: doctor_diagnosis.php
+msgid "Possible causes require verification; matching checks do not establish a root cause."
+msgstr "Impamvu zishoboka zikeneye kwemezwa; isuzuma rihura ntirigaragaza impamvu nyakuri."
+
+#: doctor_diagnosis.php
+msgid "No cause is established by the available observations. Run fresh diagnostics and investigate the symptom directly."
+msgstr "Nta mpamvu igaragazwa n'ibimaze kuboneka. Kora isuzuma rishya kandi ushakishe ikimenyetso ubwacyo."
+
+#: doctor_functions.php
+msgid "At least 24 hours since server startup and FLUSH STATUS. Counters are cumulative and may have different reset histories; confirm trends during a representative workload before tuning."
+msgstr "Nibura amasaha 24 kuva seriveri itangiye na FLUSH STATUS. Ibipimo biriyongera kandi bishobora kuba byaratangijwe bushya mu bihe bitandukanye; emeza icyerekezo mu gihe cy'akazi gahagije mbere yo kubitunganya."
+
+#: doctor_functions.php
+msgid "Cumulative tuning advice is deferred: obtain valid uptime and at least 24 hours since startup and FLUSH STATUS. Missing metrics or an inconsistent sample cannot establish database health."
+msgstr "Inama zo gutunganya zisubitswe: shaka igihe cyo gukora cyizewe nibura amasaha 24 kuva itangiye na FLUSH STATUS. Ibipimo bibura cyangwa icyitegererezo kidahuye ntibishobora kwerekana ubuzima bw'ububiko bw'amakuru."
+
+#: doctor_functions.php
+msgid "Database observation window"
+msgstr "Igihe cyo kwitegereza ububiko bw'amakuru"
+
+#: doctor_functions.php
+msgid "Connection metrics are unavailable or invalid. Check access to SHOW GLOBAL STATUS and SHOW GLOBAL VARIABLES; do not treat missing metrics as an idle server."
+msgstr "Ibipimo by'ihuzanzira ntibiboneka cyangwa ntibyemewe. Genzura uburenganzira kuri SHOW GLOBAL STATUS na SHOW GLOBAL VARIABLES; ntufate ibipimo bibura nka seriveri itari gukora."
+
+#: doctor_functions.php
+#, php-format
+msgid "Current connections: %.0f / %.0f (%s); recorded peak: %.0f (%s of the current limit)."
+msgstr "Ihuzanzira ririho ubu: %.0f / %.0f (%s); igipimo cyo hejuru cyanditswe: %.0f (%s ku mupaka uriho ubu)."
+
+#: doctor_functions.php
+msgid "Review connection pooling and poller concurrency. Check database-host memory headroom before raising max_connections; the historical peak may reflect an older limit."
+msgstr "Subiramo imicungire yo guhuza ihuzanzira n'ibikorwa bya poller bikorerwa icyarimwe. Genzura umwanya w'ububiko bw'akanya gato bwa seriveri y'ububiko bw'amakuru mbere yo kuzamura max_connections; igipimo cyo hejuru cyahise gishobora kugaragaza umupaka wa kera."
+
+#: doctor_functions.php
+msgid "Connection capacity"
+msgstr "Ubushobozi bw'ihuzanzira"
+
+#: doctor_functions.php
+msgid "InnoDB buffer pool reads"
+msgstr "Isoma rya InnoDB buffer pool"
+
+#: doctor_functions.php
+msgid "Review query plans and the working set. Consider innodb_buffer_pool_size only after measuring memory available on the database host; a cumulative miss ratio alone does not prove memory pressure."
+msgstr "Subiramo gahunda z'ibibazo n'ibyiciro by'akazi. Tekereza kuri innodb_buffer_pool_size gusa nyuma yo gupima ububiko bw'akanya gato buhari kuri seriveri y'ububiko bw'amakuru; igipimo rusange cyo kubura mu bubiko ubwacyo nticyerekana umuvuduko w'ububiko."
+
+#: doctor_functions.php
+msgid "On-disk temporary tables"
+msgstr "Imbonerahamwe z'agateganyo kuri disiki"
+
+#: doctor_functions.php
+msgid "Review query plans, sorting, grouping, and temporary-table data types before changing memory limits. Some tables must use disk; memory limits and accounting differ between MySQL and MariaDB versions."
+msgstr "Subiramo gahunda z'ibibazo, itondeka, ihuriza mu byiciro, n'ubwoko bw'amakuru bw'imbonerahamwe z'agateganyo mbere yo guhindura imipaka y'ububiko bw'akanya gato. Imbonerahamwe zimwe zigomba gukoresha disiki; imipaka y'ububiko bw'akanya gato n'imibarire biratandukana hagati ya verisiyo za MySQL na MariaDB."
+
+#: doctor_functions.php
+msgid "Connection thread creation"
+msgstr "Ihangwa rya thread z'ihuzanzira"
+
+#: doctor_functions.php
+msgid "Review connection reuse and thread_cache_size. Check the server thread-handling mode before tuning; thread-pool implementations do not behave like one-thread-per-connection servers."
+msgstr "Subiramo ukongera gukoresha ihuzanzira na thread_cache_size. Genzura uburyo seriveri icunga thread mbere yo gutunganya; imikorere ya thread-pool ntikora kimwe na seriveri za thread imwe kuri buri huzanzira."
+
+#: doctor_functions.php
+msgid "Review slow-query logging, long_query_time, and query plans before changing server buffers. This counter depends on the configured slow-query threshold and does not identify individual statements."
+msgstr "Subiramo inyandiko-mvugo y'ibibazo bitinda, long_query_time, na gahunda z'ibibazo mbere yo guhindura ububiko bw'akanya gato bwa seriveri. Iki gipimo gishingira ku mupaka wagenwe w'ibibazo bitinda kandi ntikigaragaza buri nteruro yihariye."
+
+#: doctor_functions.php
+msgid "Slow statements"
+msgstr "Interuro zitinda"
+
+#: doctor_functions.php
+msgid "Cumulative advice deferred until the observation window is sufficient."
+msgstr "Inama rusange zisubitswe kugeza igihe cyo kwitegereza gihagije."
+
+#: doctor_functions.php
+msgid "Thread-cache advice is not assessed: thread_handling is unavailable or is not one-thread-per-connection. Review the active thread-pool implementation instead."
+msgstr "Inama kuri thread-cache ntizisuzumwe: thread_handling ntiboneka cyangwa si thread imwe kuri buri huzanzira. Ahubwo subiramo imikorere ya thread-pool iri gukora."
+
+#: doctor_functions.php
+#, php-format
+msgid "Required counters are missing or invalid: %s, %s. Check server-version support and monitoring permissions."
+msgstr "Ibipimo bisabwa birabura cyangwa ntibyemewe: %s, %s. Genzura ubufasha bwa verisiyo ya seriveri n'uburenganzira bwo kugenzura."
+
+#: doctor_functions.php
+msgid "A counter reset since the prior sample; collect another representative interval before tuning."
+msgstr "Igipimo cyasubijwe ku ntangiriro kuva ku cyitegererezo cyabanje; kusanya ikindi gihe gihagije mbere yo gutunganya."
+
+#: doctor_functions.php
+#, php-format
+msgid "Insufficient activity: %.0f %s; at least %d observations are needed for this advisory."
+msgstr "Ibikorwa bidahagije: %.0f %s; hakenewe nibura ibyitegererezo %d kuri iyi nama."
+
+#: doctor_functions.php
+msgid "Counters are inconsistent or were reset independently. Collect a new representative sample before tuning."
+msgstr "Ibipimo ntibihura cyangwa byasubijwe ku ntangiriro bitandukanye. Kusanya icyitegererezo gishya gihagije mbere yo gutunganya."
+
+#: doctor_functions.php
+msgid "The interval sample is too small or counters reset; collect another representative interval before tuning."
+msgstr "Icyitegererezo cy'igihe ni gito cyane cyangwa ibipimo byasubijwe ku ntangiriro; kusanya ikindi gihe gihagije mbere yo gutunganya."
+
+#: doctor_functions.php
+#, php-format
+msgid "Interval %s / %s: %.0f / %.0f (%s); investigation threshold: %s."
+msgstr "Intera %s / %s: %.0f / %.0f (%s); umupaka w'isuzuma: %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "Cumulative %s / %s: %.0f / %.0f (%s); investigation threshold: %s."
+msgstr "Igiteranyo %s / %s: %.0f / %.0f (%s); umupaka w'isuzuma: %s."
+
+#: doctor_functions.php
+msgid "This counter can omit memory-mapped temporary files on MySQL; a low ratio does not rule out disk use."
+msgstr "Iki gipimo gishobora kwirengagiza dosiye z'agateganyo zihujwe n'ububiko bw'akanya gato kuri MySQL; igipimo gito ntikivuga ko disiki itakoreshejwe."
+
+#: doctor_functions.php
+msgid "Redo-log advice deferred until the observation window is sufficient and Innodb_log_waits is available."
+msgstr "Inama kuri redo-log zisubitswe kugeza igihe cyo kwitegereza gihagije kandi Innodb_log_waits iboneka."
+
+#: doctor_functions.php
+#, php-format
+msgid "Cumulative Innodb_log_waits: %.0f."
+msgstr "Igiteranyo cya Innodb_log_waits: %.0f."
+
+#: doctor_functions.php
+msgid "Investigate transaction sizes, log-buffer pressure, and storage latency. Recheck the rate under load before considering innodb_log_buffer_size; this historical count is not evidence of a current stall."
+msgstr "Suzuma ubunini bw'ibikorwa, umuvuduko wa log-buffer, n'itinda ry'ububiko. Ongera ugenzure umuvuduko mu gihe hari akazi kenshi mbere yo gutekereza kuri innodb_log_buffer_size; iyi mibare y'amateka si ikimenyetso cy'ihagarara ririho ubu."
+
+#: doctor_functions.php
+msgid "InnoDB log-buffer waits"
+msgstr "Gutegereza kwa InnoDB log-buffer"
+
+#: doctor_functions.php
+msgid "installed Cacti composer.json"
+msgstr "composer.json ya Cacti yashyizweho"
+
+#: doctor_functions.php
+#, php-format
+msgid "Cacti %s installer requirement"
+msgstr "Ibisabwa byo gushyiraho Cacti %s"
+
+#: doctor_functions.php
+msgid "PHP compatibility with installed Cacti"
+msgstr "Ihuzabikorwa rya PHP na Cacti yashyizweho"
+
+#: doctor_functions.php
+#, php-format
+msgid "Running PHP %s; installed Cacti %s."
+msgstr "PHP iri gukora ni %s; Cacti yashyizweho ni %s."
+
+#: doctor_functions.php
+msgid "Could not establish Cacti's PHP requirement. Check the installed Cacti composer.json or release documentation; Doctor does not assume compatibility."
+msgstr "Ntibyashobotse kumenya ibisabwa bya PHP bya Cacti. Genzura composer.json ya Cacti yashyizweho cyangwa inyandiko z'isohoka; Doctor ntifata ko bihura itabisuzumye."
+
+#: doctor_functions.php
+#, php-format
+msgid "PHP >= %s and < %s"
+msgstr "PHP >= %s na < %s"
+
+#: doctor_functions.php
+#, php-format
+msgid "PHP >= %s"
+msgstr "PHP >= %s"
+
+#: doctor_functions.php
+#, php-format
+msgid "Requires %s (%s). Running PHP meets that requirement."
+msgstr "Bisaba %s (%s). PHP iri gukora yujuje ibyo bisabwa."
+
+#: doctor_functions.php
+#, php-format
+msgid "Requires %s (%s). Running PHP does not meet that requirement."
+msgstr "Bisaba %s (%s). PHP iri gukora ntiyujuje ibyo bisabwa."
+
+#: doctor_functions.php
+#, php-format
+msgid "Detected %s; Doctor requires Cacti 1.2.20 or newer."
+msgstr "Habonetse %s; Doctor isaba Cacti 1.2.20 cyangwa iyisumbuyeho."
+
+#: doctor_functions.php
+msgid "Supported Cacti version"
+msgstr "Verisiyo ya Cacti ifashwa"
+
+#: doctor_functions.php
+msgid "PHP upstream security support"
+msgstr "Ubufasha bw'umutekano bwa PHP buva ku isoko"
+
+#: doctor_functions.php
+msgid "This checks the PHP release branch, not whether this patch release is up to date or whether your OS vendor backports fixes. Cacti compatibility is checked separately."
+msgstr "Ibi bigenzura ishami ry'isohoka rya PHP, ntibisuzuma niba iyi verisiyo y'inyongerabumenyi igezweho cyangwa niba utanga sisitemu yawe ashyiramo ibikosora bya kera. Ihuzabikorwa rya Cacti risuzumwa ukwaryo."
+
+#: doctor_functions.php
+#, php-format
+msgid "Running PHP %s; upstream security-support status is unknown or this is a prerelease. Check https://www.php.net/supported-versions.php and update Doctor's support data."
+msgstr "PHP iri gukora ni %s; uko ubufasha bw'umutekano buva ku isoko buhagaze ntibizwi cyangwa iyi ni verisiyo y'ibanze. Genzura https://www.php.net/supported-versions.php kandi uvugurure amakuru y'ubufasha ya Doctor."
+
+#: doctor_functions.php
+#, php-format
+msgid "Running PHP %s; PHP %s receives upstream security fixes through %s."
+msgstr "PHP iri gukora ni %s; PHP %s ihabwa ibikosora by'umutekano biva ku isoko kugeza ku ya %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "Running PHP %s; PHP %s no longer receives upstream security fixes; support ended %s. Upgrade to a supported PHP branch compatible with your Cacti installation, or confirm security maintenance with your OS vendor."
+msgstr "PHP iri gukora ni %s; PHP %s ntigihabwa ibikosora by'umutekano biva ku isoko; ubufasha bwarangiye ku ya %s. Vugurura ujye ku ishami rya PHP rifashwa kandi rihura na Cacti yawe, cyangwa wemeze ibijyanye no kubungabunga umutekano n'utanga sisitemu yawe."
+
+#: doctor_functions.php
+msgid "Required current CLI PHP extensions"
+msgstr "Imigereka ya CLI PHP isabwa iriho ubu"
+
+#: doctor_functions.php
+msgid "Required web PHP extensions"
+msgstr "Imigereka ya PHP y'urubuga isabwa"
+
+#: doctor_functions.php
+#, php-format
+msgid "Missing: %s. Install them through the operating system package manager."
+msgstr "Ibibura: %s. Bishyiremo ukoresheje igikoresho gicunga paki za sisitemu y'imikorere."
+
+#: doctor_functions.php
+msgid "All PHP extensions required by the Cacti installer are loaded in this PHP context."
+msgstr "Imigereka yose ya PHP isabwa n'igishyiraho Cacti yafunguwe muri iki gice cya PHP."
+
+#: doctor_functions.php
+msgid "Doctor does not execute configured binaries while running as root."
+msgstr "Doctor ntikoresha porogaramu zagenwe mu gihe ikora nka root."
+
+#: doctor_functions.php
+#, php-format
+msgid "The file name %s is not expected for %s, so Doctor did not execute it."
+msgstr "Izina rya dosiye %s ntiryari ryitezwe kuri %s, bityo Doctor ntiyarikoresheje."
+
+#: doctor_functions.php
+msgid "Doctor is running as root, so permission checks describe root rather than the web server or poller account, configured binaries are not executed, and repairs are refused. Run Doctor as the Cacti poller user."
+msgstr "Doctor iri gukora nka root, bityo isuzuma ry'uburenganzira risobanura root aho kuba seriveri y'urubuga cyangwa konti ya poller, porogaramu zagenwe ntizikoreshwa, kandi ibikorwa byo gusana birangwa. Koresha Doctor nk'ukoresha wa poller ya Cacti."
+
+#: doctor_functions.php
+msgid "Doctor privileges"
+msgstr "Uburenganzira bwa Doctor"
+
+#: doctor_functions.php
+msgid "Doctor is running without root privileges."
+msgstr "Doctor iri gukora idafite uburenganzira bwa root."
+
+#: doctor_functions.php
+msgid "Required CLI PHP extensions"
+msgstr "Imigereka ya CLI PHP isabwa"
+
+#: doctor_functions.php
+msgid "The configured PHP CLI executable is unavailable, so its extensions cannot be checked."
+msgstr "Porogaramu ya PHP CLI yagenwe ntiboneka, bityo imigereka yayo ntishobora kugenzurwa."
+
+#: doctor_functions.php
+msgid "shell_exec() is disabled, so Doctor cannot compare the CLI PHP extensions with Cacti requirements."
+msgstr "shell_exec() yahagaritswe, bityo Doctor ntishobora kugereranya imigereka ya CLI PHP n'ibisabwa bya Cacti."
+
+#: doctor_functions.php
+msgid "The configured PHP CLI executable did not return a valid extension list."
+msgstr "Porogaramu ya PHP CLI yagenwe ntiyatanze urutonde rw'imigereka rwemewe."
+
+#: doctor_functions.php
+#, php-format
+msgid "Missing from CLI PHP: %s. The web and CLI PHP configurations are separate on many systems."
+msgstr "Bibura muri CLI PHP: %s. Igenamiterere rya PHP y'urubuga n'iya CLI bitandukana kuri sisitemu nyinshi."
+
+#: doctor_functions.php
+msgid "The configured PHP CLI has every extension required by Cacti."
+msgstr "PHP CLI yagenwe ifite buri mugereka usabwa na Cacti."
+
+#: doctor_functions.php
+msgid "GD TrueType support"
+msgstr "Ubufasha bwa GD TrueType"
+
+#: doctor_functions.php
+msgid "Recommended PHP features"
+msgstr "Imikorere ya PHP igirwamo inama"
+
+#: doctor_functions.php
+#, php-format
+msgid "Unavailable: %s. Cacti can run without these features, but related functionality may be limited."
+msgstr "Ntibiboneka: %s. Cacti ishobora gukora idafite iyi mikorere, ariko ibikorwa bijyanye nayo bishobora kugira imipaka."
+
+#: doctor_functions.php
+msgid "The optional gettext, SNMP, and GD TrueType features are available."
+msgstr "Imikorere itari itegeko ya gettext, SNMP, na GD TrueType iraboneka."
+
+#: doctor_functions.php
+#, php-format
+msgid "memory_limit is %s (%dM or more is recommended)"
+msgstr "memory_limit ni %s (%dM cyangwa irenga igirwamo inama)"
+
+#: doctor_functions.php
+#, php-format
+msgid "max_execution_time is %d seconds (60 or more is recommended)"
+msgstr "max_execution_time ni amasegonda %d (60 cyangwa arenga agirwamo inama)"
+
+#: doctor_functions.php
+msgid "date.timezone is not set"
+msgstr "date.timezone ntiyashyizweho"
+
+#: doctor_functions.php
+msgid "unset"
+msgstr "ntibyashyizweho"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s. Current values: %s"
+msgstr "%s. Agaciro kariho ubu: %s"
+
+#: doctor_functions.php
+msgid "PHP runtime configuration"
+msgstr "Igenamiterere ry'imikorere ya PHP"
+
+#: doctor_functions.php
+msgid "Database connection"
+msgstr "Ihuzanzira ry'ububiko bw'amakuru"
+
+#: doctor_functions.php
+#, php-format
+msgid "Query failed: %s"
+msgstr "Ikibazo cyananiwe: %s"
+
+#: doctor_functions.php
+msgid "A read-only query completed successfully."
+msgstr "Ikibazo cyo gusoma gusa cyarangiye neza."
+
+#: doctor_functions.php
+msgid "The database returned an unexpected result."
+msgstr "Ububiko bw'amakuru bwatanze igisubizo kitari cyitezwe."
+
+#: doctor_functions.php
+#, php-format
+msgid "Doctor could not determine the database server version from %s."
+msgstr "Doctor ntiyashoboye kumenya verisiyo ya seriveri y'ububiko bw'amakuru kuva kuri %s."
+
+#: doctor_functions.php
+msgid "Supported database server"
+msgstr "Seriveri y'ububiko bw'amakuru ifashwa"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s %s detected; this Cacti branch recommends %s %s or newer."
+msgstr "Habonetse %s %s; iri shami rya Cacti rigira inama %s %s cyangwa iyisumbuyeho."
+
+#: doctor_functions.php
+#, php-format
+msgid "Database character set is %s and collation is %s. Cacti requires utf8mb4."
+msgstr "Imyandikire y'ububiko bw'amakuru ni %s kandi itondeka ni %s. Cacti isaba utf8mb4."
+
+#: doctor_functions.php
+msgid "unknown"
+msgstr "ntibizwi"
+
+#: doctor_functions.php
+msgid "Database character set"
+msgstr "Imyandikire y'ububiko bw'amakuru"
+
+#: doctor_functions.php
+msgid "Database timezone support"
+msgstr "Ubufasha bw'isaha y'ububiko bw'amakuru"
+
+#: doctor_functions.php
+msgid "The Cacti database account cannot read mysql.time_zone_name. Grant SELECT access and populate the database timezone tables."
+msgstr "Konti y'ububiko bw'amakuru ya Cacti ntishobora gusoma mysql.time_zone_name. Tanga uburenganzira bwa SELECT kandi wuzuze imbonerahamwe z'amasaha z'ububiko bw'amakuru."
+
+#: doctor_functions.php
+#, php-format
+msgid "The database timezone table is accessible and contains %d entries."
+msgstr "Imbonerahamwe y'isaha y'ububiko bw'amakuru iragerwaho kandi irimo ibyinjijwe %d."
+
+#: doctor_functions.php
+msgid "The database timezone table is accessible but empty. Populate the system timezone tables."
+msgstr "Imbonerahamwe y'isaha y'ububiko bw'amakuru iragerwaho ariko irimo ubusa. Uzuza imbonerahamwe z'amasaha za sisitemu."
+
+#: doctor_functions.php
+msgid "Core tables used by Cacti are present."
+msgstr "Imbonerahamwe z'ibanze zikoreshwa na Cacti zirahari."
+
+#: doctor_functions.php
+#, php-format
+msgid "Missing core tables: %s. Restore or upgrade the database before attempting other repairs."
+msgstr "Imbonerahamwe z'ibanze zibura: %s. Garura cyangwa uvugurure ububiko bw'amakuru mbere yo kugerageza izindi sano."
+
+#: doctor_functions.php
+msgid "Core database tables"
+msgstr "Imbonerahamwe z'ibanze z'ububiko bw'amakuru"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s is missing (%s)"
+msgstr "%s irabura (%s)"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s is not writable (%s)"
+msgstr "%s ntishobora kwandikwamo (%s)"
+
+#: doctor_functions.php
+msgid "Runtime directories"
+msgstr "Ububiko bw'imikorere"
+
+#: doctor_functions.php
+msgid "The cache, log, and RRA directories exist and are writable."
+msgstr "Ububiko bwa cache, inyandiko-mvugo, na RRA burahari kandi burandikwamo."
+
+#: doctor_functions.php
+msgid "Cacti configuration file"
+msgstr "Dosiye y'igenamiterere rya Cacti"
+
+#: doctor_functions.php
+msgid "include/config.php is missing or unreadable."
+msgstr "include/config.php irabura cyangwa ntishobora gusomwa."
+
+#: doctor_functions.php
+msgid "include/config.php is readable. POSIX mode-bit checks do not apply on Windows."
+msgstr "include/config.php irasomeka. Isuzuma ry'uburenganzira bwa POSIX ntirikoreshwa kuri Windows."
+
+#: doctor_functions.php
+msgid "include/config.php is writable by other users. Remove world-write permission because this file contains database credentials."
+msgstr "include/config.php ishobora kwandikwamo n'abandi bakoresha. Kuraho uburenganzira bwo kwandika kuri bose kuko iyi dosiye irimo ibyangombwa byo kwinjira mu bubiko bw'amakuru."
+
+#: doctor_functions.php
+msgid "include/config.php is group-writable. Confirm that every member of the owning group is trusted."
+msgstr "include/config.php ishobora kwandikwamo n'itsinda. Emeza ko buri munyamuryango w'itsinda riyifite yizewe."
+
+#: doctor_functions.php
+msgid "include/config.php is readable by all local users and contains database credentials. Restrict it to the owner and the web server group."
+msgstr "include/config.php isomeka n'abakoresha bose bo kuri iyi mashini kandi irimo ibyangombwa byo kwinjira mu bubiko bw'amakuru. Yifungire ku nyirayo n'itsinda rya seriveri y'urubuga gusa."
+
+#: doctor_functions.php
+msgid "include/config.php is readable and is not world-readable, group-writable, or world-writable."
+msgstr "include/config.php irasomeka kandi ntisomeka na bose, ntiyandikwamo n'itsinda, kandi ntiyandikwamo na bose."
+
+#: doctor_functions.php
+msgid "Cacti log file"
+msgstr "Dosiye y'inyandiko-mvugo ya Cacti"
+
+#: doctor_functions.php
+msgid "The log file does not exist. Its parent directory is not writable."
+msgstr "Dosiye y'inyandiko-mvugo ntibaho. Ububiko buyibumbatiye ntibwandikwamo."
+
+#: doctor_functions.php
+msgid "The log file does not exist. Its parent directory is writable, so Cacti can create it."
+msgstr "Dosiye y'inyandiko-mvugo ntibaho. Ububiko buyibumbatiye burandikwamo, bityo Cacti ishobora kuyirema."
+
+#: doctor_functions.php
+msgid "The configured log path must be a readable and writable regular file."
+msgstr "Inzira y'inyandiko-mvugo yagenwe igomba kuba dosiye isanzwe isomeka kandi yandikwamo."
+
+#: doctor_functions.php
+#, php-format
+msgid "The log is readable and writable and is %s MiB."
+msgstr "Inyandiko-mvugo irasomeka kandi irandikwamo, ikaba ifite %s MiB."
+
+#: doctor_functions.php
+msgid "The log is readable and writable."
+msgstr "Inyandiko-mvugo irasomeka kandi irandikwamo."
+
+#: doctor_functions.php
+msgid "Verify that Cacti log rotation is enabled."
+msgstr "Emeza ko ihinduranya ry'inyandiko-mvugo ya Cacti ryafunguwe."
+
+#: doctor_functions.php
+#, php-format
+msgid "Executable found at %s."
+msgstr "Porogaramu ikora yabonetse kuri %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "The %s setting is empty, missing, or not executable."
+msgstr "Igenamiterere rya %s ririmo ubusa, rirabura, cyangwa ntirikora nka porogaramu."
+
+#: doctor_functions.php
+#, php-format
+msgid "The %s setting is empty, missing, or not executable: %s"
+msgstr "Igenamiterere rya %s ririmo ubusa, rirabura, cyangwa ntirikora nka porogaramu: %s"
+
+#: doctor_functions.php
+msgid "Doctor could not determine its version."
+msgstr "Doctor ntiyashoboye kumenya verisiyo yayo."
+
+#: doctor_functions.php
+#, php-format
+msgid "Detected version %s."
+msgstr "Habonetse verisiyo %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "Detected version %s; version %s or newer is recommended."
+msgstr "Habonetse verisiyo %s; verisiyo %s cyangwa iyisumbuyeho igirwamo inama."
+
+#: doctor_functions.php
+#, php-format
+msgid "Detected version %s; version %s or newer is required."
+msgstr "Habonetse verisiyo %s; verisiyo %s cyangwa iyisumbuyeho irakenewe."
+
+#: doctor_functions.php
+#, php-format
+msgid "Detected version %s; minimum is %s."
+msgstr "Habonetse verisiyo %s; ntoya ishoboka ni %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "%s executable"
+msgstr "Porogaramu ikora ya %s"
+
+#: doctor_functions.php
+msgid "poller_type is not cmd.php or Spine"
+msgstr "poller_type si cmd.php cyangwa Spine"
+
+#: doctor_functions.php
+msgid "poller_interval is not a supported value"
+msgstr "poller_interval si agaciro gafashwa"
+
+#: doctor_functions.php
+msgid "Poller configuration"
+msgstr "Igenamiterere rya Poller"
+
+#: doctor_functions.php
+#, php-format
+msgid "Poller is %s with a %d-second interval."
+msgstr "Poller ni %s ifite intera y'amasegonda %d."
+
+#: doctor_functions.php
+msgid "Main poller freshness"
+msgstr "Ubuheruka bw'imikorere ya poller y'ibanze"
+
+#: doctor_functions.php
+msgid "No completed main-poller run was found. This can be expected before the first poll."
+msgstr "Nta gikorwa cya poller y'ibanze cyarangiye cyabonetse. Ibi bishobora kwitegwa mbere y'ikusanya rya mbere."
+
+#: doctor_functions.php
+#, php-format
+msgid "Last completed run was %d seconds ago; failure threshold is %d seconds."
+msgstr "Igikorwa giheruka cyarangiye hashize amasegonda %d; umupaka w'ikibazo ni amasegonda %d."
+
+#: doctor_functions.php
+msgid "Database schema version"
+msgstr "Verisiyo y'imiterere y'ububiko bw'amakuru"
+
+#: doctor_functions.php
+msgid "The version table is empty or unreadable, so the schema version is unknown."
+msgstr "Imbonerahamwe ya version irimo ubusa cyangwa ntisomeka, bityo verisiyo y'imiterere ntizwi."
+
+#: doctor_functions.php
+msgid "The version table still reads new_install, so the installer never finished. Open install/ in a browser to complete it."
+msgstr "Imbonerahamwe ya version iracyerekana new_install, bityo igishyiraho nticyigeze kirangira. Fungura install/ muri mushakisha kugira ngo ubirangize."
+
+#: doctor_functions.php
+#, php-format
+msgid "The database schema is at %s but the installed code is %s. Open install/ in a browser to finish the upgrade."
+msgstr "Imiterere y'ububiko bw'amakuru iri kuri %s ariko kode yashyizweho ni %s. Fungura install/ muri mushakisha kugira ngo urangize ivugurura."
+
+#: doctor_functions.php
+#, php-format
+msgid "The database schema (%s) is newer than the installed code (%s). The code may have been rolled back."
+msgstr "Imiterere y'ububiko bw'amakuru (%s) ni mishya kurusha kode yashyizweho (%s). Kode ishobora kuba yarasubijwe inyuma."
+
+#: doctor_functions.php
+#, php-format
+msgid "The database schema (%s) matches the installed code."
+msgstr "Imiterere y'ububiko bw'amakuru (%s) ihura na kode yashyizweho."
+
+#: doctor_functions.php
+msgid "Main poller run time"
+msgstr "Igihe cy'imikorere ya poller y'ibanze"
+
+#: doctor_functions.php
+msgid "No completed run time is recorded yet."
+msgstr "Nta gihe cy'igikorwa cyarangiye kirandikwa kugeza ubu."
+
+#: doctor_functions.php
+#, php-format
+msgid "The last main-poller run took %s seconds of the %d-second interval."
+msgstr "Igikorwa giheruka cya poller y'ibanze cyatwaye amasegonda %s mu ntera y'amasegonda %d."
+
+#: doctor_functions.php
+msgid "Runs that outlast the interval overlap and lose data; add poller processes or threads, or use Spine."
+msgstr "Ibikorwa birenza intera biragongana kandi bigatakaza amakuru; ongeraho inzira za poller cyangwa thread, cyangwa ukoreshe Spine."
+
+#: doctor_functions.php
+msgid "Little headroom remains before polls overlap."
+msgstr "Hasigaye umwanya muto cyane mbere y'uko amakusanya agongana."
+
+#: doctor_functions.php
+#, php-format
+msgid "%d poller_output rows are older than two polling intervals and were never written to RRD files. Check the Cacti log for \"Poller Output Table not Empty\" and confirm max_heap_table_size is large enough."
+msgstr "Imirongo %d ya poller_output ishaje kurusha intera ebyiri zo gukusanya kandi ntiyigeze yandikwa muri dosiye za RRD. Genzura inyandiko-mvugo ya Cacti ushakisha \"Poller Output Table not Empty\" kandi wemeze ko max_heap_table_size ihagije."
+
+#: doctor_functions.php
+msgid "Unprocessed poller output"
+msgstr "Ibisohoka bya poller bitarakorwa"
+
+#: doctor_functions.php
+msgid "No stale rows remain in poller_output."
+msgstr "Nta mirongo ishaje isigaye muri poller_output."
+
+#: doctor_functions.php
+msgid "No remote pollers are enabled."
+msgstr "Nta poller za kure zafunguwe."
+
+#: doctor_functions.php
+msgid "Remote pollers"
+msgstr "Poller za kure"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s (ID %s) has never reported"
+msgstr "%s (ID %s) ntiyigeze itanga raporo"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s (ID %s) last reported %d seconds ago"
+msgstr "%s (ID %s) iheruka gutanga raporo hashize amasegonda %d"
+
+#: doctor_functions.php
+#, php-format
+msgid "The failure threshold is %d seconds."
+msgstr "Umupaka w'ikibazo ni amasegonda %d."
+
+#: doctor_functions.php
+#, php-format
+msgid "%d enabled remote pollers reported within %d seconds."
+msgstr "Poller za kure %d zafunguwe zatanze raporo mu masegonda %d."
+
+#: doctor_functions.php
+msgid "Enabled plugin files"
+msgstr "Dosiye z'imigereka yafunguwe"
+
+#: doctor_functions.php
+#, php-format
+msgid "Enabled plugins are missing from %s: %s. Restore their files or disable them in Plugin Management."
+msgstr "Imigereka yafunguwe irabura muri %s: %s. Garura dosiye zayo cyangwa uyihagarike muri Plugin Management."
+
+#: doctor_functions.php
+msgid "Every enabled plugin has its setup.php in place."
+msgstr "Buri mugereka wakoreshejwe ufite dosiye yawo ya setup.php mu mwanya wayo."
+
+#: doctor_functions.php
+msgid "Boost RRD updates"
+msgstr "Ivugurura rya RRD rya Boost"
+
+#: doctor_functions.php
+msgid "Boost is disabled, so the poller writes RRD files directly."
+msgstr "Boost irafunze, bityo poller yandika dosiye za RRD mu buryo butaziguye."
+
+#: doctor_functions.php
+msgid "Boost is enabled but has no recorded run. This can be expected before its first flush."
+msgstr "Boost irakora ariko nta gikorwa cyayo cyanditswe. Ibi birasanzwe mbere y'uko ikora isukura rya mbere ry'amakuru."
+
+#: doctor_functions.php
+#, php-format
+msgid "Boost last flushed %d seconds ago, more than twice its %d-minute interval. Graphs stop updating until it runs; check the Cacti log for BOOST errors."
+msgstr "Boost yaherukaga gusohora amakuru hashize amasegonda %d, ibi bikaba birenze inshuro ebyiri igihe cyayo cy'iminota %d. Ibishushanyo bihagarara kuvugururwa kugeza yongeye gukora; suzuma inyandiko-mvugo ya Cacti urebe amakosa ya BOOST."
+
+#: doctor_functions.php
+#, php-format
+msgid "poller_output_boost holds %d rows, above the %d-row limit that forces a flush. Boost is falling behind."
+msgstr "poller_output_boost ifite imirongo %d, hejuru y'urubibi rw'imirongo %d rutegeka gusohora amakuru. Boost irimo gusigara inyuma."
+
+#: doctor_functions.php
+#, php-format
+msgid "Boost last flushed %d seconds ago with %d rows waiting."
+msgstr "Boost yaherukaga gusohora amakuru hashize amasegonda %d hamwe n'imirongo %d itegereje."
+
+#: doctor_functions.php doctor_rrd.php
+#, php-format
+msgid "Checked a sample of %d active data sources that rotates hourly; a pass does not cover every file."
+msgstr "Hasuzumwe icyitegererezo cy'inkomoko z'amakuru zikora %d gihindurwa buri saha; igenzura rimwe ntirigera kuri buri dosiye."
+
+#: doctor_functions.php
+#, php-format
+msgid "%d of %d active data sources have no RRD file, for example %s. New data sources get one after their first poll; otherwise check the RRA directory and its permissions."
+msgstr "%d kuri %d mu nkomoko z'amakuru zikora ntizifite dosiye ya RRD, urugero %s. Inkomoko nshya z'amakuru zihabwa imwe nyuma y'ikusanyamakuru rya mbere; bitabaye ibyo suzuma ububiko bwa RRA n'uburenganzira bwabwo."
+
+#: doctor_functions.php
+msgid "RRD files"
+msgstr "Dosiye za RRD"
+
+#: doctor_functions.php
+#, php-format
+msgid "All %d active data sources have an RRD file."
+msgstr "Inkomoko z'amakuru zikora zose %d zifite dosiye ya RRD."
+
+#: doctor_functions.php
+#, php-format
+msgid "Doctor could not measure free space for %s."
+msgstr "Doctor ntiyashoboye gupima umwanya usigaye wa %s."
+
+#: doctor_functions.php
+msgid "RRA disk space"
+msgstr "Umwanya wa disiki wa RRA"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s (%s GiB) free on the file system holding %s."
+msgstr "%s (%s GiB) irimo ubusa kuri sisitemu ya dosiye ibitse %s."
+
+#: doctor_functions.php
+msgid "RRD updates fail silently when the disk fills."
+msgstr "Ivugurura rya RRD rirananirwa bucece iyo disiki yuzuye."
+
+#: doctor_functions.php
+msgid "Database clock"
+msgstr "Isaha y'ububiko bw'amakuru"
+
+#: doctor_functions.php
+msgid "Doctor could not read the database clock."
+msgstr "Doctor ntiyashoboye gusoma isaha y'ububiko bw'amakuru."
+
+#: doctor_functions.php
+#, php-format
+msgid "The database and PHP clocks differ by %d seconds."
+msgstr "Isaha y'ububiko bw'amakuru n'iya PHP bitandukanyijwe n'amasegonda %d."
+
+#: doctor_functions.php
+msgid "Poll timestamps will be misaligned; synchronise both hosts with NTP."
+msgstr "Ibihe by'ikusanyamakuru bizaba bitajyanye; huza amasaha y'ibikoresho byombi ukoresheje NTP."
+
+#: doctor_functions.php
+msgid "Synchronise both hosts with NTP."
+msgstr "Huza amasaha y'ibikoresho byombi ukoresheje NTP."
+
+#: doctor_functions.php
+msgid "Spine configuration"
+msgstr "Igenamiterere rya Spine"
+
+#: doctor_functions.php
+msgid "Spine is not the configured poller."
+msgstr "Spine si yo poller yashyizwe mu igenamiterere."
+
+#: doctor_functions.php
+msgid "path_spine_config is not set, so Spine uses its compiled-in search path and Doctor cannot verify which file it reads."
+msgstr "path_spine_config ntiyashyizweho, bityo Spine ikoresha inzira yayo y'ishakisha yashyizwemo mu ikorwa kandi Doctor ntishobora kwemeza dosiye isoma."
+
+#: doctor_functions.php
+#, php-format
+msgid "The Spine configuration file is missing or unreadable: %s."
+msgstr "Dosiye y'igenamiterere rya Spine yarabuze cyangwa ntishobora gusomwa: %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "DB_Database is %s but Cacti uses %s"
+msgstr "DB_Database ni %s ariko Cacti ikoresha %s"
+
+#: doctor_functions.php
+#, php-format
+msgid "DB_User is %s but Cacti uses %s"
+msgstr "DB_User ni %s ariko Cacti ikoresha %s"
+
+#: doctor_functions.php
+msgid "the file is world-readable and holds the database password"
+msgstr "dosiye ishobora gusomwa na buri wese kandi ibitse ijambobanga ry'ububiko bw'amakuru"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s uses the same database and user as Cacti."
+msgstr "%s ikoresha ububiko bw'amakuru n'umukoresha bimwe na Cacti."
+
+#: doctor_functions.php
+#, php-format
+msgid "%s is %s"
+msgstr "%s ni %s"
+
+#: doctor_functions.php
+msgid "Cacti recommends ON; doublewrite may stay off only on ZFS or similar journaling storage."
+msgstr "Cacti isaba ON; doublewrite ishobora kuguma ifunze gusa kuri ZFS cyangwa ububiko busanzwe bufata inyandiko z'impinduka."
+
+#: doctor_functions.php
+msgid "InnoDB safety settings"
+msgstr "Igenamiterere ry'umutekano rya InnoDB"
+
+#: doctor_functions.php
+msgid "innodb_file_per_table and innodb_doublewrite are enabled."
+msgstr "innodb_file_per_table na innodb_doublewrite biremewe."
+
+#: doctor_functions.php
+#, php-format
+msgid "None of the last %d log lines report an error."
+msgstr "Nta murongo n'umwe mu mirongo %d iheruka y'inyandiko-mvugo ugaragaza ikosa."
+
+#: doctor_functions.php
+msgid "Recent log errors"
+msgstr "Amakosa aheruka mu nyandiko-mvugo"
+
+#: doctor_functions.php
+#, php-format
+msgid "%d of the last %d log lines report an error. Most frequent (%dx): %s"
+msgstr "%d kuri %d mu mirongo iheruka y'inyandiko-mvugo igaragaza ikosa. Iryagarutse kenshi (%dx): %s"
+
+#: doctor_functions.php
+msgid "The Cacti log is not readable; see the Cacti log file check."
+msgstr "Inyandiko-mvugo ya Cacti ntishobora gusomwa; reba isuzuma rya dosiye y'inyandiko-mvugo ya Cacti."
+
+#: doctor_functions.php
+msgid "No enabled devices are configured."
+msgstr "Nta bikoresho byemejwe biri mu igenamiterere."
+
+#: doctor_functions.php
+#, php-format
+msgid "All %d enabled devices are up."
+msgstr "Ibikoresho byose byemejwe %d birakora."
+
+#: doctor_functions.php
+#, php-format
+msgid "%d of %d enabled devices are down and %d recovering."
+msgstr "%d kuri %d mu bikoresho byemejwe ntibigerwaho kandi %d birimo kwisubiranya."
+
+#: doctor_functions.php
+msgid "The down devices could not be listed."
+msgstr "Ibikoresho bitagerwaho ntibyashoboye gutondekwa."
+
+#: doctor_functions.php
+#, php-format
+msgid "%s down since %s"
+msgstr "%s ntikigerwaho kuva %s"
+
+#: doctor_functions.php
+#, php-format
+msgid "Longest down: %s."
+msgstr "Ikimaze igihe kinini kitagerwaho: %s."
+
+#: doctor_functions.php
+msgid "With most devices down, check the poller host's network and SNMP settings first."
+msgstr "Ubwo ibikoresho byinshi bitagerwaho, banza usuzume umuyoboro w'aho poller ikorera n'igenamiterere rya SNMP."
+
+#: doctor_functions.php
+msgid "Doctor could not read device status from the host table."
+msgstr "Doctor ntiyashoboye gusoma imiterere y'igikoresho mu mbonerahamwe ya host."
+
+#: doctor_functions.php
+#, php-format
+msgid "Cacti Doctor on %s: %d failed, %d warnings"
+msgstr "Cacti Doctor kuri %s: %d byananiranye, imiburo %d"
+
+#: doctor_functions.php
+#, php-format
+msgid "%d Cacti Doctor checks changed status on %s."
+msgstr "Amasuzuma ya Cacti Doctor %d yahinduye imiterere kuri %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "Totals: %d passed, %d warnings, %d failed."
+msgstr "Igiteranyo: %d byatsinze, imiburo %d, %d byananiranye."
+
+#: doctor_functions.php
+#, php-format
+msgid "Refusing to overwrite %s."
+msgstr "Kwanga gusimbuza %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "Cannot create %s."
+msgstr "Ntibishoboka kurema %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "Could not make %s private."
+msgstr "Ntibyashobotse kugira %s ibanga."
+
+#: doctor_functions.php
+#, php-format
+msgid "Writing %s failed."
+msgstr "Kwandika %s byananiranye."
+
+#: doctor_functions.php
+msgid "Repair runtime directories"
+msgstr "Sana ububiko bw'igihe cy'ikorwa"
+
+#: doctor_functions.php
+msgid "Create missing cache, log, and RRA directories and add owner read/write/execute permission without removing existing permissions."
+msgstr "Rema ububiko bwa cache, inyandiko-mvugo, na RRA bwabuze kandi wongereho uburenganzira bwo gusoma/kwandika/gukora ku nyirabwo udakuyeho uburenganzira busanzweho."
+
+#: doctor_functions.php
+msgid "The requested repair is not allow-listed."
+msgstr "Isana ryasabwe ntiriri ku rutonde rwemewe."
+
+#: doctor_functions.php
+msgid "No repair handler is registered."
+msgstr "Nta gikorwa cyo gusana cyanditswe."
+
+#: doctor_functions.php
+msgid "Repair unavailable"
+msgstr "Isana ntiriboneka"
+
+#: doctor_functions.php
+msgid "Repairs are refused while running as root. Run Doctor as the Cacti poller user."
+msgstr "Ibikorwa byo gusana byanzwe igihe bikorwa nka root. Koresha Doctor nk'umukoresha wa poller ya Cacti."
+
+#: doctor_functions.php
+msgid "The Cacti base directory cannot be resolved."
+msgstr "Ububiko bw'ibanze bwa Cacti ntibushobora kuboneka."
+
+#: doctor_functions.php
+#, php-format
+msgid "%s: path is outside the Cacti installation"
+msgstr "%s: inzira iri hanze y'ishyirwaho rya Cacti"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s: symbolic links are not repaired"
+msgstr "%s: amahuza ya symbolic ntasanwa"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s: directory creation failed"
+msgstr "%s: iremwa ry'ububiko ryananiranye"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s: could not add owner permissions"
+msgstr "%s: ntibyashobotse kongeraho uburenganzira bwa nyirabwo"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s: still not a writable directory"
+msgstr "%s: ntikiri ububiko bwandikwamo"
+
+#: doctor_functions.php
+msgid "Runtime directories now exist and are writable by the current process."
+msgstr "Ububiko bw'igihe cy'ikorwa ubu burahari kandi bushobora kwandikwamo n'igikorwa kiriho."
+
+#: doctor_functions.php
+msgid "Cacti"
+msgstr "Cacti"
+
+#: doctor_functions.php
+msgid "Database"
+msgstr "Ububiko bw'amakuru"
+
+#: doctor_functions.php
+msgid "Database health"
+msgstr "Ubuzima bw'ububiko bw'amakuru"
+
+#: doctor_functions.php
+msgid "Devices"
+msgstr "Ibikoresho"
+
+#: doctor_functions.php setup.php
+msgid "Doctor"
+msgstr "Doctor"
+
+#: doctor_functions.php
+msgid "Filesystem"
+msgstr "Sisitemu ya dosiye"
+
+#: doctor_functions.php
+msgid "Logging"
+msgstr "Iyandika ry'inyandiko-mvugo"
+
+#: doctor_functions.php
+msgid "PHP"
+msgstr "PHP"
+
+#: doctor_functions.php
+msgid "Poller"
+msgstr "Poller"
+
+#: doctor_functions.php
+msgid "Prerequisites"
+msgstr "Ibisabwa mbere"
+
+#: doctor_functions.php
+msgid "Repair"
+msgstr "Gusana"
+
+#: doctor_functions.php
+msgid "Security"
+msgstr "Umutekano"
+
+#: doctor_functions.php
+msgid "PASS"
+msgstr "BYATSINZE"
+
+#: doctor_functions.php
+msgid "WARN"
+msgstr "UMUBURO"
+
+#: doctor_functions.php
+msgid "FAIL"
+msgstr "BYANANIRANYE"
+
+#: doctor_functions.php
+msgid "UNKNOWN"
+msgstr "NTIBIZWI"
+
+#: doctor_rrd.php
+msgid "Data source freshness could not be assessed."
+msgstr "Ubushya bw'inkomoko y'amakuru ntibwashoboye gusuzumwa."
+
+#: doctor_rrd.php
+msgid "RRD update freshness"
+msgstr "Ubushya bw'ivugurura rya RRD"
+
+#: doctor_rrd.php
+msgid "The deferred-write interval is unknown; configure it before judging file age."
+msgstr "Intera y'iyandika ryimuriwe nyuma ntizwi; yishyire mu igenamiterere mbere yo gusuzuma igihe dosiye imaze idavugururwa."
+
+#: doctor_rrd.php
+#, php-format
+msgid "Checked %d files; %d stale files across %d devices; %d unavailable or future-dated files."
+msgstr "Hasuzumwe dosiye %d; dosiye %d zishaje ku bikoresho %d; dosiye %d zitaboneka cyangwa zifite itariki y'igihe kizaza."
+
+#: doctor_rrd.php
+msgid "File age includes the collection interval and configured deferred-write allowance; verify the poller and flush process before changing data."
+msgstr "Igihe dosiye imaze idavugururwa kirimo intera y'ikusanyamakuru n'igihe cyemewe cy'iyandika ryimuriwe nyuma; genzura poller n'igikorwa cyo gusohora amakuru mbere yo guhindura amakuru."
+
+#: doctor_scheduling.php
+msgid "Scheduled checks are disabled. Enable them in Settings > Doctor to retain samples and alert on changes."
+msgstr "Amasuzuma ateganyijwe arahagaritswe. Yemeze muri Igenamiterere > Doctor kugira ngo ubike ibyitegererezo kandi utange impuruza ku mpinduka."
+
+#: doctor_scheduling.php
+msgid "Scheduled report freshness"
+msgstr "Ubushya bwa raporo iteganyijwe"
+
+#: doctor_scheduling.php
+#, php-format
+msgid "%s UTC"
+msgstr "%s UTC"
+
+#: doctor_scheduling.php
+#, php-format
+msgid "Last started: %s; last completed: %s."
+msgstr "Iheruka gutangira: %s; iheruka kurangira: %s."
+
+#: doctor_scheduling.php
+msgid "never"
+msgstr "nta na rimwe"
+
+#: doctor_scheduling.php
+msgid "Results are missing or stale. Check the primary poller and DOCTOR log for startup, timeout, or persistence errors."
+msgstr "Ibisubizo byarabuze cyangwa birashaje. Suzuma poller y'ibanze n'inyandiko-mvugo ya DOCTOR urebe amakosa y'itangira, kurenza igihe, cyangwa kubika."
+
+#: doctor_scheduling.php
+msgid "A completed diagnostic run is recent; this does not mean all checks passed."
+msgstr "Isuzuma ryarangiye ni rishya; ibi ntibisobanura ko amasuzuma yose yatsinze."
+
+#: doctor_scheduling.php
+msgid "Doctor alert state is invalid. Restore doctor_alert_pending from backup before retrying."
+msgstr "Imiterere y'impuruza ya Doctor ntiyemewe. Subiza agaciro k'igenamiterere ka doctor_alert_pending uvanye mu bubiko bw'inyunganizi mbere yo kongera kugerageza."
+
+#: doctor_scheduling.php
+msgid "Doctor alert transitions are invalid; no email was sent."
+msgstr "Impinduka z'impuruza ya Doctor ntizemewe; nta imeyili yoherejwe."
+
+#: doctor_scheduling.php
+msgid "Alert delivery"
+msgstr "Iyoherezwa ry'impuruza"
+
+#: doctor_scheduling.php
+#, php-format
+msgid "%d check transitions await delivery; attempts: %d of 3."
+msgstr "Impinduka z'amasuzuma %d zitegereje koherezwa; ibigeragezo: %d kuri 3."
+
+#: doctor_scheduling.php
+msgid "Automatic retries exhausted. Correct Cacti mail settings, then run Doctor with --scheduled --retry-alerts as the poller user."
+msgstr "Ibigeragezo byikora byarashize. Kosora igenamiterere rya imeyili rya Cacti, hanyuma ukoreshe Doctor na --scheduled --retry-alerts nk'umukoresha wa poller."
+
+#: doctor_scheduling.php
+#, php-format
+msgid "Next eligible retry: %s UTC, after a primary poller cycle."
+msgstr "Igikorwa gikurikira cyemewe cyo kugerageza: %s UTC, nyuma y'inshuro imwe ya poller y'ibanze."
+
+#: doctor_scheduling.php
+msgid "No alert recipients are currently configured; pending transitions are retained."
+msgstr "Nta bakira impuruza bari mu igenamiterere kuri ubu; impinduka zitegereje zirabikwa."
+
+#: doctor_scheduling.php
+msgid "No retained alert is awaiting delivery. Mail-server acceptance does not prove inbox delivery."
+msgstr "Nta mpuruza yabitswe itegereje koherezwa. Kwemerwa na seriveri ya imeyili ntibyemeza ko yageze mu gasanduku k'imeli."
+
+#: doctor_scheduling.php
+msgid "Doctor retained status changes (UTC). Repeated changes for one check are coalesced; an out-and-back transition is retained."
+msgstr "Impinduka z'imiterere zabitswe na Doctor (UTC). Impinduka zisubiramo ku isuzuma rimwe zihurizwa hamwe; impinduka igenda ikagaruka irabikwa."
+
+#: doctor_scheduling.php
+#, php-format
+msgid "%s: %s -> %s (latest change %s)"
+msgstr "%s: %s -> %s (impinduka iheruka %s)"
+
+#: doctor_scheduling.php
+#, php-format
+msgid "%d further status changes are not listed because the alert queue reached its storage limit."
+msgstr "Izindi mpinduka z'imiterere %d ntizirondowe kuko umurongo w'impuruza wageze ku rugero rwawo rw'ububiko."
+
+#: doctor_scheduling.php
+msgid "Open Utilities > Doctor for current measurements, recommended actions, and verification steps."
+msgstr "Fungura Ibikoresho by'inyongera > Doctor urebe ibipimo biriho, ibikorwa bisabwa, n'intambwe zo kwemeza."
+
+#: doctor_scheduling.php
+#, php-format
+msgid "Cacti Doctor: %d retained status changes"
+msgstr "Cacti Doctor: impinduka z'imiterere zabitswe %d"
+
+#: doctor_scheduling.php
+msgid "Doctor schedule is already running or the database lock is unavailable."
+msgstr "Gahunda ya Doctor yamaze gutangira gukora cyangwa ifungwa ry'ububiko bw'amakuru ntiriboneka."
+
+#: doctor_web.php
+msgid "The finding could not be acknowledged. Run Doctor again, then acknowledge the current result."
+msgstr "Ikigaragajwe nticyashoboye kwemezwa ko cyabonywe. Ongera ukoreshe Doctor, hanyuma wemeze igisubizo kiriho."
+
+#: doctor_web.php
+msgid "The warning exception could not be saved. Use a fresh assessed warning, an owner, a reason and an expiry within 90 days."
+msgstr "Irengayobora ry'umuburo ntiryashoboye kubikwa. Koresha umuburo mushya wasuzumwe, nyirawo, impamvu n'igihe cyo kurangiriraho kitarenze iminsi 90."
+
+#: doctor_web.php
+msgid "Confirm repair"
+msgstr "Emeza isana"
+
+#: doctor_web.php
+msgid "Approval expires after five minutes and is invalidated by a changed filesystem. The acting account must be able to create directories or change owner permissions."
+msgstr "Iyemeza rirangira nyuma y'iminota itanu kandi rita agaciro iyo sisitemu ya dosiye ihindutse. Konti ikora igomba kuba ishobora kurema ububiko cyangwa guhindura uburenganzira bwa nyirabwo."
+
+#: doctor_web.php
+msgid "Repair prerequisites are not met. No changes will be made."
+msgstr "Ibisabwa mbere yo gusana ntibyuzujwe. Nta mpinduka zizakorwa."
+
+#: doctor_web.php
+msgid "Cancel"
+msgstr "Hagarika"
+
+#: doctor_web.php
+#, php-format
+msgid "Last observation: %s UTC."
+msgstr "Igenzura riheruka: %s UTC."
+
+#: doctor_web.php
+msgid "No completed diagnostic report is available."
+msgstr "Nta raporo y'isuzuma yarangiye iboneka."
+
+#: doctor_web.php
+msgid "Health is unknown: observations are missing or stale."
+msgstr "Ubuzima ntibuzwi: amagenzura yarabuze cyangwa arashaje."
+
+#: doctor_web.php
+msgid "Run diagnostic checks"
+msgstr "Kora amasuzuma y'imikorere"
+
+#: doctor_web.php
+msgid "Doctor settings"
+msgstr "Igenamiterere rya Doctor"
+
+#: doctor_web.php setup.php
+msgid "Cacti Doctor"
+msgstr "Cacti Doctor"
+
+#: doctor_web.php
+#, php-format
+msgid "Installation health: %d passed, %d warnings, %d failed"
+msgstr "Ubuzima bw'ishyirwaho: %d byatsinze, imiburo %d, %d byananiranye"
+
+#: doctor_web.php
+msgid "Category"
+msgstr "Icyiciro"
+
+#: doctor_web.php
+msgid "Check"
+msgstr "Isuzuma"
+
+#: doctor_web.php
+msgid "Status"
+msgstr "Imimerere"
+
+#: doctor_web.php
+msgid "Details"
+msgstr "Ibisobanuro birambuye"
+
+#: doctor_web.php
+msgid "Action"
+msgstr "Igikorwa"
+
+#: doctor_web.php
+msgid "Acknowledged; health status unchanged."
+msgstr "Byemejwe ko byabonywe; imiterere y'ubuzima ntiyahindutse."
+
+#: doctor_web.php
+msgid "Acknowledge"
+msgstr "Emeza ko wabibonye"
+
+#: doctor_web.php
+#, php-format
+msgid "Owner: %s; review by %s UTC. Reason: %s"
+msgstr "Nyirabyo: %s; bizasuzumwe bitarenze %s UTC. Impamvu: %s"
+
+#: doctor_web.php
+msgid "Investigate a symptom"
+msgstr "Suzuma ikimenyetso"
+
+#: doctor_web.php
+msgid "Investigate"
+msgstr "Suzuma"
+
+#: doctor_web.php
+msgid "Recent scheduled checks"
+msgstr "Amasuzuma ateganyijwe aheruka"
+
+#: doctor_web.php
+msgid "Failed"
+msgstr "Byananiranye"
+
+#: doctor_web.php
+msgid "Observation (UTC)"
+msgstr "Igenzura (UTC)"
+
+#: doctor_web.php
+msgid "Passed"
+msgstr "Byatsinze"
+
+#: doctor_web.php
+msgid "Warnings"
+msgstr "Imiburo"
+
+#: doctor_web.php
+msgid "Warning exceptions"
+msgstr "Amarengayobora y'imiburo"
+
+#: doctor_web.php
+msgid "Owner"
+msgstr "Nyirabyo"
+
+#: doctor_web.php
+msgid "Reason"
+msgstr "Impamvu"
+
+#: doctor_web.php
+msgid "Review date (UTC)"
+msgstr "Itariki y'isuzumwa (UTC)"
+
+#: doctor_web.php
+msgid "Accept warning"
+msgstr "Emera umuburo"
+
+#: doctor_web.php
+msgid "Expired"
+msgstr "Byarangiye"
+
+#: doctor_web.php
+msgid "Check not present in this report; verify its ID."
+msgstr "Isuzuma ntiriri muri iyi raporo; genzura ID yaryo."
+
+#: doctor_web.php
+msgid "Remove exception"
+msgstr "Kuraho irengayobora"
+
+#: doctor_web.php
+msgid "Audit history"
+msgstr "Amateka y'ubugenzuzi"
+
+#: doctor_workflows.php
+msgid "Repair refused"
+msgstr "Isana ryanzwe"
+
+#: doctor_workflows.php
+msgid "The approved plan is expired or the filesystem changed. Preview the repair again."
+msgstr "Gahunda yemejwe yararangiye cyangwa sisitemu ya dosiye yahindutse. Ongera urebe incamake y'isana."
+
+#: doctor_workflows.php
+msgid "The audit record could not be saved. No repair was attempted."
+msgstr "Inyandiko y'ubugenzuzi ntishoboye kubikwa. Nta sana ryageragejwe."
+
+#: doctor_workflows.php
+msgid "The completion audit failed; inspect the filesystem and the started audit record."
+msgstr "Ubugenzuzi bwo kurangiza bwananiranye; suzuma sisitemu ya dosiye n'inyandiko y'ubugenzuzi yatangiye."
+
+#: setup.php
+msgid "Doctor Administrator"
+msgstr "Umuyobozi wa Doctor"
+
+#: setup.php
+msgid "Doctor Operator"
+msgstr "Ukoresha Doctor"
+
+#: setup.php
+msgid "Doctor Viewer"
+msgstr "Ureba Doctor"
+
+#: setup.php
+msgid "Utilities"
+msgstr "Ibikoresho by'inyongera"
+
+#: setup.php
+msgid "System Administration"
+msgstr "Imiyoborere ya sisitemu"
+
+#: setup.php
+msgid "Scheduled Checks"
+msgstr "Amasuzuma ateganyijwe"
+
+#: setup.php
+msgid "Run Checks on a Schedule"
+msgstr "Kora amasuzuma kuri gahunda"
+
+#: setup.php
+msgid "Run every Doctor check in the background after the poller and record each check's status."
+msgstr "Kora buri suzuma rya Doctor mu ibanga nyuma ya poller kandi wandike imiterere ya buri suzuma."
+
+#: setup.php
+msgid "Check Interval"
+msgstr "Intera y'isuzuma"
+
+#: setup.php
+msgid "How often the scheduled checks run."
+msgstr "Inshuro amasuzuma ateganyijwe akorwa."
+
+#: setup.php
+msgid "Every 15 Minutes"
+msgstr "Buri minota 15"
+
+#: setup.php
+msgid "Every Hour"
+msgstr "Buri saha"
+
+#: setup.php
+msgid "Every 6 Hours"
+msgstr "Buri masaha 6"
+
+#: setup.php
+msgid "Every Day"
+msgstr "Buri munsi"
+
+#: setup.php
+msgid "Alert Email Addresses"
+msgstr "Aderesi za imeyili z'impuruza"
+
+#: setup.php
+msgid "Comma-separated addresses to email when a check starts or stops failing. Leave empty to only log changes to the Cacti log."
+msgstr "Aderesi zitandukanyijwe n'akitso zo kohererezaho imeyili igihe isuzuma ritangiye cyangwa riretse kunanirwa. Hasige ubusa kugira ngo wandike impinduka mu nyandiko-mvugo ya Cacti gusa."
+
+#: setup.php
+msgid "Alert on Warnings"
+msgstr "Imenyesha ku miburo"
+
+#: setup.php
+msgid "Also alert when a check moves into or out of a warning."
+msgstr "Nanone menyesha iyo igenzura ryinjiye cyangwa rivuye mu muburo."
+
+#: setup.php
+msgid "Thresholds"
+msgstr "Ibipimo ntarengwa"
+
+#: setup.php
+msgid "Poller Run Time Warning (percent)"
+msgstr "Umuburo w'igihe poller ikora (ku ijana)"
+
+#: setup.php
+msgid "Warn when the last main-poller run used this share of the polling interval. Runs that take the whole interval always fail."
+msgstr "Tanga umuburo iyo ikorwa riheruka rya poller y'ibanze ryakoresheje iki gice cy'intera yo gukusanya. Ikorwa rifata intera yose buri gihe riratsindwa."
+
+#: setup.php
+msgid "RRA Disk Free Warning (percent)"
+msgstr "Umuburo w'umwanya usigaye kuri disiki ya RRA (ku ijana)"
+
+#: setup.php
+msgid "Warn when free space on the RRA file system drops below this percentage."
+msgstr "Tanga umuburo iyo umwanya usigaye ku rubuga rw'amadosiye ya RRA ugiye munsi y'iki kigero cyo ku ijana."
+
+#: setup.php
+msgid "Fail when free space on the RRA file system drops below this percentage."
+msgstr "Emeza ikosa iyo umwanya usigaye ku rubuga rw'amadosiye ya RRA ugiye munsi y'iki kigero cyo ku ijana."
+
+#: setup.php
+msgid "RRA Disk Free Failure (percent)"
+msgstr "Ikosa ry'umwanya usigaye kuri disiki ya RRA (ku ijana)"
+
+#: setup.php
+msgid "Clock Drift Warning (seconds)"
+msgstr "Umuburo w'itandukana ry'amasaha (amasegonda)"
+
+#: setup.php
+msgid "Warn when the database and PHP clocks differ by more than this."
+msgstr "Tanga umuburo iyo amasaha y'ububiko bw'amakuru na PHP atandukanye kurenza iki gihe."
+
+#: setup.php
+msgid "Clock Drift Failure (seconds)"
+msgstr "Ikosa ry'itandukana ry'amasaha (amasegonda)"
+
+#: setup.php
+msgid "Fail when the database and PHP clocks differ by more than this."
+msgstr "Emeza ikosa iyo amasaha y'ububiko bw'amakuru na PHP atandukanye kurenza iki gihe."
+
+#: setup.php
+msgid "RRD Stale Intervals"
+msgstr "Intera z'aho dosiye ya RRD itavuguruwe"
+
+#: setup.php
+msgid "Warn after this many collection intervals without a file update (1 to 100)."
+msgstr "Tanga umuburo nyuma y'iyi mibare y'intera zo gukusanya nta ivugururwa rya dosiye (1 kugeza kuri 100)."
+
+#: setup.php
+msgid "Additional disk-write delay for external caching (0 to 86400). Boost adds its own allowance."
+msgstr "Ubukererwe bwiyongera bwo kwandika kuri disiki ku bubiko bw'agateganyo bwo hanze (0 kugeza kuri 86400). Boost yongeraho igihe cyayo cyihariwe."
+
+#: setup.php
+msgid "Deferred RRD Write Allowance (seconds)"
+msgstr "Igihe cyemewe cyo gutinza kwandika RRD (amasegonda)"
+
+#: setup.php
+msgid "Cacti Log Size Warning (MB)"
+msgstr "Umuburo w'ingano y'inyandiko-mvugo ya Cacti (MB)"
+
+#: setup.php
+msgid "Warn when the Cacti log grows beyond this size, which usually means log rotation is not running."
+msgstr "Tanga umuburo iyo inyandiko-mvugo ya Cacti irenze iyi ngano, ibyo akenshi bivuze ko ihinduranya ry'inyandiko-mvugo ridakora."

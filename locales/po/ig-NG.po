@@ -1,0 +1,1542 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
+# SPDX-FileCopyrightText: 2026 Thomas Vincent <thomasvincent@gmail.com>
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: doctor 0.6.1\n"
+"Report-Msgid-Bugs-To: https://github.com/somethingwithproof/plugin_doctor/issues\n"
+"PO-Revision-Date: 2026-11-26 00:00+0000\n"
+"Last-Translator: Thomas Vincent <thomasvincent@gmail.com>\n"
+"Language-Team: Thomas Vincent <thomasvincent@gmail.com>\n"
+"Language: ig-NG\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: cli/doctor.php
+#, php-format
+msgid "Available repairs: %s"
+msgstr "Ndozi dịnụ: %s"
+
+#: cli/doctor.php
+#, php-format
+msgid "Unknown format %s. Use text, json, nagios, or prometheus."
+msgstr "Ụdị a na-amaghị %s. Jiri text, json, nagios, ma ọ bụ prometheus."
+
+#: cli/doctor.php
+#, php-format
+msgid "Redaction could not complete, so %s was not written."
+msgstr "Nhicha nzuzo enweghị ike ịgwụ, ya mere edeghị %s."
+
+#: cli/doctor.php
+#, php-format
+msgid "Wrote %s. Review it before sharing; values after password, secret, token, and community names are masked."
+msgstr "Edere %s. Nyochaa ya tupu ị kesaa ya; e kpuchiri ọnụọgụgụ ndị na-esote password, secret, token, na community names."
+
+#: cli/doctor.php doctor_functions.php
+msgid "Unknown repair"
+msgstr "Ndozi a na-amaghị"
+
+#: cli/doctor.php
+msgid "Refusing to repair without --yes."
+msgstr "Ajụrụ ime ndozi na-enweghị --yes."
+
+#: cli/doctor.php
+msgid "Select a supported symptom and text or JSON output."
+msgstr "Họrọ mgbaàmà a na-akwado na mpụta text ma ọ bụ JSON."
+
+#: cli/doctor.php doctor_web.php
+msgid "Accepted warning"
+msgstr "Anabatara ịdọ aka ná ntị"
+
+#: doctor_access.php doctor_functions.php
+msgid "Device availability"
+msgstr "Ọnọdụ nnweta ngwaọrụ"
+
+#: doctor_access.php
+msgid "Device permissions could not be evaluated."
+msgstr "Enweghị ike ịnwale ikike ngwaọrụ."
+
+#: doctor_access.php
+msgid "The configured PHP CLI cannot run Doctor checks."
+msgstr "PHP CLI a haziri enweghị ike ịgba nyocha Doctor."
+
+#: doctor_access.php
+msgid "Doctor checks failed or exceeded their time limit. Review the Doctor log."
+msgstr "Nyocha Doctor dara ma ọ bụ gafee oke oge ha. Nyochaa ndekọ Doctor."
+
+#: doctor_diagnosis.php
+msgid "Graphs stopped updating"
+msgstr "Eserese kwụsịrị imelite"
+
+#: doctor_diagnosis.php
+msgid "Polling is slow"
+msgstr "Nchịkọta data dị nwayọọ"
+
+#: doctor_diagnosis.php
+msgid "Devices are missing or unavailable"
+msgstr "Ngwaọrụ na-efu ma ọ bụ anaghị enweta ha"
+
+#: doctor_diagnosis.php
+msgid "Doctor alerts are missing"
+msgstr "Ọkwa Doctor adịghị"
+
+#: doctor_diagnosis.php
+msgid "Check the poller scheduler and the affected poller log, then verify a new completed cycle."
+msgstr "Lelee onye nhazi oge poller na ndekọ poller metụtara, wee kwado usoro ọhụrụ e mechara."
+
+#: doctor_diagnosis.php
+msgid "Collection may have stopped."
+msgstr "Nchịkọta nwere ike ịkwụsịla."
+
+#: doctor_diagnosis.php
+msgid "Collected values may not be reaching disk."
+msgstr "Ụkpụrụ ndị anakọtara nwere ike ọ gaghị erute na diskị."
+
+#: doctor_diagnosis.php
+msgid "Inspect the output queue and Boost flush history; verify that the queue drains and RRD timestamps advance."
+msgstr "Nyochaa kwụụ mmepụta na akụkọ ihe mere eme nkpochapụ Boost; kwado na kwụụ ahụ na-agwụ ma akara oge RRD na-aga n'ihu."
+
+#: doctor_diagnosis.php
+msgid "Check storage capacity, runtime-directory permissions and the last RRD update; account for deferred writes."
+msgstr "Lelee ikike ebe nchekwa, ikike folda oge ịrụ ọrụ na mmelite RRD ikpeazụ; tụlee ide ihe ndị e yigharịrị."
+
+#: doctor_diagnosis.php
+msgid "RRD storage needs investigation."
+msgstr "Ebe nchekwa RRD chọrọ nnyocha."
+
+#: doctor_diagnosis.php
+msgid "Collection work may be exceeding its time budget."
+msgstr "Ọrụ nchịkọta nwere ike ịgabiga oke oge e wepụtara maka ya."
+
+#: doctor_diagnosis.php
+msgid "Compare cycle duration with the polling interval and inspect device timeouts before increasing concurrency."
+msgstr "Tụnyere ogologo oge usoro na oge etiti polling ma nyochaa oge nkwụsị ngwaọrụ tupu ịbawanye ọrụ n'otu oge."
+
+#: doctor_diagnosis.php
+msgid "Compare database counters during a slow cycle and inspect query plans before changing server limits."
+msgstr "Tụnyere kaụnta nchekwa data n'oge usoro dị nwayọọ ma nyochaa atụmatụ ajụjụ tupu ịgbanwee oke sava."
+
+#: doctor_diagnosis.php
+msgid "Database pressure may be contributing to slow polling."
+msgstr "Nrụgide nchekwa data nwere ike na-enye aka na polling dị nwayọọ."
+
+#: doctor_diagnosis.php
+msgid "Collection prerequisites or reachability may be failing."
+msgstr "Ihe ndị dị mkpa maka nchịkọta ma ọ bụ iru ngwaọrụ nwere ike na-ada."
+
+#: doctor_diagnosis.php
+msgid "Verify the affected device permissions, reachability, credentials and assigned poller using Cacti diagnostics."
+msgstr "Kwado ikike ngwaọrụ metụtara, iru ya, nzere na poller e kenyere ya site na iji nyocha nsogbu Cacti."
+
+#: doctor_diagnosis.php
+msgid "Scheduled checks or mail delivery need attention."
+msgstr "Nnyocha ndị e zubere n'oge ma ọ bụ nnyefe ozi-e chọrọ nlebara anya."
+
+#: doctor_diagnosis.php
+msgid "Verify scheduling and recipient settings, inspect retained delivery attempts, and send a Cacti test email."
+msgstr "Kwado ntọala nhazi oge na ndị nnata, nyochaa mgbalị nnyefe ndị e debere, ma zipu ozi-e nnwale Cacti."
+
+#: doctor_diagnosis.php
+msgid "Possible causes require verification; matching checks do not establish a root cause."
+msgstr "Ihe ndị nwere ike ịkpata ya chọrọ nkwenye; nnyocha ndị dakọtara anaghị egosipụta isi ihe kpatara ya."
+
+#: doctor_diagnosis.php
+msgid "No cause is established by the available observations. Run fresh diagnostics and investigate the symptom directly."
+msgstr "Ọ dịghị ihe kpatara ya gosipụtara site na nleba anya dịnụ. Mee nyocha nsogbu ọhụrụ ma nyochaa mgbaàmà ahụ ozugbo."
+
+#: doctor_functions.php
+msgid "At least 24 hours since server startup and FLUSH STATUS. Counters are cumulative and may have different reset histories; confirm trends during a representative workload before tuning."
+msgstr "Opekempe awa 24 kemgbe mmalite sava na FLUSH STATUS. Kaụnta na-agbakọta ọnụ ma nwee ike ịnwe akụkọ ihe mere eme ntọgharị dị iche iche; kwado usoro n'oge ibu ọrụ nnọchiteanya tupu ịhazigharị."
+
+#: doctor_functions.php
+msgid "Cumulative tuning advice is deferred: obtain valid uptime and at least 24 hours since startup and FLUSH STATUS. Missing metrics or an inconsistent sample cannot establish database health."
+msgstr "E yigharịrị ndụmọdụ nhazigharị mkpokọta: nweta oge ịrụ ọrụ ziri ezi na opekempe awa 24 kemgbe mmalite na FLUSH STATUS. Nleba anya na-efu efu ma ọ bụ ihe nlele na-ekwekọghị ekwekọ enweghị ike igosipụta ahụike nchekwa data."
+
+#: doctor_functions.php
+msgid "Database observation window"
+msgstr "Oge nleba anya nchekwa data"
+
+#: doctor_functions.php
+msgid "Connection metrics are unavailable or invalid. Check access to SHOW GLOBAL STATUS and SHOW GLOBAL VARIABLES; do not treat missing metrics as an idle server."
+msgstr "Nleba anya njikọ adịghị ma ọ bụ adịghị mma. Lelee ohere ịnweta SHOW GLOBAL STATUS na SHOW GLOBAL VARIABLES; ewerekwala nleba anya na-efu efu dị ka sava na-anọghị n'ọrụ."
+
+#: doctor_functions.php
+#, php-format
+msgid "Current connections: %.0f / %.0f (%s); recorded peak: %.0f (%s of the current limit)."
+msgstr "Njikọ dị ugbu a: %.0f / %.0f (%s); ọnụọgụ kachasị elu e dekọrọ: %.0f (%s nke oke dị ugbu a)."
+
+#: doctor_functions.php
+msgid "Review connection pooling and poller concurrency. Check database-host memory headroom before raising max_connections; the historical peak may reflect an older limit."
+msgstr "Nyochaa njikọta njikọ na ọrụ poller n'otu oge. Lelee ohere memọrị dị na sava nchekwa data tupu ịbawanye max_connections; ọnụọgụ kachasị elu nke akụkọ ihe mere eme nwere ike igosipụta oke ochie."
+
+#: doctor_functions.php
+msgid "Connection capacity"
+msgstr "Ikike njikọ"
+
+#: doctor_functions.php
+msgid "InnoDB buffer pool reads"
+msgstr "Ọgụgụ ọdọ bọfa InnoDB"
+
+#: doctor_functions.php
+msgid "Review query plans and the working set. Consider innodb_buffer_pool_size only after measuring memory available on the database host; a cumulative miss ratio alone does not prove memory pressure."
+msgstr "Nyochaa atụmatụ ajụjụ na usoro data na-arụ ọrụ. Tụlee innodb_buffer_pool_size naanị mgbe ị tụsịrị memọrị dị na sava nchekwa data; oke mfu mkpokọta naanị anaghị egosi nrụgide memọrị."
+
+#: doctor_functions.php
+msgid "On-disk temporary tables"
+msgstr "Tebụl nwa oge dị na diskị"
+
+#: doctor_functions.php
+msgid "Review query plans, sorting, grouping, and temporary-table data types before changing memory limits. Some tables must use disk; memory limits and accounting differ between MySQL and MariaDB versions."
+msgstr "Nyochaa atụmatụ ajụjụ, nhazi, nchịkọta, na ụdị data tebụl nwa oge tupu ịgbanwee oke memọrị. Ụfọdụ tebụl ga-ejirịrị diskị; oke memọrị na ngụkọ dị iche n'etiti ụdị MySQL na MariaDB."
+
+#: doctor_functions.php
+msgid "Connection thread creation"
+msgstr "Mmepụta tredị njikọ"
+
+#: doctor_functions.php
+msgid "Review connection reuse and thread_cache_size. Check the server thread-handling mode before tuning; thread-pool implementations do not behave like one-thread-per-connection servers."
+msgstr "Nyochaa ijigharị njikọ na thread_cache_size. Lelee ọnọdụ njikwa tredị sava tupu ịhazigharị; mmejuputa ọdọ tredị anaghị eme ka sava nwere otu tredị maka otu njikọ."
+
+#: doctor_functions.php
+msgid "Review slow-query logging, long_query_time, and query plans before changing server buffers. This counter depends on the configured slow-query threshold and does not identify individual statements."
+msgstr "Nyochaa ndekọ ajụjụ dị nwayọọ, long_query_time, na atụmatụ ajụjụ tupu ịgbanwee bọfa sava. Kaụnta a dabere na oke ajụjụ dị nwayọọ ahaziri ma ọ naghị amata nkwupụta dị iche iche."
+
+#: doctor_functions.php
+msgid "Slow statements"
+msgstr "Nkwupụta dị nwayọọ"
+
+#: doctor_functions.php
+msgid "Cumulative advice deferred until the observation window is sufficient."
+msgstr "E yigharịrị ndụmọdụ mkpokọta ruo mgbe oge nleba anya zuru oke."
+
+#: doctor_functions.php
+msgid "Thread-cache advice is not assessed: thread_handling is unavailable or is not one-thread-per-connection. Review the active thread-pool implementation instead."
+msgstr "A tụleghị ndụmọdụ kashị tredị: thread_handling adịghị ma ọ bụ abụghị otu tredị maka otu njikọ. Nyochaa mmejuputa ọdọ tredị na-arụ ọrụ kama."
+
+#: doctor_functions.php
+#, php-format
+msgid "Required counters are missing or invalid: %s, %s. Check server-version support and monitoring permissions."
+msgstr "Kaụnta ndị dị mkpa efuola ma ọ bụ adịghị mma: %s, %s. Lelee nkwado ụdị sava na ikike nlekota."
+
+#: doctor_functions.php
+msgid "A counter reset since the prior sample; collect another representative interval before tuning."
+msgstr "Otu kaụnta tọgharịrị kemgbe ihe nlele gara aga; chịkọta oge etiti nnọchiteanya ọzọ tupu ịhazigharị."
+
+#: doctor_functions.php
+#, php-format
+msgid "Insufficient activity: %.0f %s; at least %d observations are needed for this advisory."
+msgstr "Ọrụ ezughị oke: %.0f %s; opekempe nleba anya %d dị mkpa maka ndụmọdụ a."
+
+#: doctor_functions.php
+msgid "Counters are inconsistent or were reset independently. Collect a new representative sample before tuning."
+msgstr "Kaụnta ekwekọghị ekwekọ ma ọ bụ e tọgharịrị ha iche iche. Chịkọta ihe nlele nnọchiteanya ọhụrụ tupu ịhazigharị."
+
+#: doctor_functions.php
+msgid "The interval sample is too small or counters reset; collect another representative interval before tuning."
+msgstr "Ihe nlele oge etiti dị ntakịrị ma ọ bụ kaụnta tọgharịrị; chịkọta oge etiti nnọchiteanya ọzọ tupu ịhazigharị."
+
+#: doctor_functions.php
+#, php-format
+msgid "Interval %s / %s: %.0f / %.0f (%s); investigation threshold: %s."
+msgstr "Oge etiti %s / %s: %.0f / %.0f (%s); oke nnyocha: %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "Cumulative %s / %s: %.0f / %.0f (%s); investigation threshold: %s."
+msgstr "Mkpokọta %s / %s: %.0f / %.0f (%s); oke nnyocha: %s."
+
+#: doctor_functions.php
+msgid "This counter can omit memory-mapped temporary files on MySQL; a low ratio does not rule out disk use."
+msgstr "Kaụnta a nwere ike ịhapụ faịlụ nwa oge e kenyere memọrị na MySQL; oke dị ala anaghị ewepụ ojiji diskị."
+
+#: doctor_functions.php
+msgid "Redo-log advice deferred until the observation window is sufficient and Innodb_log_waits is available."
+msgstr "E yigharịrị ndụmọdụ ndekọ redo ruo mgbe oge nleba anya zuru oke ma Innodb_log_waits dị."
+
+#: doctor_functions.php
+#, php-format
+msgid "Cumulative Innodb_log_waits: %.0f."
+msgstr "Mkpokọta Innodb_log_waits: %.0f."
+
+#: doctor_functions.php
+msgid "Investigate transaction sizes, log-buffer pressure, and storage latency. Recheck the rate under load before considering innodb_log_buffer_size; this historical count is not evidence of a current stall."
+msgstr "Nyochaa nha azụmahịa, nrụgide bọfa ndekọ, na egbu oge ebe nchekwa. Lelee ọnụego ahụ ọzọ n'okpuru ibu ọrụ tupu ịtụlee innodb_log_buffer_size; ọnụọgụ akụkọ ihe mere eme a abụghị ihe akaebe nke nkwụsị dị ugbu a."
+
+#: doctor_functions.php
+msgid "InnoDB log-buffer waits"
+msgstr "Nche bọfa ndekọ InnoDB"
+
+#: doctor_functions.php
+msgid "installed Cacti composer.json"
+msgstr "composer.json Cacti e tinyere"
+
+#: doctor_functions.php
+#, php-format
+msgid "Cacti %s installer requirement"
+msgstr "Ihe achọrọ nke onye nrụnye Cacti %s"
+
+#: doctor_functions.php
+msgid "PHP compatibility with installed Cacti"
+msgstr "Ndakọrịta PHP na Cacti e tinyere"
+
+#: doctor_functions.php
+#, php-format
+msgid "Running PHP %s; installed Cacti %s."
+msgstr "Na-agba PHP %s; Cacti e tinyere %s."
+
+#: doctor_functions.php
+msgid "Could not establish Cacti's PHP requirement. Check the installed Cacti composer.json or release documentation; Doctor does not assume compatibility."
+msgstr "Enweghị ike ịchọpụta ihe achọrọ PHP nke Cacti. Lelee composer.json Cacti e tinyere ma ọ bụ akwụkwọ ntọhapụ; Doctor anaghị eche na ha dakọtara."
+
+#: doctor_functions.php
+#, php-format
+msgid "PHP >= %s and < %s"
+msgstr "PHP >= %s na < %s"
+
+#: doctor_functions.php
+#, php-format
+msgid "PHP >= %s"
+msgstr "PHP >= %s"
+
+#: doctor_functions.php
+#, php-format
+msgid "Requires %s (%s). Running PHP meets that requirement."
+msgstr "Chọrọ %s (%s). PHP na-agba ugbu a mezuru ihe achọrọ ahụ."
+
+#: doctor_functions.php
+#, php-format
+msgid "Requires %s (%s). Running PHP does not meet that requirement."
+msgstr "Chọrọ %s (%s). PHP na-agba ugbu a emezughị ihe achọrọ ahụ."
+
+#: doctor_functions.php
+#, php-format
+msgid "Detected %s; Doctor requires Cacti 1.2.20 or newer."
+msgstr "Achọpụtara %s; Doctor chọrọ Cacti 1.2.20 ma ọ bụ nke dị ọhụrụ karịa."
+
+#: doctor_functions.php
+msgid "Supported Cacti version"
+msgstr "Ụdị Cacti akwadoro"
+
+#: doctor_functions.php
+msgid "PHP upstream security support"
+msgstr "Nkwado nchekwa PHP sitere na isi mmalite"
+
+#: doctor_functions.php
+msgid "This checks the PHP release branch, not whether this patch release is up to date or whether your OS vendor backports fixes. Cacti compatibility is checked separately."
+msgstr "Nke a na-elele alaka ntọhapụ PHP, ọ bụghị ma ntọhapụ mmezi a dị ọhụrụ ma ọ bụ ma onye na-ere OS gị na-eweghachi mmezi ochie. A na-elele ndakọrịta Cacti iche."
+
+#: doctor_functions.php
+#, php-format
+msgid "Running PHP %s; upstream security-support status is unknown or this is a prerelease. Check https://www.php.net/supported-versions.php and update Doctor's support data."
+msgstr "Na-agba PHP %s; amaghị ọnọdụ nkwado nchekwa sitere na isi mmalite ma ọ bụ nke a bụ ntọhapụ tupu oge. Lelee https://www.php.net/supported-versions.php ma melite data nkwado Doctor."
+
+#: doctor_functions.php
+#, php-format
+msgid "Running PHP %s; PHP %s receives upstream security fixes through %s."
+msgstr "Na-agba PHP %s; PHP %s na-enweta mmezi nchekwa sitere na isi mmalite ruo %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "Running PHP %s; PHP %s no longer receives upstream security fixes; support ended %s. Upgrade to a supported PHP branch compatible with your Cacti installation, or confirm security maintenance with your OS vendor."
+msgstr "Na-agba PHP %s; PHP %s anaghịzi enweta mmezi nchekwa sitere na isi mmalite; nkwado kwụsịrị na %s. Kwalite gaa na alaka PHP akwadoro nke dakọtara na nrụnye Cacti gị, ma ọ bụ kwado nlekọta nchekwa na onye na-ere OS gị."
+
+#: doctor_functions.php
+msgid "Required current CLI PHP extensions"
+msgstr "Mgbakwunye CLI PHP dị ugbu a achọrọ"
+
+#: doctor_functions.php
+msgid "Required web PHP extensions"
+msgstr "Mgbakwunye webụ PHP achọrọ"
+
+#: doctor_functions.php
+#, php-format
+msgid "Missing: %s. Install them through the operating system package manager."
+msgstr "Ndị na-efu: %s. Tinye ha site na njikwa ngwugwu sistemụ arụmọrụ."
+
+#: doctor_functions.php
+msgid "All PHP extensions required by the Cacti installer are loaded in this PHP context."
+msgstr "E tinyere mgbakwunye PHP niile onye nrụnye Cacti chọrọ na gburugburu PHP a."
+
+#: doctor_functions.php
+msgid "Doctor does not execute configured binaries while running as root."
+msgstr "Doctor anaghị agba faịlụ mmezu ahaziri mgbe ọ na-agba dị ka root."
+
+#: doctor_functions.php
+#, php-format
+msgid "The file name %s is not expected for %s, so Doctor did not execute it."
+msgstr "Aha faịlụ %s abụghị nke a tụrụ anya ya maka %s, ya mere Doctor agbaghị ya."
+
+#: doctor_functions.php
+msgid "Doctor is running as root, so permission checks describe root rather than the web server or poller account, configured binaries are not executed, and repairs are refused. Run Doctor as the Cacti poller user."
+msgstr "Doctor na-agba dị ka root, ya mere nnyocha ikike na-akọwa root kama sava webụ ma ọ bụ akaụntụ poller, anaghị agba faịlụ mmezu ahaziri, ma a jụrụ ndozi. Gbaa Doctor dị ka onye ọrụ poller Cacti."
+
+#: doctor_functions.php
+msgid "Doctor privileges"
+msgstr "Ikike Doctor"
+
+#: doctor_functions.php
+msgid "Doctor is running without root privileges."
+msgstr "Doctor na-agba n'enweghị ikike root."
+
+#: doctor_functions.php
+msgid "Required CLI PHP extensions"
+msgstr "Mgbakwunye CLI PHP achọrọ"
+
+#: doctor_functions.php
+msgid "The configured PHP CLI executable is unavailable, so its extensions cannot be checked."
+msgstr "Faịlụ mmezu PHP CLI ahaziri adịghị, ya mere enweghị ike ịlele mgbakwunye ya."
+
+#: doctor_functions.php
+msgid "shell_exec() is disabled, so Doctor cannot compare the CLI PHP extensions with Cacti requirements."
+msgstr "Agbanyụrụ shell_exec(), ya mere Doctor enweghị ike ịtụnyere mgbakwunye CLI PHP na ihe Cacti chọrọ."
+
+#: doctor_functions.php
+msgid "The configured PHP CLI executable did not return a valid extension list."
+msgstr "Faịlụ mmezu PHP CLI ahaziri eweghachighị ndepụta mgbakwunye ziri ezi."
+
+#: doctor_functions.php
+#, php-format
+msgid "Missing from CLI PHP: %s. The web and CLI PHP configurations are separate on many systems."
+msgstr "Ndị na-efu na CLI PHP: %s. Ntọala webụ na CLI PHP dị iche iche n'ọtụtụ sistemụ."
+
+#: doctor_functions.php
+msgid "The configured PHP CLI has every extension required by Cacti."
+msgstr "PHP CLI ahaziri nwere mgbakwunye ọ bụla Cacti chọrọ."
+
+#: doctor_functions.php
+msgid "GD TrueType support"
+msgstr "Nkwado GD TrueType"
+
+#: doctor_functions.php
+msgid "Recommended PHP features"
+msgstr "Atụmatụ PHP akwadoro"
+
+#: doctor_functions.php
+#, php-format
+msgid "Unavailable: %s. Cacti can run without these features, but related functionality may be limited."
+msgstr "Ndị adịghị: %s. Cacti nwere ike ịgba n'enweghị atụmatụ ndị a, mana ọrụ ndị metụtara ha nwere ike ịdị oke."
+
+#: doctor_functions.php
+msgid "The optional gettext, SNMP, and GD TrueType features are available."
+msgstr "Atụmatụ nhọrọ gettext, SNMP, na GD TrueType dị."
+
+#: doctor_functions.php
+#, php-format
+msgid "memory_limit is %s (%dM or more is recommended)"
+msgstr "memory_limit bụ %s (akwadoro %dM ma ọ bụ karịa)"
+
+#: doctor_functions.php
+#, php-format
+msgid "max_execution_time is %d seconds (60 or more is recommended)"
+msgstr "max_execution_time bụ sekọnd %d (akwadoro 60 ma ọ bụ karịa)"
+
+#: doctor_functions.php
+msgid "date.timezone is not set"
+msgstr "etọghị date.timezone"
+
+#: doctor_functions.php
+msgid "unset"
+msgstr "atọghị ya"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s. Current values: %s"
+msgstr "%s. Ụkpụrụ dị ugbu a: %s"
+
+#: doctor_functions.php
+msgid "PHP runtime configuration"
+msgstr "Ntọala oge ịrụ ọrụ PHP"
+
+#: doctor_functions.php
+msgid "Database connection"
+msgstr "Njikọ nchekwa data"
+
+#: doctor_functions.php
+#, php-format
+msgid "Query failed: %s"
+msgstr "Ajụjụ dara: %s"
+
+#: doctor_functions.php
+msgid "A read-only query completed successfully."
+msgstr "Ajụjụ naanị-ọgụgụ gara nke ọma."
+
+#: doctor_functions.php
+msgid "The database returned an unexpected result."
+msgstr "Nchekwa data weghachiri nsonaazụ a na-atụghị anya ya."
+
+#: doctor_functions.php
+#, php-format
+msgid "Doctor could not determine the database server version from %s."
+msgstr "Doctor enweghị ike ịchọpụta ụdị sava nchekwa data site na %s."
+
+#: doctor_functions.php
+msgid "Supported database server"
+msgstr "Sava nchekwa data akwadoro"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s %s detected; this Cacti branch recommends %s %s or newer."
+msgstr "Achọpụtara %s %s; alaka Cacti a na-atụ aro %s %s ma ọ bụ nke dị ọhụrụ karịa."
+
+#: doctor_functions.php
+#, php-format
+msgid "Database character set is %s and collation is %s. Cacti requires utf8mb4."
+msgstr "Ntọala mkpụrụedemede nchekwa data bụ %s ma nhazi mkpụrụedemede bụ %s. Cacti chọrọ utf8mb4."
+
+#: doctor_functions.php
+msgid "unknown"
+msgstr "amaghị"
+
+#: doctor_functions.php
+msgid "Database character set"
+msgstr "Ntọala mkpụrụedemede nchekwa data"
+
+#: doctor_functions.php
+msgid "Database timezone support"
+msgstr "Nkwado mpaghara oge nchekwa data"
+
+#: doctor_functions.php
+msgid "The Cacti database account cannot read mysql.time_zone_name. Grant SELECT access and populate the database timezone tables."
+msgstr "Akaụntụ nchekwa data Cacti enweghị ike ịgụ mysql.time_zone_name. Nye ohere SELECT ma mejupụta tebụl mpaghara oge nchekwa data."
+
+#: doctor_functions.php
+#, php-format
+msgid "The database timezone table is accessible and contains %d entries."
+msgstr "Enwere ike ịnweta tebụl mpaghara oge nchekwa data ma o nwere ndenye %d."
+
+#: doctor_functions.php
+msgid "The database timezone table is accessible but empty. Populate the system timezone tables."
+msgstr "Enwere ike ịnweta tebụl mpaghara oge nchekwa data mana ọ tọgbọ chakoo. Mejupụta tebụl mpaghara oge sistemụ."
+
+#: doctor_functions.php
+msgid "Core tables used by Cacti are present."
+msgstr "Tebụl ndị bụ isi Cacti na-eji dị."
+
+#: doctor_functions.php
+#, php-format
+msgid "Missing core tables: %s. Restore or upgrade the database before attempting other repairs."
+msgstr "Tebụl ndị bụ isi na-efu: %s. Weghachi ma ọ bụ kwalite nchekwa data tupu ịnwalee ndozi ndị ọzọ."
+
+#: doctor_functions.php
+msgid "Core database tables"
+msgstr "Tebụl nchekwa data ndị bụ isi"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s is missing (%s)"
+msgstr "%s efuola (%s)"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s is not writable (%s)"
+msgstr "Enweghị ike ide ihe na %s (%s)"
+
+#: doctor_functions.php
+msgid "Runtime directories"
+msgstr "Folda oge ịrụ ọrụ"
+
+#: doctor_functions.php
+msgid "The cache, log, and RRA directories exist and are writable."
+msgstr "Folda kashị, ndekọ, na RRA dị ma enwere ike ide ihe na ha."
+
+#: doctor_functions.php
+msgid "Cacti configuration file"
+msgstr "Faịlụ ntọala Cacti"
+
+#: doctor_functions.php
+msgid "include/config.php is missing or unreadable."
+msgstr "include/config.php efuola ma ọ bụ enweghị ike ịgụ ya."
+
+#: doctor_functions.php
+msgid "include/config.php is readable. POSIX mode-bit checks do not apply on Windows."
+msgstr "Enwere ike ịgụ include/config.php. Nnyocha mode-bit POSIX anaghị adị na Windows."
+
+#: doctor_functions.php
+msgid "include/config.php is writable by other users. Remove world-write permission because this file contains database credentials."
+msgstr "Ndị ọrụ ndị ọzọ nwere ike ide ihe na include/config.php. Wepụ ikike ide ihe maka onye ọ bụla n'ihi na faịlụ a nwere nzere nchekwa data."
+
+#: doctor_functions.php
+msgid "include/config.php is group-writable. Confirm that every member of the owning group is trusted."
+msgstr "Otu nwere ike ide ihe na include/config.php. Kwado na onye ọ bụla nọ n'otu nwe ya bụ onye a tụkwasịrị obi."
+
+#: doctor_functions.php
+msgid "include/config.php is readable by all local users and contains database credentials. Restrict it to the owner and the web server group."
+msgstr "Ndị ọrụ mpaghara niile nwere ike ịgụ include/config.php ma o nwere nzere nchekwa data. Kpachibido ya naanị onye nwe ya na otu sava webụ."
+
+#: doctor_functions.php
+msgid "include/config.php is readable and is not world-readable, group-writable, or world-writable."
+msgstr "Enwere ike ịgụ include/config.php ma ọ bụghị onye ọ bụla nwere ike ịgụ ya, otu nwere ike ide ihe na ya, ma ọ bụ onye ọ bụla nwere ike ide ihe na ya."
+
+#: doctor_functions.php
+msgid "Cacti log file"
+msgstr "Faịlụ ndekọ Cacti"
+
+#: doctor_functions.php
+msgid "The log file does not exist. Its parent directory is not writable."
+msgstr "Faịlụ ndekọ adịghị. Enweghị ike ide ihe na folda nne ya."
+
+#: doctor_functions.php
+msgid "The log file does not exist. Its parent directory is writable, so Cacti can create it."
+msgstr "Faịlụ ndekọ adịghị. Enwere ike ide ihe na folda nne ya, ya mere Cacti nwere ike ịmepụta ya."
+
+#: doctor_functions.php
+msgid "The configured log path must be a readable and writable regular file."
+msgstr "Ụzọ ndekọ ahaziri ga-abụrịrị faịlụ nkịtị enwere ike ịgụ ma dee ihe na ya."
+
+#: doctor_functions.php
+#, php-format
+msgid "The log is readable and writable and is %s MiB."
+msgstr "Enwere ike ịgụ ma dee ihe na ndekọ ahụ ma ọ dị %s MiB."
+
+#: doctor_functions.php
+msgid "The log is readable and writable."
+msgstr "Enwere ike ịgụ ma dee ihe na ndekọ ahụ."
+
+#: doctor_functions.php
+msgid "Verify that Cacti log rotation is enabled."
+msgstr "Kwado na agbanyere ntụgharị ndekọ Cacti."
+
+#: doctor_functions.php
+#, php-format
+msgid "Executable found at %s."
+msgstr "Achọtara faịlụ mmezu na %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "The %s setting is empty, missing, or not executable."
+msgstr "Ntọala %s tọgbọ chakoo, efuola, ma ọ bụ enweghị ike ịgba ya."
+
+#: doctor_functions.php
+#, php-format
+msgid "The %s setting is empty, missing, or not executable: %s"
+msgstr "Ntọala %s tọgbọ chakoo, efuola, ma ọ bụ enweghị ike ịgba ya: %s"
+
+#: doctor_functions.php
+msgid "Doctor could not determine its version."
+msgstr "Doctor enweghị ike ịchọpụta ụdị ya."
+
+#: doctor_functions.php
+#, php-format
+msgid "Detected version %s."
+msgstr "Achọpụtara ụdị %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "Detected version %s; version %s or newer is recommended."
+msgstr "Achọpụtara ụdị %s; akwadoro ụdị %s ma ọ bụ nke dị ọhụrụ karịa."
+
+#: doctor_functions.php
+#, php-format
+msgid "Detected version %s; version %s or newer is required."
+msgstr "Achọpụtara ụdị %s; achọrọ ụdị %s ma ọ bụ nke dị ọhụrụ karịa."
+
+#: doctor_functions.php
+#, php-format
+msgid "Detected version %s; minimum is %s."
+msgstr "Achọpụtara ụdị %s; nke kacha nta bụ %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "%s executable"
+msgstr "Faịlụ mmezu %s"
+
+#: doctor_functions.php
+msgid "poller_type is not cmd.php or Spine"
+msgstr "poller_type abụghị cmd.php ma ọ bụ Spine"
+
+#: doctor_functions.php
+msgid "poller_interval is not a supported value"
+msgstr "poller_interval abụghị ụkpụrụ akwadoro"
+
+#: doctor_functions.php
+msgid "Poller configuration"
+msgstr "Ntọala poller"
+
+#: doctor_functions.php
+#, php-format
+msgid "Poller is %s with a %d-second interval."
+msgstr "Poller bụ %s nwere oge etiti sekọnd %d."
+
+#: doctor_functions.php
+msgid "Main poller freshness"
+msgstr "Ọhụrụ nke isi poller"
+
+#: doctor_functions.php
+msgid "No completed main-poller run was found. This can be expected before the first poll."
+msgstr "Ọ dịghị ọsọ isi poller e mechara achọtara. Enwere ike ịtụ anya nke a tupu polling mbụ."
+
+#: doctor_functions.php
+#, php-format
+msgid "Last completed run was %d seconds ago; failure threshold is %d seconds."
+msgstr "Ọsọ ikpeazụ e mechara bụ sekọnd %d gara aga; oke ọdịda bụ sekọnd %d."
+
+#: doctor_functions.php
+msgid "Database schema version"
+msgstr "Ụdị schema nchekwa data"
+
+#: doctor_functions.php
+msgid "The version table is empty or unreadable, so the schema version is unknown."
+msgstr "Tebụl version tọgbọ chakoo ma ọ bụ enweghị ike ịgụ ya, ya mere amaghị ụdị schema."
+
+#: doctor_functions.php
+msgid "The version table still reads new_install, so the installer never finished. Open install/ in a browser to complete it."
+msgstr "Tebụl version ka na-agụ new_install, ya mere onye nrụnye emechabeghị. Mepee install/ n'ime ihe nchọgharị iji mechaa ya."
+
+#: doctor_functions.php
+#, php-format
+msgid "The database schema is at %s but the installed code is %s. Open install/ in a browser to finish the upgrade."
+msgstr "Schema nchekwa data dị na %s mana koodu e tinyere bụ %s. Mepee install/ n'ime ihe nchọgharị iji mechaa nkwalite ahụ."
+
+#: doctor_functions.php
+#, php-format
+msgid "The database schema (%s) is newer than the installed code (%s). The code may have been rolled back."
+msgstr "Schema nchekwa data (%s) dị ọhụrụ karịa koodu e tinyere (%s). O nwere ike ịbụ na e weghachiri koodu azụ."
+
+#: doctor_functions.php
+#, php-format
+msgid "The database schema (%s) matches the installed code."
+msgstr "Schema nchekwa data (%s) dakọtara na koodu e tinyere."
+
+#: doctor_functions.php
+msgid "Main poller run time"
+msgstr "Oge ọsọ isi poller"
+
+#: doctor_functions.php
+msgid "No completed run time is recorded yet."
+msgstr "Ederebeghị oge ọsọ ọ bụla e mechara."
+
+#: doctor_functions.php
+#, php-format
+msgid "The last main-poller run took %s seconds of the %d-second interval."
+msgstr "Ọsọ isi poller ikpeazụ were sekọnd %s n'ime oge etiti sekọnd %d."
+
+#: doctor_functions.php
+msgid "Runs that outlast the interval overlap and lose data; add poller processes or threads, or use Spine."
+msgstr "Ọsọ ndị na-agabiga oge etiti na-agbakọ ọnụ ma na-efunahụ data; tinye usoro ma ọ bụ tredị poller, ma ọ bụ jiri Spine."
+
+#: doctor_functions.php
+msgid "Little headroom remains before polls overlap."
+msgstr "Obere ohere ka fọdụrụ tupu polling agbakọta ọnụ."
+
+#: doctor_functions.php
+#, php-format
+msgid "%d poller_output rows are older than two polling intervals and were never written to RRD files. Check the Cacti log for \"Poller Output Table not Empty\" and confirm max_heap_table_size is large enough."
+msgstr "Ahịrị poller_output %d dị ochie karịa oge etiti polling abụọ ma edebeghị ha na faịlụ RRD. Lelee ndekọ Cacti maka \"Poller Output Table not Empty\" ma kwado na max_heap_table_size buru ibu nke ọma."
+
+#: doctor_functions.php
+msgid "Unprocessed poller output"
+msgstr "Mmepụta poller a na-ahazibeghị"
+
+#: doctor_functions.php
+msgid "No stale rows remain in poller_output."
+msgstr "Ọ dịghị ahịrị ochie fọdụrụ na poller_output."
+
+#: doctor_functions.php
+msgid "No remote pollers are enabled."
+msgstr "Ọ dịghị poller dịpụrụ adịpụ agbanyere."
+
+#: doctor_functions.php
+msgid "Remote pollers"
+msgstr "Poller dịpụrụ adịpụ"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s (ID %s) has never reported"
+msgstr "%s (ID %s) akọbeghị akụkọ"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s (ID %s) last reported %d seconds ago"
+msgstr "%s (ID %s) kọrọ akụkọ ikpeazụ sekọnd %d gara aga"
+
+#: doctor_functions.php
+#, php-format
+msgid "The failure threshold is %d seconds."
+msgstr "Oke ọdịda bụ sekọnd %d."
+
+#: doctor_functions.php
+#, php-format
+msgid "%d enabled remote pollers reported within %d seconds."
+msgstr "Poller dịpụrụ adịpụ %d agbanyere kọrọ akụkọ n'ime sekọnd %d."
+
+#: doctor_functions.php
+msgid "Enabled plugin files"
+msgstr "Faịlụ plọgịn agbanyere"
+
+#: doctor_functions.php
+#, php-format
+msgid "Enabled plugins are missing from %s: %s. Restore their files or disable them in Plugin Management."
+msgstr "Plọgịn ndị agbanyere na-efu na %s: %s. Weghachi faịlụ ha ma ọ bụ gbanyụọ ha na Njikwa Plọgịn."
+
+#: doctor_functions.php
+msgid "Every enabled plugin has its setup.php in place."
+msgstr "Ngwa mgbakwunye niile agbanyere nwere setup.php ha n'ọnọdụ ya."
+
+#: doctor_functions.php
+msgid "Boost RRD updates"
+msgstr "Mmelite RRD nke Boost"
+
+#: doctor_functions.php
+msgid "Boost is disabled, so the poller writes RRD files directly."
+msgstr "Agbanyụrụ Boost, ya mere poller na-ede faịlụ RRD ozugbo."
+
+#: doctor_functions.php
+msgid "Boost is enabled but has no recorded run. This can be expected before its first flush."
+msgstr "Agbanyere Boost mana o nweghị ọrụ edere ede. A pụrụ ịtụ anya nke a tupu mbupụ mbụ ya."
+
+#: doctor_functions.php
+#, php-format
+msgid "Boost last flushed %d seconds ago, more than twice its %d-minute interval. Graphs stop updating until it runs; check the Cacti log for BOOST errors."
+msgstr "Boost mere mbupụ ikpeazụ sekọnd %d gara aga, karịa okpukpu abụọ nke oge nkeji %d ya. Chaatị na-akwụsị imelite ruo mgbe ọ na-arụ ọrụ; lelee ndekọ Cacti maka njehie BOOST."
+
+#: doctor_functions.php
+#, php-format
+msgid "poller_output_boost holds %d rows, above the %d-row limit that forces a flush. Boost is falling behind."
+msgstr "poller_output_boost ji ahịrị %d, karịa oke ahịrị %d na-amanye mbupụ. Boost na-ada n'azụ."
+
+#: doctor_functions.php
+#, php-format
+msgid "Boost last flushed %d seconds ago with %d rows waiting."
+msgstr "Boost mere mbupụ ikpeazụ sekọnd %d gara aga na ahịrị %d na-eche."
+
+#: doctor_functions.php doctor_rrd.php
+#, php-format
+msgid "Checked a sample of %d active data sources that rotates hourly; a pass does not cover every file."
+msgstr "E lere nlele nke isi iyi data %d na-arụ ọrụ nke na-atụgharị kwa elekere; otu ngafe anaghị ekpuchi faịlụ niile."
+
+#: doctor_functions.php
+#, php-format
+msgid "%d of %d active data sources have no RRD file, for example %s. New data sources get one after their first poll; otherwise check the RRA directory and its permissions."
+msgstr "%d n'ime isi iyi data %d na-arụ ọrụ enweghị faịlụ RRD, dịka ọmụmaatụ %s. Isi iyi data ọhụrụ na-enweta otu mgbe nyocha mbụ ha gasịrị; ma ọ bụghị ya, lelee ndekọ faịlụ RRA na ikike ya."
+
+#: doctor_functions.php
+msgid "RRD files"
+msgstr "Faịlụ RRD"
+
+#: doctor_functions.php
+#, php-format
+msgid "All %d active data sources have an RRD file."
+msgstr "Isi iyi data %d niile na-arụ ọrụ nwere faịlụ RRD."
+
+#: doctor_functions.php
+#, php-format
+msgid "Doctor could not measure free space for %s."
+msgstr "Doctor enweghị ike ịlele ohere efu maka %s."
+
+#: doctor_functions.php
+msgid "RRA disk space"
+msgstr "Ohere diski RRA"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s (%s GiB) free on the file system holding %s."
+msgstr "%s (%s GiB) dị efu na sistemụ faịlụ ji %s."
+
+#: doctor_functions.php
+msgid "RRD updates fail silently when the disk fills."
+msgstr "Mmelite RRD na-ada n'ekwughị okwu mgbe diski juru."
+
+#: doctor_functions.php
+msgid "Database clock"
+msgstr "Elekere nchekwa data"
+
+#: doctor_functions.php
+msgid "Doctor could not read the database clock."
+msgstr "Doctor enweghị ike ịgụ elekere nchekwa data."
+
+#: doctor_functions.php
+#, php-format
+msgid "The database and PHP clocks differ by %d seconds."
+msgstr "Elekere nchekwa data na nke PHP dị iche na sekọnd %d."
+
+#: doctor_functions.php
+msgid "Poll timestamps will be misaligned; synchronise both hosts with NTP."
+msgstr "Akara oge nyocha ga-adị njọ n'usoro; mekọrịta oge igwe nnabata abụọ ahụ na NTP."
+
+#: doctor_functions.php
+msgid "Synchronise both hosts with NTP."
+msgstr "Mekọrịta oge igwe nnabata abụọ ahụ na NTP."
+
+#: doctor_functions.php
+msgid "Spine configuration"
+msgstr "Nhazi Spine"
+
+#: doctor_functions.php
+msgid "Spine is not the configured poller."
+msgstr "Spine abụghị poller ahaziri."
+
+#: doctor_functions.php
+msgid "path_spine_config is not set, so Spine uses its compiled-in search path and Doctor cannot verify which file it reads."
+msgstr "Etọghị path_spine_config, ya mere Spine na-eji ụzọ nchọta ejikọtara n'ime ya ma Doctor enweghị ike ịnwapụta faịlụ nke ọ na-agụ."
+
+#: doctor_functions.php
+#, php-format
+msgid "The Spine configuration file is missing or unreadable: %s."
+msgstr "Faịlụ nhazi Spine efuola ma ọ bụ enweghị ike ịgụ ya: %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "DB_Database is %s but Cacti uses %s"
+msgstr "DB_Database bụ %s mana Cacti na-eji %s"
+
+#: doctor_functions.php
+#, php-format
+msgid "DB_User is %s but Cacti uses %s"
+msgstr "DB_User bụ %s mana Cacti na-eji %s"
+
+#: doctor_functions.php
+msgid "the file is world-readable and holds the database password"
+msgstr "onye ọ bụla nwere ike ịgụ faịlụ ahụ ma o nwere okwuntụghe nchekwa data"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s uses the same database and user as Cacti."
+msgstr "%s na-eji otu nchekwa data na onye ọrụ dịka Cacti."
+
+#: doctor_functions.php
+#, php-format
+msgid "%s is %s"
+msgstr "%s bụ %s"
+
+#: doctor_functions.php
+msgid "Cacti recommends ON; doublewrite may stay off only on ZFS or similar journaling storage."
+msgstr "Cacti na-atụ aro ON; doublewrite nwere ike ịnọgide gbanyụrụ naanị na ZFS ma ọ bụ nchekwa ndekọ yiri ya."
+
+#: doctor_functions.php
+msgid "InnoDB safety settings"
+msgstr "Ntọala nchekwa InnoDB"
+
+#: doctor_functions.php
+msgid "innodb_file_per_table and innodb_doublewrite are enabled."
+msgstr "Agbanyere innodb_file_per_table na innodb_doublewrite."
+
+#: doctor_functions.php
+#, php-format
+msgid "None of the last %d log lines report an error."
+msgstr "Ọ dịghị nke ọ bụla n'ime ahịrị ndekọ %d ikpeazụ kọrọ njehie."
+
+#: doctor_functions.php
+msgid "Recent log errors"
+msgstr "Njehie ndekọ ndị na-adịbeghị anya"
+
+#: doctor_functions.php
+#, php-format
+msgid "%d of the last %d log lines report an error. Most frequent (%dx): %s"
+msgstr "%d n'ime ahịrị ndekọ %d ikpeazụ na-akọ njehie. Nke kacha pụta (%dx): %s"
+
+#: doctor_functions.php
+msgid "The Cacti log is not readable; see the Cacti log file check."
+msgstr "Enweghị ike ịgụ ndekọ Cacti; hụ nyocha faịlụ ndekọ Cacti."
+
+#: doctor_functions.php
+msgid "No enabled devices are configured."
+msgstr "Ahazighị ngwaọrụ ọ bụla agbanyere."
+
+#: doctor_functions.php
+#, php-format
+msgid "All %d enabled devices are up."
+msgstr "Ngwaọrụ %d niile agbanyere na-erute."
+
+#: doctor_functions.php
+#, php-format
+msgid "%d of %d enabled devices are down and %d recovering."
+msgstr "%d n'ime ngwaọrụ %d agbanyere anaghị erute ma %d na-agbake."
+
+#: doctor_functions.php
+msgid "The down devices could not be listed."
+msgstr "Enweghị ike ịdepụta ngwaọrụ ndị anaghị erute."
+
+#: doctor_functions.php
+#, php-format
+msgid "%s down since %s"
+msgstr "%s anaghị erute kemgbe %s"
+
+#: doctor_functions.php
+#, php-format
+msgid "Longest down: %s."
+msgstr "Nke anaghị erute ogologo oge kacha: %s."
+
+#: doctor_functions.php
+msgid "With most devices down, check the poller host's network and SNMP settings first."
+msgstr "Ebe ọtụtụ ngwaọrụ anaghị erute, buru ụzọ lelee netwọkụ nke igwe nnabata poller na ntọala SNMP."
+
+#: doctor_functions.php
+msgid "Doctor could not read device status from the host table."
+msgstr "Doctor enweghị ike ịgụ ọnọdụ ngwaọrụ site na tebụl host."
+
+#: doctor_functions.php
+#, php-format
+msgid "Cacti Doctor on %s: %d failed, %d warnings"
+msgstr "Cacti Doctor na %s: %d dara, ịdọ aka ná ntị %d"
+
+#: doctor_functions.php
+#, php-format
+msgid "%d Cacti Doctor checks changed status on %s."
+msgstr "Nyocha Cacti Doctor %d gbanwere ọnọdụ na %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "Totals: %d passed, %d warnings, %d failed."
+msgstr "Ngụkọta: %d gafere, ịdọ aka ná ntị %d, %d dara."
+
+#: doctor_functions.php
+#, php-format
+msgid "Refusing to overwrite %s."
+msgstr "A na-ajụ idekwasị %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "Cannot create %s."
+msgstr "Enweghị ike ịmepụta %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "Could not make %s private."
+msgstr "Enweghị ike ime %s ka ọ bụrụ nkeonwe."
+
+#: doctor_functions.php
+#, php-format
+msgid "Writing %s failed."
+msgstr "Ide %s dara."
+
+#: doctor_functions.php
+msgid "Repair runtime directories"
+msgstr "Rụzie ndekọ faịlụ oge ọrụ"
+
+#: doctor_functions.php
+msgid "Create missing cache, log, and RRA directories and add owner read/write/execute permission without removing existing permissions."
+msgstr "Mepụta ndekọ faịlụ cache, ndekọ, na RRA na-efu ma tinye ikike ọgụgụ/odide/mmezu nke onye nwe ya n'ewepụghị ikike ndị dị adị."
+
+#: doctor_functions.php
+msgid "The requested repair is not allow-listed."
+msgstr "Nrụzi arịọrọ anọghị na ndepụta ikike."
+
+#: doctor_functions.php
+msgid "No repair handler is registered."
+msgstr "Enweghị onye njikwa nrụzi edebanyere aha."
+
+#: doctor_functions.php
+msgid "Repair unavailable"
+msgstr "Nrụzi adịghị"
+
+#: doctor_functions.php
+msgid "Repairs are refused while running as root. Run Doctor as the Cacti poller user."
+msgstr "A na-ajụ nrụzi mgbe a na-arụ ọrụ dịka root. Gbaa Doctor dịka onye ọrụ poller Cacti."
+
+#: doctor_functions.php
+msgid "The Cacti base directory cannot be resolved."
+msgstr "Enweghị ike ikpebi isi ndekọ faịlụ Cacti."
+
+#: doctor_functions.php
+#, php-format
+msgid "%s: path is outside the Cacti installation"
+msgstr "%s: ụzọ dị n'èzí nrụnye Cacti"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s: symbolic links are not repaired"
+msgstr "%s: anaghị arụzi njikọ ihe atụ"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s: directory creation failed"
+msgstr "%s: mmepụta ndekọ faịlụ dara"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s: could not add owner permissions"
+msgstr "%s: enweghị ike ịgbakwunye ikike onye nwe ya"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s: still not a writable directory"
+msgstr "%s: ka abụghị ndekọ faịlụ a pụrụ ide ihe na ya"
+
+#: doctor_functions.php
+msgid "Runtime directories now exist and are writable by the current process."
+msgstr "Ndekọ faịlụ oge ọrụ dị ugbu a ma usoro dị ugbu a nwere ike ide ihe na ha."
+
+#: doctor_functions.php
+msgid "Cacti"
+msgstr "Cacti"
+
+#: doctor_functions.php
+msgid "Database"
+msgstr "Nchekwa data"
+
+#: doctor_functions.php
+msgid "Database health"
+msgstr "Ahụike nchekwa data"
+
+#: doctor_functions.php
+msgid "Devices"
+msgstr "Ngwaọrụ"
+
+#: doctor_functions.php setup.php
+msgid "Doctor"
+msgstr "Doctor"
+
+#: doctor_functions.php
+msgid "Filesystem"
+msgstr "Sistemụ faịlụ"
+
+#: doctor_functions.php
+msgid "Logging"
+msgstr "Ndekọ"
+
+#: doctor_functions.php
+msgid "PHP"
+msgstr "PHP"
+
+#: doctor_functions.php
+msgid "Poller"
+msgstr "Poller"
+
+#: doctor_functions.php
+msgid "Prerequisites"
+msgstr "Ihe achọrọ tupu"
+
+#: doctor_functions.php
+msgid "Repair"
+msgstr "Nrụzi"
+
+#: doctor_functions.php
+msgid "Security"
+msgstr "Nchekwa"
+
+#: doctor_functions.php
+msgid "PASS"
+msgstr "GAFERE"
+
+#: doctor_functions.php
+msgid "WARN"
+msgstr "ỊDỌ AKA NÁ NTỊ"
+
+#: doctor_functions.php
+msgid "FAIL"
+msgstr "DARA"
+
+#: doctor_functions.php
+msgid "UNKNOWN"
+msgstr "AMAGHỊ"
+
+#: doctor_rrd.php
+msgid "Data source freshness could not be assessed."
+msgstr "Enweghị ike inyocha ịdị ọhụrụ nke isi iyi data."
+
+#: doctor_rrd.php
+msgid "RRD update freshness"
+msgstr "Ịdị ọhụrụ nke mmelite RRD"
+
+#: doctor_rrd.php
+msgid "The deferred-write interval is unknown; configure it before judging file age."
+msgstr "Amaghị oge etiti nke odide egbuola oge; hazie ya tupu ikpebi oge kemgbe e melitere faịlụ ikpeazụ."
+
+#: doctor_rrd.php
+#, php-format
+msgid "Checked %d files; %d stale files across %d devices; %d unavailable or future-dated files."
+msgstr "E lere faịlụ %d; faịlụ %d na-adịghị ọhụrụ n'ofe ngwaọrụ %d; faịlụ %d adịghị ma ọ bụ nwere ụbọchị ọdịnihu."
+
+#: doctor_rrd.php
+msgid "File age includes the collection interval and configured deferred-write allowance; verify the poller and flush process before changing data."
+msgstr "Oge kemgbe e melitere faịlụ ikpeazụ gụnyere oge nnakọta na ohere odide egbuola oge ahaziri; nwapụta poller na usoro mbupụ tupu ịgbanwe data."
+
+#: doctor_scheduling.php
+msgid "Scheduled checks are disabled. Enable them in Settings > Doctor to retain samples and alert on changes."
+msgstr "Agbanyụrụ nyocha ahaziri oge. Gbanye ha na Ntọala > Doctor iji jigide nlele ma dọọ aka ná ntị maka mgbanwe."
+
+#: doctor_scheduling.php
+msgid "Scheduled report freshness"
+msgstr "Ịdị ọhụrụ nke akụkọ ahaziri oge"
+
+#: doctor_scheduling.php
+#, php-format
+msgid "%s UTC"
+msgstr "%s UTC"
+
+#: doctor_scheduling.php
+#, php-format
+msgid "Last started: %s; last completed: %s."
+msgstr "Malitere ikpeazụ: %s; rụchara ikpeazụ: %s."
+
+#: doctor_scheduling.php
+msgid "never"
+msgstr "ọ dịtụbeghị"
+
+#: doctor_scheduling.php
+msgid "Results are missing or stale. Check the primary poller and DOCTOR log for startup, timeout, or persistence errors."
+msgstr "Nsonaazụ efuola ma ọ bụ adịghị ọhụrụ. Lelee isi poller na ndekọ DOCTOR maka njehie mmalite, njedebe oge, ma ọ bụ njigide."
+
+#: doctor_scheduling.php
+msgid "A completed diagnostic run is recent; this does not mean all checks passed."
+msgstr "Ọsọ nchọpụta arụchara dị ọhụrụ; nke a apụtaghị na nyocha niile gafere."
+
+#: doctor_scheduling.php
+msgid "Doctor alert state is invalid. Restore doctor_alert_pending from backup before retrying."
+msgstr "Ọnọdụ mkpu Doctor adịghị mma. Weghachite doctor_alert_pending site na nkwado nchekwa tupu ịnwale ọzọ."
+
+#: doctor_scheduling.php
+msgid "Doctor alert transitions are invalid; no email was sent."
+msgstr "Mgbanwe mkpu Doctor adịghị mma; ezigaghị ozi-e ọ bụla."
+
+#: doctor_scheduling.php
+msgid "Alert delivery"
+msgstr "Nnyefe mkpu"
+
+#: doctor_scheduling.php
+#, php-format
+msgid "%d check transitions await delivery; attempts: %d of 3."
+msgstr "Mgbanwe nyocha %d na-eche nnyefe; mgbalị: %d n'ime 3."
+
+#: doctor_scheduling.php
+msgid "Automatic retries exhausted. Correct Cacti mail settings, then run Doctor with --scheduled --retry-alerts as the poller user."
+msgstr "Mgbalị nnwale onwe gwụrụ. Dezie ntọala ozi Cacti, wee gbaa Doctor na --scheduled --retry-alerts dịka onye ọrụ poller."
+
+#: doctor_scheduling.php
+#, php-format
+msgid "Next eligible retry: %s UTC, after a primary poller cycle."
+msgstr "Nnwale ọzọ tozuru etozu: %s UTC, mgbe otu okirikiri isi poller gasịrị."
+
+#: doctor_scheduling.php
+msgid "No alert recipients are currently configured; pending transitions are retained."
+msgstr "Ahazighị ndị nnata mkpu ọ bụla ugbu a; a na-ejigide mgbanwe ndị na-eche."
+
+#: doctor_scheduling.php
+msgid "No retained alert is awaiting delivery. Mail-server acceptance does not prove inbox delivery."
+msgstr "Ọ dịghị mkpu ejigidere na-eche nnyefe. Nnabata nke sava ozi anaghị egosi nnyefe n'igbe mbata."
+
+#: doctor_scheduling.php
+msgid "Doctor retained status changes (UTC). Repeated changes for one check are coalesced; an out-and-back transition is retained."
+msgstr "Mgbanwe ọnọdụ Doctor ejigidere (UTC). A na-ejikọta mgbanwe ugboro ugboro maka otu nyocha; a na-ejigide mgbanwe pụọ-ma-lọghachi."
+
+#: doctor_scheduling.php
+#, php-format
+msgid "%s: %s -> %s (latest change %s)"
+msgstr "%s: %s -> %s (mgbanwe kacha ọhụrụ %s)"
+
+#: doctor_scheduling.php
+#, php-format
+msgid "%d further status changes are not listed because the alert queue reached its storage limit."
+msgstr "Edepụtaghị mgbanwe ọnọdụ %d ndị ọzọ n'ihi na ahịrị mkpu ruru oke nchekwa ya."
+
+#: doctor_scheduling.php
+msgid "Open Utilities > Doctor for current measurements, recommended actions, and verification steps."
+msgstr "Mepee Ngwa > Doctor maka ntụle dị ugbu a, omume akwadoro, na nzọụkwụ nkwenye."
+
+#: doctor_scheduling.php
+#, php-format
+msgid "Cacti Doctor: %d retained status changes"
+msgstr "Cacti Doctor: mgbanwe ọnọdụ %d ejigidere"
+
+#: doctor_scheduling.php
+msgid "Doctor schedule is already running or the database lock is unavailable."
+msgstr "Nhazi oge Doctor na-arụ ọrụ ugbu a ma ọ bụ mkpọchi nchekwa data adịghị."
+
+#: doctor_web.php
+msgid "The finding could not be acknowledged. Run Doctor again, then acknowledge the current result."
+msgstr "Enweghị ike ịnakwere nchọpụta ahụ. Gbaa Doctor ọzọ, wee nakwere nsonaazụ dị ugbu a."
+
+#: doctor_web.php
+msgid "The warning exception could not be saved. Use a fresh assessed warning, an owner, a reason and an expiry within 90 days."
+msgstr "Enweghị ike ịchekwa mwepu ịdọ aka ná ntị ahụ. Jiri ịdọ aka ná ntị ọhụrụ enyochara, onye nwe ya, ihe kpatara ya na njedebe n'ime ụbọchị 90."
+
+#: doctor_web.php
+msgid "Confirm repair"
+msgstr "Kwenye nrụzi"
+
+#: doctor_web.php
+msgid "Approval expires after five minutes and is invalidated by a changed filesystem. The acting account must be able to create directories or change owner permissions."
+msgstr "Nkwado na-agwụ mgbe nkeji ise gasịrị ma sistemụ faịlụ gbanwere na-eme ka ọ ghara ịdị irè. Akaụntụ na-arụ ọrụ ga-enwe ike ịmepụta ndekọ faịlụ ma ọ bụ gbanwee ikike onye nwe ya."
+
+#: doctor_web.php
+msgid "Repair prerequisites are not met. No changes will be made."
+msgstr "Emezughị ihe achọrọ tupu nrụzi. Agaghị eme mgbanwe ọ bụla."
+
+#: doctor_web.php
+msgid "Cancel"
+msgstr "Kagbuo"
+
+#: doctor_web.php
+#, php-format
+msgid "Last observation: %s UTC."
+msgstr "Nlele ikpeazụ: %s UTC."
+
+#: doctor_web.php
+msgid "No completed diagnostic report is available."
+msgstr "Ọ dịghị akụkọ nchọpụta arụchara dị."
+
+#: doctor_web.php
+msgid "Health is unknown: observations are missing or stale."
+msgstr "Amaghị ahụike: nlele efuola ma ọ bụ adịghị ọhụrụ."
+
+#: doctor_web.php
+msgid "Run diagnostic checks"
+msgstr "Gbaa nyocha nchọpụta"
+
+#: doctor_web.php
+msgid "Doctor settings"
+msgstr "Ntọala Doctor"
+
+#: doctor_web.php setup.php
+msgid "Cacti Doctor"
+msgstr "Cacti Doctor"
+
+#: doctor_web.php
+#, php-format
+msgid "Installation health: %d passed, %d warnings, %d failed"
+msgstr "Ahụike nrụnye: %d gafere, ịdọ aka ná ntị %d, %d dara"
+
+#: doctor_web.php
+msgid "Category"
+msgstr "Ụdị"
+
+#: doctor_web.php
+msgid "Check"
+msgstr "Nyocha"
+
+#: doctor_web.php
+msgid "Status"
+msgstr "Ọnọdụ"
+
+#: doctor_web.php
+msgid "Details"
+msgstr "Nkọwa"
+
+#: doctor_web.php
+msgid "Action"
+msgstr "Omume"
+
+#: doctor_web.php
+msgid "Acknowledged; health status unchanged."
+msgstr "Anabatara ya; ọnọdụ ahụike agbanweghị."
+
+#: doctor_web.php
+msgid "Acknowledge"
+msgstr "Kweta"
+
+#: doctor_web.php
+#, php-format
+msgid "Owner: %s; review by %s UTC. Reason: %s"
+msgstr "Onye nwe ya: %s; nyochaa tupu %s UTC. Ihe kpatara ya: %s"
+
+#: doctor_web.php
+msgid "Investigate a symptom"
+msgstr "Nyochaa mgbaàmà"
+
+#: doctor_web.php
+msgid "Investigate"
+msgstr "Nyochaa"
+
+#: doctor_web.php
+msgid "Recent scheduled checks"
+msgstr "Nyocha ahaziri oge ndị na-adịbeghị anya"
+
+#: doctor_web.php
+msgid "Failed"
+msgstr "Dara"
+
+#: doctor_web.php
+msgid "Observation (UTC)"
+msgstr "Nlele (UTC)"
+
+#: doctor_web.php
+msgid "Passed"
+msgstr "Gafere"
+
+#: doctor_web.php
+msgid "Warnings"
+msgstr "Ịdọ aka ná ntị"
+
+#: doctor_web.php
+msgid "Warning exceptions"
+msgstr "Mwepu ịdọ aka ná ntị"
+
+#: doctor_web.php
+msgid "Owner"
+msgstr "Onye nwe ya"
+
+#: doctor_web.php
+msgid "Reason"
+msgstr "Ihe kpatara ya"
+
+#: doctor_web.php
+msgid "Review date (UTC)"
+msgstr "Ụbọchị nyocha (UTC)"
+
+#: doctor_web.php
+msgid "Accept warning"
+msgstr "Nabata ịdọ aka ná ntị"
+
+#: doctor_web.php
+msgid "Expired"
+msgstr "Agwụla oge"
+
+#: doctor_web.php
+msgid "Check not present in this report; verify its ID."
+msgstr "Nyocha adịghị n'akụkọ a; nwapụta ID ya."
+
+#: doctor_web.php
+msgid "Remove exception"
+msgstr "Wepụ mwepu"
+
+#: doctor_web.php
+msgid "Audit history"
+msgstr "Akụkọ ihe mere eme nyocha"
+
+#: doctor_workflows.php
+msgid "Repair refused"
+msgstr "Ajụrụ nrụzi"
+
+#: doctor_workflows.php
+msgid "The approved plan is expired or the filesystem changed. Preview the repair again."
+msgstr "Atụmatụ akwadoro agwụla oge ma ọ bụ sistemụ faịlụ gbanwere. Buru ụzọ lee nrụzi ọzọ."
+
+#: doctor_workflows.php
+msgid "The audit record could not be saved. No repair was attempted."
+msgstr "Enweghị ike ịchekwa ndekọ nyocha ahụ. Anwaleghị nrụzi ọ bụla."
+
+#: doctor_workflows.php
+msgid "The completion audit failed; inspect the filesystem and the started audit record."
+msgstr "Nyocha mmecha dara; nyochaa sistemụ faịlụ na ndekọ nyocha ahụ malitere."
+
+#: setup.php
+msgid "Doctor Administrator"
+msgstr "Onye nchịkwa Doctor"
+
+#: setup.php
+msgid "Doctor Operator"
+msgstr "Onye ọrụ Doctor"
+
+#: setup.php
+msgid "Doctor Viewer"
+msgstr "Onye nleba anya Doctor"
+
+#: setup.php
+msgid "Utilities"
+msgstr "Ngwa"
+
+#: setup.php
+msgid "System Administration"
+msgstr "Nchịkwa Sistemụ"
+
+#: setup.php
+msgid "Scheduled Checks"
+msgstr "Nyocha Ahaziri Oge"
+
+#: setup.php
+msgid "Run Checks on a Schedule"
+msgstr "Gbaa Nyocha n'Oge Ahaziri"
+
+#: setup.php
+msgid "Run every Doctor check in the background after the poller and record each check's status."
+msgstr "Gbaa nyocha Doctor niile n'azụ mgbe poller gasịrị ma dekọọ ọnọdụ nke nyocha ọ bụla."
+
+#: setup.php
+msgid "Check Interval"
+msgstr "Oge Etiti Nyocha"
+
+#: setup.php
+msgid "How often the scheduled checks run."
+msgstr "Ugboro ole nyocha ahaziri oge na-agba."
+
+#: setup.php
+msgid "Every 15 Minutes"
+msgstr "Kwa Nkeji 15"
+
+#: setup.php
+msgid "Every Hour"
+msgstr "Kwa Elekere"
+
+#: setup.php
+msgid "Every 6 Hours"
+msgstr "Kwa Elekere 6"
+
+#: setup.php
+msgid "Every Day"
+msgstr "Kwa Ụbọchị"
+
+#: setup.php
+msgid "Alert Email Addresses"
+msgstr "Adreesị Ozi-e Mkpu"
+
+#: setup.php
+msgid "Comma-separated addresses to email when a check starts or stops failing. Leave empty to only log changes to the Cacti log."
+msgstr "Adreesị ndị rịkọm kewara iji ziga ozi-e mgbe nyocha malitere ma ọ bụ kwụsị ịda. Hapụ ya n'efu ka ị dekọọ naanị mgbanwe na ndekọ Cacti."
+
+#: setup.php
+msgid "Alert on Warnings"
+msgstr "Nye ọkwa maka ịdọ aka ná ntị"
+
+#: setup.php
+msgid "Also alert when a check moves into or out of a warning."
+msgstr "Nye kwazị ọkwa mgbe nnyocha banyere maọbụ pụọ n'ịdọ aka ná ntị."
+
+#: setup.php
+msgid "Thresholds"
+msgstr "Ókè ntụle"
+
+#: setup.php
+msgid "Poller Run Time Warning (percent)"
+msgstr "Ịdọ aka ná ntị oge ọrụ Poller (pasentị)"
+
+#: setup.php
+msgid "Warn when the last main-poller run used this share of the polling interval. Runs that take the whole interval always fail."
+msgstr "Dọọ aka ná ntị mgbe ọrụ main-poller ikpeazụ jiri òkè a nke oge nchịkọta. Ọrụ ndị were oge nchịkọta dum na-ada mgbe niile."
+
+#: setup.php
+msgid "RRA Disk Free Warning (percent)"
+msgstr "Ịdọ aka ná ntị ohere efu diski RRA (pasentị)"
+
+#: setup.php
+msgid "Warn when free space on the RRA file system drops below this percentage."
+msgstr "Dọọ aka ná ntị mgbe ohere efu dị na sistemụ faịlụ RRA dara n'okpuru pasentị a."
+
+#: setup.php
+msgid "Fail when free space on the RRA file system drops below this percentage."
+msgstr "Kaa ọdịda mgbe ohere efu dị na sistemụ faịlụ RRA dara n'okpuru pasentị a."
+
+#: setup.php
+msgid "RRA Disk Free Failure (percent)"
+msgstr "Ọdịda ohere efu diski RRA (pasentị)"
+
+#: setup.php
+msgid "Clock Drift Warning (seconds)"
+msgstr "Ịdọ aka ná ntị nghọgbu elekere (sekọnd)"
+
+#: setup.php
+msgid "Warn when the database and PHP clocks differ by more than this."
+msgstr "Dọọ aka ná ntị mgbe elekere nchekwa data na nke PHP dị iche karịa nke a."
+
+#: setup.php
+msgid "Clock Drift Failure (seconds)"
+msgstr "Ọdịda nghọgbu elekere (sekọnd)"
+
+#: setup.php
+msgid "Fail when the database and PHP clocks differ by more than this."
+msgstr "Kaa ọdịda mgbe elekere nchekwa data na nke PHP dị iche karịa nke a."
+
+#: setup.php
+msgid "RRD Stale Intervals"
+msgstr "Oge nchịkọta RRD ochie"
+
+#: setup.php
+msgid "Warn after this many collection intervals without a file update (1 to 100)."
+msgstr "Dọọ aka ná ntị mgbe oge nchịkọta ole a gafere n'enweghị mmelite faịlụ (1 ruo 100)."
+
+#: setup.php
+msgid "Additional disk-write delay for external caching (0 to 86400). Boost adds its own allowance."
+msgstr "Oge mgbakwunye nke nkwụsị ide na diski maka nchekwa nwa oge mpụga (0 ruo 86400). Boost na-agbakwụnye ohere nke ya."
+
+#: setup.php
+msgid "Deferred RRD Write Allowance (seconds)"
+msgstr "Ohere ide RRD e yigharịrị (sekọnd)"
+
+#: setup.php
+msgid "Cacti Log Size Warning (MB)"
+msgstr "Ịdọ aka ná ntị nha ndekọ Cacti (MB)"
+
+#: setup.php
+msgid "Warn when the Cacti log grows beyond this size, which usually means log rotation is not running."
+msgstr "Dọọ aka ná ntị mgbe ndekọ Cacti tolitere karịa nha a, nke na-egosikarị na ntụgharị ndekọ anaghị arụ ọrụ."

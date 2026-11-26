@@ -1,0 +1,1542 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
+# SPDX-FileCopyrightText: 2026 Thomas Vincent <thomasvincent@gmail.com>
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: doctor 0.6.1\n"
+"Report-Msgid-Bugs-To: https://github.com/somethingwithproof/plugin_doctor/issues\n"
+"PO-Revision-Date: 2026-11-26 00:00+0000\n"
+"Last-Translator: Thomas Vincent <thomasvincent@gmail.com>\n"
+"Language-Team: Thomas Vincent <thomasvincent@gmail.com>\n"
+"Language: yo-NG\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: cli/doctor.php
+#, php-format
+msgid "Available repairs: %s"
+msgstr "Àwọn àtúnṣe tí ó wà: %s"
+
+#: cli/doctor.php
+#, php-format
+msgid "Unknown format %s. Use text, json, nagios, or prometheus."
+msgstr "Ìṣètò %s tí a kò mọ̀. Lo text, json, nagios, tàbí prometheus."
+
+#: cli/doctor.php
+#, php-format
+msgid "Redaction could not complete, so %s was not written."
+msgstr "Ìṣàtúnkọ ìpamọ́ kò lè parí, nítorí náà a kò kọ %s."
+
+#: cli/doctor.php
+#, php-format
+msgid "Wrote %s. Review it before sharing; values after password, secret, token, and community names are masked."
+msgstr "A ti kọ %s. Ṣàyẹ̀wò rẹ̀ kí o tó pín in; a ti bo àwọn ìní lẹ́yìn ọ̀rọ̀-ìpamọ́, àṣírí, tọ́kìnì, àti àwọn orúkọ àwùjọ mọ́lẹ̀."
+
+#: cli/doctor.php doctor_functions.php
+msgid "Unknown repair"
+msgstr "Àtúnṣe tí a kò mọ̀"
+
+#: cli/doctor.php
+msgid "Refusing to repair without --yes."
+msgstr "Ń kọ̀ láti ṣàtúnṣe láìsí --yes."
+
+#: cli/doctor.php
+msgid "Select a supported symptom and text or JSON output."
+msgstr "Yan àmì àìsàn tí a ṣe àtìlẹ́yìn fún àti àbájáde text tàbí JSON."
+
+#: cli/doctor.php doctor_web.php
+msgid "Accepted warning"
+msgstr "Ìkìlọ̀ tí a gbà"
+
+#: doctor_access.php doctor_functions.php
+msgid "Device availability"
+msgstr "Wíwà lárọ̀ọ́wọ́tó ẹ̀rọ"
+
+#: doctor_access.php
+msgid "Device permissions could not be evaluated."
+msgstr "A kò lè ṣe ìṣirò àwọn àṣẹ ẹ̀rọ."
+
+#: doctor_access.php
+msgid "The configured PHP CLI cannot run Doctor checks."
+msgstr "PHP CLI tí a ṣètò kò lè ṣe àwọn àyẹ̀wò Doctor."
+
+#: doctor_access.php
+msgid "Doctor checks failed or exceeded their time limit. Review the Doctor log."
+msgstr "Àwọn àyẹ̀wò Doctor kùnà tàbí wọ́n kọjá ààlà àkókò wọn. Ṣàyẹ̀wò àkọọ́lẹ̀ ìṣẹ̀lẹ̀ Doctor."
+
+#: doctor_diagnosis.php
+msgid "Graphs stopped updating"
+msgstr "Àwọn gíráàfù ti dá ìsọdọ̀tun dúró"
+
+#: doctor_diagnosis.php
+msgid "Polling is slow"
+msgstr "Ìwádìí (polling) ń lọ lọ́ra"
+
+#: doctor_diagnosis.php
+msgid "Devices are missing or unavailable"
+msgstr "Àwọn ẹ̀rọ sọnù tàbí wọn kò sí ní àrọ́wọ́tó"
+
+#: doctor_diagnosis.php
+msgid "Doctor alerts are missing"
+msgstr "Àwọn ìkìlọ̀ Doctor kò sí"
+
+#: doctor_diagnosis.php
+msgid "Check the poller scheduler and the affected poller log, then verify a new completed cycle."
+msgstr "Ṣàyẹ̀wò olùṣètò ìkójọ àti àkọsílẹ̀ olùkójọ tó kan, lẹ́yìn náà rí i dájú pé àyíká tuntun kan ti parí."
+
+#: doctor_diagnosis.php
+msgid "Collection may have stopped."
+msgstr "Ìkójọ lè ti dáwọ́ dúró."
+
+#: doctor_diagnosis.php
+msgid "Collected values may not be reaching disk."
+msgstr "Àwọn iye tí a kójọ lè má dé orí díískì."
+
+#: doctor_diagnosis.php
+msgid "Inspect the output queue and Boost flush history; verify that the queue drains and RRD timestamps advance."
+msgstr "Ṣàyẹ̀wò ìlà àbájáde àti ìtàn ìfọ̀mọ́ Boost; rí i dájú pé ìlà náà ń ṣàn kúrò àti pé àwọn àkókò RRD ń tẹ̀síwájú."
+
+#: doctor_diagnosis.php
+msgid "Check storage capacity, runtime-directory permissions and the last RRD update; account for deferred writes."
+msgstr "Ṣàyẹ̀wò agbára ìpamọ́, àṣẹ àpò-ìwé ìṣiṣẹ́ àti ìmúdójúìwọ̀n RRD tó kẹ́yìn; ṣàkọsílẹ̀ àwọn ìkọ̀wé tí a sún síwájú."
+
+#: doctor_diagnosis.php
+msgid "RRD storage needs investigation."
+msgstr "Ìpamọ́ RRD nílò ìwádìí."
+
+#: doctor_diagnosis.php
+msgid "Collection work may be exceeding its time budget."
+msgstr "Iṣẹ́ ìkójọ lè ń kọjá ààlà àkókò rẹ̀."
+
+#: doctor_diagnosis.php
+msgid "Compare cycle duration with the polling interval and inspect device timeouts before increasing concurrency."
+msgstr "Fi gígùn àyíká wé àkókò ìkójọ kí o sì ṣàyẹ̀wò àkókò ìdádúró ẹ̀rọ kí o tó pọ̀ sí iṣẹ́ àjọṣepọ̀."
+
+#: doctor_diagnosis.php
+msgid "Compare database counters during a slow cycle and inspect query plans before changing server limits."
+msgstr "Fi àwọn òǹkà ibùdó dátà wé ní àkókò àyíká tó lọ́ra kí o sì ṣàyẹ̀wò ètò ìbéèrè kí o tó yí ààlà olùpèsè padà."
+
+#: doctor_diagnosis.php
+msgid "Database pressure may be contributing to slow polling."
+msgstr "Ìfúngún ibùdó dátà lè ń ṣàfikún sí ìkójọ tó lọ́ra."
+
+#: doctor_diagnosis.php
+msgid "Collection prerequisites or reachability may be failing."
+msgstr "Àwọn ohun ìbẹ̀rẹ̀ ìkójọ tàbí ìbáṣepọ̀ lè ń kùnà."
+
+#: doctor_diagnosis.php
+msgid "Verify the affected device permissions, reachability, credentials and assigned poller using Cacti diagnostics."
+msgstr "Rí i dájú àwọn àṣẹ ẹ̀rọ tó kan, ìbáṣepọ̀, ìwé-ẹ̀rí àti olùkójọ tí a yàn nípa lílo àyẹ̀wò Cacti."
+
+#: doctor_diagnosis.php
+msgid "Scheduled checks or mail delivery need attention."
+msgstr "Àwọn àyẹ̀wò tí a ṣètò tàbí ìfiranṣẹ́ í-meèlì nílò àkíyèsí."
+
+#: doctor_diagnosis.php
+msgid "Verify scheduling and recipient settings, inspect retained delivery attempts, and send a Cacti test email."
+msgstr "Rí i dájú ètò àkókò àti àwọn olùgbà, ṣàyẹ̀wò àwọn ìgbìyànjú ìfiranṣẹ́ tó kù, kí o sì fi í-meèlì àyẹ̀wò Cacti ránṣẹ́."
+
+#: doctor_diagnosis.php
+msgid "Possible causes require verification; matching checks do not establish a root cause."
+msgstr "Àwọn ohun tó ṣeé ṣe kí ó fà á nílò ìdánilójú; àwọn àyẹ̀wò tó báramu kò fi ìdí gbòngbò ìṣòro múlẹ̀."
+
+#: doctor_diagnosis.php
+msgid "No cause is established by the available observations. Run fresh diagnostics and investigate the symptom directly."
+msgstr "Kò sí ìdí kankan tí àwọn àkíyèsí tó wà fi múlẹ̀. Ṣe àyẹ̀wò tuntun kí o sì ṣèwádìí àmì àìsàn náà tààrà."
+
+#: doctor_functions.php
+msgid "At least 24 hours since server startup and FLUSH STATUS. Counters are cumulative and may have different reset histories; confirm trends during a representative workload before tuning."
+msgstr "Ó kéré tán wákàtí 24 láti ìbẹ̀rẹ̀ olùpèsè àti FLUSH STATUS. Àwọn òǹkà jẹ́ àkópọ̀, wọ́n sì lè ní ìtàn ìtúnṣe tó yàtọ̀; rí ìtọ́sọ́nà dájú ní àkókò iṣẹ́ aṣojú kí o tó ṣàtúnṣe."
+
+#: doctor_functions.php
+msgid "Cumulative tuning advice is deferred: obtain valid uptime and at least 24 hours since startup and FLUSH STATUS. Missing metrics or an inconsistent sample cannot establish database health."
+msgstr "Ìmọ̀ràn àtúnṣe àkópọ̀ ti sún síwájú: gba àkókò ìṣiṣẹ́ tó péye àti ó kéré tán wákàtí 24 láti ìbẹ̀rẹ̀ àti FLUSH STATUS. Àwọn ìwọ̀n tó sọnù tàbí àpẹẹrẹ tí kò báramu kò lè fi ìlera ibùdó dátà múlẹ̀."
+
+#: doctor_functions.php
+msgid "Database observation window"
+msgstr "Àkókò àkíyèsí ibùdó dátà"
+
+#: doctor_functions.php
+msgid "Connection metrics are unavailable or invalid. Check access to SHOW GLOBAL STATUS and SHOW GLOBAL VARIABLES; do not treat missing metrics as an idle server."
+msgstr "Àwọn ìwọ̀n ìsopọ̀ kò sí tàbí kò tọ́. Ṣàyẹ̀wò ìwọ̀lé sí SHOW GLOBAL STATUS àti SHOW GLOBAL VARIABLES; má ṣe ka àwọn ìwọ̀n tó sọnù sí olùpèsè tí kò ṣiṣẹ́."
+
+#: doctor_functions.php
+#, php-format
+msgid "Current connections: %.0f / %.0f (%s); recorded peak: %.0f (%s of the current limit)."
+msgstr "Àwọn ìsopọ̀ lọ́wọ́lọ́wọ́: %.0f / %.0f (%s); òkè tó ga jù lọ tí a kọ sílẹ̀: %.0f (%s ti ààlà lọ́wọ́lọ́wọ́)."
+
+#: doctor_functions.php
+msgid "Review connection pooling and poller concurrency. Check database-host memory headroom before raising max_connections; the historical peak may reflect an older limit."
+msgstr "Ṣàtúnyẹ̀wò ìkójọpọ̀ ìsopọ̀ àti iṣẹ́ àjọṣepọ̀ olùkójọ. Ṣàyẹ̀wò ààyè ìrántí olùgbàlejò ibùdó dátà kí o tó gbé max_connections sókè; òkè ìtàn lè ṣàfihàn ààlà àtijọ́."
+
+#: doctor_functions.php
+msgid "Connection capacity"
+msgstr "Agbára ìsopọ̀"
+
+#: doctor_functions.php
+msgid "InnoDB buffer pool reads"
+msgstr "Ìka adágún ààbò InnoDB"
+
+#: doctor_functions.php
+msgid "Review query plans and the working set. Consider innodb_buffer_pool_size only after measuring memory available on the database host; a cumulative miss ratio alone does not prove memory pressure."
+msgstr "Ṣàtúnyẹ̀wò àwọn ètò ìbéèrè àti àkójọ iṣẹ́. Ronú nípa innodb_buffer_pool_size lẹ́yìn tí o bá ti wọ̀n ìrántí tó wà lórí olùgbàlejò ibùdó dátà nìkan; ìpín àṣìṣe àkópọ̀ nìkan kò fi ìfúngún ìrántí hàn."
+
+#: doctor_functions.php
+msgid "On-disk temporary tables"
+msgstr "Àwọn tábìlì ìgbà díẹ̀ orí díískì"
+
+#: doctor_functions.php
+msgid "Review query plans, sorting, grouping, and temporary-table data types before changing memory limits. Some tables must use disk; memory limits and accounting differ between MySQL and MariaDB versions."
+msgstr "Ṣàtúnyẹ̀wò àwọn ètò ìbéèrè, ìtòlẹ́sẹẹsẹ, ìpínsí àwọn ẹgbẹ́, àti irú dátà tábìlì ìgbà díẹ̀ kí o tó yí ààlà ìrántí padà. Àwọn tábìlì kan gbọ́dọ̀ lo díískì; ààlà ìrántí àti ìṣirò yàtọ̀ láàárín àwọn ẹ̀yà MySQL àti MariaDB."
+
+#: doctor_functions.php
+msgid "Connection thread creation"
+msgstr "Ìṣẹ̀dá okùn ìsopọ̀"
+
+#: doctor_functions.php
+msgid "Review connection reuse and thread_cache_size. Check the server thread-handling mode before tuning; thread-pool implementations do not behave like one-thread-per-connection servers."
+msgstr "Ṣàtúnyẹ̀wò ìlò-lẹ́ẹ̀kan-síi ìsopọ̀ àti thread_cache_size. Ṣàyẹ̀wò ipò ìtọ́jú okùn olùpèsè kí o tó ṣàtúnṣe; àwọn ìṣe adágún-okùn kì í hùwà bíi àwọn olùpèsè okùn-kan-fún-ìsopọ̀-kọ̀ọ̀kan."
+
+#: doctor_functions.php
+msgid "Review slow-query logging, long_query_time, and query plans before changing server buffers. This counter depends on the configured slow-query threshold and does not identify individual statements."
+msgstr "Ṣàtúnyẹ̀wò àkọsílẹ̀ ìbéèrè tó lọ́ra, long_query_time, àti àwọn ètò ìbéèrè kí o tó yí ààbò olùpèsè padà. Òǹkà yìí da lórí ààlà ìbéèrè tó lọ́ra tí a ṣètò, kò sì dá àwọn gbólóhùn kọ̀ọ̀kan mọ̀."
+
+#: doctor_functions.php
+msgid "Slow statements"
+msgstr "Àwọn gbólóhùn tó lọ́ra"
+
+#: doctor_functions.php
+msgid "Cumulative advice deferred until the observation window is sufficient."
+msgstr "Ìmọ̀ràn àkópọ̀ ti sún síwájú títí àkókò àkíyèsí yóò fi tó."
+
+#: doctor_functions.php
+msgid "Thread-cache advice is not assessed: thread_handling is unavailable or is not one-thread-per-connection. Review the active thread-pool implementation instead."
+msgstr "A kò ṣàyẹ̀wò ìmọ̀ràn ìpamọ́-okùn: thread_handling kò sí tàbí kì í ṣe okùn-kan-fún-ìsopọ̀-kọ̀ọ̀kan. Ṣàtúnyẹ̀wò ìṣe adágún-okùn tó ń ṣiṣẹ́ dípò rẹ̀."
+
+#: doctor_functions.php
+#, php-format
+msgid "Required counters are missing or invalid: %s, %s. Check server-version support and monitoring permissions."
+msgstr "Àwọn òǹkà tí a nílò sọnù tàbí kò tọ́: %s, %s. Ṣàyẹ̀wò àtìlẹ́yìn ẹ̀yà olùpèsè àti àwọn àṣẹ àbójútó."
+
+#: doctor_functions.php
+msgid "A counter reset since the prior sample; collect another representative interval before tuning."
+msgstr "Òǹkà kan ti tún bẹ̀rẹ̀ láti àpẹẹrẹ tó kọjá; gba àkókò aṣojú mìíràn kí o tó ṣàtúnṣe."
+
+#: doctor_functions.php
+#, php-format
+msgid "Insufficient activity: %.0f %s; at least %d observations are needed for this advisory."
+msgstr "Ìṣiṣẹ́ kò tó: %.0f %s; ó kéré tán àkíyèsí %d ni a nílò fún ìmọ̀ràn yìí."
+
+#: doctor_functions.php
+msgid "Counters are inconsistent or were reset independently. Collect a new representative sample before tuning."
+msgstr "Àwọn òǹkà kò báramu tàbí a tún wọn bẹ̀rẹ̀ lọ́tọ̀ọ̀tọ̀. Gba àpẹẹrẹ aṣojú tuntun kí o tó ṣàtúnṣe."
+
+#: doctor_functions.php
+msgid "The interval sample is too small or counters reset; collect another representative interval before tuning."
+msgstr "Àpẹẹrẹ àkókò náà kéré jù tàbí àwọn òǹkà tún bẹ̀rẹ̀; gba àkókò aṣojú mìíràn kí o tó ṣàtúnṣe."
+
+#: doctor_functions.php
+#, php-format
+msgid "Interval %s / %s: %.0f / %.0f (%s); investigation threshold: %s."
+msgstr "Àkókò %s / %s: %.0f / %.0f (%s); ààlà ìwádìí: %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "Cumulative %s / %s: %.0f / %.0f (%s); investigation threshold: %s."
+msgstr "Àkópọ̀ %s / %s: %.0f / %.0f (%s); ààlà ìwádìí: %s."
+
+#: doctor_functions.php
+msgid "This counter can omit memory-mapped temporary files on MySQL; a low ratio does not rule out disk use."
+msgstr "Òǹkà yìí lè fo àwọn fáìlì ìgbà díẹ̀ tí a yà sórí ìrántí kọjá lórí MySQL; ìpín tó kéré kò yọ lílo díískì kúrò."
+
+#: doctor_functions.php
+msgid "Redo-log advice deferred until the observation window is sufficient and Innodb_log_waits is available."
+msgstr "Ìmọ̀ràn àkọsílẹ̀ àtúnṣe ti sún síwájú títí àkókò àkíyèsí yóò fi tó àti títí Innodb_log_waits yóò fi wà."
+
+#: doctor_functions.php
+#, php-format
+msgid "Cumulative Innodb_log_waits: %.0f."
+msgstr "Àkópọ̀ Innodb_log_waits: %.0f."
+
+#: doctor_functions.php
+msgid "Investigate transaction sizes, log-buffer pressure, and storage latency. Recheck the rate under load before considering innodb_log_buffer_size; this historical count is not evidence of a current stall."
+msgstr "Ṣèwádìí ìwọ̀n ìdúnàádúrà, ìfúngún ààbò àkọsílẹ̀, àti ìfàsẹ́yìn ìpamọ́. Tún òṣùwọ̀n yẹ̀wò lábẹ́ ẹrù iṣẹ́ kí o tó ronú nípa innodb_log_buffer_size; iye ìtàn yìí kì í ṣe ẹ̀rí ìdádúró lọ́wọ́lọ́wọ́."
+
+#: doctor_functions.php
+msgid "InnoDB log-buffer waits"
+msgstr "Àwọn ìdúró ààbò àkọsílẹ̀ InnoDB"
+
+#: doctor_functions.php
+msgid "installed Cacti composer.json"
+msgstr "composer.json Cacti tí a fi sórí ẹ̀rọ"
+
+#: doctor_functions.php
+#, php-format
+msgid "Cacti %s installer requirement"
+msgstr "Ìbéèrè olùfisílé Cacti %s"
+
+#: doctor_functions.php
+msgid "PHP compatibility with installed Cacti"
+msgstr "Ìbáramu PHP pẹ̀lú Cacti tí a fi sórí ẹ̀rọ"
+
+#: doctor_functions.php
+#, php-format
+msgid "Running PHP %s; installed Cacti %s."
+msgstr "PHP %s tó ń ṣiṣẹ́; Cacti %s tí a fi sórí ẹ̀rọ."
+
+#: doctor_functions.php
+msgid "Could not establish Cacti's PHP requirement. Check the installed Cacti composer.json or release documentation; Doctor does not assume compatibility."
+msgstr "Kò lè dá ìbéèrè PHP ti Cacti múlẹ̀. Ṣàyẹ̀wò composer.json Cacti tí a fi sórí ẹ̀rọ tàbí ìwé ìtújáde; Doctor kì í gba ìbáramu gbọ́ lásán."
+
+#: doctor_functions.php
+#, php-format
+msgid "PHP >= %s and < %s"
+msgstr "PHP >= %s àti < %s"
+
+#: doctor_functions.php
+#, php-format
+msgid "PHP >= %s"
+msgstr "PHP >= %s"
+
+#: doctor_functions.php
+#, php-format
+msgid "Requires %s (%s). Running PHP meets that requirement."
+msgstr "Nílò %s (%s). PHP tó ń ṣiṣẹ́ mú ìbéèrè náà ṣẹ."
+
+#: doctor_functions.php
+#, php-format
+msgid "Requires %s (%s). Running PHP does not meet that requirement."
+msgstr "Nílò %s (%s). PHP tó ń ṣiṣẹ́ kò mú ìbéèrè náà ṣẹ."
+
+#: doctor_functions.php
+#, php-format
+msgid "Detected %s; Doctor requires Cacti 1.2.20 or newer."
+msgstr "A ṣàwárí %s; Doctor nílò Cacti 1.2.20 tàbí tuntun jù bẹ́ẹ̀ lọ."
+
+#: doctor_functions.php
+msgid "Supported Cacti version"
+msgstr "Ẹ̀yà Cacti tí a ṣètìlẹ́yìn fún"
+
+#: doctor_functions.php
+msgid "PHP upstream security support"
+msgstr "Àtìlẹ́yìn ààbò òkè-ìpilẹ̀ PHP"
+
+#: doctor_functions.php
+msgid "This checks the PHP release branch, not whether this patch release is up to date or whether your OS vendor backports fixes. Cacti compatibility is checked separately."
+msgstr "Èyí ń ṣàyẹ̀wò ẹ̀ka ìtújáde PHP, kì í ṣe bóyá ìtújáde àtúnṣe yìí wà lọ́jọ́ tàbí bóyá olùtajà OS rẹ ń ṣàtúnṣe sílẹ̀. A ń ṣàyẹ̀wò ìbáramu Cacti lọ́tọ̀."
+
+#: doctor_functions.php
+#, php-format
+msgid "Running PHP %s; upstream security-support status is unknown or this is a prerelease. Check https://www.php.net/supported-versions.php and update Doctor's support data."
+msgstr "PHP %s tó ń ṣiṣẹ́; ipò àtìlẹ́yìn ààbò òkè-ìpilẹ̀ kò jẹ́ mímọ̀ tàbí èyí jẹ́ ìtújáde ìṣáájú. Ṣàyẹ̀wò https://www.php.net/supported-versions.php kí o sì mú dátà àtìlẹ́yìn Doctor dójúìwọ̀n."
+
+#: doctor_functions.php
+#, php-format
+msgid "Running PHP %s; PHP %s receives upstream security fixes through %s."
+msgstr "PHP %s tó ń ṣiṣẹ́; PHP %s ń gba àwọn àtúnṣe ààbò òkè-ìpilẹ̀ títí di %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "Running PHP %s; PHP %s no longer receives upstream security fixes; support ended %s. Upgrade to a supported PHP branch compatible with your Cacti installation, or confirm security maintenance with your OS vendor."
+msgstr "PHP %s tó ń ṣiṣẹ́; PHP %s kò gba àwọn àtúnṣe ààbò òkè-ìpilẹ̀ mọ́; àtìlẹ́yìn parí ní %s. Ṣàgbéga sí ẹ̀ka PHP tí a ṣètìlẹ́yìn fún tó bá ìfisílé Cacti rẹ mu, tàbí rí ìtọ́jú ààbò dájú pẹ̀lú olùtajà OS rẹ."
+
+#: doctor_functions.php
+msgid "Required current CLI PHP extensions"
+msgstr "Àwọn àfikún PHP CLI lọ́wọ́lọ́wọ́ tí a nílò"
+
+#: doctor_functions.php
+msgid "Required web PHP extensions"
+msgstr "Àwọn àfikún PHP wẹ́ẹ̀bù tí a nílò"
+
+#: doctor_functions.php
+#, php-format
+msgid "Missing: %s. Install them through the operating system package manager."
+msgstr "Sọnù: %s. Fi wọ́n sílé nípasẹ̀ olùṣàkóso àkójọ ẹ̀rọ ìṣiṣẹ́."
+
+#: doctor_functions.php
+msgid "All PHP extensions required by the Cacti installer are loaded in this PHP context."
+msgstr "Gbogbo àwọn àfikún PHP tí olùfisílé Cacti nílò ni a ti gbé sórí àyíká PHP yìí."
+
+#: doctor_functions.php
+msgid "Doctor does not execute configured binaries while running as root."
+msgstr "Doctor kì í ṣiṣẹ́ àwọn fáìlì aláṣẹ tí a ṣètò nígbà tó bá ń ṣiṣẹ́ bíi root."
+
+#: doctor_functions.php
+#, php-format
+msgid "The file name %s is not expected for %s, so Doctor did not execute it."
+msgstr "Orúkọ fáìlì %s kò ṣe ìretí fún %s, nítorí náà Doctor kò ṣiṣẹ́ rẹ̀."
+
+#: doctor_functions.php
+msgid "Doctor is running as root, so permission checks describe root rather than the web server or poller account, configured binaries are not executed, and repairs are refused. Run Doctor as the Cacti poller user."
+msgstr "Doctor ń ṣiṣẹ́ bíi root, nítorí náà àwọn àyẹ̀wò àṣẹ ṣàpèjúwe root dípò olùpèsè wẹ́ẹ̀bù tàbí àkọọ́lẹ̀ olùkójọ, àwọn fáìlì aláṣẹ tí a ṣètò kò ṣiṣẹ́, a sì kọ̀ àwọn àtúnṣe. Ṣiṣẹ́ Doctor bíi olùlò olùkójọ Cacti."
+
+#: doctor_functions.php
+msgid "Doctor privileges"
+msgstr "Àwọn àǹfààní Doctor"
+
+#: doctor_functions.php
+msgid "Doctor is running without root privileges."
+msgstr "Doctor ń ṣiṣẹ́ láìsí àǹfààní root."
+
+#: doctor_functions.php
+msgid "Required CLI PHP extensions"
+msgstr "Àwọn àfikún PHP CLI tí a nílò"
+
+#: doctor_functions.php
+msgid "The configured PHP CLI executable is unavailable, so its extensions cannot be checked."
+msgstr "Fáìlì ìṣiṣẹ́ PHP CLI tí a ṣètò kò sí, nítorí náà a kò lè ṣàyẹ̀wò àwọn àfikún rẹ̀."
+
+#: doctor_functions.php
+msgid "shell_exec() is disabled, so Doctor cannot compare the CLI PHP extensions with Cacti requirements."
+msgstr "A ti pa shell_exec() lọ́wọ́, nítorí náà Doctor kò lè fi àwọn àfikún PHP CLI wé àwọn ìbéèrè Cacti."
+
+#: doctor_functions.php
+msgid "The configured PHP CLI executable did not return a valid extension list."
+msgstr "Fáìlì ìṣiṣẹ́ PHP CLI tí a ṣètò kò dá àkójọ àfikún tó péye padà."
+
+#: doctor_functions.php
+#, php-format
+msgid "Missing from CLI PHP: %s. The web and CLI PHP configurations are separate on many systems."
+msgstr "Sọnù láti inú PHP CLI: %s. Àwọn ìṣètò PHP wẹ́ẹ̀bù àti CLI yàtọ̀ síra lórí ọ̀pọ̀ ètò."
+
+#: doctor_functions.php
+msgid "The configured PHP CLI has every extension required by Cacti."
+msgstr "PHP CLI tí a ṣètò ní gbogbo àfikún tí Cacti nílò."
+
+#: doctor_functions.php
+msgid "GD TrueType support"
+msgstr "Àtìlẹ́yìn GD TrueType"
+
+#: doctor_functions.php
+msgid "Recommended PHP features"
+msgstr "Àwọn ẹ̀yà PHP tí a dámọ̀ràn"
+
+#: doctor_functions.php
+#, php-format
+msgid "Unavailable: %s. Cacti can run without these features, but related functionality may be limited."
+msgstr "Kò sí: %s. Cacti lè ṣiṣẹ́ láìsí àwọn ẹ̀yà wọ̀nyí, ṣùgbọ́n iṣẹ́ tó jọmọ́ ọn lè ní ààlà."
+
+#: doctor_functions.php
+msgid "The optional gettext, SNMP, and GD TrueType features are available."
+msgstr "Àwọn ẹ̀yà àṣàyàn gettext, SNMP, àti GD TrueType wà."
+
+#: doctor_functions.php
+#, php-format
+msgid "memory_limit is %s (%dM or more is recommended)"
+msgstr "memory_limit jẹ́ %s (%dM tàbí jù bẹ́ẹ̀ lọ ni a dámọ̀ràn)"
+
+#: doctor_functions.php
+#, php-format
+msgid "max_execution_time is %d seconds (60 or more is recommended)"
+msgstr "max_execution_time jẹ́ ìṣẹ́jú-àáyá %d (60 tàbí jù bẹ́ẹ̀ lọ ni a dámọ̀ràn)"
+
+#: doctor_functions.php
+msgid "date.timezone is not set"
+msgstr "date.timezone kò tíì jẹ́ ṣíṣètò"
+
+#: doctor_functions.php
+msgid "unset"
+msgstr "kò tíì ṣètò"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s. Current values: %s"
+msgstr "%s. Àwọn iye lọ́wọ́lọ́wọ́: %s"
+
+#: doctor_functions.php
+msgid "PHP runtime configuration"
+msgstr "Ìṣètò àkókò ìṣiṣẹ́ PHP"
+
+#: doctor_functions.php
+msgid "Database connection"
+msgstr "Ìsopọ̀ ibùdó dátà"
+
+#: doctor_functions.php
+#, php-format
+msgid "Query failed: %s"
+msgstr "Ìbéèrè kùnà: %s"
+
+#: doctor_functions.php
+msgid "A read-only query completed successfully."
+msgstr "Ìbéèrè ìkà-nìkan parí ní àṣeyọrí."
+
+#: doctor_functions.php
+msgid "The database returned an unexpected result."
+msgstr "Ibùdó dátà dá èsì àìròtẹ́lẹ̀ padà."
+
+#: doctor_functions.php
+#, php-format
+msgid "Doctor could not determine the database server version from %s."
+msgstr "Doctor kò lè dá ẹ̀yà olùpèsè ibùdó dátà mọ̀ láti %s."
+
+#: doctor_functions.php
+msgid "Supported database server"
+msgstr "Olùpèsè ibùdó dátà tí a ṣètìlẹ́yìn fún"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s %s detected; this Cacti branch recommends %s %s or newer."
+msgstr "A ṣàwárí %s %s; ẹ̀ka Cacti yìí dámọ̀ràn %s %s tàbí tuntun jù bẹ́ẹ̀ lọ."
+
+#: doctor_functions.php
+#, php-format
+msgid "Database character set is %s and collation is %s. Cacti requires utf8mb4."
+msgstr "Àkójọ lẹ́tà ibùdó dátà jẹ́ %s, ìtòlẹ́sẹẹsẹ rẹ̀ sì jẹ́ %s. Cacti nílò utf8mb4."
+
+#: doctor_functions.php
+msgid "unknown"
+msgstr "àìmọ̀"
+
+#: doctor_functions.php
+msgid "Database character set"
+msgstr "Àkójọ lẹ́tà ibùdó dátà"
+
+#: doctor_functions.php
+msgid "Database timezone support"
+msgstr "Àtìlẹ́yìn agbègbè-àkókò ibùdó dátà"
+
+#: doctor_functions.php
+msgid "The Cacti database account cannot read mysql.time_zone_name. Grant SELECT access and populate the database timezone tables."
+msgstr "Àkọọ́lẹ̀ ibùdó dátà Cacti kò lè ka mysql.time_zone_name. Fún ní ìwọ̀lé SELECT kí o sì kún àwọn tábìlì agbègbè-àkókò ibùdó dátà."
+
+#: doctor_functions.php
+#, php-format
+msgid "The database timezone table is accessible and contains %d entries."
+msgstr "Tábìlì agbègbè-àkókò ibùdó dátà ṣeé wọ̀lé, ó sì ní àwọn àkọsílẹ̀ %d."
+
+#: doctor_functions.php
+msgid "The database timezone table is accessible but empty. Populate the system timezone tables."
+msgstr "Tábìlì agbègbè-àkókò ibùdó dátà ṣeé wọ̀lé ṣùgbọ́n ó ṣófo. Kún àwọn tábìlì agbègbè-àkókò ètò náà."
+
+#: doctor_functions.php
+msgid "Core tables used by Cacti are present."
+msgstr "Àwọn tábìlì pàtàkì tí Cacti ń lò wà níbẹ̀."
+
+#: doctor_functions.php
+#, php-format
+msgid "Missing core tables: %s. Restore or upgrade the database before attempting other repairs."
+msgstr "Àwọn tábìlì pàtàkì tó sọnù: %s. Dá ibùdó dátà padà tàbí ṣàgbéga rẹ̀ kí o tó gbìyànjú àwọn àtúnṣe mìíràn."
+
+#: doctor_functions.php
+msgid "Core database tables"
+msgstr "Àwọn tábìlì ibùdó dátà pàtàkì"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s is missing (%s)"
+msgstr "%s sọnù (%s)"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s is not writable (%s)"
+msgstr "%s kò ṣeé kọ sí (%s)"
+
+#: doctor_functions.php
+msgid "Runtime directories"
+msgstr "Àwọn àpò-ìwé àkókò ìṣiṣẹ́"
+
+#: doctor_functions.php
+msgid "The cache, log, and RRA directories exist and are writable."
+msgstr "Àwọn àpò-ìwé cache, àkọsílẹ̀, àti RRA wà, wọ́n sì ṣeé kọ sí."
+
+#: doctor_functions.php
+msgid "Cacti configuration file"
+msgstr "Fáìlì ìṣètò Cacti"
+
+#: doctor_functions.php
+msgid "include/config.php is missing or unreadable."
+msgstr "include/config.php sọnù tàbí kò ṣeé kà."
+
+#: doctor_functions.php
+msgid "include/config.php is readable. POSIX mode-bit checks do not apply on Windows."
+msgstr "include/config.php ṣeé kà. Àwọn àyẹ̀wò ipò-bìtì POSIX kò ṣiṣẹ́ lórí Windows."
+
+#: doctor_functions.php
+msgid "include/config.php is writable by other users. Remove world-write permission because this file contains database credentials."
+msgstr "Àwọn olùlò mìíràn lè kọ sí include/config.php. Yọ àṣẹ ìkọ̀wé gbogbogbòò kúrò nítorí fáìlì yìí ní àwọn ìwé-ẹ̀rí ibùdó dátà."
+
+#: doctor_functions.php
+msgid "include/config.php is group-writable. Confirm that every member of the owning group is trusted."
+msgstr "Ẹgbẹ́ lè kọ sí include/config.php. Rí i dájú pé gbogbo ọmọ ẹgbẹ́ tó ni í ni a fọkàn tán."
+
+#: doctor_functions.php
+msgid "include/config.php is readable by all local users and contains database credentials. Restrict it to the owner and the web server group."
+msgstr "Gbogbo àwọn olùlò agbègbè lè ka include/config.php, ó sì ní àwọn ìwé-ẹ̀rí ibùdó dátà. Dènà rẹ̀ sí onílé àti ẹgbẹ́ olùpèsè wẹ́ẹ̀bù nìkan."
+
+#: doctor_functions.php
+msgid "include/config.php is readable and is not world-readable, group-writable, or world-writable."
+msgstr "include/config.php ṣeé kà, kò sì ṣeé kà fún gbogbogbòò, kò ṣeé kọ fún ẹgbẹ́, tàbí kọ fún gbogbogbòò."
+
+#: doctor_functions.php
+msgid "Cacti log file"
+msgstr "Fáìlì àkọsílẹ̀ Cacti"
+
+#: doctor_functions.php
+msgid "The log file does not exist. Its parent directory is not writable."
+msgstr "Fáìlì àkọsílẹ̀ kò sí. Àpò-ìwé òbí rẹ̀ kò ṣeé kọ sí."
+
+#: doctor_functions.php
+msgid "The log file does not exist. Its parent directory is writable, so Cacti can create it."
+msgstr "Fáìlì àkọsílẹ̀ kò sí. Àpò-ìwé òbí rẹ̀ ṣeé kọ sí, nítorí náà Cacti lè dá a."
+
+#: doctor_functions.php
+msgid "The configured log path must be a readable and writable regular file."
+msgstr "Ọ̀nà àkọsílẹ̀ tí a ṣètò gbọ́dọ̀ jẹ́ fáìlì déédéé tó ṣeé kà àti tó ṣeé kọ sí."
+
+#: doctor_functions.php
+#, php-format
+msgid "The log is readable and writable and is %s MiB."
+msgstr "Àkọsílẹ̀ náà ṣeé kà àti ṣeé kọ sí, ó sì jẹ́ %s MiB."
+
+#: doctor_functions.php
+msgid "The log is readable and writable."
+msgstr "Àkọsílẹ̀ náà ṣeé kà àti ṣeé kọ sí."
+
+#: doctor_functions.php
+msgid "Verify that Cacti log rotation is enabled."
+msgstr "Rí i dájú pé yíyí àkọsílẹ̀ Cacti ti wà ní ṣíṣí."
+
+#: doctor_functions.php
+#, php-format
+msgid "Executable found at %s."
+msgstr "A rí fáìlì ìṣiṣẹ́ ní %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "The %s setting is empty, missing, or not executable."
+msgstr "Ètò %s ṣófo, sọnù, tàbí kò ṣeé ṣiṣẹ́."
+
+#: doctor_functions.php
+#, php-format
+msgid "The %s setting is empty, missing, or not executable: %s"
+msgstr "Ètò %s ṣófo, sọnù, tàbí kò ṣeé ṣiṣẹ́: %s"
+
+#: doctor_functions.php
+msgid "Doctor could not determine its version."
+msgstr "Doctor kò lè dá ẹ̀yà rẹ̀ mọ̀."
+
+#: doctor_functions.php
+#, php-format
+msgid "Detected version %s."
+msgstr "A ṣàwárí ẹ̀yà %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "Detected version %s; version %s or newer is recommended."
+msgstr "A ṣàwárí ẹ̀yà %s; ẹ̀yà %s tàbí tuntun jù bẹ́ẹ̀ lọ ni a dámọ̀ràn."
+
+#: doctor_functions.php
+#, php-format
+msgid "Detected version %s; version %s or newer is required."
+msgstr "A ṣàwárí ẹ̀yà %s; ẹ̀yà %s tàbí tuntun jù bẹ́ẹ̀ lọ ni a nílò."
+
+#: doctor_functions.php
+#, php-format
+msgid "Detected version %s; minimum is %s."
+msgstr "A ṣàwárí ẹ̀yà %s; èyí tó kéré jù lọ ni %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "%s executable"
+msgstr "Fáìlì ìṣiṣẹ́ %s"
+
+#: doctor_functions.php
+msgid "poller_type is not cmd.php or Spine"
+msgstr "poller_type kì í ṣe cmd.php tàbí Spine"
+
+#: doctor_functions.php
+msgid "poller_interval is not a supported value"
+msgstr "poller_interval kì í ṣe iye tí a ṣètìlẹ́yìn fún"
+
+#: doctor_functions.php
+msgid "Poller configuration"
+msgstr "Ìṣètò olùkójọ"
+
+#: doctor_functions.php
+#, php-format
+msgid "Poller is %s with a %d-second interval."
+msgstr "Olùkójọ jẹ́ %s pẹ̀lú àkókò ìṣẹ́jú-àáyá %d."
+
+#: doctor_functions.php
+msgid "Main poller freshness"
+msgstr "Ìwà-lọ́jọ́ olùkójọ àkọ́kọ́"
+
+#: doctor_functions.php
+msgid "No completed main-poller run was found. This can be expected before the first poll."
+msgstr "A kò rí ìṣiṣẹ́ olùkójọ àkọ́kọ́ kankan tó parí. Èyí ṣeé retí kí ìkójọ àkọ́kọ́ tó wáyé."
+
+#: doctor_functions.php
+#, php-format
+msgid "Last completed run was %d seconds ago; failure threshold is %d seconds."
+msgstr "Ìṣiṣẹ́ tó parí kẹ́yìn jẹ́ ìṣẹ́jú-àáyá %d sẹ́yìn; ààlà ìkùnà jẹ́ ìṣẹ́jú-àáyá %d."
+
+#: doctor_functions.php
+msgid "Database schema version"
+msgstr "Ẹ̀yà àwòrán ibùdó dátà"
+
+#: doctor_functions.php
+msgid "The version table is empty or unreadable, so the schema version is unknown."
+msgstr "Tábìlì ẹ̀yà ṣófo tàbí kò ṣeé kà, nítorí náà ẹ̀yà àwòrán kò jẹ́ mímọ̀."
+
+#: doctor_functions.php
+msgid "The version table still reads new_install, so the installer never finished. Open install/ in a browser to complete it."
+msgstr "Tábìlì ẹ̀yà ṣì ń kà new_install, nítorí náà olùfisílé kò parí rẹ̀ rí. Ṣí install/ nínú aṣàwákiri láti parí rẹ̀."
+
+#: doctor_functions.php
+#, php-format
+msgid "The database schema is at %s but the installed code is %s. Open install/ in a browser to finish the upgrade."
+msgstr "Àwòrán ibùdó dátà wà ní %s ṣùgbọ́n kóòdù tí a fi sórí ẹ̀rọ jẹ́ %s. Ṣí install/ nínú aṣàwákiri láti parí àgbéga náà."
+
+#: doctor_functions.php
+#, php-format
+msgid "The database schema (%s) is newer than the installed code (%s). The code may have been rolled back."
+msgstr "Àwòrán ibùdó dátà (%s) jẹ́ tuntun ju kóòdù tí a fi sórí ẹ̀rọ (%s) lọ. Kóòdù náà lè ti jẹ́ dídá padà sẹ́yìn."
+
+#: doctor_functions.php
+#, php-format
+msgid "The database schema (%s) matches the installed code."
+msgstr "Àwòrán ibùdó dátà (%s) bá kóòdù tí a fi sórí ẹ̀rọ mu."
+
+#: doctor_functions.php
+msgid "Main poller run time"
+msgstr "Àkókò ìṣiṣẹ́ olùkójọ àkọ́kọ́"
+
+#: doctor_functions.php
+msgid "No completed run time is recorded yet."
+msgstr "Kò sí àkókò ìṣiṣẹ́ tó parí tí a ti kọ sílẹ̀ síbẹ̀."
+
+#: doctor_functions.php
+#, php-format
+msgid "The last main-poller run took %s seconds of the %d-second interval."
+msgstr "Ìṣiṣẹ́ olùkójọ àkọ́kọ́ tó kẹ́yìn gba ìṣẹ́jú-àáyá %s nínú àkókò ìṣẹ́jú-àáyá %d."
+
+#: doctor_functions.php
+msgid "Runs that outlast the interval overlap and lose data; add poller processes or threads, or use Spine."
+msgstr "Àwọn ìṣiṣẹ́ tó pẹ́ ju àkókò lọ máa ń gbéra wọn kọjá wọ́n sì ń sọ dátà nù; fi àwọn ìlànà tàbí okùn olùkójọ kún un, tàbí lo Spine."
+
+#: doctor_functions.php
+msgid "Little headroom remains before polls overlap."
+msgstr "Ààyè díẹ̀ ló kù kí àwọn ìkójọ tó gbéra wọn kọjá."
+
+#: doctor_functions.php
+#, php-format
+msgid "%d poller_output rows are older than two polling intervals and were never written to RRD files. Check the Cacti log for \"Poller Output Table not Empty\" and confirm max_heap_table_size is large enough."
+msgstr "Àwọn ìlà poller_output %d ti pé ju àkókò ìkójọ méjì lọ, a kò sì kọ wọ́n sí àwọn fáìlì RRD rí. Ṣàyẹ̀wò àkọsílẹ̀ Cacti fún \"Poller Output Table not Empty\" kí o sì rí i dájú pé max_heap_table_size tóbi tó."
+
+#: doctor_functions.php
+msgid "Unprocessed poller output"
+msgstr "Àbájáde olùkójọ tí a kò ṣiṣẹ́ lé lórí"
+
+#: doctor_functions.php
+msgid "No stale rows remain in poller_output."
+msgstr "Kò sí àwọn ìlà àtijọ́ tó kù nínú poller_output."
+
+#: doctor_functions.php
+msgid "No remote pollers are enabled."
+msgstr "Kò sí àwọn olùkójọ ọ̀nà jíjìn tí a ṣí."
+
+#: doctor_functions.php
+msgid "Remote pollers"
+msgstr "Àwọn olùkójọ ọ̀nà jíjìn"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s (ID %s) has never reported"
+msgstr "%s (ID %s) kò ròyìn rí"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s (ID %s) last reported %d seconds ago"
+msgstr "%s (ID %s) ròyìn kẹ́yìn ní ìṣẹ́jú-àáyá %d sẹ́yìn"
+
+#: doctor_functions.php
+#, php-format
+msgid "The failure threshold is %d seconds."
+msgstr "Ààlà ìkùnà jẹ́ ìṣẹ́jú-àáyá %d."
+
+#: doctor_functions.php
+#, php-format
+msgid "%d enabled remote pollers reported within %d seconds."
+msgstr "Àwọn olùkójọ ọ̀nà jíjìn %d tí a ṣí ròyìn láàárín ìṣẹ́jú-àáyá %d."
+
+#: doctor_functions.php
+msgid "Enabled plugin files"
+msgstr "Àwọn fáìlì àfikún tí a ṣí"
+
+#: doctor_functions.php
+#, php-format
+msgid "Enabled plugins are missing from %s: %s. Restore their files or disable them in Plugin Management."
+msgstr "Àwọn àfikún tí a ṣí sọnù láti %s: %s. Dá àwọn fáìlì wọn padà tàbí pa wọ́n lọ́wọ́ nínú Ìṣàkóso Àfikún."
+
+#: doctor_functions.php
+msgid "Every enabled plugin has its setup.php in place."
+msgstr "Gbogbo afikún tí a mú ṣiṣẹ́ ní setup.php rẹ̀ ní ipò."
+
+#: doctor_functions.php
+msgid "Boost RRD updates"
+msgstr "Àwọn ìtúnṣe RRD Boost"
+
+#: doctor_functions.php
+msgid "Boost is disabled, so the poller writes RRD files directly."
+msgstr "Boost wà ní àìṣiṣẹ́, nítorí náà poller ń kọ àwọn fáìlì RRD tààrà."
+
+#: doctor_functions.php
+msgid "Boost is enabled but has no recorded run. This can be expected before its first flush."
+msgstr "A mú Boost ṣiṣẹ́ ṣùgbọ́n kò ní ìṣiṣẹ́ tí a kọ sílẹ̀. Èyí ṣeé retí kí ìtúsílẹ̀ àkọ́kọ́ rẹ̀ tó wáyé."
+
+#: doctor_functions.php
+#, php-format
+msgid "Boost last flushed %d seconds ago, more than twice its %d-minute interval. Graphs stop updating until it runs; check the Cacti log for BOOST errors."
+msgstr "Boost ṣe ìtúsílẹ̀ ìkẹyìn ní ìṣẹ́jú-àáyá %d sẹ́yìn, èyí tí ó ju ìlọ́po méjì àkókò ìṣẹ́jú %d rẹ̀ lọ. Àwọn àwòrán ìṣirò yóò dáwọ́ ìtúnṣe dúró títí tí yóò fi ṣiṣẹ́; ṣàyẹ̀wò àkọsílẹ̀ Cacti fún àwọn àṣìṣe BOOST."
+
+#: doctor_functions.php
+#, php-format
+msgid "poller_output_boost holds %d rows, above the %d-row limit that forces a flush. Boost is falling behind."
+msgstr "poller_output_boost ní àwọn ìlà %d, èyí tí ó ju òpin ìlà %d lọ tí ó ń fi tipátipá ṣe ìtúsílẹ̀. Boost ń sún sẹ́yìn."
+
+#: doctor_functions.php
+#, php-format
+msgid "Boost last flushed %d seconds ago with %d rows waiting."
+msgstr "Boost ṣe ìtúsílẹ̀ ìkẹyìn ní ìṣẹ́jú-àáyá %d sẹ́yìn pẹ̀lú àwọn ìlà %d tí ó ń dúró."
+
+#: doctor_functions.php doctor_rrd.php
+#, php-format
+msgid "Checked a sample of %d active data sources that rotates hourly; a pass does not cover every file."
+msgstr "A ṣàyẹ̀wò àpẹẹrẹ àwọn orísun dátà tí ń ṣiṣẹ́ %d tí ń yípo lọ́ọ̀ọ́rìn wákàtí; ìṣàyẹ̀wò kan kò bo gbogbo fáìlì."
+
+#: doctor_functions.php
+#, php-format
+msgid "%d of %d active data sources have no RRD file, for example %s. New data sources get one after their first poll; otherwise check the RRA directory and its permissions."
+msgstr "%d nínú %d àwọn orísun dátà tí ń ṣiṣẹ́ kò ní fáìlì RRD, fún àpẹẹrẹ %s. Àwọn orísun dátà tuntun máa ń gba ọ̀kan lẹ́yìn ìṣàyẹ̀wò àkọ́kọ́ wọn; bí bẹ́ẹ̀ kọ́ ṣàyẹ̀wò àpótí RRA àti àwọn àṣẹ rẹ̀."
+
+#: doctor_functions.php
+msgid "RRD files"
+msgstr "Àwọn fáìlì RRD"
+
+#: doctor_functions.php
+#, php-format
+msgid "All %d active data sources have an RRD file."
+msgstr "Gbogbo àwọn orísun dátà tí ń ṣiṣẹ́ %d ní fáìlì RRD."
+
+#: doctor_functions.php
+#, php-format
+msgid "Doctor could not measure free space for %s."
+msgstr "Doctor kò lè wọn ààyè òfò fún %s."
+
+#: doctor_functions.php
+msgid "RRA disk space"
+msgstr "Ààyè díískì RRA"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s (%s GiB) free on the file system holding %s."
+msgstr "%s (%s GiB) ṣófo lórí ètò fáìlì tí ó di %s mú."
+
+#: doctor_functions.php
+msgid "RRD updates fail silently when the disk fills."
+msgstr "Àwọn ìtúnṣe RRD máa ń kùnà ní ìdákẹ́jẹ́ẹ́ nígbà tí díískì bá kún."
+
+#: doctor_functions.php
+msgid "Database clock"
+msgstr "Aago ibi-ìpamọ́ dátà"
+
+#: doctor_functions.php
+msgid "Doctor could not read the database clock."
+msgstr "Doctor kò lè ka aago ibi-ìpamọ́ dátà."
+
+#: doctor_functions.php
+#, php-format
+msgid "The database and PHP clocks differ by %d seconds."
+msgstr "Àwọn aago ibi-ìpamọ́ dátà àti PHP yàtọ̀ síra pẹ̀lú ìṣẹ́jú-àáyá %d."
+
+#: doctor_functions.php
+msgid "Poll timestamps will be misaligned; synchronise both hosts with NTP."
+msgstr "Àwọn àmì-àkókò ìkójọpọ̀ yóò yapa; ṣe ìbámu àwọn olùgbàlejò méjèèjì pẹ̀lú NTP."
+
+#: doctor_functions.php
+msgid "Synchronise both hosts with NTP."
+msgstr "Ṣe ìbámu àwọn olùgbàlejò méjèèjì pẹ̀lú NTP."
+
+#: doctor_functions.php
+msgid "Spine configuration"
+msgstr "Ìṣètò Spine"
+
+#: doctor_functions.php
+msgid "Spine is not the configured poller."
+msgstr "Spine kì í ṣe poller tí a ṣètò."
+
+#: doctor_functions.php
+msgid "path_spine_config is not set, so Spine uses its compiled-in search path and Doctor cannot verify which file it reads."
+msgstr "A kò ṣètò path_spine_config, nítorí náà Spine ń lo ipa-ọ̀nà ìwádìí tí a ti kọ sínú rẹ̀, Doctor kò sì lè jẹ́rìí sí fáìlì tí ó ń kà."
+
+#: doctor_functions.php
+#, php-format
+msgid "The Spine configuration file is missing or unreadable: %s."
+msgstr "Fáìlì ìṣètò Spine sọnù tàbí kò ṣeé kà: %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "DB_Database is %s but Cacti uses %s"
+msgstr "DB_Database jẹ́ %s ṣùgbọ́n Cacti ń lo %s"
+
+#: doctor_functions.php
+#, php-format
+msgid "DB_User is %s but Cacti uses %s"
+msgstr "DB_User jẹ́ %s ṣùgbọ́n Cacti ń lo %s"
+
+#: doctor_functions.php
+msgid "the file is world-readable and holds the database password"
+msgstr "fáìlì náà ṣeé kà fún gbogbo ènìyàn ó sì ní ọ̀rọ̀-ìgbaniwọlé ibi-ìpamọ́ dátà nínú"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s uses the same database and user as Cacti."
+msgstr "%s ń lo ibi-ìpamọ́ dátà àti olùlò kan náà bíi Cacti."
+
+#: doctor_functions.php
+#, php-format
+msgid "%s is %s"
+msgstr "%s jẹ́ %s"
+
+#: doctor_functions.php
+msgid "Cacti recommends ON; doublewrite may stay off only on ZFS or similar journaling storage."
+msgstr "Cacti dámọ̀ràn ON; doublewrite lè wà ní ìpa nìkan lórí ZFS tàbí ibi-ìpamọ́ journaling tí ó jọra."
+
+#: doctor_functions.php
+msgid "InnoDB safety settings"
+msgstr "Àwọn ètò ààbò InnoDB"
+
+#: doctor_functions.php
+msgid "innodb_file_per_table and innodb_doublewrite are enabled."
+msgstr "A mú innodb_file_per_table àti innodb_doublewrite ṣiṣẹ́."
+
+#: doctor_functions.php
+#, php-format
+msgid "None of the last %d log lines report an error."
+msgstr "Kò sí ìlà àkọsílẹ̀ kankan nínú %d ìkẹyìn tí ó ròyìn àṣìṣe."
+
+#: doctor_functions.php
+msgid "Recent log errors"
+msgstr "Àwọn àṣìṣe àkọsílẹ̀ láìpẹ́ yìí"
+
+#: doctor_functions.php
+#, php-format
+msgid "%d of the last %d log lines report an error. Most frequent (%dx): %s"
+msgstr "%d nínú àwọn ìlà àkọsílẹ̀ %d ìkẹyìn ròyìn àṣìṣe. Èyí tó wọ́pọ̀ jù (%dx): %s"
+
+#: doctor_functions.php
+msgid "The Cacti log is not readable; see the Cacti log file check."
+msgstr "Àkọsílẹ̀ Cacti kò ṣeé kà; wo àyẹ̀wò fáìlì àkọsílẹ̀ Cacti."
+
+#: doctor_functions.php
+msgid "No enabled devices are configured."
+msgstr "Kò sí ẹ̀rọ tí a mú ṣiṣẹ́ kankan tí a ṣètò."
+
+#: doctor_functions.php
+#, php-format
+msgid "All %d enabled devices are up."
+msgstr "Gbogbo àwọn ẹ̀rọ %d tí a mú ṣiṣẹ́ ló wà lórí ìsopọ̀."
+
+#: doctor_functions.php
+#, php-format
+msgid "%d of %d enabled devices are down and %d recovering."
+msgstr "%d nínú %d àwọn ẹ̀rọ tí a mú ṣiṣẹ́ ni kò ṣeé dé bá, %d sì ń bọ̀ sípò."
+
+#: doctor_functions.php
+msgid "The down devices could not be listed."
+msgstr "A kò lè ṣe àtòjọ àwọn ẹ̀rọ tí kò ṣeé dé bá."
+
+#: doctor_functions.php
+#, php-format
+msgid "%s down since %s"
+msgstr "%s kò ṣeé dé bá láti %s"
+
+#: doctor_functions.php
+#, php-format
+msgid "Longest down: %s."
+msgstr "Èyí tí kò ṣeé dé bá fún ìgbà pípẹ́ jù: %s."
+
+#: doctor_functions.php
+msgid "With most devices down, check the poller host's network and SNMP settings first."
+msgstr "Níwọ̀n bí ọ̀pọ̀lọpọ̀ ẹ̀rọ kò ṣeé dé bá, kọ́kọ́ ṣàyẹ̀wò nẹ́tíwọ́ọ̀kì àti ètò SNMP ti olùgbàlejò poller."
+
+#: doctor_functions.php
+msgid "Doctor could not read device status from the host table."
+msgstr "Doctor kò lè ka ipò ẹ̀rọ láti inú tábìlì host."
+
+#: doctor_functions.php
+#, php-format
+msgid "Cacti Doctor on %s: %d failed, %d warnings"
+msgstr "Cacti Doctor lórí %s: %d kùnà, ìkìlọ̀ %d"
+
+#: doctor_functions.php
+#, php-format
+msgid "%d Cacti Doctor checks changed status on %s."
+msgstr "Àwọn àyẹ̀wò Cacti Doctor %d yí ipò padà lórí %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "Totals: %d passed, %d warnings, %d failed."
+msgstr "Àpapọ̀: %d kọjá, ìkìlọ̀ %d, %d kùnà."
+
+#: doctor_functions.php
+#, php-format
+msgid "Refusing to overwrite %s."
+msgstr "Ó kọ̀ láti kọ sórí %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "Cannot create %s."
+msgstr "Kò lè ṣẹ̀dá %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "Could not make %s private."
+msgstr "Kò lè sọ %s di àdáni."
+
+#: doctor_functions.php
+#, php-format
+msgid "Writing %s failed."
+msgstr "Kíkọ sí %s kùnà."
+
+#: doctor_functions.php
+msgid "Repair runtime directories"
+msgstr "Tún àwọn àpótí ìṣiṣẹ́ ṣe"
+
+#: doctor_functions.php
+msgid "Create missing cache, log, and RRA directories and add owner read/write/execute permission without removing existing permissions."
+msgstr "Ṣẹ̀dá àwọn àpótí cache, log, àti RRA tí ó sọnù kí o sì fi àṣẹ kíkà/kíkọ/ṣíṣe ti olùní kún un láìyọ àwọn àṣẹ tí ó wà tẹ́lẹ̀ kúrò."
+
+#: doctor_functions.php
+msgid "The requested repair is not allow-listed."
+msgstr "Àtúnṣe tí a béèrè kò sí nínú àtòjọ àwọn àtúnṣe tí a fọwọ́ sí."
+
+#: doctor_functions.php
+msgid "No repair handler is registered."
+msgstr "Kò sí olùdarí àtúnṣe kankan tí a forúkọ sílẹ̀."
+
+#: doctor_functions.php
+msgid "Repair unavailable"
+msgstr "Àtúnṣe kò sí ní ààyè"
+
+#: doctor_functions.php
+msgid "Repairs are refused while running as root. Run Doctor as the Cacti poller user."
+msgstr "A kọ̀ àwọn àtúnṣe nígbà tí a bá ń ṣiṣẹ́ gẹ́gẹ́ bí root. Ṣe Doctor gẹ́gẹ́ bí olùlò poller Cacti."
+
+#: doctor_functions.php
+msgid "The Cacti base directory cannot be resolved."
+msgstr "A kò lè yanjú àpótí ìpìlẹ̀ Cacti."
+
+#: doctor_functions.php
+#, php-format
+msgid "%s: path is outside the Cacti installation"
+msgstr "%s: ipa-ọ̀nà wà lóde ìfisílẹ̀ Cacti"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s: symbolic links are not repaired"
+msgstr "%s: a kì í tún àwọn ìsopọ̀ àmì (symbolic links) ṣe"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s: directory creation failed"
+msgstr "%s: ṣíṣẹ̀dá àpótí kùnà"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s: could not add owner permissions"
+msgstr "%s: kò lè fi àwọn àṣẹ olùní kún un"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s: still not a writable directory"
+msgstr "%s: kò tíì jẹ́ àpótí tí ó ṣeé kọ sí"
+
+#: doctor_functions.php
+msgid "Runtime directories now exist and are writable by the current process."
+msgstr "Àwọn àpótí ìṣiṣẹ́ ti wà báyìí wọ́n sì ṣeé kọ sí látọwọ́ ìlànà lọ́wọ́lọ́wọ́."
+
+#: doctor_functions.php
+msgid "Cacti"
+msgstr "Cacti"
+
+#: doctor_functions.php
+msgid "Database"
+msgstr "Ibi-ìpamọ́ dátà"
+
+#: doctor_functions.php
+msgid "Database health"
+msgstr "Ìlera ibi-ìpamọ́ dátà"
+
+#: doctor_functions.php
+msgid "Devices"
+msgstr "Àwọn ẹ̀rọ"
+
+#: doctor_functions.php setup.php
+msgid "Doctor"
+msgstr "Doctor"
+
+#: doctor_functions.php
+msgid "Filesystem"
+msgstr "Ètò fáìlì"
+
+#: doctor_functions.php
+msgid "Logging"
+msgstr "Ìkọsílẹ̀"
+
+#: doctor_functions.php
+msgid "PHP"
+msgstr "PHP"
+
+#: doctor_functions.php
+msgid "Poller"
+msgstr "Poller"
+
+#: doctor_functions.php
+msgid "Prerequisites"
+msgstr "Àwọn ohun àkọ́ṣe"
+
+#: doctor_functions.php
+msgid "Repair"
+msgstr "Àtúnṣe"
+
+#: doctor_functions.php
+msgid "Security"
+msgstr "Ààbò"
+
+#: doctor_functions.php
+msgid "PASS"
+msgstr "KỌJÁ"
+
+#: doctor_functions.php
+msgid "WARN"
+msgstr "ÌKÌLỌ̀"
+
+#: doctor_functions.php
+msgid "FAIL"
+msgstr "KÙNÀ"
+
+#: doctor_functions.php
+msgid "UNKNOWN"
+msgstr "ÀÌMỌ̀"
+
+#: doctor_rrd.php
+msgid "Data source freshness could not be assessed."
+msgstr "A kò lè ṣe àyẹ̀wò ìtúntò orísun dátà."
+
+#: doctor_rrd.php
+msgid "RRD update freshness"
+msgstr "Ìtúntò ìtúnṣe RRD"
+
+#: doctor_rrd.php
+msgid "The deferred-write interval is unknown; configure it before judging file age."
+msgstr "Àkókò ìdádúró kíkọsílẹ̀ kò jẹ́ mímọ̀; ṣètò rẹ̀ kí o tó ṣe ìdájọ́ àkókò láti ìgbà ìtúnṣe ìkẹyìn fáìlì."
+
+#: doctor_rrd.php
+#, php-format
+msgid "Checked %d files; %d stale files across %d devices; %d unavailable or future-dated files."
+msgstr "A ṣàyẹ̀wò àwọn fáìlì %d; àwọn fáìlì tí ó ti gbó %d káàkiri àwọn ẹ̀rọ %d; àwọn fáìlì tí kò sí tàbí tí ọjọ́ wọn wà ní ọjọ́ iwájú %d."
+
+#: doctor_rrd.php
+msgid "File age includes the collection interval and configured deferred-write allowance; verify the poller and flush process before changing data."
+msgstr "Àkókò láti ìgbà ìtúnṣe ìkẹyìn fáìlì ní àkókò ìkójọpọ̀ àti ààyè ìdádúró kíkọsílẹ̀ tí a ṣètò nínú; ṣàyẹ̀wò poller àti ìlànà ìtúsílẹ̀ kí o tó yí dátà padà."
+
+#: doctor_scheduling.php
+msgid "Scheduled checks are disabled. Enable them in Settings > Doctor to retain samples and alert on changes."
+msgstr "Àwọn àyẹ̀wò tí a ṣètò wà ní àìṣiṣẹ́. Mú wọn ṣiṣẹ́ ní Settings > Doctor láti pa àwọn àpẹẹrẹ mọ́ kí o sì gba ìkìlọ̀ lórí àwọn ìyípadà."
+
+#: doctor_scheduling.php
+msgid "Scheduled report freshness"
+msgstr "Ìtúntò ìròyìn tí a ṣètò"
+
+#: doctor_scheduling.php
+#, php-format
+msgid "%s UTC"
+msgstr "%s UTC"
+
+#: doctor_scheduling.php
+#, php-format
+msgid "Last started: %s; last completed: %s."
+msgstr "Ìbẹ̀rẹ̀ ìkẹyìn: %s; ìparí ìkẹyìn: %s."
+
+#: doctor_scheduling.php
+msgid "never"
+msgstr "kò tíì wáyé"
+
+#: doctor_scheduling.php
+msgid "Results are missing or stale. Check the primary poller and DOCTOR log for startup, timeout, or persistence errors."
+msgstr "Àwọn èsì sọnù tàbí ti gbó. Ṣàyẹ̀wò poller àkọ́kọ́ àti àkọsílẹ̀ DOCTOR fún àwọn àṣìṣe ìbẹ̀rẹ̀, ìparí àkókò, tàbí ìpamọ́."
+
+#: doctor_scheduling.php
+msgid "A completed diagnostic run is recent; this does not mean all checks passed."
+msgstr "Ìṣiṣẹ́ àyẹ̀wò àìsàn tí ó parí jẹ́ ti láìpẹ́ yìí; èyí kò túmọ̀ sí pé gbogbo àwọn àyẹ̀wò kọjá."
+
+#: doctor_scheduling.php
+msgid "Doctor alert state is invalid. Restore doctor_alert_pending from backup before retrying."
+msgstr "Ipò ìkìlọ̀ Doctor kò tọ́. Mú doctor_alert_pending padà láti inú àfẹ̀hìntì kí o tó gbìyànjú lẹ́ẹ̀kan sí i."
+
+#: doctor_scheduling.php
+msgid "Doctor alert transitions are invalid; no email was sent."
+msgstr "Àwọn ìyípadà ipò ìkìlọ̀ Doctor kò tọ́; a kò fi ìmeèlì kankan ránṣẹ́."
+
+#: doctor_scheduling.php
+msgid "Alert delivery"
+msgstr "Ìfiránṣẹ́ ìkìlọ̀"
+
+#: doctor_scheduling.php
+#, php-format
+msgid "%d check transitions await delivery; attempts: %d of 3."
+msgstr "Àwọn ìyípadà ipò àyẹ̀wò %d ń dúró de ìfiránṣẹ́; ìgbìyànjú: %d nínú 3."
+
+#: doctor_scheduling.php
+msgid "Automatic retries exhausted. Correct Cacti mail settings, then run Doctor with --scheduled --retry-alerts as the poller user."
+msgstr "Àwọn ìgbìyànjú aládàáṣe ti tán. Ṣe àtúnṣe àwọn ètò ìmeèlì Cacti, lẹ́yìn náà ṣe Doctor pẹ̀lú --scheduled --retry-alerts gẹ́gẹ́ bí olùlò poller."
+
+#: doctor_scheduling.php
+#, php-format
+msgid "Next eligible retry: %s UTC, after a primary poller cycle."
+msgstr "Ìgbìyànjú tí ó yẹ tókàn: %s UTC, lẹ́yìn ìyípo poller àkọ́kọ́."
+
+#: doctor_scheduling.php
+msgid "No alert recipients are currently configured; pending transitions are retained."
+msgstr "Kò sí olùgbà ìkìlọ̀ kankan tí a ṣètò lọ́wọ́lọ́wọ́; a pa àwọn ìyípadà ipò tí ń dúró mọ́."
+
+#: doctor_scheduling.php
+msgid "No retained alert is awaiting delivery. Mail-server acceptance does not prove inbox delivery."
+msgstr "Kò sí ìkìlọ̀ tí a pa mọ́ tí ó ń dúró de ìfiránṣẹ́. Ìgbàwọlé olùpèsè-ìmeèlì kò jẹ́rìí sí ìfiránṣẹ́ sínú àpótí ìmeèlì."
+
+#: doctor_scheduling.php
+msgid "Doctor retained status changes (UTC). Repeated changes for one check are coalesced; an out-and-back transition is retained."
+msgstr "Àwọn ìyípadà ipò tí Doctor pa mọ́ (UTC). Àwọn ìyípadà tí ó tún ṣẹlẹ̀ fún àyẹ̀wò kan ni a dapọ̀; a pa ìyípadà kúrò-àti-padà mọ́."
+
+#: doctor_scheduling.php
+#, php-format
+msgid "%s: %s -> %s (latest change %s)"
+msgstr "%s: %s -> %s (ìyípadà tuntun jù %s)"
+
+#: doctor_scheduling.php
+#, php-format
+msgid "%d further status changes are not listed because the alert queue reached its storage limit."
+msgstr "Àwọn ìyípadà ipò %d mìíràn kò sí nínú àtòjọ nítorí pé ìlà ìkìlọ̀ dé òpin ibi-ìpamọ́ rẹ̀."
+
+#: doctor_scheduling.php
+msgid "Open Utilities > Doctor for current measurements, recommended actions, and verification steps."
+msgstr "Ṣí Utilities > Doctor fún àwọn ìwọ̀n lọ́wọ́lọ́wọ́, àwọn ìgbésẹ̀ tí a dámọ̀ràn, àti àwọn ìgbésẹ̀ ìjẹ́rìísí."
+
+#: doctor_scheduling.php
+#, php-format
+msgid "Cacti Doctor: %d retained status changes"
+msgstr "Cacti Doctor: àwọn ìyípadà ipò tí a pa mọ́ %d"
+
+#: doctor_scheduling.php
+msgid "Doctor schedule is already running or the database lock is unavailable."
+msgstr "Ètò àkókò Doctor ti ń ṣiṣẹ́ tẹ́lẹ̀ tàbí títìpa ibi-ìpamọ́ dátà kò sí."
+
+#: doctor_web.php
+msgid "The finding could not be acknowledged. Run Doctor again, then acknowledge the current result."
+msgstr "A kò lè jẹ́wọ́ àwárí náà. Tún Doctor ṣe, lẹ́yìn náà jẹ́wọ́ èsì lọ́wọ́lọ́wọ́."
+
+#: doctor_web.php
+msgid "The warning exception could not be saved. Use a fresh assessed warning, an owner, a reason and an expiry within 90 days."
+msgstr "A kò lè fi ìyọ̀ǹda ìkìlọ̀ pamọ́. Lo ìkìlọ̀ tí a ṣàyẹ̀wò tuntun, olùní kan, ìdí kan àti ọjọ́ ìparí láàárín ọjọ́ 90."
+
+#: doctor_web.php
+msgid "Confirm repair"
+msgstr "Jẹ́rìí sí àtúnṣe"
+
+#: doctor_web.php
+msgid "Approval expires after five minutes and is invalidated by a changed filesystem. The acting account must be able to create directories or change owner permissions."
+msgstr "Ìfọwọ́sowọ́pọ̀ yóò parí lẹ́yìn ìṣẹ́jú márùn-ún, ètò fáìlì tí ó yípadà yóò sì sọ ọ́ di asán. Àkọọ́lẹ̀ tí ó ń ṣiṣẹ́ gbọ́dọ̀ lè ṣẹ̀dá àwọn àpótí tàbí yí àwọn àṣẹ olùní padà."
+
+#: doctor_web.php
+msgid "Repair prerequisites are not met. No changes will be made."
+msgstr "Àwọn ohun àkọ́ṣe àtúnṣe kò pé. Kò sí ìyípadà kankan tí a ó ṣe."
+
+#: doctor_web.php
+msgid "Cancel"
+msgstr "Fagilé"
+
+#: doctor_web.php
+#, php-format
+msgid "Last observation: %s UTC."
+msgstr "Àkíyèsí ìkẹyìn: %s UTC."
+
+#: doctor_web.php
+msgid "No completed diagnostic report is available."
+msgstr "Kò sí ìròyìn àyẹ̀wò àìsàn tí ó parí kankan tí ó wà."
+
+#: doctor_web.php
+msgid "Health is unknown: observations are missing or stale."
+msgstr "Ìlera kò jẹ́ mímọ̀: àwọn àkíyèsí sọnù tàbí ti gbó."
+
+#: doctor_web.php
+msgid "Run diagnostic checks"
+msgstr "Ṣe àwọn àyẹ̀wò àìsàn"
+
+#: doctor_web.php
+msgid "Doctor settings"
+msgstr "Àwọn ètò Doctor"
+
+#: doctor_web.php setup.php
+msgid "Cacti Doctor"
+msgstr "Cacti Doctor"
+
+#: doctor_web.php
+#, php-format
+msgid "Installation health: %d passed, %d warnings, %d failed"
+msgstr "Ìlera ìfisílẹ̀: %d kọjá, ìkìlọ̀ %d, %d kùnà"
+
+#: doctor_web.php
+msgid "Category"
+msgstr "Ìsọ̀rí"
+
+#: doctor_web.php
+msgid "Check"
+msgstr "Àyẹ̀wò"
+
+#: doctor_web.php
+msgid "Status"
+msgstr "Ipò"
+
+#: doctor_web.php
+msgid "Details"
+msgstr "Àwọn àlàyé"
+
+#: doctor_web.php
+msgid "Action"
+msgstr "Ìgbésẹ̀"
+
+#: doctor_web.php
+msgid "Acknowledged; health status unchanged."
+msgstr "Ti jẹ́wọ́; ipò ìlera kò yípadà."
+
+#: doctor_web.php
+msgid "Acknowledge"
+msgstr "Jẹ́rìí sí i"
+
+#: doctor_web.php
+#, php-format
+msgid "Owner: %s; review by %s UTC. Reason: %s"
+msgstr "Olùní: %s; àtúnyẹ̀wò kí ó tó di %s UTC. Ìdí: %s"
+
+#: doctor_web.php
+msgid "Investigate a symptom"
+msgstr "Ṣèwádìí àmì àìsàn kan"
+
+#: doctor_web.php
+msgid "Investigate"
+msgstr "Ṣèwádìí"
+
+#: doctor_web.php
+msgid "Recent scheduled checks"
+msgstr "Àwọn àyẹ̀wò tí a ṣètò láìpẹ́ yìí"
+
+#: doctor_web.php
+msgid "Failed"
+msgstr "Kùnà"
+
+#: doctor_web.php
+msgid "Observation (UTC)"
+msgstr "Àkíyèsí (UTC)"
+
+#: doctor_web.php
+msgid "Passed"
+msgstr "Kọjá"
+
+#: doctor_web.php
+msgid "Warnings"
+msgstr "Àwọn ìkìlọ̀"
+
+#: doctor_web.php
+msgid "Warning exceptions"
+msgstr "Àwọn ìyọ̀ǹda ìkìlọ̀"
+
+#: doctor_web.php
+msgid "Owner"
+msgstr "Olùní"
+
+#: doctor_web.php
+msgid "Reason"
+msgstr "Ìdí"
+
+#: doctor_web.php
+msgid "Review date (UTC)"
+msgstr "Ọjọ́ àtúnyẹ̀wò (UTC)"
+
+#: doctor_web.php
+msgid "Accept warning"
+msgstr "Gba ìkìlọ̀"
+
+#: doctor_web.php
+msgid "Expired"
+msgstr "Ti parí"
+
+#: doctor_web.php
+msgid "Check not present in this report; verify its ID."
+msgstr "Àyẹ̀wò kò sí nínú ìròyìn yìí; ṣàyẹ̀wò ID rẹ̀."
+
+#: doctor_web.php
+msgid "Remove exception"
+msgstr "Yọ ìyọ̀ǹda kúrò"
+
+#: doctor_web.php
+msgid "Audit history"
+msgstr "Ìtàn àyẹ̀wò àṣẹ"
+
+#: doctor_workflows.php
+msgid "Repair refused"
+msgstr "A kọ̀ àtúnṣe"
+
+#: doctor_workflows.php
+msgid "The approved plan is expired or the filesystem changed. Preview the repair again."
+msgstr "Ètò tí a fọwọ́ sí ti parí tàbí ètò fáìlì ti yípadà. Tún àtúnṣe wò ṣáájú lẹ́ẹ̀kan sí i."
+
+#: doctor_workflows.php
+msgid "The audit record could not be saved. No repair was attempted."
+msgstr "A kò lè fi àkọsílẹ̀ àyẹ̀wò àṣẹ pamọ́. A kò gbìyànjú àtúnṣe kankan."
+
+#: doctor_workflows.php
+msgid "The completion audit failed; inspect the filesystem and the started audit record."
+msgstr "Àyẹ̀wò àṣẹ ìparí kùnà; ṣàyẹ̀wò ètò fáìlì àti àkọsílẹ̀ àyẹ̀wò àṣẹ tí a bẹ̀rẹ̀."
+
+#: setup.php
+msgid "Doctor Administrator"
+msgstr "Alákòóso Doctor"
+
+#: setup.php
+msgid "Doctor Operator"
+msgstr "Olùṣiṣẹ́ Doctor"
+
+#: setup.php
+msgid "Doctor Viewer"
+msgstr "Olùwòran Doctor"
+
+#: setup.php
+msgid "Utilities"
+msgstr "Àwọn ohun èlò"
+
+#: setup.php
+msgid "System Administration"
+msgstr "Ìṣàkóso ètò"
+
+#: setup.php
+msgid "Scheduled Checks"
+msgstr "Àwọn àyẹ̀wò tí a ṣètò"
+
+#: setup.php
+msgid "Run Checks on a Schedule"
+msgstr "Ṣe àwọn àyẹ̀wò lórí ètò àkókò"
+
+#: setup.php
+msgid "Run every Doctor check in the background after the poller and record each check's status."
+msgstr "Ṣe gbogbo àyẹ̀wò Doctor ní abẹ́lẹ̀ lẹ́yìn poller kí o sì kọ ipò àyẹ̀wò kọ̀ọ̀kan sílẹ̀."
+
+#: setup.php
+msgid "Check Interval"
+msgstr "Àkókò ààrín àyẹ̀wò"
+
+#: setup.php
+msgid "How often the scheduled checks run."
+msgstr "Bí àwọn àyẹ̀wò tí a ṣètò ṣe máa ń ṣiṣẹ́ déédéé tó."
+
+#: setup.php
+msgid "Every 15 Minutes"
+msgstr "Ní gbogbo ìṣẹ́jú 15"
+
+#: setup.php
+msgid "Every Hour"
+msgstr "Ní gbogbo wákàtí"
+
+#: setup.php
+msgid "Every 6 Hours"
+msgstr "Ní gbogbo wákàtí 6"
+
+#: setup.php
+msgid "Every Day"
+msgstr "Lójoojúmọ́"
+
+#: setup.php
+msgid "Alert Email Addresses"
+msgstr "Àwọn àdírẹ́sì ìmeèlì ìkìlọ̀"
+
+#: setup.php
+msgid "Comma-separated addresses to email when a check starts or stops failing. Leave empty to only log changes to the Cacti log."
+msgstr "Àwọn àdírẹ́sì tí a fi kọ́mà yà sọ́tọ̀ láti fi ìmeèlì ránṣẹ́ sí nígbà tí àyẹ̀wò bá bẹ̀rẹ̀ sí í kùnà tàbí tí ó bá dáwọ́ dúró. Fi sí òfo láti kọ àwọn ìyípadà sí àkọsílẹ̀ Cacti nìkan."
+
+#: setup.php
+msgid "Alert on Warnings"
+msgstr "Ìtanijí lórí Àwọn Ìkìlọ̀"
+
+#: setup.php
+msgid "Also alert when a check moves into or out of a warning."
+msgstr "Tún fi ìtanijí ránṣẹ́ nígbà tí àyẹ̀wò bá wọ inú tàbí jáde kúrò nínú ìkìlọ̀."
+
+#: setup.php
+msgid "Thresholds"
+msgstr "Àwọn Ààlà"
+
+#: setup.php
+msgid "Poller Run Time Warning (percent)"
+msgstr "Ìkìlọ̀ Àkókò Ìṣiṣẹ́ Poller (ìdá ọgọ́rùn-ún)"
+
+#: setup.php
+msgid "Warn when the last main-poller run used this share of the polling interval. Runs that take the whole interval always fail."
+msgstr "Kìlọ̀ nígbà tí ìṣiṣẹ́ main-poller tó kẹ́yìn bá lo ìpín yìí nínú àlàfo ìṣàyẹ̀wò. Àwọn ìṣiṣẹ́ tó bá gba gbogbo àlàfo náà máa ń kùnà nígbà gbogbo."
+
+#: setup.php
+msgid "RRA Disk Free Warning (percent)"
+msgstr "Ìkìlọ̀ Ààyè Òfìfo RRA Disk (ìdá ọgọ́rùn-ún)"
+
+#: setup.php
+msgid "Warn when free space on the RRA file system drops below this percentage."
+msgstr "Kìlọ̀ nígbà tí ààyè òfìfo lórí ètò fáìlì RRA bá dín kù sí ìsàlẹ̀ ìdá ọgọ́rùn-ún yìí."
+
+#: setup.php
+msgid "Fail when free space on the RRA file system drops below this percentage."
+msgstr "Kùnà nígbà tí ààyè òfìfo lórí ètò fáìlì RRA bá dín kù sí ìsàlẹ̀ ìdá ọgọ́rùn-ún yìí."
+
+#: setup.php
+msgid "RRA Disk Free Failure (percent)"
+msgstr "Ìkùnà Ààyè Òfìfo RRA Disk (ìdá ọgọ́rùn-ún)"
+
+#: setup.php
+msgid "Clock Drift Warning (seconds)"
+msgstr "Ìkìlọ̀ Ìyàtọ̀ Aago (ìṣẹ́jú-àáyá)"
+
+#: setup.php
+msgid "Warn when the database and PHP clocks differ by more than this."
+msgstr "Kìlọ̀ nígbà tí aago ibi-ìpamọ́ dátà àti ti PHP bá yàtọ̀ síra ju èyí lọ."
+
+#: setup.php
+msgid "Clock Drift Failure (seconds)"
+msgstr "Ìkùnà Ìyàtọ̀ Aago (ìṣẹ́jú-àáyá)"
+
+#: setup.php
+msgid "Fail when the database and PHP clocks differ by more than this."
+msgstr "Kùnà nígbà tí aago ibi-ìpamọ́ dátà àti ti PHP bá yàtọ̀ síra ju èyí lọ."
+
+#: setup.php
+msgid "RRD Stale Intervals"
+msgstr "Àwọn Àlàfo RRD Tó Ti Pẹ́ Láìsọdọ̀tun"
+
+#: setup.php
+msgid "Warn after this many collection intervals without a file update (1 to 100)."
+msgstr "Kìlọ̀ lẹ́yìn iye àlàfo ìkójọpọ̀ yìí láìsí ìsọdọ̀tun fáìlì kankan (1 sí 100)."
+
+#: setup.php
+msgid "Additional disk-write delay for external caching (0 to 86400). Boost adds its own allowance."
+msgstr "Ìdádúró àfikún fún kíkọ sí disk fún ìpamọ́ ìta (0 sí 86400). Boost máa ń fi ààyè tirẹ̀ kún un."
+
+#: setup.php
+msgid "Deferred RRD Write Allowance (seconds)"
+msgstr "Ààyè Kíkọ RRD Tó Ti Sún Síwájú (ìṣẹ́jú-àáyá)"
+
+#: setup.php
+msgid "Cacti Log Size Warning (MB)"
+msgstr "Ìkìlọ̀ Ìwọ̀n Àkọsílẹ̀ Cacti (MB)"
+
+#: setup.php
+msgid "Warn when the Cacti log grows beyond this size, which usually means log rotation is not running."
+msgstr "Kìlọ̀ nígbà tí àkọsílẹ̀ Cacti bá tóbi ju ìwọ̀n yìí lọ, èyí tó sábà máa ń túmọ̀ sí pé yíyí àkọsílẹ̀ kò ṣiṣẹ́."
