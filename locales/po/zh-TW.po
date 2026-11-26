@@ -1,0 +1,1542 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
+# SPDX-FileCopyrightText: 2026 Thomas Vincent <thomasvincent@gmail.com>
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: doctor 0.6.1\n"
+"Report-Msgid-Bugs-To: https://github.com/somethingwithproof/plugin_doctor/issues\n"
+"PO-Revision-Date: 2026-11-26 00:00+0000\n"
+"Last-Translator: Thomas Vincent <thomasvincent@gmail.com>\n"
+"Language-Team: Thomas Vincent <thomasvincent@gmail.com>\n"
+"Language: zh-TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: cli/doctor.php
+#, php-format
+msgid "Available repairs: %s"
+msgstr "可用的修復項目：%s"
+
+#: cli/doctor.php
+#, php-format
+msgid "Unknown format %s. Use text, json, nagios, or prometheus."
+msgstr "未知格式 %s。請使用 text、json、nagios 或 prometheus。"
+
+#: cli/doctor.php
+#, php-format
+msgid "Redaction could not complete, so %s was not written."
+msgstr "遮罩處理無法完成，因此未寫入 %s。"
+
+#: cli/doctor.php
+#, php-format
+msgid "Wrote %s. Review it before sharing; values after password, secret, token, and community names are masked."
+msgstr "已寫入 %s。分享前請先檢視；password、secret、token 與 community 名稱後方的值均已遮罩。"
+
+#: cli/doctor.php doctor_functions.php
+msgid "Unknown repair"
+msgstr "未知的修復項目"
+
+#: cli/doctor.php
+msgid "Refusing to repair without --yes."
+msgstr "未使用 --yes，拒絕執行修復。"
+
+#: cli/doctor.php
+msgid "Select a supported symptom and text or JSON output."
+msgstr "請選擇支援的症狀以及文字或 JSON 輸出。"
+
+#: cli/doctor.php doctor_web.php
+msgid "Accepted warning"
+msgstr "已接受警告"
+
+#: doctor_access.php doctor_functions.php
+msgid "Device availability"
+msgstr "裝置可用性"
+
+#: doctor_access.php
+msgid "Device permissions could not be evaluated."
+msgstr "無法評估裝置權限。"
+
+#: doctor_access.php
+msgid "The configured PHP CLI cannot run Doctor checks."
+msgstr "已設定的 PHP CLI 無法執行 Doctor 檢查。"
+
+#: doctor_access.php
+msgid "Doctor checks failed or exceeded their time limit. Review the Doctor log."
+msgstr "Doctor 檢查失敗或超過時間限制。請檢視 Doctor 日誌。"
+
+#: doctor_diagnosis.php
+msgid "Graphs stopped updating"
+msgstr "圖表停止更新"
+
+#: doctor_diagnosis.php
+msgid "Polling is slow"
+msgstr "輪詢速度緩慢"
+
+#: doctor_diagnosis.php
+msgid "Devices are missing or unavailable"
+msgstr "裝置遺失或無法使用"
+
+#: doctor_diagnosis.php
+msgid "Doctor alerts are missing"
+msgstr "缺少 Doctor 警示"
+
+#: doctor_diagnosis.php
+msgid "Check the poller scheduler and the affected poller log, then verify a new completed cycle."
+msgstr "請檢查輪詢器排程器與受影響的輪詢器日誌，然後確認新的週期是否已完成。"
+
+#: doctor_diagnosis.php
+msgid "Collection may have stopped."
+msgstr "資料收集可能已停止。"
+
+#: doctor_diagnosis.php
+msgid "Collected values may not be reaching disk."
+msgstr "收集到的數值可能尚未寫入磁碟。"
+
+#: doctor_diagnosis.php
+msgid "Inspect the output queue and Boost flush history; verify that the queue drains and RRD timestamps advance."
+msgstr "請檢查輸出佇列與 Boost 寫入記錄；確認佇列已清空且 RRD 時間戳記持續前進。"
+
+#: doctor_diagnosis.php
+msgid "Check storage capacity, runtime-directory permissions and the last RRD update; account for deferred writes."
+msgstr "請檢查儲存空間容量、執行期目錄權限與最後一次 RRD 更新；並留意延遲寫入的情況。"
+
+#: doctor_diagnosis.php
+msgid "RRD storage needs investigation."
+msgstr "RRD 儲存需要進一步調查。"
+
+#: doctor_diagnosis.php
+msgid "Collection work may be exceeding its time budget."
+msgstr "收集作業可能已超出時間預算。"
+
+#: doctor_diagnosis.php
+msgid "Compare cycle duration with the polling interval and inspect device timeouts before increasing concurrency."
+msgstr "在提高並行數量之前，請先比較週期持續時間與輪詢間隔，並檢查裝置逾時設定。"
+
+#: doctor_diagnosis.php
+msgid "Compare database counters during a slow cycle and inspect query plans before changing server limits."
+msgstr "在變更伺服器限制之前，請先比較慢速週期期間的資料庫計數器並檢查查詢計畫。"
+
+#: doctor_diagnosis.php
+msgid "Database pressure may be contributing to slow polling."
+msgstr "資料庫負載過高可能是導致輪詢變慢的原因。"
+
+#: doctor_diagnosis.php
+msgid "Collection prerequisites or reachability may be failing."
+msgstr "收集先決條件或連線可達性可能失敗。"
+
+#: doctor_diagnosis.php
+msgid "Verify the affected device permissions, reachability, credentials and assigned poller using Cacti diagnostics."
+msgstr "請使用 Cacti 診斷工具驗證受影響裝置的權限、連線可達性、憑證以及指派的輪詢器。"
+
+#: doctor_diagnosis.php
+msgid "Scheduled checks or mail delivery need attention."
+msgstr "排程檢查或郵件傳送需要留意。"
+
+#: doctor_diagnosis.php
+msgid "Verify scheduling and recipient settings, inspect retained delivery attempts, and send a Cacti test email."
+msgstr "請驗證排程與收件者設定、檢查保留的傳送嘗試記錄，並發送 Cacti 測試電子郵件。"
+
+#: doctor_diagnosis.php
+msgid "Possible causes require verification; matching checks do not establish a root cause."
+msgstr "可能的原因仍需進一步驗證；符合的檢查項目並不能確立根本原因。"
+
+#: doctor_diagnosis.php
+msgid "No cause is established by the available observations. Run fresh diagnostics and investigate the symptom directly."
+msgstr "根據現有觀察結果無法確定原因。請重新執行診斷並直接調查該症狀。"
+
+#: doctor_functions.php
+msgid "At least 24 hours since server startup and FLUSH STATUS. Counters are cumulative and may have different reset histories; confirm trends during a representative workload before tuning."
+msgstr "距離伺服器啟動及執行 FLUSH STATUS 至少需經過 24 小時。計數器為累計值且可能有不同的重設歷史；在調整設定前，請先於具代表性的工作負載期間確認趨勢。"
+
+#: doctor_functions.php
+msgid "Cumulative tuning advice is deferred: obtain valid uptime and at least 24 hours since startup and FLUSH STATUS. Missing metrics or an inconsistent sample cannot establish database health."
+msgstr "累計調校建議已延後：請取得有效的運行時間，且距離啟動與 FLUSH STATUS 至少需經過 24 小時。缺少指標或取樣不一致無法判斷資料庫健康狀態。"
+
+#: doctor_functions.php
+msgid "Database observation window"
+msgstr "資料庫觀察時間窗"
+
+#: doctor_functions.php
+msgid "Connection metrics are unavailable or invalid. Check access to SHOW GLOBAL STATUS and SHOW GLOBAL VARIABLES; do not treat missing metrics as an idle server."
+msgstr "連線指標無法取得或無效。請檢查對 SHOW GLOBAL STATUS 與 SHOW GLOBAL VARIABLES 的存取權限；切勿將缺少指標視為伺服器處於閒置狀態。"
+
+#: doctor_functions.php
+#, php-format
+msgid "Current connections: %.0f / %.0f (%s); recorded peak: %.0f (%s of the current limit)."
+msgstr "目前連線數：%.0f / %.0f (%s)；記錄峰值：%.0f (佔目前上限的 %s)。"
+
+#: doctor_functions.php
+msgid "Review connection pooling and poller concurrency. Check database-host memory headroom before raising max_connections; the historical peak may reflect an older limit."
+msgstr "請檢視連線池與輪詢器並行數。在調高 max_connections 之前，請先檢查資料庫主機的記憶體餘裕；歷史峰值可能反映的是舊的上限設定。"
+
+#: doctor_functions.php
+msgid "Connection capacity"
+msgstr "連線容量"
+
+#: doctor_functions.php
+msgid "InnoDB buffer pool reads"
+msgstr "InnoDB 緩衝池讀取次數"
+
+#: doctor_functions.php
+msgid "Review query plans and the working set. Consider innodb_buffer_pool_size only after measuring memory available on the database host; a cumulative miss ratio alone does not prove memory pressure."
+msgstr "請檢視查詢計畫與工作集。僅在測量資料庫主機上的可用記憶體後，再考慮調整 innodb_buffer_pool_size；單憑累計未命中率並不足以證明記憶體不足。"
+
+#: doctor_functions.php
+msgid "On-disk temporary tables"
+msgstr "磁碟暫存資料表"
+
+#: doctor_functions.php
+msgid "Review query plans, sorting, grouping, and temporary-table data types before changing memory limits. Some tables must use disk; memory limits and accounting differ between MySQL and MariaDB versions."
+msgstr "在變更記憶體限制之前，請檢視查詢計畫、排序、分組以及暫存資料表的資料類型。部分資料表必須使用磁碟；不同 MySQL 與 MariaDB 版本的記憶體限制與計算方式有所差異。"
+
+#: doctor_functions.php
+msgid "Connection thread creation"
+msgstr "連線執行緒建立"
+
+#: doctor_functions.php
+msgid "Review connection reuse and thread_cache_size. Check the server thread-handling mode before tuning; thread-pool implementations do not behave like one-thread-per-connection servers."
+msgstr "請檢視連線重複使用與 thread_cache_size。在調校前請先檢查伺服器的執行緒處理模式；執行緒池實作的行為與每連線一執行緒的伺服器不同。"
+
+#: doctor_functions.php
+msgid "Review slow-query logging, long_query_time, and query plans before changing server buffers. This counter depends on the configured slow-query threshold and does not identify individual statements."
+msgstr "在變更伺服器緩衝區之前，請檢視慢速查詢日誌、long_query_time 與查詢計畫。此計數器取決於設定的慢速查詢閾值，且不會識別個別陳述式。"
+
+#: doctor_functions.php
+msgid "Slow statements"
+msgstr "慢速陳述式"
+
+#: doctor_functions.php
+msgid "Cumulative advice deferred until the observation window is sufficient."
+msgstr "累計建議已延後，直到觀察時間窗足夠為止。"
+
+#: doctor_functions.php
+msgid "Thread-cache advice is not assessed: thread_handling is unavailable or is not one-thread-per-connection. Review the active thread-pool implementation instead."
+msgstr "未評估執行緒快取建議：無法取得 thread_handling 或其並非 one-thread-per-connection 模式。請改為檢視使用中的執行緒池實作。"
+
+#: doctor_functions.php
+#, php-format
+msgid "Required counters are missing or invalid: %s, %s. Check server-version support and monitoring permissions."
+msgstr "缺少必要的計數器或計數器無效：%s、%s。請檢查伺服器版本支援與監控權限。"
+
+#: doctor_functions.php
+msgid "A counter reset since the prior sample; collect another representative interval before tuning."
+msgstr "自前一次取樣以來計數器已重設；在進行調校前，請另行收集具代表性的區間資料。"
+
+#: doctor_functions.php
+#, php-format
+msgid "Insufficient activity: %.0f %s; at least %d observations are needed for this advisory."
+msgstr "活動量不足：%.0f %s；此建議至少需要 %d 筆觀察資料。"
+
+#: doctor_functions.php
+msgid "Counters are inconsistent or were reset independently. Collect a new representative sample before tuning."
+msgstr "計數器不一致或曾分別重設。在進行調校前，請收集新的具代表性樣本。"
+
+#: doctor_functions.php
+msgid "The interval sample is too small or counters reset; collect another representative interval before tuning."
+msgstr "區間樣本過小或計數器已重設；在進行調校前，請另行收集具代表性的區間資料。"
+
+#: doctor_functions.php
+#, php-format
+msgid "Interval %s / %s: %.0f / %.0f (%s); investigation threshold: %s."
+msgstr "區間 %s / %s：%.0f / %.0f (%s)；調查閾值：%s。"
+
+#: doctor_functions.php
+#, php-format
+msgid "Cumulative %s / %s: %.0f / %.0f (%s); investigation threshold: %s."
+msgstr "累計 %s / %s：%.0f / %.0f (%s)；調查閾值：%s。"
+
+#: doctor_functions.php
+msgid "This counter can omit memory-mapped temporary files on MySQL; a low ratio does not rule out disk use."
+msgstr "此計數器在 MySQL 上可能會遺漏記憶體對應暫存檔；較低的比率並不能排除使用磁碟的情況。"
+
+#: doctor_functions.php
+msgid "Redo-log advice deferred until the observation window is sufficient and Innodb_log_waits is available."
+msgstr "重做日誌建議已延後，直到觀察時間窗足夠且可取得 Innodb_log_waits 為止。"
+
+#: doctor_functions.php
+#, php-format
+msgid "Cumulative Innodb_log_waits: %.0f."
+msgstr "累計 Innodb_log_waits：%.0f。"
+
+#: doctor_functions.php
+msgid "Investigate transaction sizes, log-buffer pressure, and storage latency. Recheck the rate under load before considering innodb_log_buffer_size; this historical count is not evidence of a current stall."
+msgstr "請調查交易大小、日誌緩衝區壓力與儲存延遲。在考慮調整 innodb_log_buffer_size 之前，請於負載下重新檢查速率；此歷史計數並非目前停滯的證據。"
+
+#: doctor_functions.php
+msgid "InnoDB log-buffer waits"
+msgstr "InnoDB 日誌緩衝區等待次數"
+
+#: doctor_functions.php
+msgid "installed Cacti composer.json"
+msgstr "已安裝的 Cacti composer.json"
+
+#: doctor_functions.php
+#, php-format
+msgid "Cacti %s installer requirement"
+msgstr "Cacti %s 安裝程式需求"
+
+#: doctor_functions.php
+msgid "PHP compatibility with installed Cacti"
+msgstr "PHP 與已安裝 Cacti 的相容性"
+
+#: doctor_functions.php
+#, php-format
+msgid "Running PHP %s; installed Cacti %s."
+msgstr "正在執行 PHP %s；已安裝 Cacti %s。"
+
+#: doctor_functions.php
+msgid "Could not establish Cacti's PHP requirement. Check the installed Cacti composer.json or release documentation; Doctor does not assume compatibility."
+msgstr "無法確認 Cacti 的 PHP 需求。請檢查已安裝的 Cacti composer.json 或發行說明文件；Doctor 不會假設其相容性。"
+
+#: doctor_functions.php
+#, php-format
+msgid "PHP >= %s and < %s"
+msgstr "PHP >= %s 且 < %s"
+
+#: doctor_functions.php
+#, php-format
+msgid "PHP >= %s"
+msgstr "PHP >= %s"
+
+#: doctor_functions.php
+#, php-format
+msgid "Requires %s (%s). Running PHP meets that requirement."
+msgstr "需要 %s (%s)。目前執行的 PHP 符合該需求。"
+
+#: doctor_functions.php
+#, php-format
+msgid "Requires %s (%s). Running PHP does not meet that requirement."
+msgstr "需要 %s (%s)。目前執行的 PHP 不符合該需求。"
+
+#: doctor_functions.php
+#, php-format
+msgid "Detected %s; Doctor requires Cacti 1.2.20 or newer."
+msgstr "偵測到 %s；Doctor 需要 Cacti 1.2.20 或更新版本。"
+
+#: doctor_functions.php
+msgid "Supported Cacti version"
+msgstr "支援的 Cacti 版本"
+
+#: doctor_functions.php
+msgid "PHP upstream security support"
+msgstr "PHP 上游安全性支援"
+
+#: doctor_functions.php
+msgid "This checks the PHP release branch, not whether this patch release is up to date or whether your OS vendor backports fixes. Cacti compatibility is checked separately."
+msgstr "此項僅檢查 PHP 發行分支，而非確認該修補版本是否為最新，或作業系統供應商是否向後移植修補程式。Cacti 相容性會分開檢查。"
+
+#: doctor_functions.php
+#, php-format
+msgid "Running PHP %s; upstream security-support status is unknown or this is a prerelease. Check https://www.php.net/supported-versions.php and update Doctor's support data."
+msgstr "正在執行 PHP %s；上游安全性支援狀態未知，或此為預先發行版本。請檢查 https://www.php.net/supported-versions.php 並更新 Doctor 的支援資料。"
+
+#: doctor_functions.php
+#, php-format
+msgid "Running PHP %s; PHP %s receives upstream security fixes through %s."
+msgstr "正在執行 PHP %s；PHP %s 將持續接收上游安全性修補至 %s。"
+
+#: doctor_functions.php
+#, php-format
+msgid "Running PHP %s; PHP %s no longer receives upstream security fixes; support ended %s. Upgrade to a supported PHP branch compatible with your Cacti installation, or confirm security maintenance with your OS vendor."
+msgstr "正在執行 PHP %s；PHP %s 已不再接收上游安全性修補；支援已於 %s 結束。請升級至與您的 Cacti 安裝相容且受支援的 PHP 分支，或向您的作業系統供應商確認安全性維護狀態。"
+
+#: doctor_functions.php
+msgid "Required current CLI PHP extensions"
+msgstr "目前 CLI PHP 所需的擴充功能"
+
+#: doctor_functions.php
+msgid "Required web PHP extensions"
+msgstr "Web PHP 所需的擴充功能"
+
+#: doctor_functions.php
+#, php-format
+msgid "Missing: %s. Install them through the operating system package manager."
+msgstr "缺少：%s。請透過作業系統套件管理員安裝。"
+
+#: doctor_functions.php
+msgid "All PHP extensions required by the Cacti installer are loaded in this PHP context."
+msgstr "Cacti 安裝程式所需的所有 PHP 擴充功能均已在此 PHP 環境中載入。"
+
+#: doctor_functions.php
+msgid "Doctor does not execute configured binaries while running as root."
+msgstr "以 root 身分執行時，Doctor 不會執行設定的二進位檔。"
+
+#: doctor_functions.php
+#, php-format
+msgid "The file name %s is not expected for %s, so Doctor did not execute it."
+msgstr "檔案名稱 %s 並非 %s 預期的名稱，因此 Doctor 未執行該檔案。"
+
+#: doctor_functions.php
+msgid "Doctor is running as root, so permission checks describe root rather than the web server or poller account, configured binaries are not executed, and repairs are refused. Run Doctor as the Cacti poller user."
+msgstr "Doctor 目前正以 root 身分執行，因此權限檢查將反映 root 而非網頁伺服器或輪詢器帳號，且不會執行設定的二進位檔並拒絕修復操作。請以 Cacti 輪詢器使用者身分執行 Doctor。"
+
+#: doctor_functions.php
+msgid "Doctor privileges"
+msgstr "Doctor 權限"
+
+#: doctor_functions.php
+msgid "Doctor is running without root privileges."
+msgstr "Doctor 目前在沒有 root 權限的情況下執行。"
+
+#: doctor_functions.php
+msgid "Required CLI PHP extensions"
+msgstr "所需的 CLI PHP 擴充功能"
+
+#: doctor_functions.php
+msgid "The configured PHP CLI executable is unavailable, so its extensions cannot be checked."
+msgstr "無法取得設定的 PHP CLI 執行檔，因此無法檢查其擴充功能。"
+
+#: doctor_functions.php
+msgid "shell_exec() is disabled, so Doctor cannot compare the CLI PHP extensions with Cacti requirements."
+msgstr "shell_exec() 已停用，因此 Doctor 無法將 CLI PHP 擴充功能與 Cacti 需求進行比較。"
+
+#: doctor_functions.php
+msgid "The configured PHP CLI executable did not return a valid extension list."
+msgstr "設定的 PHP CLI 執行檔未傳回有效的擴充功能清單。"
+
+#: doctor_functions.php
+#, php-format
+msgid "Missing from CLI PHP: %s. The web and CLI PHP configurations are separate on many systems."
+msgstr "CLI PHP 缺少：%s。在許多系統上，Web 與 CLI 的 PHP 設定是分開的。"
+
+#: doctor_functions.php
+msgid "The configured PHP CLI has every extension required by Cacti."
+msgstr "設定的 PHP CLI 已具備 Cacti 所需的所有擴充功能。"
+
+#: doctor_functions.php
+msgid "GD TrueType support"
+msgstr "GD TrueType 支援"
+
+#: doctor_functions.php
+msgid "Recommended PHP features"
+msgstr "建議的 PHP 功能"
+
+#: doctor_functions.php
+#, php-format
+msgid "Unavailable: %s. Cacti can run without these features, but related functionality may be limited."
+msgstr "無法使用：%s。Cacti 在沒有這些功能的情況下仍可運作，但相關功能可能會受到限制。"
+
+#: doctor_functions.php
+msgid "The optional gettext, SNMP, and GD TrueType features are available."
+msgstr "選用的 gettext、SNMP 與 GD TrueType 功能均已就緒。"
+
+#: doctor_functions.php
+#, php-format
+msgid "memory_limit is %s (%dM or more is recommended)"
+msgstr "memory_limit 為 %s（建議為 %dM 或以上）"
+
+#: doctor_functions.php
+#, php-format
+msgid "max_execution_time is %d seconds (60 or more is recommended)"
+msgstr "max_execution_time 為 %d 秒（建議為 60 或以上）"
+
+#: doctor_functions.php
+msgid "date.timezone is not set"
+msgstr "尚未設定 date.timezone"
+
+#: doctor_functions.php
+msgid "unset"
+msgstr "未設定"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s. Current values: %s"
+msgstr "%s。目前數值：%s"
+
+#: doctor_functions.php
+msgid "PHP runtime configuration"
+msgstr "PHP 執行期設定"
+
+#: doctor_functions.php
+msgid "Database connection"
+msgstr "資料庫連線"
+
+#: doctor_functions.php
+#, php-format
+msgid "Query failed: %s"
+msgstr "查詢失敗：%s"
+
+#: doctor_functions.php
+msgid "A read-only query completed successfully."
+msgstr "唯讀查詢已成功完成。"
+
+#: doctor_functions.php
+msgid "The database returned an unexpected result."
+msgstr "資料庫傳回非預期的結果。"
+
+#: doctor_functions.php
+#, php-format
+msgid "Doctor could not determine the database server version from %s."
+msgstr "Doctor 無法從 %s 判斷資料庫伺服器版本。"
+
+#: doctor_functions.php
+msgid "Supported database server"
+msgstr "支援的資料庫伺服器"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s %s detected; this Cacti branch recommends %s %s or newer."
+msgstr "偵測到 %s %s；此 Cacti 分支建議使用 %s %s 或更新版本。"
+
+#: doctor_functions.php
+#, php-format
+msgid "Database character set is %s and collation is %s. Cacti requires utf8mb4."
+msgstr "資料庫字元集為 %s，定序為 %s。Cacti 需要 utf8mb4。"
+
+#: doctor_functions.php
+msgid "unknown"
+msgstr "未知"
+
+#: doctor_functions.php
+msgid "Database character set"
+msgstr "資料庫字元集"
+
+#: doctor_functions.php
+msgid "Database timezone support"
+msgstr "資料庫時區支援"
+
+#: doctor_functions.php
+msgid "The Cacti database account cannot read mysql.time_zone_name. Grant SELECT access and populate the database timezone tables."
+msgstr "Cacti 資料庫帳號無法讀取 mysql.time_zone_name。請授予 SELECT 權限並填入資料庫時區資料表。"
+
+#: doctor_functions.php
+#, php-format
+msgid "The database timezone table is accessible and contains %d entries."
+msgstr "資料庫時區資料表可正常存取，且包含 %d 筆項目。"
+
+#: doctor_functions.php
+msgid "The database timezone table is accessible but empty. Populate the system timezone tables."
+msgstr "資料庫時區資料表可存取但內容為空。請填入系統時區資料表。"
+
+#: doctor_functions.php
+msgid "Core tables used by Cacti are present."
+msgstr "Cacti 使用的核心資料表皆已存在。"
+
+#: doctor_functions.php
+#, php-format
+msgid "Missing core tables: %s. Restore or upgrade the database before attempting other repairs."
+msgstr "缺少核心資料表：%s。在嘗試其他修復操作之前，請先還原或升級資料庫。"
+
+#: doctor_functions.php
+msgid "Core database tables"
+msgstr "核心資料庫資料表"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s is missing (%s)"
+msgstr "缺少 %s (%s)"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s is not writable (%s)"
+msgstr "%s 無法寫入 (%s)"
+
+#: doctor_functions.php
+msgid "Runtime directories"
+msgstr "執行期目錄"
+
+#: doctor_functions.php
+msgid "The cache, log, and RRA directories exist and are writable."
+msgstr "cache、log 與 RRA 目錄皆存在且可寫入。"
+
+#: doctor_functions.php
+msgid "Cacti configuration file"
+msgstr "Cacti 設定檔"
+
+#: doctor_functions.php
+msgid "include/config.php is missing or unreadable."
+msgstr "include/config.php 遺失或無法讀取。"
+
+#: doctor_functions.php
+msgid "include/config.php is readable. POSIX mode-bit checks do not apply on Windows."
+msgstr "include/config.php 可讀取。POSIX 權限位元檢查不適用於 Windows。"
+
+#: doctor_functions.php
+msgid "include/config.php is writable by other users. Remove world-write permission because this file contains database credentials."
+msgstr "include/config.php 可被其他使用者寫入。由於此檔案包含資料庫憑證，請移除全域寫入權限。"
+
+#: doctor_functions.php
+msgid "include/config.php is group-writable. Confirm that every member of the owning group is trusted."
+msgstr "include/config.php 可被群組寫入。請確認所屬群組的每位成員皆受信任。"
+
+#: doctor_functions.php
+msgid "include/config.php is readable by all local users and contains database credentials. Restrict it to the owner and the web server group."
+msgstr "include/config.php 可被所有本機使用者讀取且包含資料庫憑證。請將權限限制為僅限擁有者與網頁伺服器群組。"
+
+#: doctor_functions.php
+msgid "include/config.php is readable and is not world-readable, group-writable, or world-writable."
+msgstr "include/config.php 可讀取，且不具備全域可讀、群組可寫或全域可寫權限。"
+
+#: doctor_functions.php
+msgid "Cacti log file"
+msgstr "Cacti 日誌檔"
+
+#: doctor_functions.php
+msgid "The log file does not exist. Its parent directory is not writable."
+msgstr "日誌檔不存在。其上層目錄無法寫入。"
+
+#: doctor_functions.php
+msgid "The log file does not exist. Its parent directory is writable, so Cacti can create it."
+msgstr "日誌檔不存在。其上層目錄可寫入，因此 Cacti 可以建立該檔案。"
+
+#: doctor_functions.php
+msgid "The configured log path must be a readable and writable regular file."
+msgstr "設定的日誌路徑必須是可讀取且可寫入的一般檔案。"
+
+#: doctor_functions.php
+#, php-format
+msgid "The log is readable and writable and is %s MiB."
+msgstr "日誌檔可讀取且可寫入，大小為 %s MiB。"
+
+#: doctor_functions.php
+msgid "The log is readable and writable."
+msgstr "日誌檔可讀取且可寫入。"
+
+#: doctor_functions.php
+msgid "Verify that Cacti log rotation is enabled."
+msgstr "請確認已啟用 Cacti 日誌輪替。"
+
+#: doctor_functions.php
+#, php-format
+msgid "Executable found at %s."
+msgstr "在 %s 找到執行檔。"
+
+#: doctor_functions.php
+#, php-format
+msgid "The %s setting is empty, missing, or not executable."
+msgstr "%s 設定為空、遺失或無法執行。"
+
+#: doctor_functions.php
+#, php-format
+msgid "The %s setting is empty, missing, or not executable: %s"
+msgstr "%s 設定為空、遺失或無法執行：%s"
+
+#: doctor_functions.php
+msgid "Doctor could not determine its version."
+msgstr "Doctor 無法判斷其版本。"
+
+#: doctor_functions.php
+#, php-format
+msgid "Detected version %s."
+msgstr "偵測到版本 %s。"
+
+#: doctor_functions.php
+#, php-format
+msgid "Detected version %s; version %s or newer is recommended."
+msgstr "偵測到版本 %s；建議使用 %s 或更新版本。"
+
+#: doctor_functions.php
+#, php-format
+msgid "Detected version %s; version %s or newer is required."
+msgstr "偵測到版本 %s；需要使用 %s 或更新版本。"
+
+#: doctor_functions.php
+#, php-format
+msgid "Detected version %s; minimum is %s."
+msgstr "偵測到版本 %s；最低需求為 %s。"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s executable"
+msgstr "%s 執行檔"
+
+#: doctor_functions.php
+msgid "poller_type is not cmd.php or Spine"
+msgstr "poller_type 不是 cmd.php 或 Spine"
+
+#: doctor_functions.php
+msgid "poller_interval is not a supported value"
+msgstr "poller_interval 不是支援的數值"
+
+#: doctor_functions.php
+msgid "Poller configuration"
+msgstr "輪詢器設定"
+
+#: doctor_functions.php
+#, php-format
+msgid "Poller is %s with a %d-second interval."
+msgstr "輪詢器為 %s，輪詢間隔為 %d 秒。"
+
+#: doctor_functions.php
+msgid "Main poller freshness"
+msgstr "主輪詢器資料新鮮度"
+
+#: doctor_functions.php
+msgid "No completed main-poller run was found. This can be expected before the first poll."
+msgstr "找不到已完成的主輪詢器執行記錄。在首次輪詢前，這屬於正常現象。"
+
+#: doctor_functions.php
+#, php-format
+msgid "Last completed run was %d seconds ago; failure threshold is %d seconds."
+msgstr "上次完成執行是在 %d 秒前；失敗閾值為 %d 秒。"
+
+#: doctor_functions.php
+msgid "Database schema version"
+msgstr "資料庫結構描述版本"
+
+#: doctor_functions.php
+msgid "The version table is empty or unreadable, so the schema version is unknown."
+msgstr "version 資料表為空或無法讀取，因此無法得知結構描述版本。"
+
+#: doctor_functions.php
+msgid "The version table still reads new_install, so the installer never finished. Open install/ in a browser to complete it."
+msgstr "version 資料表仍顯示為 new_install，表示安裝程式尚未完成。請在瀏覽器中開啟 install/ 以完成安裝。"
+
+#: doctor_functions.php
+#, php-format
+msgid "The database schema is at %s but the installed code is %s. Open install/ in a browser to finish the upgrade."
+msgstr "資料庫結構描述版本為 %s，但已安裝的程式碼版本為 %s。請在瀏覽器中開啟 install/ 以完成升級。"
+
+#: doctor_functions.php
+#, php-format
+msgid "The database schema (%s) is newer than the installed code (%s). The code may have been rolled back."
+msgstr "資料庫結構描述 (%s) 較已安裝的程式碼 (%s) 更新。程式碼可能曾被回復。"
+
+#: doctor_functions.php
+#, php-format
+msgid "The database schema (%s) matches the installed code."
+msgstr "資料庫結構描述 (%s) 與已安裝的程式碼相符。"
+
+#: doctor_functions.php
+msgid "Main poller run time"
+msgstr "主輪詢器執行時間"
+
+#: doctor_functions.php
+msgid "No completed run time is recorded yet."
+msgstr "尚未記錄已完成的執行時間。"
+
+#: doctor_functions.php
+#, php-format
+msgid "The last main-poller run took %s seconds of the %d-second interval."
+msgstr "上次主輪詢器執行耗時 %s 秒（輪詢間隔為 %d 秒）。"
+
+#: doctor_functions.php
+msgid "Runs that outlast the interval overlap and lose data; add poller processes or threads, or use Spine."
+msgstr "執行時間超過輪詢間隔將會重疊並導致資料遺失；請增加輪詢器程序或執行緒，或改用 Spine。"
+
+#: doctor_functions.php
+msgid "Little headroom remains before polls overlap."
+msgstr "距離輪詢重疊已無太多餘裕。"
+
+#: doctor_functions.php
+#, php-format
+msgid "%d poller_output rows are older than two polling intervals and were never written to RRD files. Check the Cacti log for \"Poller Output Table not Empty\" and confirm max_heap_table_size is large enough."
+msgstr "有 %d 筆 poller_output 資料列已超過兩個輪詢間隔且從未寫入 RRD 檔案。請檢查 Cacti 日誌中的「Poller Output Table not Empty」訊息，並確認 max_heap_table_size 是否足夠大。"
+
+#: doctor_functions.php
+msgid "Unprocessed poller output"
+msgstr "未處理的輪詢器輸出"
+
+#: doctor_functions.php
+msgid "No stale rows remain in poller_output."
+msgstr "poller_output 中沒有殘留的過時資料列。"
+
+#: doctor_functions.php
+msgid "No remote pollers are enabled."
+msgstr "未啟用任何遠端輪詢器。"
+
+#: doctor_functions.php
+msgid "Remote pollers"
+msgstr "遠端輪詢器"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s (ID %s) has never reported"
+msgstr "%s (ID %s) 從未回報"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s (ID %s) last reported %d seconds ago"
+msgstr "%s (ID %s) 上次回報是在 %d 秒前"
+
+#: doctor_functions.php
+#, php-format
+msgid "The failure threshold is %d seconds."
+msgstr "失敗閾值為 %d 秒。"
+
+#: doctor_functions.php
+#, php-format
+msgid "%d enabled remote pollers reported within %d seconds."
+msgstr "有 %d 個已啟用的遠端輪詢器在 %d 秒內回報。"
+
+#: doctor_functions.php
+msgid "Enabled plugin files"
+msgstr "已啟用的外掛程式檔案"
+
+#: doctor_functions.php
+#, php-format
+msgid "Enabled plugins are missing from %s: %s. Restore their files or disable them in Plugin Management."
+msgstr "已啟用的外掛程式從 %s 遺失：%s。請還原其檔案或在外掛程式管理中將其停用。"
+
+#: doctor_functions.php
+msgid "Every enabled plugin has its setup.php in place."
+msgstr "每個已啟用的外掛程式都具備其 setup.php。"
+
+#: doctor_functions.php
+msgid "Boost RRD updates"
+msgstr "Boost RRD 更新"
+
+#: doctor_functions.php
+msgid "Boost is disabled, so the poller writes RRD files directly."
+msgstr "Boost 已停用，因此輪詢器會直接寫入 RRD 檔案。"
+
+#: doctor_functions.php
+msgid "Boost is enabled but has no recorded run. This can be expected before its first flush."
+msgstr "Boost 已啟用，但尚無執行記錄。在首次排清前這是預期情況。"
+
+#: doctor_functions.php
+#, php-format
+msgid "Boost last flushed %d seconds ago, more than twice its %d-minute interval. Graphs stop updating until it runs; check the Cacti log for BOOST errors."
+msgstr "Boost 上次排清是在 %d 秒前，超過其 %d 分鐘間隔的兩倍。在它執行前圖表將停止更新；請檢查 Cacti 日誌中的 BOOST 錯誤。"
+
+#: doctor_functions.php
+#, php-format
+msgid "poller_output_boost holds %d rows, above the %d-row limit that forces a flush. Boost is falling behind."
+msgstr "poller_output_boost 目前有 %d 筆資料列，已超過強制排清的 %d 筆上限。Boost 處理進度落後。"
+
+#: doctor_functions.php
+#, php-format
+msgid "Boost last flushed %d seconds ago with %d rows waiting."
+msgstr "Boost 上次排清是在 %d 秒前，尚有 %d 筆資料列等待處理。"
+
+#: doctor_functions.php doctor_rrd.php
+#, php-format
+msgid "Checked a sample of %d active data sources that rotates hourly; a pass does not cover every file."
+msgstr "已檢查每小時輪替取樣的 %d 個作用中資料來源；單次檢查不會涵蓋所有檔案。"
+
+#: doctor_functions.php
+#, php-format
+msgid "%d of %d active data sources have no RRD file, for example %s. New data sources get one after their first poll; otherwise check the RRA directory and its permissions."
+msgstr "%d / %d 個作用中資料來源沒有 RRD 檔案，例如 %s。新的資料來源會在首次輪詢後建立檔案；否則請檢查 RRA 目錄及其權限。"
+
+#: doctor_functions.php
+msgid "RRD files"
+msgstr "RRD 檔案"
+
+#: doctor_functions.php
+#, php-format
+msgid "All %d active data sources have an RRD file."
+msgstr "所有 %d 個作用中資料來源皆有 RRD 檔案。"
+
+#: doctor_functions.php
+#, php-format
+msgid "Doctor could not measure free space for %s."
+msgstr "Doctor 無法測量 %s 的可用空間。"
+
+#: doctor_functions.php
+msgid "RRA disk space"
+msgstr "RRA 磁碟空間"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s (%s GiB) free on the file system holding %s."
+msgstr "可用空間 %s（%s GiB），位於存放 %s 的檔案系統上。"
+
+#: doctor_functions.php
+msgid "RRD updates fail silently when the disk fills."
+msgstr "當磁碟空間已滿時，RRD 更新會在無錯誤提示的情況下失敗。"
+
+#: doctor_functions.php
+msgid "Database clock"
+msgstr "資料庫時鐘"
+
+#: doctor_functions.php
+msgid "Doctor could not read the database clock."
+msgstr "Doctor 無法讀取資料庫時鐘。"
+
+#: doctor_functions.php
+#, php-format
+msgid "The database and PHP clocks differ by %d seconds."
+msgstr "資料庫與 PHP 時鐘相差 %d 秒。"
+
+#: doctor_functions.php
+msgid "Poll timestamps will be misaligned; synchronise both hosts with NTP."
+msgstr "輪詢時間戳記將會錯位；請使用 NTP 同步兩台主機的時間。"
+
+#: doctor_functions.php
+msgid "Synchronise both hosts with NTP."
+msgstr "請使用 NTP 同步兩台主機的時間。"
+
+#: doctor_functions.php
+msgid "Spine configuration"
+msgstr "Spine 設定"
+
+#: doctor_functions.php
+msgid "Spine is not the configured poller."
+msgstr "Spine 並非目前設定的輪詢器。"
+
+#: doctor_functions.php
+msgid "path_spine_config is not set, so Spine uses its compiled-in search path and Doctor cannot verify which file it reads."
+msgstr "未設定 path_spine_config，因此 Spine 會使用編譯時內建的搜尋路徑，Doctor 無法驗證它讀取的是哪個檔案。"
+
+#: doctor_functions.php
+#, php-format
+msgid "The Spine configuration file is missing or unreadable: %s."
+msgstr "Spine 設定檔遺失或無法讀取：%s。"
+
+#: doctor_functions.php
+#, php-format
+msgid "DB_Database is %s but Cacti uses %s"
+msgstr "DB_Database 為 %s，但 Cacti 使用的是 %s"
+
+#: doctor_functions.php
+#, php-format
+msgid "DB_User is %s but Cacti uses %s"
+msgstr "DB_User 為 %s，但 Cacti 使用的是 %s"
+
+#: doctor_functions.php
+msgid "the file is world-readable and holds the database password"
+msgstr "該檔案可供所有人讀取且包含資料庫密碼"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s uses the same database and user as Cacti."
+msgstr "%s 使用與 Cacti 相同的資料庫與使用者。"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s is %s"
+msgstr "%s 為 %s"
+
+#: doctor_functions.php
+msgid "Cacti recommends ON; doublewrite may stay off only on ZFS or similar journaling storage."
+msgstr "Cacti 建議設為 ON；僅在 ZFS 或類似日誌式儲存體上才可保持關閉 doublewrite。"
+
+#: doctor_functions.php
+msgid "InnoDB safety settings"
+msgstr "InnoDB 安全性設定"
+
+#: doctor_functions.php
+msgid "innodb_file_per_table and innodb_doublewrite are enabled."
+msgstr "innodb_file_per_table 與 innodb_doublewrite 均已啟用。"
+
+#: doctor_functions.php
+#, php-format
+msgid "None of the last %d log lines report an error."
+msgstr "最近 %d 行日誌中沒有任何錯誤回報。"
+
+#: doctor_functions.php
+msgid "Recent log errors"
+msgstr "近期日誌錯誤"
+
+#: doctor_functions.php
+#, php-format
+msgid "%d of the last %d log lines report an error. Most frequent (%dx): %s"
+msgstr "%d 行（在最近 %d 行日誌中）回報錯誤。最常出現（%d 次）：%s"
+
+#: doctor_functions.php
+msgid "The Cacti log is not readable; see the Cacti log file check."
+msgstr "Cacti 日誌無法讀取；請參閱 Cacti 日誌檔檢查項目。"
+
+#: doctor_functions.php
+msgid "No enabled devices are configured."
+msgstr "尚未設定任何已啟用的裝置。"
+
+#: doctor_functions.php
+#, php-format
+msgid "All %d enabled devices are up."
+msgstr "所有 %d 台已啟用的裝置皆在線上。"
+
+#: doctor_functions.php
+#, php-format
+msgid "%d of %d enabled devices are down and %d recovering."
+msgstr "%d / %d 台已啟用的裝置處於離線狀態，另有 %d 台正在復原中。"
+
+#: doctor_functions.php
+msgid "The down devices could not be listed."
+msgstr "無法列出離線的裝置。"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s down since %s"
+msgstr "%s 自 %s 起離線"
+
+#: doctor_functions.php
+#, php-format
+msgid "Longest down: %s."
+msgstr "離線最久：%s。"
+
+#: doctor_functions.php
+msgid "With most devices down, check the poller host's network and SNMP settings first."
+msgstr "由於大多數裝置離線，請先檢查輪詢器主機的網路與 SNMP 設定。"
+
+#: doctor_functions.php
+msgid "Doctor could not read device status from the host table."
+msgstr "Doctor 無法從 host 資料表讀取裝置狀態。"
+
+#: doctor_functions.php
+#, php-format
+msgid "Cacti Doctor on %s: %d failed, %d warnings"
+msgstr "%s 上的 Cacti Doctor：%d 項失敗，%d 項警告"
+
+#: doctor_functions.php
+#, php-format
+msgid "%d Cacti Doctor checks changed status on %s."
+msgstr "%d 項 Cacti Doctor 檢查在 %s 上變更了狀態。"
+
+#: doctor_functions.php
+#, php-format
+msgid "Totals: %d passed, %d warnings, %d failed."
+msgstr "總計：%d 項通過，%d 項警告，%d 項失敗。"
+
+#: doctor_functions.php
+#, php-format
+msgid "Refusing to overwrite %s."
+msgstr "拒絕覆寫 %s。"
+
+#: doctor_functions.php
+#, php-format
+msgid "Cannot create %s."
+msgstr "無法建立 %s。"
+
+#: doctor_functions.php
+#, php-format
+msgid "Could not make %s private."
+msgstr "無法將 %s 設為私密權限。"
+
+#: doctor_functions.php
+#, php-format
+msgid "Writing %s failed."
+msgstr "寫入 %s 失敗。"
+
+#: doctor_functions.php
+msgid "Repair runtime directories"
+msgstr "修復執行時期目錄"
+
+#: doctor_functions.php
+msgid "Create missing cache, log, and RRA directories and add owner read/write/execute permission without removing existing permissions."
+msgstr "建立缺少的快取、日誌與 RRA 目錄，並在不移除現有權限的情況下新增擁有者的讀取/寫入/執行權限。"
+
+#: doctor_functions.php
+msgid "The requested repair is not allow-listed."
+msgstr "所請求的修復項目不在允許清單中。"
+
+#: doctor_functions.php
+msgid "No repair handler is registered."
+msgstr "未註冊任何修復處理程式。"
+
+#: doctor_functions.php
+msgid "Repair unavailable"
+msgstr "無法進行修復"
+
+#: doctor_functions.php
+msgid "Repairs are refused while running as root. Run Doctor as the Cacti poller user."
+msgstr "以 root 身分執行時拒絕進行修復。請以 Cacti 輪詢器使用者身分執行 Doctor。"
+
+#: doctor_functions.php
+msgid "The Cacti base directory cannot be resolved."
+msgstr "無法解析 Cacti 基礎目錄。"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s: path is outside the Cacti installation"
+msgstr "%s：路徑位於 Cacti 安裝目錄之外"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s: symbolic links are not repaired"
+msgstr "%s：不修復符號連結"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s: directory creation failed"
+msgstr "%s：建立目錄失敗"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s: could not add owner permissions"
+msgstr "%s：無法新增擁有者權限"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s: still not a writable directory"
+msgstr "%s：仍非可寫入的目錄"
+
+#: doctor_functions.php
+msgid "Runtime directories now exist and are writable by the current process."
+msgstr "執行時期目錄現已存在且目前處理程序可寫入。"
+
+#: doctor_functions.php
+msgid "Cacti"
+msgstr "Cacti"
+
+#: doctor_functions.php
+msgid "Database"
+msgstr "資料庫"
+
+#: doctor_functions.php
+msgid "Database health"
+msgstr "資料庫健全狀態"
+
+#: doctor_functions.php
+msgid "Devices"
+msgstr "裝置"
+
+#: doctor_functions.php setup.php
+msgid "Doctor"
+msgstr "Doctor"
+
+#: doctor_functions.php
+msgid "Filesystem"
+msgstr "檔案系統"
+
+#: doctor_functions.php
+msgid "Logging"
+msgstr "日誌記錄"
+
+#: doctor_functions.php
+msgid "PHP"
+msgstr "PHP"
+
+#: doctor_functions.php
+msgid "Poller"
+msgstr "輪詢器"
+
+#: doctor_functions.php
+msgid "Prerequisites"
+msgstr "必要條件"
+
+#: doctor_functions.php
+msgid "Repair"
+msgstr "修復"
+
+#: doctor_functions.php
+msgid "Security"
+msgstr "安全性"
+
+#: doctor_functions.php
+msgid "PASS"
+msgstr "通過"
+
+#: doctor_functions.php
+msgid "WARN"
+msgstr "警告"
+
+#: doctor_functions.php
+msgid "FAIL"
+msgstr "失敗"
+
+#: doctor_functions.php
+msgid "UNKNOWN"
+msgstr "未知"
+
+#: doctor_rrd.php
+msgid "Data source freshness could not be assessed."
+msgstr "無法評估資料來源的新鮮度。"
+
+#: doctor_rrd.php
+msgid "RRD update freshness"
+msgstr "RRD 更新新鮮度"
+
+#: doctor_rrd.php
+msgid "The deferred-write interval is unknown; configure it before judging file age."
+msgstr "延遲寫入間隔未知；請先進行設定再判斷檔案存在時間。"
+
+#: doctor_rrd.php
+#, php-format
+msgid "Checked %d files; %d stale files across %d devices; %d unavailable or future-dated files."
+msgstr "已檢查 %d 個檔案；共有 %d 個過時檔案分佈於 %d 台裝置；%d 個無法存取或時間為未來的檔案。"
+
+#: doctor_rrd.php
+msgid "File age includes the collection interval and configured deferred-write allowance; verify the poller and flush process before changing data."
+msgstr "檔案存在時間包含收集間隔與已設定的延遲寫入容許時間；變更資料前請先確認輪詢器與排清程序。"
+
+#: doctor_scheduling.php
+msgid "Scheduled checks are disabled. Enable them in Settings > Doctor to retain samples and alert on changes."
+msgstr "已停用排程檢查。請在「設定 > Doctor」中啟用，以保留取樣並在狀態變更時發出警示。"
+
+#: doctor_scheduling.php
+msgid "Scheduled report freshness"
+msgstr "排程報告新鮮度"
+
+#: doctor_scheduling.php
+#, php-format
+msgid "%s UTC"
+msgstr "%s UTC"
+
+#: doctor_scheduling.php
+#, php-format
+msgid "Last started: %s; last completed: %s."
+msgstr "上次開始：%s；上次完成：%s。"
+
+#: doctor_scheduling.php
+msgid "never"
+msgstr "從未"
+
+#: doctor_scheduling.php
+msgid "Results are missing or stale. Check the primary poller and DOCTOR log for startup, timeout, or persistence errors."
+msgstr "結果遺失或過時。請檢查主要輪詢器與 DOCTOR 日誌，以排查啟動、逾時或持續性儲存錯誤。"
+
+#: doctor_scheduling.php
+msgid "A completed diagnostic run is recent; this does not mean all checks passed."
+msgstr "最近有一次已完成的診斷執行；這並不代表所有檢查均已通過。"
+
+#: doctor_scheduling.php
+msgid "Doctor alert state is invalid. Restore doctor_alert_pending from backup before retrying."
+msgstr "Doctor 警示狀態無效。重試前請先從備份還原 doctor_alert_pending。"
+
+#: doctor_scheduling.php
+msgid "Doctor alert transitions are invalid; no email was sent."
+msgstr "Doctor 警示狀態轉換無效；未傳送任何電子郵件。"
+
+#: doctor_scheduling.php
+msgid "Alert delivery"
+msgstr "警示傳送"
+
+#: doctor_scheduling.php
+#, php-format
+msgid "%d check transitions await delivery; attempts: %d of 3."
+msgstr "有 %d 項檢查狀態轉換等待傳送；已嘗試第 %d / 3 次。"
+
+#: doctor_scheduling.php
+msgid "Automatic retries exhausted. Correct Cacti mail settings, then run Doctor with --scheduled --retry-alerts as the poller user."
+msgstr "已達自動重試次數上限。請修正 Cacti 郵件設定，然後以輪詢器使用者身分加上 --scheduled --retry-alerts 參數執行 Doctor。"
+
+#: doctor_scheduling.php
+#, php-format
+msgid "Next eligible retry: %s UTC, after a primary poller cycle."
+msgstr "下次可重試時間：%s UTC（於一次主要輪詢器週期後）。"
+
+#: doctor_scheduling.php
+msgid "No alert recipients are currently configured; pending transitions are retained."
+msgstr "目前未設定任何警示收件者；待傳送的狀態轉換將會保留。"
+
+#: doctor_scheduling.php
+msgid "No retained alert is awaiting delivery. Mail-server acceptance does not prove inbox delivery."
+msgstr "沒有保留的警示等待傳送。郵件伺服器接受寄送並不保證已送達收件匣。"
+
+#: doctor_scheduling.php
+msgid "Doctor retained status changes (UTC). Repeated changes for one check are coalesced; an out-and-back transition is retained."
+msgstr "Doctor 保留的狀態變更（UTC）。單一檢查的重複變更會合併處理；來回變動（out-and-back）的狀態轉換則會保留。"
+
+#: doctor_scheduling.php
+#, php-format
+msgid "%s: %s -> %s (latest change %s)"
+msgstr "%s：%s -> %s（最近變更 %s）"
+
+#: doctor_scheduling.php
+#, php-format
+msgid "%d further status changes are not listed because the alert queue reached its storage limit."
+msgstr "因警示佇列已達儲存上限，另有 %d 項狀態變更未列出。"
+
+#: doctor_scheduling.php
+msgid "Open Utilities > Doctor for current measurements, recommended actions, and verification steps."
+msgstr "請開啟「公用程式 > Doctor」以查看目前的測量結果、建議操作與驗證步驟。"
+
+#: doctor_scheduling.php
+#, php-format
+msgid "Cacti Doctor: %d retained status changes"
+msgstr "Cacti Doctor：%d 項保留的狀態變更"
+
+#: doctor_scheduling.php
+msgid "Doctor schedule is already running or the database lock is unavailable."
+msgstr "Doctor 排程已在執行中，或無法取得資料庫鎖定。"
+
+#: doctor_web.php
+msgid "The finding could not be acknowledged. Run Doctor again, then acknowledge the current result."
+msgstr "無法確認此發現項目。請重新執行 Doctor，然後再確認目前的結果。"
+
+#: doctor_web.php
+msgid "The warning exception could not be saved. Use a fresh assessed warning, an owner, a reason and an expiry within 90 days."
+msgstr "無法儲存警告例外。請使用最新評估的警告、指定負責人、填寫原因並設定 90 天內的到期日。"
+
+#: doctor_web.php
+msgid "Confirm repair"
+msgstr "確認修復"
+
+#: doctor_web.php
+msgid "Approval expires after five minutes and is invalidated by a changed filesystem. The acting account must be able to create directories or change owner permissions."
+msgstr "核准將於五分鐘後到期，且檔案系統若有變更即會失效。執行帳號必須具備建立目錄或變更擁有者權限的權限。"
+
+#: doctor_web.php
+msgid "Repair prerequisites are not met. No changes will be made."
+msgstr "尚未符合修復必要條件。不會進行任何變更。"
+
+#: doctor_web.php
+msgid "Cancel"
+msgstr "取消"
+
+#: doctor_web.php
+#, php-format
+msgid "Last observation: %s UTC."
+msgstr "上次觀測時間：%s UTC。"
+
+#: doctor_web.php
+msgid "No completed diagnostic report is available."
+msgstr "沒有可用的已完成診斷報告。"
+
+#: doctor_web.php
+msgid "Health is unknown: observations are missing or stale."
+msgstr "健全狀態未知：觀測資料遺失或已過時。"
+
+#: doctor_web.php
+msgid "Run diagnostic checks"
+msgstr "執行診斷檢查"
+
+#: doctor_web.php
+msgid "Doctor settings"
+msgstr "Doctor 設定"
+
+#: doctor_web.php setup.php
+msgid "Cacti Doctor"
+msgstr "Cacti Doctor"
+
+#: doctor_web.php
+#, php-format
+msgid "Installation health: %d passed, %d warnings, %d failed"
+msgstr "安裝健全狀態：%d 項通過，%d 項警告，%d 項失敗"
+
+#: doctor_web.php
+msgid "Category"
+msgstr "類別"
+
+#: doctor_web.php
+msgid "Check"
+msgstr "檢查項目"
+
+#: doctor_web.php
+msgid "Status"
+msgstr "狀態"
+
+#: doctor_web.php
+msgid "Details"
+msgstr "詳細資訊"
+
+#: doctor_web.php
+msgid "Action"
+msgstr "操作"
+
+#: doctor_web.php
+msgid "Acknowledged; health status unchanged."
+msgstr "已確認；健全狀態未變更。"
+
+#: doctor_web.php
+msgid "Acknowledge"
+msgstr "確認"
+
+#: doctor_web.php
+#, php-format
+msgid "Owner: %s; review by %s UTC. Reason: %s"
+msgstr "負責人：%s；檢視期限：%s UTC。原因：%s"
+
+#: doctor_web.php
+msgid "Investigate a symptom"
+msgstr "調查症狀"
+
+#: doctor_web.php
+msgid "Investigate"
+msgstr "調查"
+
+#: doctor_web.php
+msgid "Recent scheduled checks"
+msgstr "近期排程檢查"
+
+#: doctor_web.php
+msgid "Failed"
+msgstr "失敗"
+
+#: doctor_web.php
+msgid "Observation (UTC)"
+msgstr "觀測時間 (UTC)"
+
+#: doctor_web.php
+msgid "Passed"
+msgstr "通過"
+
+#: doctor_web.php
+msgid "Warnings"
+msgstr "警告"
+
+#: doctor_web.php
+msgid "Warning exceptions"
+msgstr "警告例外"
+
+#: doctor_web.php
+msgid "Owner"
+msgstr "負責人"
+
+#: doctor_web.php
+msgid "Reason"
+msgstr "原因"
+
+#: doctor_web.php
+msgid "Review date (UTC)"
+msgstr "檢視日期 (UTC)"
+
+#: doctor_web.php
+msgid "Accept warning"
+msgstr "接受警告"
+
+#: doctor_web.php
+msgid "Expired"
+msgstr "已過期"
+
+#: doctor_web.php
+msgid "Check not present in this report; verify its ID."
+msgstr "此報告中沒有該檢查項目；請確認其 ID。"
+
+#: doctor_web.php
+msgid "Remove exception"
+msgstr "移除例外"
+
+#: doctor_web.php
+msgid "Audit history"
+msgstr "稽核歷程記錄"
+
+#: doctor_workflows.php
+msgid "Repair refused"
+msgstr "已拒絕修復"
+
+#: doctor_workflows.php
+msgid "The approved plan is expired or the filesystem changed. Preview the repair again."
+msgstr "已核准的計畫已過期或檔案系統已變更。請重新預覽修復。"
+
+#: doctor_workflows.php
+msgid "The audit record could not be saved. No repair was attempted."
+msgstr "無法儲存稽核記錄。未嘗試進行修復。"
+
+#: doctor_workflows.php
+msgid "The completion audit failed; inspect the filesystem and the started audit record."
+msgstr "完成稽核失敗；請檢查檔案系統與已開始的稽核記錄。"
+
+#: setup.php
+msgid "Doctor Administrator"
+msgstr "Doctor 管理員"
+
+#: setup.php
+msgid "Doctor Operator"
+msgstr "Doctor 操作員"
+
+#: setup.php
+msgid "Doctor Viewer"
+msgstr "Doctor 檢視者"
+
+#: setup.php
+msgid "Utilities"
+msgstr "公用程式"
+
+#: setup.php
+msgid "System Administration"
+msgstr "系統管理"
+
+#: setup.php
+msgid "Scheduled Checks"
+msgstr "排程檢查"
+
+#: setup.php
+msgid "Run Checks on a Schedule"
+msgstr "依排程執行檢查"
+
+#: setup.php
+msgid "Run every Doctor check in the background after the poller and record each check's status."
+msgstr "在輪詢器執行後於背景執行每項 Doctor 檢查，並記錄各項檢查的狀態。"
+
+#: setup.php
+msgid "Check Interval"
+msgstr "檢查間隔"
+
+#: setup.php
+msgid "How often the scheduled checks run."
+msgstr "排程檢查的執行頻率。"
+
+#: setup.php
+msgid "Every 15 Minutes"
+msgstr "每 15 分鐘"
+
+#: setup.php
+msgid "Every Hour"
+msgstr "每小時"
+
+#: setup.php
+msgid "Every 6 Hours"
+msgstr "每 6 小時"
+
+#: setup.php
+msgid "Every Day"
+msgstr "每天"
+
+#: setup.php
+msgid "Alert Email Addresses"
+msgstr "警示電子郵件地址"
+
+#: setup.php
+msgid "Comma-separated addresses to email when a check starts or stops failing. Leave empty to only log changes to the Cacti log."
+msgstr "當檢查開始失敗或停止失敗時要寄送電子郵件的地址，請以逗號分隔。若留空，則僅將變更寫入 Cacti 日誌。"
+
+#: setup.php
+msgid "Alert on Warnings"
+msgstr "警告時發出警示"
+
+#: setup.php
+msgid "Also alert when a check moves into or out of a warning."
+msgstr "當檢查進入或離開警告狀態時也發出警示。"
+
+#: setup.php
+msgid "Thresholds"
+msgstr "閾值"
+
+#: setup.php
+msgid "Poller Run Time Warning (percent)"
+msgstr "輪詢器執行時間警告（百分比）"
+
+#: setup.php
+msgid "Warn when the last main-poller run used this share of the polling interval. Runs that take the whole interval always fail."
+msgstr "當上次主輪詢器執行佔用輪詢間隔的此比例時發出警告。耗盡整個間隔的執行一律視為失敗。"
+
+#: setup.php
+msgid "RRA Disk Free Warning (percent)"
+msgstr "RRA 磁碟可用空間警告（百分比）"
+
+#: setup.php
+msgid "Warn when free space on the RRA file system drops below this percentage."
+msgstr "當 RRA 檔案系統的可用空間低於此百分比時發出警告。"
+
+#: setup.php
+msgid "Fail when free space on the RRA file system drops below this percentage."
+msgstr "當 RRA 檔案系統的可用空間低於此百分比時視為失敗。"
+
+#: setup.php
+msgid "RRA Disk Free Failure (percent)"
+msgstr "RRA 磁碟可用空間失敗（百分比）"
+
+#: setup.php
+msgid "Clock Drift Warning (seconds)"
+msgstr "時鐘偏差警告（秒）"
+
+#: setup.php
+msgid "Warn when the database and PHP clocks differ by more than this."
+msgstr "當資料庫與 PHP 時鐘相差超過此值時發出警告。"
+
+#: setup.php
+msgid "Clock Drift Failure (seconds)"
+msgstr "時鐘偏差失敗（秒）"
+
+#: setup.php
+msgid "Fail when the database and PHP clocks differ by more than this."
+msgstr "當資料庫與 PHP 時鐘相差超過此值時視為失敗。"
+
+#: setup.php
+msgid "RRD Stale Intervals"
+msgstr "RRD 過期輪詢間隔數"
+
+#: setup.php
+msgid "Warn after this many collection intervals without a file update (1 to 100)."
+msgstr "在經歷此數量的收集間隔後若檔案仍未更新則發出警告（1 到 100）。"
+
+#: setup.php
+msgid "Additional disk-write delay for external caching (0 to 86400). Boost adds its own allowance."
+msgstr "外部快取的額外磁碟寫入延遲（0 到 86400）。Boost 會加上其自身的容許時間。"
+
+#: setup.php
+msgid "Deferred RRD Write Allowance (seconds)"
+msgstr "延遲 RRD 寫入容許時間（秒）"
+
+#: setup.php
+msgid "Cacti Log Size Warning (MB)"
+msgstr "Cacti 日誌大小警告（MB）"
+
+#: setup.php
+msgid "Warn when the Cacti log grows beyond this size, which usually means log rotation is not running."
+msgstr "當 Cacti 日誌超過此大小時發出警告，這通常表示日誌輪替未在執行。"

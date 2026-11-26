@@ -1,0 +1,1542 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
+# SPDX-FileCopyrightText: 2026 Thomas Vincent <thomasvincent@gmail.com>
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: doctor 0.6.1\n"
+"Report-Msgid-Bugs-To: https://github.com/somethingwithproof/plugin_doctor/issues\n"
+"PO-Revision-Date: 2026-11-26 00:00+0000\n"
+"Last-Translator: Thomas Vincent <thomasvincent@gmail.com>\n"
+"Language-Team: Thomas Vincent <thomasvincent@gmail.com>\n"
+"Language: ko-KR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: cli/doctor.php
+#, php-format
+msgid "Available repairs: %s"
+msgstr "사용 가능한 복구 항목: %s"
+
+#: cli/doctor.php
+#, php-format
+msgid "Unknown format %s. Use text, json, nagios, or prometheus."
+msgstr "알 수 없는 형식 %s입니다. text, json, nagios 또는 prometheus를 사용하세요."
+
+#: cli/doctor.php
+#, php-format
+msgid "Redaction could not complete, so %s was not written."
+msgstr "민감 정보 마스킹을 완료할 수 없어 %s을(를) 기록하지 않았습니다."
+
+#: cli/doctor.php
+#, php-format
+msgid "Wrote %s. Review it before sharing; values after password, secret, token, and community names are masked."
+msgstr "%s을(를) 기록했습니다. 공유하기 전에 검토하세요. password, secret, token 및 community 이름 뒤의 값은 마스킹됩니다."
+
+#: cli/doctor.php doctor_functions.php
+msgid "Unknown repair"
+msgstr "알 수 없는 복구 항목"
+
+#: cli/doctor.php
+msgid "Refusing to repair without --yes."
+msgstr "--yes 없이는 복구를 진행하지 않습니다."
+
+#: cli/doctor.php
+msgid "Select a supported symptom and text or JSON output."
+msgstr "지원되는 증상과 text 또는 JSON 출력을 선택하세요."
+
+#: cli/doctor.php doctor_web.php
+msgid "Accepted warning"
+msgstr "수락된 경고"
+
+#: doctor_access.php doctor_functions.php
+msgid "Device availability"
+msgstr "장치 가용성"
+
+#: doctor_access.php
+msgid "Device permissions could not be evaluated."
+msgstr "장치 권한을 평가할 수 없습니다."
+
+#: doctor_access.php
+msgid "The configured PHP CLI cannot run Doctor checks."
+msgstr "구성된 PHP CLI로 Doctor 검사를 실행할 수 없습니다."
+
+#: doctor_access.php
+msgid "Doctor checks failed or exceeded their time limit. Review the Doctor log."
+msgstr "Doctor 검사가 실패했거나 시간 제한을 초과했습니다. Doctor 로그를 확인하세요."
+
+#: doctor_diagnosis.php
+msgid "Graphs stopped updating"
+msgstr "그래프 업데이트가 중지됨"
+
+#: doctor_diagnosis.php
+msgid "Polling is slow"
+msgstr "폴링이 느림"
+
+#: doctor_diagnosis.php
+msgid "Devices are missing or unavailable"
+msgstr "장치가 누락되었거나 사용할 수 없음"
+
+#: doctor_diagnosis.php
+msgid "Doctor alerts are missing"
+msgstr "Doctor 알림이 누락되었습니다"
+
+#: doctor_diagnosis.php
+msgid "Check the poller scheduler and the affected poller log, then verify a new completed cycle."
+msgstr "폴러 스케줄러와 해당 폴러 로그를 확인한 다음 새 완료 주기를 검증하세요."
+
+#: doctor_diagnosis.php
+msgid "Collection may have stopped."
+msgstr "수집이 중지되었을 수 있습니다."
+
+#: doctor_diagnosis.php
+msgid "Collected values may not be reaching disk."
+msgstr "수집된 값이 디스크에 기록되지 않고 있을 수 있습니다."
+
+#: doctor_diagnosis.php
+msgid "Inspect the output queue and Boost flush history; verify that the queue drains and RRD timestamps advance."
+msgstr "출력 큐와 Boost 플러시 기록을 점검하여 큐가 비워지고 RRD 타임스탬프가 갱신되는지 확인하세요."
+
+#: doctor_diagnosis.php
+msgid "Check storage capacity, runtime-directory permissions and the last RRD update; account for deferred writes."
+msgstr "스토리지 용량, 런타임 디렉터리 권한 및 마지막 RRD 업데이트를 확인하고 지연된 쓰기를 고려하세요."
+
+#: doctor_diagnosis.php
+msgid "RRD storage needs investigation."
+msgstr "RRD 스토리지 조사가 필요합니다."
+
+#: doctor_diagnosis.php
+msgid "Collection work may be exceeding its time budget."
+msgstr "수집 작업이 제한 시간을 초과하고 있을 수 있습니다."
+
+#: doctor_diagnosis.php
+msgid "Compare cycle duration with the polling interval and inspect device timeouts before increasing concurrency."
+msgstr "동시성을 높이기 전에 주기 소요 시간과 폴링 간격을 비교하고 장치 시간 초과를 점검하세요."
+
+#: doctor_diagnosis.php
+msgid "Compare database counters during a slow cycle and inspect query plans before changing server limits."
+msgstr "서버 제한을 변경하기 전에 느린 주기 동안의 데이터베이스 카운터를 비교하고 쿼리 계획을 점검하세요."
+
+#: doctor_diagnosis.php
+msgid "Database pressure may be contributing to slow polling."
+msgstr "데이터베이스 부하가 폴링 지연의 원인일 수 있습니다."
+
+#: doctor_diagnosis.php
+msgid "Collection prerequisites or reachability may be failing."
+msgstr "수집 사전 요구 사항 또는 연결 가능성에 실패하고 있을 수 있습니다."
+
+#: doctor_diagnosis.php
+msgid "Verify the affected device permissions, reachability, credentials and assigned poller using Cacti diagnostics."
+msgstr "Cacti 진단을 사용하여 해당 장치의 권한, 연결 가능성, 자격 증명 및 할당된 폴러를 확인하세요."
+
+#: doctor_diagnosis.php
+msgid "Scheduled checks or mail delivery need attention."
+msgstr "예약된 검사 또는 메일 전송에 주의가 필요합니다."
+
+#: doctor_diagnosis.php
+msgid "Verify scheduling and recipient settings, inspect retained delivery attempts, and send a Cacti test email."
+msgstr "예약 및 수신자 설정을 확인하고 보관된 전송 시도를 점검한 뒤 Cacti 테스트 이메일을 보내세요."
+
+#: doctor_diagnosis.php
+msgid "Possible causes require verification; matching checks do not establish a root cause."
+msgstr "가능한 원인에 대한 확인이 필요합니다. 일치하는 검사 결과만으로는 근본 원인을 단정할 수 없습니다."
+
+#: doctor_diagnosis.php
+msgid "No cause is established by the available observations. Run fresh diagnostics and investigate the symptom directly."
+msgstr "사용 가능한 관찰 결과로는 원인이 확정되지 않았습니다. 새 진단을 실행하고 증상을 직접 조사하세요."
+
+#: doctor_functions.php
+msgid "At least 24 hours since server startup and FLUSH STATUS. Counters are cumulative and may have different reset histories; confirm trends during a representative workload before tuning."
+msgstr "서버 시작 및 FLUSH STATUS 이후 최소 24시간이 지나야 합니다. 카운터는 누적 값이며 재설정 기록이 다를 수 있으므로 튜닝 전에 대표적인 워크로드에서의 추세를 확인하세요."
+
+#: doctor_functions.php
+msgid "Cumulative tuning advice is deferred: obtain valid uptime and at least 24 hours since startup and FLUSH STATUS. Missing metrics or an inconsistent sample cannot establish database health."
+msgstr "누적 튜닝 권고가 보류되었습니다. 유효한 가동 시간과 서버 시작 및 FLUSH STATUS 이후 최소 24시간의 데이터를 확보하세요. 누락된 메트릭이나 일관되지 않은 샘플로는 데이터베이스 상태를 판단할 수 없습니다."
+
+#: doctor_functions.php
+msgid "Database observation window"
+msgstr "데이터베이스 관찰 기간"
+
+#: doctor_functions.php
+msgid "Connection metrics are unavailable or invalid. Check access to SHOW GLOBAL STATUS and SHOW GLOBAL VARIABLES; do not treat missing metrics as an idle server."
+msgstr "연결 메트릭을 사용할 수 없거나 유효하지 않습니다. SHOW GLOBAL STATUS 및 SHOW GLOBAL VARIABLES에 대한 접근 권한을 확인하세요. 누락된 메트릭을 유휴 서버로 간주하지 마세요."
+
+#: doctor_functions.php
+#, php-format
+msgid "Current connections: %.0f / %.0f (%s); recorded peak: %.0f (%s of the current limit)."
+msgstr "현재 연결: %.0f / %.0f (%s); 기록된 최고치: %.0f (현재 제한의 %s)."
+
+#: doctor_functions.php
+msgid "Review connection pooling and poller concurrency. Check database-host memory headroom before raising max_connections; the historical peak may reflect an older limit."
+msgstr "연결 풀링 및 폴러 동시성을 검토하세요. max_connections를 높이기 전에 데이터베이스 호스트의 메모리 여유 공간을 확인하세요. 과거 최고치는 이전 제한을 반영한 것일 수 있습니다."
+
+#: doctor_functions.php
+msgid "Connection capacity"
+msgstr "연결 용량"
+
+#: doctor_functions.php
+msgid "InnoDB buffer pool reads"
+msgstr "InnoDB 버퍼 풀 읽기"
+
+#: doctor_functions.php
+msgid "Review query plans and the working set. Consider innodb_buffer_pool_size only after measuring memory available on the database host; a cumulative miss ratio alone does not prove memory pressure."
+msgstr "쿼리 계획과 작업 세트를 검토하세요. 데이터베이스 호스트에서 사용 가능한 메모리를 측정한 후에만 innodb_buffer_pool_size 조정을 고려하세요. 누적 미스율만으로는 메모리 부족을 입증할 수 없습니다."
+
+#: doctor_functions.php
+msgid "On-disk temporary tables"
+msgstr "디스크 기반 임시 테이블"
+
+#: doctor_functions.php
+msgid "Review query plans, sorting, grouping, and temporary-table data types before changing memory limits. Some tables must use disk; memory limits and accounting differ between MySQL and MariaDB versions."
+msgstr "메모리 제한을 변경하기 전에 쿼리 계획, 정렬, 그룹화 및 임시 테이블 데이터 유형을 검토하세요. 일부 테이블은 디스크를 사용해야 하며, 메모리 제한 및 계산 방식은 MySQL과 MariaDB 버전 간에 다릅니다."
+
+#: doctor_functions.php
+msgid "Connection thread creation"
+msgstr "연결 스레드 생성"
+
+#: doctor_functions.php
+msgid "Review connection reuse and thread_cache_size. Check the server thread-handling mode before tuning; thread-pool implementations do not behave like one-thread-per-connection servers."
+msgstr "연결 재사용 및 thread_cache_size를 검토하세요. 튜닝 전에 서버 스레드 처리 모드를 확인하세요. 스레드 풀 구현은 연결당 스레드 하나(one-thread-per-connection) 방식의 서버와 다르게 동작합니다."
+
+#: doctor_functions.php
+msgid "Review slow-query logging, long_query_time, and query plans before changing server buffers. This counter depends on the configured slow-query threshold and does not identify individual statements."
+msgstr "서버 버퍼를 변경하기 전에 느린 쿼리 로깅, long_query_time 및 쿼리 계획을 검토하세요. 이 카운터는 구성된 느린 쿼리 임계값에 따라 달라지며 개별 구문을 식별하지 않습니다."
+
+#: doctor_functions.php
+msgid "Slow statements"
+msgstr "느린 구문"
+
+#: doctor_functions.php
+msgid "Cumulative advice deferred until the observation window is sufficient."
+msgstr "관찰 기간이 충분해질 때까지 누적 권고가 보류됩니다."
+
+#: doctor_functions.php
+msgid "Thread-cache advice is not assessed: thread_handling is unavailable or is not one-thread-per-connection. Review the active thread-pool implementation instead."
+msgstr "스레드 캐시 권고가 평가되지 않았습니다. thread_handling을 사용할 수 없거나 one-thread-per-connection 방식이 아닙니다. 대신 활성 스레드 풀 구현을 검토하세요."
+
+#: doctor_functions.php
+#, php-format
+msgid "Required counters are missing or invalid: %s, %s. Check server-version support and monitoring permissions."
+msgstr "필수 카운터가 누락되었거나 유효하지 않습니다: %s, %s. 서버 버전 지원 여부와 모니터링 권한을 확인하세요."
+
+#: doctor_functions.php
+msgid "A counter reset since the prior sample; collect another representative interval before tuning."
+msgstr "이전 샘플 이후 카운터가 재설정되었습니다. 튜닝 전에 다른 대표 간격을 수집하세요."
+
+#: doctor_functions.php
+#, php-format
+msgid "Insufficient activity: %.0f %s; at least %d observations are needed for this advisory."
+msgstr "활동이 부족합니다: %.0f %s. 이 권고에는 최소 %d개의 관찰 값이 필요합니다."
+
+#: doctor_functions.php
+msgid "Counters are inconsistent or were reset independently. Collect a new representative sample before tuning."
+msgstr "카운터가 일관되지 않거나 개별적으로 재설정되었습니다. 튜닝 전에 새 대표 샘플을 수집하세요."
+
+#: doctor_functions.php
+msgid "The interval sample is too small or counters reset; collect another representative interval before tuning."
+msgstr "간격 샘플이 너무 작거나 카운터가 재설정되었습니다. 튜닝 전에 다른 대표 간격을 수집하세요."
+
+#: doctor_functions.php
+#, php-format
+msgid "Interval %s / %s: %.0f / %.0f (%s); investigation threshold: %s."
+msgstr "간격 %s / %s: %.0f / %.0f (%s); 조사 임계값: %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "Cumulative %s / %s: %.0f / %.0f (%s); investigation threshold: %s."
+msgstr "누적 %s / %s: %.0f / %.0f (%s); 조사 임계값: %s."
+
+#: doctor_functions.php
+msgid "This counter can omit memory-mapped temporary files on MySQL; a low ratio does not rule out disk use."
+msgstr "이 카운터는 MySQL의 메모리 매핑 임시 파일을 누락할 수 있으므로 낮은 비율이 디스크 사용이 없음을 의미하지는 않습니다."
+
+#: doctor_functions.php
+msgid "Redo-log advice deferred until the observation window is sufficient and Innodb_log_waits is available."
+msgstr "관찰 기간이 충분해지고 Innodb_log_waits를 사용할 수 있을 때까지 Redo 로그 권고가 보류됩니다."
+
+#: doctor_functions.php
+#, php-format
+msgid "Cumulative Innodb_log_waits: %.0f."
+msgstr "누적 Innodb_log_waits: %.0f."
+
+#: doctor_functions.php
+msgid "Investigate transaction sizes, log-buffer pressure, and storage latency. Recheck the rate under load before considering innodb_log_buffer_size; this historical count is not evidence of a current stall."
+msgstr "트랜잭션 크기, 로그 버퍼 부하 및 스토리지 지연 시간을 조사하세요. innodb_log_buffer_size 조정을 고려하기 전에 부하 상태에서 비율을 다시 확인하세요. 이 과거 횟수는 현재 정체의 증거가 아닙니다."
+
+#: doctor_functions.php
+msgid "InnoDB log-buffer waits"
+msgstr "InnoDB 로그 버퍼 대기"
+
+#: doctor_functions.php
+msgid "installed Cacti composer.json"
+msgstr "설치된 Cacti composer.json"
+
+#: doctor_functions.php
+#, php-format
+msgid "Cacti %s installer requirement"
+msgstr "Cacti %s 설치 프로그램 요구 사항"
+
+#: doctor_functions.php
+msgid "PHP compatibility with installed Cacti"
+msgstr "설치된 Cacti와의 PHP 호환성"
+
+#: doctor_functions.php
+#, php-format
+msgid "Running PHP %s; installed Cacti %s."
+msgstr "실행 중인 PHP %s; 설치된 Cacti %s."
+
+#: doctor_functions.php
+msgid "Could not establish Cacti's PHP requirement. Check the installed Cacti composer.json or release documentation; Doctor does not assume compatibility."
+msgstr "Cacti의 PHP 요구 사항을 확인할 수 없습니다. 설치된 Cacti composer.json 또는 릴리스 문서를 확인하세요. Doctor는 호환성을 임의로 가정하지 않습니다."
+
+#: doctor_functions.php
+#, php-format
+msgid "PHP >= %s and < %s"
+msgstr "PHP >= %s 및 < %s"
+
+#: doctor_functions.php
+#, php-format
+msgid "PHP >= %s"
+msgstr "PHP >= %s"
+
+#: doctor_functions.php
+#, php-format
+msgid "Requires %s (%s). Running PHP meets that requirement."
+msgstr "%s (%s)이(가) 필요합니다. 실행 중인 PHP가 해당 요구 사항을 충족합니다."
+
+#: doctor_functions.php
+#, php-format
+msgid "Requires %s (%s). Running PHP does not meet that requirement."
+msgstr "%s (%s)이(가) 필요합니다. 실행 중인 PHP가 해당 요구 사항을 충족하지 않습니다."
+
+#: doctor_functions.php
+#, php-format
+msgid "Detected %s; Doctor requires Cacti 1.2.20 or newer."
+msgstr "%s이(가) 감지되었습니다. Doctor에는 Cacti 1.2.20 이상이 필요합니다."
+
+#: doctor_functions.php
+msgid "Supported Cacti version"
+msgstr "지원되는 Cacti 버전"
+
+#: doctor_functions.php
+msgid "PHP upstream security support"
+msgstr "PHP 업스트림 보안 지원"
+
+#: doctor_functions.php
+msgid "This checks the PHP release branch, not whether this patch release is up to date or whether your OS vendor backports fixes. Cacti compatibility is checked separately."
+msgstr "이는 이 패치 릴리스가 최신인지 또는 OS 공급업체가 수정 사항을 백포트하는지가 아니라 PHP 릴리스 브랜치를 확인합니다. Cacti 호환성은 별도로 확인됩니다."
+
+#: doctor_functions.php
+#, php-format
+msgid "Running PHP %s; upstream security-support status is unknown or this is a prerelease. Check https://www.php.net/supported-versions.php and update Doctor's support data."
+msgstr "실행 중인 PHP %s; 업스트림 보안 지원 상태를 알 수 없거나 시험판입니다. https://www.php.net/supported-versions.php를 확인하고 Doctor의 지원 데이터를 업데이트하세요."
+
+#: doctor_functions.php
+#, php-format
+msgid "Running PHP %s; PHP %s receives upstream security fixes through %s."
+msgstr "실행 중인 PHP %s; PHP %s은(는) %s까지 업스트림 보안 수정 사항을 제공받습니다."
+
+#: doctor_functions.php
+#, php-format
+msgid "Running PHP %s; PHP %s no longer receives upstream security fixes; support ended %s. Upgrade to a supported PHP branch compatible with your Cacti installation, or confirm security maintenance with your OS vendor."
+msgstr "실행 중인 PHP %s; PHP %s은(는) 더 이상 업스트림 보안 수정 사항을 제공받지 않으며 %s에 지원이 종료되었습니다. Cacti 설치와 호환되는 지원되는 PHP 브랜치로 업그레이드하거나 OS 공급업체에 보안 유지 관리를 확인하세요."
+
+#: doctor_functions.php
+msgid "Required current CLI PHP extensions"
+msgstr "필수 현재 CLI PHP 확장"
+
+#: doctor_functions.php
+msgid "Required web PHP extensions"
+msgstr "필수 웹 PHP 확장"
+
+#: doctor_functions.php
+#, php-format
+msgid "Missing: %s. Install them through the operating system package manager."
+msgstr "누락됨: %s. 운영 체제 패키지 관리자를 통해 설치하세요."
+
+#: doctor_functions.php
+msgid "All PHP extensions required by the Cacti installer are loaded in this PHP context."
+msgstr "Cacti 설치 프로그램에 필요한 모든 PHP 확장이 이 PHP 컨텍스트에 로드되었습니다."
+
+#: doctor_functions.php
+msgid "Doctor does not execute configured binaries while running as root."
+msgstr "Doctor는 root로 실행되는 동안 구성된 바이너리를 실행하지 않습니다."
+
+#: doctor_functions.php
+#, php-format
+msgid "The file name %s is not expected for %s, so Doctor did not execute it."
+msgstr "파일 이름 %s은(는) %s에 예상된 이름이 아니므로 Doctor가 이를 실행하지 않았습니다."
+
+#: doctor_functions.php
+msgid "Doctor is running as root, so permission checks describe root rather than the web server or poller account, configured binaries are not executed, and repairs are refused. Run Doctor as the Cacti poller user."
+msgstr "Doctor가 root로 실행 중이므로 권한 검사가 웹 서버 또는 폴러 계정이 아닌 root 기준으로 표시되며, 구성된 바이너리가 실행되지 않고 복구가 거부됩니다. Cacti 폴러 사용자로 Doctor를 실행하세요."
+
+#: doctor_functions.php
+msgid "Doctor privileges"
+msgstr "Doctor 권한"
+
+#: doctor_functions.php
+msgid "Doctor is running without root privileges."
+msgstr "Doctor가 root 권한 없이 실행 중입니다."
+
+#: doctor_functions.php
+msgid "Required CLI PHP extensions"
+msgstr "필수 CLI PHP 확장"
+
+#: doctor_functions.php
+msgid "The configured PHP CLI executable is unavailable, so its extensions cannot be checked."
+msgstr "구성된 PHP CLI 실행 파일을 사용할 수 없어 확장을 확인할 수 없습니다."
+
+#: doctor_functions.php
+msgid "shell_exec() is disabled, so Doctor cannot compare the CLI PHP extensions with Cacti requirements."
+msgstr "shell_exec()가 비활성화되어 있어 Doctor가 CLI PHP 확장을 Cacti 요구 사항과 비교할 수 없습니다."
+
+#: doctor_functions.php
+msgid "The configured PHP CLI executable did not return a valid extension list."
+msgstr "구성된 PHP CLI 실행 파일이 유효한 확장 목록을 반환하지 않았습니다."
+
+#: doctor_functions.php
+#, php-format
+msgid "Missing from CLI PHP: %s. The web and CLI PHP configurations are separate on many systems."
+msgstr "CLI PHP에서 누락됨: %s. 많은 시스템에서 웹 PHP 구성과 CLI PHP 구성은 분리되어 있습니다."
+
+#: doctor_functions.php
+msgid "The configured PHP CLI has every extension required by Cacti."
+msgstr "구성된 PHP CLI에 Cacti에 필요한 모든 확장이 포함되어 있습니다."
+
+#: doctor_functions.php
+msgid "GD TrueType support"
+msgstr "GD TrueType 지원"
+
+#: doctor_functions.php
+msgid "Recommended PHP features"
+msgstr "권장 PHP 기능"
+
+#: doctor_functions.php
+#, php-format
+msgid "Unavailable: %s. Cacti can run without these features, but related functionality may be limited."
+msgstr "사용할 수 없음: %s. Cacti는 이러한 기능 없이도 실행할 수 있지만 관련 기능이 제한될 수 있습니다."
+
+#: doctor_functions.php
+msgid "The optional gettext, SNMP, and GD TrueType features are available."
+msgstr "선택적 gettext, SNMP 및 GD TrueType 기능을 사용할 수 있습니다."
+
+#: doctor_functions.php
+#, php-format
+msgid "memory_limit is %s (%dM or more is recommended)"
+msgstr "memory_limit가 %s입니다 (%dM 이상 권장)"
+
+#: doctor_functions.php
+#, php-format
+msgid "max_execution_time is %d seconds (60 or more is recommended)"
+msgstr "max_execution_time이 %d초입니다 (60초 이상 권장)"
+
+#: doctor_functions.php
+msgid "date.timezone is not set"
+msgstr "date.timezone이 설정되지 않았습니다"
+
+#: doctor_functions.php
+msgid "unset"
+msgstr "설정 안 됨"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s. Current values: %s"
+msgstr "%s. 현재 값: %s"
+
+#: doctor_functions.php
+msgid "PHP runtime configuration"
+msgstr "PHP 런타임 구성"
+
+#: doctor_functions.php
+msgid "Database connection"
+msgstr "데이터베이스 연결"
+
+#: doctor_functions.php
+#, php-format
+msgid "Query failed: %s"
+msgstr "쿼리 실패: %s"
+
+#: doctor_functions.php
+msgid "A read-only query completed successfully."
+msgstr "읽기 전용 쿼리가 성공적으로 완료되었습니다."
+
+#: doctor_functions.php
+msgid "The database returned an unexpected result."
+msgstr "데이터베이스가 예기치 않은 결과를 반환했습니다."
+
+#: doctor_functions.php
+#, php-format
+msgid "Doctor could not determine the database server version from %s."
+msgstr "Doctor가 %s에서 데이터베이스 서버 버전을 확인할 수 없습니다."
+
+#: doctor_functions.php
+msgid "Supported database server"
+msgstr "지원되는 데이터베이스 서버"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s %s detected; this Cacti branch recommends %s %s or newer."
+msgstr "%s %s이(가) 감지되었습니다. 이 Cacti 브랜치에서는 %s %s 이상을 권장합니다."
+
+#: doctor_functions.php
+#, php-format
+msgid "Database character set is %s and collation is %s. Cacti requires utf8mb4."
+msgstr "데이터베이스 문자 집합은 %s이고 데이터 정렬은 %s입니다. Cacti에는 utf8mb4가 필요합니다."
+
+#: doctor_functions.php
+msgid "unknown"
+msgstr "알 수 없음"
+
+#: doctor_functions.php
+msgid "Database character set"
+msgstr "데이터베이스 문자 집합"
+
+#: doctor_functions.php
+msgid "Database timezone support"
+msgstr "데이터베이스 시간대 지원"
+
+#: doctor_functions.php
+msgid "The Cacti database account cannot read mysql.time_zone_name. Grant SELECT access and populate the database timezone tables."
+msgstr "Cacti 데이터베이스 계정이 mysql.time_zone_name을 읽을 수 없습니다. SELECT 권한을 부여하고 데이터베이스 시간대 테이블을 채우세요."
+
+#: doctor_functions.php
+#, php-format
+msgid "The database timezone table is accessible and contains %d entries."
+msgstr "데이터베이스 시간대 테이블에 접근할 수 있으며 %d개의 항목이 포함되어 있습니다."
+
+#: doctor_functions.php
+msgid "The database timezone table is accessible but empty. Populate the system timezone tables."
+msgstr "데이터베이스 시간대 테이블에 접근할 수 있지만 비어 있습니다. 시스템 시간대 테이블을 채우세요."
+
+#: doctor_functions.php
+msgid "Core tables used by Cacti are present."
+msgstr "Cacti에서 사용하는 핵심 테이블이 존재합니다."
+
+#: doctor_functions.php
+#, php-format
+msgid "Missing core tables: %s. Restore or upgrade the database before attempting other repairs."
+msgstr "누락된 핵심 테이블: %s. 다른 복구를 시도하기 전에 데이터베이스를 복원하거나 업그레이드하세요."
+
+#: doctor_functions.php
+msgid "Core database tables"
+msgstr "핵심 데이터베이스 테이블"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s is missing (%s)"
+msgstr "%s이(가) 누락되었습니다 (%s)"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s is not writable (%s)"
+msgstr "%s에 쓸 수 없습니다 (%s)"
+
+#: doctor_functions.php
+msgid "Runtime directories"
+msgstr "런타임 디렉터리"
+
+#: doctor_functions.php
+msgid "The cache, log, and RRA directories exist and are writable."
+msgstr "cache, log 및 RRA 디렉터리가 존재하며 쓰기 가능합니다."
+
+#: doctor_functions.php
+msgid "Cacti configuration file"
+msgstr "Cacti 구성 파일"
+
+#: doctor_functions.php
+msgid "include/config.php is missing or unreadable."
+msgstr "include/config.php가 누락되었거나 읽을 수 없습니다."
+
+#: doctor_functions.php
+msgid "include/config.php is readable. POSIX mode-bit checks do not apply on Windows."
+msgstr "include/config.php를 읽을 수 있습니다. Windows에서는 POSIX 모드 비트 검사가 적용되지 않습니다."
+
+#: doctor_functions.php
+msgid "include/config.php is writable by other users. Remove world-write permission because this file contains database credentials."
+msgstr "include/config.php에 다른 사용자가 쓸 수 있습니다. 이 파일에는 데이터베이스 자격 증명이 포함되어 있으므로 전체 쓰기 권한을 제거하세요."
+
+#: doctor_functions.php
+msgid "include/config.php is group-writable. Confirm that every member of the owning group is trusted."
+msgstr "include/config.php에 그룹 쓰기 권한이 있습니다. 소유 그룹의 모든 구성원을 신뢰할 수 있는지 확인하세요."
+
+#: doctor_functions.php
+msgid "include/config.php is readable by all local users and contains database credentials. Restrict it to the owner and the web server group."
+msgstr "include/config.php를 모든 로컬 사용자가 읽을 수 있으며 이 파일에는 데이터베이스 자격 증명이 포함되어 있습니다. 소유자와 웹 서버 그룹으로 접근을 제한하세요."
+
+#: doctor_functions.php
+msgid "include/config.php is readable and is not world-readable, group-writable, or world-writable."
+msgstr "include/config.php를 읽을 수 있으며 전체 읽기, 그룹 쓰기 또는 전체 쓰기 권한이 설정되어 있지 않습니다."
+
+#: doctor_functions.php
+msgid "Cacti log file"
+msgstr "Cacti 로그 파일"
+
+#: doctor_functions.php
+msgid "The log file does not exist. Its parent directory is not writable."
+msgstr "로그 파일이 존재하지 않습니다. 상위 디렉터리에 쓸 수 없습니다."
+
+#: doctor_functions.php
+msgid "The log file does not exist. Its parent directory is writable, so Cacti can create it."
+msgstr "로그 파일이 존재하지 않습니다. 상위 디렉터리에 쓸 수 있으므로 Cacti가 파일을 생성할 수 있습니다."
+
+#: doctor_functions.php
+msgid "The configured log path must be a readable and writable regular file."
+msgstr "구성된 로그 경로는 읽기 및 쓰기가 가능한 일반 파일이어야 합니다."
+
+#: doctor_functions.php
+#, php-format
+msgid "The log is readable and writable and is %s MiB."
+msgstr "로그는 읽기 및 쓰기가 가능하며 크기는 %s MiB입니다."
+
+#: doctor_functions.php
+msgid "The log is readable and writable."
+msgstr "로그는 읽기 및 쓰기가 가능합니다."
+
+#: doctor_functions.php
+msgid "Verify that Cacti log rotation is enabled."
+msgstr "Cacti 로그 순환이 활성화되어 있는지 확인하세요."
+
+#: doctor_functions.php
+#, php-format
+msgid "Executable found at %s."
+msgstr "%s에서 실행 파일을 찾았습니다."
+
+#: doctor_functions.php
+#, php-format
+msgid "The %s setting is empty, missing, or not executable."
+msgstr "%s 설정이 비어 있거나 누락되었거나 실행할 수 없습니다."
+
+#: doctor_functions.php
+#, php-format
+msgid "The %s setting is empty, missing, or not executable: %s"
+msgstr "%s 설정이 비어 있거나 누락되었거나 실행할 수 없습니다: %s"
+
+#: doctor_functions.php
+msgid "Doctor could not determine its version."
+msgstr "Doctor가 해당 버전을 확인할 수 없습니다."
+
+#: doctor_functions.php
+#, php-format
+msgid "Detected version %s."
+msgstr "버전 %s이(가) 감지되었습니다."
+
+#: doctor_functions.php
+#, php-format
+msgid "Detected version %s; version %s or newer is recommended."
+msgstr "버전 %s이(가) 감지되었습니다. 버전 %s 이상을 권장합니다."
+
+#: doctor_functions.php
+#, php-format
+msgid "Detected version %s; version %s or newer is required."
+msgstr "버전 %s이(가) 감지되었습니다. 버전 %s 이상이 필요합니다."
+
+#: doctor_functions.php
+#, php-format
+msgid "Detected version %s; minimum is %s."
+msgstr "버전 %s이(가) 감지되었습니다. 최소 버전은 %s입니다."
+
+#: doctor_functions.php
+#, php-format
+msgid "%s executable"
+msgstr "%s 실행 파일"
+
+#: doctor_functions.php
+msgid "poller_type is not cmd.php or Spine"
+msgstr "poller_type이 cmd.php 또는 Spine이 아닙니다"
+
+#: doctor_functions.php
+msgid "poller_interval is not a supported value"
+msgstr "poller_interval이 지원되는 값이 아닙니다"
+
+#: doctor_functions.php
+msgid "Poller configuration"
+msgstr "폴러 구성"
+
+#: doctor_functions.php
+#, php-format
+msgid "Poller is %s with a %d-second interval."
+msgstr "폴러가 %s이며 간격은 %d초입니다."
+
+#: doctor_functions.php
+msgid "Main poller freshness"
+msgstr "기본 폴러 최신 상태"
+
+#: doctor_functions.php
+msgid "No completed main-poller run was found. This can be expected before the first poll."
+msgstr "완료된 기본 폴러 실행을 찾을 수 없습니다. 첫 번째 폴링 전에는 정상적인 상태일 수 있습니다."
+
+#: doctor_functions.php
+#, php-format
+msgid "Last completed run was %d seconds ago; failure threshold is %d seconds."
+msgstr "마지막으로 완료된 실행은 %d초 전입니다. 실패 임계값은 %d초입니다."
+
+#: doctor_functions.php
+msgid "Database schema version"
+msgstr "데이터베이스 스키마 버전"
+
+#: doctor_functions.php
+msgid "The version table is empty or unreadable, so the schema version is unknown."
+msgstr "version 테이블이 비어 있거나 읽을 수 없어 스키마 버전을 알 수 없습니다."
+
+#: doctor_functions.php
+msgid "The version table still reads new_install, so the installer never finished. Open install/ in a browser to complete it."
+msgstr "version 테이블이 여전히 new_install로 표시되어 설치 프로그램이 완료되지 않았습니다. 브라우저에서 install/을 열어 설치를 완료하세요."
+
+#: doctor_functions.php
+#, php-format
+msgid "The database schema is at %s but the installed code is %s. Open install/ in a browser to finish the upgrade."
+msgstr "데이터베이스 스키마는 %s이지만 설치된 코드는 %s입니다. 브라우저에서 install/을 열어 업그레이드를 완료하세요."
+
+#: doctor_functions.php
+#, php-format
+msgid "The database schema (%s) is newer than the installed code (%s). The code may have been rolled back."
+msgstr "데이터베이스 스키마(%s)가 설치된 코드(%s)보다 최신입니다. 코드가 롤백되었을 수 있습니다."
+
+#: doctor_functions.php
+#, php-format
+msgid "The database schema (%s) matches the installed code."
+msgstr "데이터베이스 스키마(%s)가 설치된 코드와 일치합니다."
+
+#: doctor_functions.php
+msgid "Main poller run time"
+msgstr "기본 폴러 실행 시간"
+
+#: doctor_functions.php
+msgid "No completed run time is recorded yet."
+msgstr "아직 기록된 완료 실행 시간이 없습니다."
+
+#: doctor_functions.php
+#, php-format
+msgid "The last main-poller run took %s seconds of the %d-second interval."
+msgstr "마지막 기본 폴러 실행은 %s초가 소요되었습니다(간격: %d초)."
+
+#: doctor_functions.php
+msgid "Runs that outlast the interval overlap and lose data; add poller processes or threads, or use Spine."
+msgstr "간격을 초과하는 실행은 중첩되어 데이터 손실을 유발합니다. 폴러 프로세스나 스레드를 추가하거나 Spine을 사용하세요."
+
+#: doctor_functions.php
+msgid "Little headroom remains before polls overlap."
+msgstr "폴링이 중첩되기 전까지 여유 시간이 거의 남아 있지 않습니다."
+
+#: doctor_functions.php
+#, php-format
+msgid "%d poller_output rows are older than two polling intervals and were never written to RRD files. Check the Cacti log for \"Poller Output Table not Empty\" and confirm max_heap_table_size is large enough."
+msgstr "%d개의 poller_output 행이 두 번의 폴링 간격보다 오래되었으며 RRD 파일에 기록되지 않았습니다. Cacti 로그에서 \"Poller Output Table not Empty\"를 확인하고 max_heap_table_size가 충분히 큰지 확인하세요."
+
+#: doctor_functions.php
+msgid "Unprocessed poller output"
+msgstr "처리되지 않은 폴러 출력"
+
+#: doctor_functions.php
+msgid "No stale rows remain in poller_output."
+msgstr "poller_output에 오래된 행이 남아 있지 않습니다."
+
+#: doctor_functions.php
+msgid "No remote pollers are enabled."
+msgstr "활성화된 원격 폴러가 없습니다."
+
+#: doctor_functions.php
+msgid "Remote pollers"
+msgstr "원격 폴러"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s (ID %s) has never reported"
+msgstr "%s (ID %s)이(가) 보고한 적이 없습니다"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s (ID %s) last reported %d seconds ago"
+msgstr "%s (ID %s)이(가) %d초 전에 마지막으로 보고했습니다"
+
+#: doctor_functions.php
+#, php-format
+msgid "The failure threshold is %d seconds."
+msgstr "실패 임계값은 %d초입니다."
+
+#: doctor_functions.php
+#, php-format
+msgid "%d enabled remote pollers reported within %d seconds."
+msgstr "%d개의 활성화된 원격 폴러가 %d초 이내에 보고했습니다."
+
+#: doctor_functions.php
+msgid "Enabled plugin files"
+msgstr "활성화된 플러그인 파일"
+
+#: doctor_functions.php
+#, php-format
+msgid "Enabled plugins are missing from %s: %s. Restore their files or disable them in Plugin Management."
+msgstr "활성화된 플러그인이 %s에서 누락되었습니다: %s. 파일을 복원하거나 플러그인 관리에서 비활성화하세요."
+
+#: doctor_functions.php
+msgid "Every enabled plugin has its setup.php in place."
+msgstr "활성화된 모든 플러그인에 setup.php가 올바른 위치에 있습니다."
+
+#: doctor_functions.php
+msgid "Boost RRD updates"
+msgstr "Boost RRD 업데이트"
+
+#: doctor_functions.php
+msgid "Boost is disabled, so the poller writes RRD files directly."
+msgstr "Boost가 비활성화되어 있으므로 폴러가 RRD 파일에 직접 씁니다."
+
+#: doctor_functions.php
+msgid "Boost is enabled but has no recorded run. This can be expected before its first flush."
+msgstr "Boost가 활성화되어 있지만 기록된 실행 내역이 없습니다. 첫 번째 플러시 전에는 정상일 수 있습니다."
+
+#: doctor_functions.php
+#, php-format
+msgid "Boost last flushed %d seconds ago, more than twice its %d-minute interval. Graphs stop updating until it runs; check the Cacti log for BOOST errors."
+msgstr "Boost가 마지막으로 플러시한 지 %d초가 지났으며, 이는 %d분 주기의 두 배를 초과합니다. 실행될 때까지 그래프 업데이트가 중단되므로 Cacti 로그에서 BOOST 오류를 확인하세요."
+
+#: doctor_functions.php
+#, php-format
+msgid "poller_output_boost holds %d rows, above the %d-row limit that forces a flush. Boost is falling behind."
+msgstr "poller_output_boost에 %d개의 행이 있으며, 이는 강제 플러시 기준인 %d행 제한을 초과했습니다. Boost 처리가 지연되고 있습니다."
+
+#: doctor_functions.php
+#, php-format
+msgid "Boost last flushed %d seconds ago with %d rows waiting."
+msgstr "Boost가 %d초 전에 마지막으로 플러시했으며 %d개의 행이 대기 중입니다."
+
+#: doctor_functions.php doctor_rrd.php
+#, php-format
+msgid "Checked a sample of %d active data sources that rotates hourly; a pass does not cover every file."
+msgstr "매시간 순환하는 %d개의 활성 데이터 소스 샘플을 확인했습니다. 한 번의 실행으로 모든 파일을 검사하지는 않습니다."
+
+#: doctor_functions.php
+#, php-format
+msgid "%d of %d active data sources have no RRD file, for example %s. New data sources get one after their first poll; otherwise check the RRA directory and its permissions."
+msgstr "활성 데이터 소스 중 %d개(전체 %d개)에 RRD 파일이 없습니다(예: %s). 새 데이터 소스는 첫 번째 폴링 후에 생성되며, 그렇지 않으면 RRA 디렉터리와 권한을 확인하세요."
+
+#: doctor_functions.php
+msgid "RRD files"
+msgstr "RRD 파일"
+
+#: doctor_functions.php
+#, php-format
+msgid "All %d active data sources have an RRD file."
+msgstr "모든 %d개의 활성 데이터 소스에 RRD 파일이 있습니다."
+
+#: doctor_functions.php
+#, php-format
+msgid "Doctor could not measure free space for %s."
+msgstr "Doctor가 %s의 여유 공간을 측정할 수 없습니다."
+
+#: doctor_functions.php
+msgid "RRA disk space"
+msgstr "RRA 디스크 공간"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s (%s GiB) free on the file system holding %s."
+msgstr "%s(%s GiB)의 여유 공간이 %s이(가) 저장된 파일 시스템에 있습니다."
+
+#: doctor_functions.php
+msgid "RRD updates fail silently when the disk fills."
+msgstr "디스크가 가득 차면 RRD 업데이트가 오류 표시 없이 실패합니다."
+
+#: doctor_functions.php
+msgid "Database clock"
+msgstr "데이터베이스 시계"
+
+#: doctor_functions.php
+msgid "Doctor could not read the database clock."
+msgstr "Doctor가 데이터베이스 시계를 읽을 수 없습니다."
+
+#: doctor_functions.php
+#, php-format
+msgid "The database and PHP clocks differ by %d seconds."
+msgstr "데이터베이스와 PHP 시계가 %d초 차이 납니다."
+
+#: doctor_functions.php
+msgid "Poll timestamps will be misaligned; synchronise both hosts with NTP."
+msgstr "폴링 타임스탬프가 어긋나게 됩니다. 두 호스트를 NTP로 동기화하세요."
+
+#: doctor_functions.php
+msgid "Synchronise both hosts with NTP."
+msgstr "두 호스트를 NTP로 동기화하세요."
+
+#: doctor_functions.php
+msgid "Spine configuration"
+msgstr "Spine 구성"
+
+#: doctor_functions.php
+msgid "Spine is not the configured poller."
+msgstr "Spine이 구성된 폴러가 아닙니다."
+
+#: doctor_functions.php
+msgid "path_spine_config is not set, so Spine uses its compiled-in search path and Doctor cannot verify which file it reads."
+msgstr "path_spine_config가 설정되지 않아 Spine이 컴파일 시 내장된 검색 경로를 사용하므로 Doctor가 어떤 파일을 읽는지 확인할 수 없습니다."
+
+#: doctor_functions.php
+#, php-format
+msgid "The Spine configuration file is missing or unreadable: %s."
+msgstr "Spine 구성 파일이 없거나 읽을 수 없습니다: %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "DB_Database is %s but Cacti uses %s"
+msgstr "DB_Database는 %s이지만 Cacti는 %s을(를) 사용합니다"
+
+#: doctor_functions.php
+#, php-format
+msgid "DB_User is %s but Cacti uses %s"
+msgstr "DB_User는 %s이지만 Cacti는 %s을(를) 사용합니다"
+
+#: doctor_functions.php
+msgid "the file is world-readable and holds the database password"
+msgstr "파일이 모든 사용자에게 읽기 가능하며 데이터베이스 암호가 포함되어 있습니다"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s uses the same database and user as Cacti."
+msgstr "%s이(가) Cacti와 동일한 데이터베이스 및 사용자를 사용합니다."
+
+#: doctor_functions.php
+#, php-format
+msgid "%s is %s"
+msgstr "%s은(는) %s입니다"
+
+#: doctor_functions.php
+msgid "Cacti recommends ON; doublewrite may stay off only on ZFS or similar journaling storage."
+msgstr "Cacti에서는 ON을 권장합니다. doublewrite는 ZFS 또는 유사한 저널링 스토리지에서만 끌 수 있습니다."
+
+#: doctor_functions.php
+msgid "InnoDB safety settings"
+msgstr "InnoDB 안전 설정"
+
+#: doctor_functions.php
+msgid "innodb_file_per_table and innodb_doublewrite are enabled."
+msgstr "innodb_file_per_table 및 innodb_doublewrite가 활성화되어 있습니다."
+
+#: doctor_functions.php
+#, php-format
+msgid "None of the last %d log lines report an error."
+msgstr "최근 %d개의 로그 줄 중 오류를 보고한 항목이 없습니다."
+
+#: doctor_functions.php
+msgid "Recent log errors"
+msgstr "최근 로그 오류"
+
+#: doctor_functions.php
+#, php-format
+msgid "%d of the last %d log lines report an error. Most frequent (%dx): %s"
+msgstr "최근 로그 중 %d줄(총 %d줄)에서 오류가 보고되었습니다. 최다 발생(%dx): %s"
+
+#: doctor_functions.php
+msgid "The Cacti log is not readable; see the Cacti log file check."
+msgstr "Cacti 로그를 읽을 수 없습니다. Cacti 로그 파일 점검 항목을 확인하세요."
+
+#: doctor_functions.php
+msgid "No enabled devices are configured."
+msgstr "활성화된 장치가 구성되어 있지 않습니다."
+
+#: doctor_functions.php
+#, php-format
+msgid "All %d enabled devices are up."
+msgstr "활성화된 %d개 장치가 모두 정상(Up) 상태입니다."
+
+#: doctor_functions.php
+#, php-format
+msgid "%d of %d enabled devices are down and %d recovering."
+msgstr "활성화된 장치 중 %d개(전체 %d개)가 다운(Down) 상태이고 %d개가 복구(Recovering) 중입니다."
+
+#: doctor_functions.php
+msgid "The down devices could not be listed."
+msgstr "다운 상태인 장치 목록을 가져올 수 없습니다."
+
+#: doctor_functions.php
+#, php-format
+msgid "%s down since %s"
+msgstr "%s (%s부터 다운)"
+
+#: doctor_functions.php
+#, php-format
+msgid "Longest down: %s."
+msgstr "최장 다운 장치: %s."
+
+#: doctor_functions.php
+msgid "With most devices down, check the poller host's network and SNMP settings first."
+msgstr "대부분의 장치가 다운된 상태이므로 폴러 호스트의 네트워크 및 SNMP 설정을 먼저 확인하세요."
+
+#: doctor_functions.php
+msgid "Doctor could not read device status from the host table."
+msgstr "Doctor가 host 테이블에서 장치 상태를 읽을 수 없습니다."
+
+#: doctor_functions.php
+#, php-format
+msgid "Cacti Doctor on %s: %d failed, %d warnings"
+msgstr "%s의 Cacti Doctor: %d건 실패, %d건 경고"
+
+#: doctor_functions.php
+#, php-format
+msgid "%d Cacti Doctor checks changed status on %s."
+msgstr "%d건의 Cacti Doctor 점검 상태가 %s에서 변경되었습니다."
+
+#: doctor_functions.php
+#, php-format
+msgid "Totals: %d passed, %d warnings, %d failed."
+msgstr "합계: %d건 통과, %d건 경고, %d건 실패."
+
+#: doctor_functions.php
+#, php-format
+msgid "Refusing to overwrite %s."
+msgstr "%s 덮어쓰기를 거부했습니다."
+
+#: doctor_functions.php
+#, php-format
+msgid "Cannot create %s."
+msgstr "%s을(를) 생성할 수 없습니다."
+
+#: doctor_functions.php
+#, php-format
+msgid "Could not make %s private."
+msgstr "%s을(를) 비공개로 설정할 수 없습니다."
+
+#: doctor_functions.php
+#, php-format
+msgid "Writing %s failed."
+msgstr "%s 쓰기에 실패했습니다."
+
+#: doctor_functions.php
+msgid "Repair runtime directories"
+msgstr "런타임 디렉터리 복구"
+
+#: doctor_functions.php
+msgid "Create missing cache, log, and RRA directories and add owner read/write/execute permission without removing existing permissions."
+msgstr "누락된 캐시, 로그 및 RRA 디렉터리를 생성하고 기존 권한을 제거하지 않고 소유자 읽기/쓰기/실행 권한을 추가합니다."
+
+#: doctor_functions.php
+msgid "The requested repair is not allow-listed."
+msgstr "요청한 복구 작업이 허용 목록에 없습니다."
+
+#: doctor_functions.php
+msgid "No repair handler is registered."
+msgstr "등록된 복구 핸들러가 없습니다."
+
+#: doctor_functions.php
+msgid "Repair unavailable"
+msgstr "복구 사용 불가"
+
+#: doctor_functions.php
+msgid "Repairs are refused while running as root. Run Doctor as the Cacti poller user."
+msgstr "root로 실행 중일 때는 복구가 거부됩니다. Cacti 폴러 사용자로 Doctor를 실행하세요."
+
+#: doctor_functions.php
+msgid "The Cacti base directory cannot be resolved."
+msgstr "Cacti 기본 디렉터리를 확인할 수 없습니다."
+
+#: doctor_functions.php
+#, php-format
+msgid "%s: path is outside the Cacti installation"
+msgstr "%s: 경로가 Cacti 설치 위치 외부에 있습니다"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s: symbolic links are not repaired"
+msgstr "%s: 심볼릭 링크는 복구되지 않습니다"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s: directory creation failed"
+msgstr "%s: 디렉터리 생성 실패"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s: could not add owner permissions"
+msgstr "%s: 소유자 권한을 추가할 수 없습니다"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s: still not a writable directory"
+msgstr "%s: 여전히 쓰기 가능한 디렉터리가 아닙니다"
+
+#: doctor_functions.php
+msgid "Runtime directories now exist and are writable by the current process."
+msgstr "런타임 디렉터리가 이제 존재하며 현재 프로세스에서 쓰기 가능합니다."
+
+#: doctor_functions.php
+msgid "Cacti"
+msgstr "Cacti"
+
+#: doctor_functions.php
+msgid "Database"
+msgstr "데이터베이스"
+
+#: doctor_functions.php
+msgid "Database health"
+msgstr "데이터베이스 상태"
+
+#: doctor_functions.php
+msgid "Devices"
+msgstr "장치"
+
+#: doctor_functions.php setup.php
+msgid "Doctor"
+msgstr "Doctor"
+
+#: doctor_functions.php
+msgid "Filesystem"
+msgstr "파일 시스템"
+
+#: doctor_functions.php
+msgid "Logging"
+msgstr "로깅"
+
+#: doctor_functions.php
+msgid "PHP"
+msgstr "PHP"
+
+#: doctor_functions.php
+msgid "Poller"
+msgstr "폴러"
+
+#: doctor_functions.php
+msgid "Prerequisites"
+msgstr "사전 요구 사항"
+
+#: doctor_functions.php
+msgid "Repair"
+msgstr "복구"
+
+#: doctor_functions.php
+msgid "Security"
+msgstr "보안"
+
+#: doctor_functions.php
+msgid "PASS"
+msgstr "통과"
+
+#: doctor_functions.php
+msgid "WARN"
+msgstr "경고"
+
+#: doctor_functions.php
+msgid "FAIL"
+msgstr "실패"
+
+#: doctor_functions.php
+msgid "UNKNOWN"
+msgstr "알 수 없음"
+
+#: doctor_rrd.php
+msgid "Data source freshness could not be assessed."
+msgstr "데이터 소스 최신 상태를 평가할 수 없습니다."
+
+#: doctor_rrd.php
+msgid "RRD update freshness"
+msgstr "RRD 업데이트 최신 상태"
+
+#: doctor_rrd.php
+msgid "The deferred-write interval is unknown; configure it before judging file age."
+msgstr "지연 쓰기 간격을 알 수 없습니다. 파일 경과 시간을 판단하기 전에 먼저 구성하세요."
+
+#: doctor_rrd.php
+#, php-format
+msgid "Checked %d files; %d stale files across %d devices; %d unavailable or future-dated files."
+msgstr "%d개 파일 확인됨; %d개의 오래된 파일(총 %d개 장치); %d개의 사용 불가 또는 미래 날짜 파일."
+
+#: doctor_rrd.php
+msgid "File age includes the collection interval and configured deferred-write allowance; verify the poller and flush process before changing data."
+msgstr "파일 경과 시간에는 수집 주기와 구성된 지연 쓰기 허용 시간이 포함됩니다. 데이터를 변경하기 전에 폴러와 플러시 프로세스를 확인하세요."
+
+#: doctor_scheduling.php
+msgid "Scheduled checks are disabled. Enable them in Settings > Doctor to retain samples and alert on changes."
+msgstr "예약된 점검이 비활성화되어 있습니다. 샘플을 보존하고 변경 시 알림을 받으려면 설정 > Doctor에서 활성화하세요."
+
+#: doctor_scheduling.php
+msgid "Scheduled report freshness"
+msgstr "예약 보고서 최신 상태"
+
+#: doctor_scheduling.php
+#, php-format
+msgid "%s UTC"
+msgstr "%s UTC"
+
+#: doctor_scheduling.php
+#, php-format
+msgid "Last started: %s; last completed: %s."
+msgstr "마지막 시작: %s; 마지막 완료: %s."
+
+#: doctor_scheduling.php
+msgid "never"
+msgstr "없음"
+
+#: doctor_scheduling.php
+msgid "Results are missing or stale. Check the primary poller and DOCTOR log for startup, timeout, or persistence errors."
+msgstr "결과가 누락되었거나 오래되었습니다. 주 폴러와 DOCTOR 로그에서 시작, 시간 초과 또는 저장 오류를 확인하세요."
+
+#: doctor_scheduling.php
+msgid "A completed diagnostic run is recent; this does not mean all checks passed."
+msgstr "완료된 진단 실행이 최근 것이지만, 모든 점검이 통과되었음을 의미하지는 않습니다."
+
+#: doctor_scheduling.php
+msgid "Doctor alert state is invalid. Restore doctor_alert_pending from backup before retrying."
+msgstr "Doctor 알림 상태가 올바르지 않습니다. 다시 시도하기 전에 백업에서 doctor_alert_pending을 복원하세요."
+
+#: doctor_scheduling.php
+msgid "Doctor alert transitions are invalid; no email was sent."
+msgstr "Doctor 알림 전환 상태가 올바르지 않아 이메일을 보내지 않았습니다."
+
+#: doctor_scheduling.php
+msgid "Alert delivery"
+msgstr "알림 전송"
+
+#: doctor_scheduling.php
+#, php-format
+msgid "%d check transitions await delivery; attempts: %d of 3."
+msgstr "%d건의 점검 상태 전환이 전송 대기 중입니다(시도: %d/3회)."
+
+#: doctor_scheduling.php
+msgid "Automatic retries exhausted. Correct Cacti mail settings, then run Doctor with --scheduled --retry-alerts as the poller user."
+msgstr "자동 재시도 횟수를 모두 소진했습니다. Cacti 메일 설정을 수정한 후 폴러 사용자로 --scheduled --retry-alerts 옵션을 사용하여 Doctor를 실행하세요."
+
+#: doctor_scheduling.php
+#, php-format
+msgid "Next eligible retry: %s UTC, after a primary poller cycle."
+msgstr "다음 재시도 가능 시각: %s UTC (주 폴러 주기 이후)."
+
+#: doctor_scheduling.php
+msgid "No alert recipients are currently configured; pending transitions are retained."
+msgstr "현재 구성된 알림 수신자가 없습니다. 대기 중인 상태 전환은 보존됩니다."
+
+#: doctor_scheduling.php
+msgid "No retained alert is awaiting delivery. Mail-server acceptance does not prove inbox delivery."
+msgstr "전송 대기 중인 보존된 알림이 없습니다. 메일 서버의 수락이 받은 편지함 배달을 보장하지는 않습니다."
+
+#: doctor_scheduling.php
+msgid "Doctor retained status changes (UTC). Repeated changes for one check are coalesced; an out-and-back transition is retained."
+msgstr "Doctor가 보존한 상태 변경(UTC). 단일 점검의 반복된 변경은 병합되며, 변경 후 복귀한 전환은 보존됩니다."
+
+#: doctor_scheduling.php
+#, php-format
+msgid "%s: %s -> %s (latest change %s)"
+msgstr "%s: %s -> %s (최근 변경 %s)"
+
+#: doctor_scheduling.php
+#, php-format
+msgid "%d further status changes are not listed because the alert queue reached its storage limit."
+msgstr "알림 대기열이 저장 한도에 도달하여 추가 %d건의 상태 변경이 나열되지 않았습니다."
+
+#: doctor_scheduling.php
+msgid "Open Utilities > Doctor for current measurements, recommended actions, and verification steps."
+msgstr "현재 측정값, 권장 조치 및 확인 단계를 보려면 유틸리티 > Doctor를 여세요."
+
+#: doctor_scheduling.php
+#, php-format
+msgid "Cacti Doctor: %d retained status changes"
+msgstr "Cacti Doctor: %d건의 보존된 상태 변경"
+
+#: doctor_scheduling.php
+msgid "Doctor schedule is already running or the database lock is unavailable."
+msgstr "Doctor 예약 작업이 이미 실행 중이거나 데이터베이스 잠금을 사용할 수 없습니다."
+
+#: doctor_web.php
+msgid "The finding could not be acknowledged. Run Doctor again, then acknowledge the current result."
+msgstr "진단 결과를 승인할 수 없습니다. Doctor를 다시 실행한 다음 현재 결과를 승인하세요."
+
+#: doctor_web.php
+msgid "The warning exception could not be saved. Use a fresh assessed warning, an owner, a reason and an expiry within 90 days."
+msgstr "경고 예외를 저장할 수 없습니다. 새로 평가된 경고, 담당자, 사유 및 90일 이내의 만료일을 사용하세요."
+
+#: doctor_web.php
+msgid "Confirm repair"
+msgstr "복구 확인"
+
+#: doctor_web.php
+msgid "Approval expires after five minutes and is invalidated by a changed filesystem. The acting account must be able to create directories or change owner permissions."
+msgstr "승인은 5분 후 만료되며 파일 시스템이 변경되면 무효화됩니다. 실행 계정은 디렉터리를 생성하거나 소유자 권한을 변경할 수 있어야 합니다."
+
+#: doctor_web.php
+msgid "Repair prerequisites are not met. No changes will be made."
+msgstr "복구 사전 요구 사항이 충족되지 않았습니다. 변경 사항이 적용되지 않습니다."
+
+#: doctor_web.php
+msgid "Cancel"
+msgstr "취소"
+
+#: doctor_web.php
+#, php-format
+msgid "Last observation: %s UTC."
+msgstr "마지막 관찰: %s UTC."
+
+#: doctor_web.php
+msgid "No completed diagnostic report is available."
+msgstr "완료된 진단 보고서가 없습니다."
+
+#: doctor_web.php
+msgid "Health is unknown: observations are missing or stale."
+msgstr "상태를 알 수 없음: 관찰 데이터가 누락되었거나 오래되었습니다."
+
+#: doctor_web.php
+msgid "Run diagnostic checks"
+msgstr "진단 점검 실행"
+
+#: doctor_web.php
+msgid "Doctor settings"
+msgstr "Doctor 설정"
+
+#: doctor_web.php setup.php
+msgid "Cacti Doctor"
+msgstr "Cacti Doctor"
+
+#: doctor_web.php
+#, php-format
+msgid "Installation health: %d passed, %d warnings, %d failed"
+msgstr "설치 상태: %d건 통과, %d건 경고, %d건 실패"
+
+#: doctor_web.php
+msgid "Category"
+msgstr "범주"
+
+#: doctor_web.php
+msgid "Check"
+msgstr "점검"
+
+#: doctor_web.php
+msgid "Status"
+msgstr "상태"
+
+#: doctor_web.php
+msgid "Details"
+msgstr "세부 정보"
+
+#: doctor_web.php
+msgid "Action"
+msgstr "작업"
+
+#: doctor_web.php
+msgid "Acknowledged; health status unchanged."
+msgstr "승인됨. 상태는 변경되지 않았습니다."
+
+#: doctor_web.php
+msgid "Acknowledge"
+msgstr "확인 처리"
+
+#: doctor_web.php
+#, php-format
+msgid "Owner: %s; review by %s UTC. Reason: %s"
+msgstr "담당자: %s; 검토 기한: %s UTC. 사유: %s"
+
+#: doctor_web.php
+msgid "Investigate a symptom"
+msgstr "증상 조사"
+
+#: doctor_web.php
+msgid "Investigate"
+msgstr "조사"
+
+#: doctor_web.php
+msgid "Recent scheduled checks"
+msgstr "최근 예약 점검"
+
+#: doctor_web.php
+msgid "Failed"
+msgstr "실패"
+
+#: doctor_web.php
+msgid "Observation (UTC)"
+msgstr "관찰 시각 (UTC)"
+
+#: doctor_web.php
+msgid "Passed"
+msgstr "통과"
+
+#: doctor_web.php
+msgid "Warnings"
+msgstr "경고"
+
+#: doctor_web.php
+msgid "Warning exceptions"
+msgstr "경고 예외"
+
+#: doctor_web.php
+msgid "Owner"
+msgstr "담당자"
+
+#: doctor_web.php
+msgid "Reason"
+msgstr "사유"
+
+#: doctor_web.php
+msgid "Review date (UTC)"
+msgstr "검토 날짜 (UTC)"
+
+#: doctor_web.php
+msgid "Accept warning"
+msgstr "경고 수락"
+
+#: doctor_web.php
+msgid "Expired"
+msgstr "만료됨"
+
+#: doctor_web.php
+msgid "Check not present in this report; verify its ID."
+msgstr "이 보고서에 해당 점검이 없습니다. ID를 확인하세요."
+
+#: doctor_web.php
+msgid "Remove exception"
+msgstr "예외 제거"
+
+#: doctor_web.php
+msgid "Audit history"
+msgstr "감사 기록"
+
+#: doctor_workflows.php
+msgid "Repair refused"
+msgstr "복구 거부됨"
+
+#: doctor_workflows.php
+msgid "The approved plan is expired or the filesystem changed. Preview the repair again."
+msgstr "승인된 계획이 만료되었거나 파일 시스템이 변경되었습니다. 복구 미리 보기를 다시 실행하세요."
+
+#: doctor_workflows.php
+msgid "The audit record could not be saved. No repair was attempted."
+msgstr "감사 레코드를 저장할 수 없습니다. 복구가 시도되지 않았습니다."
+
+#: doctor_workflows.php
+msgid "The completion audit failed; inspect the filesystem and the started audit record."
+msgstr "완료 감사에 실패했습니다. 파일 시스템과 시작된 감사 레코드를 검사하세요."
+
+#: setup.php
+msgid "Doctor Administrator"
+msgstr "Doctor 관리자"
+
+#: setup.php
+msgid "Doctor Operator"
+msgstr "Doctor 운영자"
+
+#: setup.php
+msgid "Doctor Viewer"
+msgstr "Doctor 뷰어"
+
+#: setup.php
+msgid "Utilities"
+msgstr "유틸리티"
+
+#: setup.php
+msgid "System Administration"
+msgstr "시스템 관리"
+
+#: setup.php
+msgid "Scheduled Checks"
+msgstr "예약된 점검"
+
+#: setup.php
+msgid "Run Checks on a Schedule"
+msgstr "예약에 따라 점검 실행"
+
+#: setup.php
+msgid "Run every Doctor check in the background after the poller and record each check's status."
+msgstr "폴러 실행 후 백그라운드에서 모든 Doctor 점검을 실행하고 각 점검의 상태를 기록합니다."
+
+#: setup.php
+msgid "Check Interval"
+msgstr "점검 주기"
+
+#: setup.php
+msgid "How often the scheduled checks run."
+msgstr "예약된 점검을 실행하는 빈도입니다."
+
+#: setup.php
+msgid "Every 15 Minutes"
+msgstr "15분마다"
+
+#: setup.php
+msgid "Every Hour"
+msgstr "매시간"
+
+#: setup.php
+msgid "Every 6 Hours"
+msgstr "6시간마다"
+
+#: setup.php
+msgid "Every Day"
+msgstr "매일"
+
+#: setup.php
+msgid "Alert Email Addresses"
+msgstr "알림 이메일 주소"
+
+#: setup.php
+msgid "Comma-separated addresses to email when a check starts or stops failing. Leave empty to only log changes to the Cacti log."
+msgstr "점검이 실패하기 시작하거나 복구될 때 이메일을 보낼 쉼표로 구분된 주소입니다. 비워 두면 Cacti 로그에만 변경 사항을 기록합니다."
+
+#: setup.php
+msgid "Alert on Warnings"
+msgstr "경고 시 알림"
+
+#: setup.php
+msgid "Also alert when a check moves into or out of a warning."
+msgstr "점검이 경고 상태로 들어가거나 경고 상태에서 벗어날 때도 알립니다."
+
+#: setup.php
+msgid "Thresholds"
+msgstr "임계값"
+
+#: setup.php
+msgid "Poller Run Time Warning (percent)"
+msgstr "폴러 실행 시간 경고 (백분율)"
+
+#: setup.php
+msgid "Warn when the last main-poller run used this share of the polling interval. Runs that take the whole interval always fail."
+msgstr "마지막 기본 폴러 실행이 폴링 간격의 이 비율만큼을 사용했을 때 경고합니다. 전체 간격이 소요되는 실행은 항상 실패로 처리됩니다."
+
+#: setup.php
+msgid "RRA Disk Free Warning (percent)"
+msgstr "RRA 디스크 여유 공간 경고 (백분율)"
+
+#: setup.php
+msgid "Warn when free space on the RRA file system drops below this percentage."
+msgstr "RRA 파일 시스템의 여유 공간이 이 백분율 미만으로 떨어지면 경고합니다."
+
+#: setup.php
+msgid "Fail when free space on the RRA file system drops below this percentage."
+msgstr "RRA 파일 시스템의 여유 공간이 이 백분율 미만으로 떨어지면 실패로 처리합니다."
+
+#: setup.php
+msgid "RRA Disk Free Failure (percent)"
+msgstr "RRA 디스크 여유 공간 실패 (백분율)"
+
+#: setup.php
+msgid "Clock Drift Warning (seconds)"
+msgstr "시계 오차 경고 (초)"
+
+#: setup.php
+msgid "Warn when the database and PHP clocks differ by more than this."
+msgstr "데이터베이스 시계와 PHP 시계의 차이가 이 값을 초과하면 경고합니다."
+
+#: setup.php
+msgid "Clock Drift Failure (seconds)"
+msgstr "시계 오차 실패 (초)"
+
+#: setup.php
+msgid "Fail when the database and PHP clocks differ by more than this."
+msgstr "데이터베이스 시계와 PHP 시계의 차이가 이 값을 초과하면 실패로 처리합니다."
+
+#: setup.php
+msgid "RRD Stale Intervals"
+msgstr "RRD 미갱신 간격"
+
+#: setup.php
+msgid "Warn after this many collection intervals without a file update (1 to 100)."
+msgstr "파일 업데이트 없이 이 수집 간격 수만큼 경과하면 경고합니다 (1~100)."
+
+#: setup.php
+msgid "Additional disk-write delay for external caching (0 to 86400). Boost adds its own allowance."
+msgstr "외부 캐싱을 위한 추가 디스크 쓰기 지연 시간입니다 (0~86400). Boost는 자체 허용 시간을 추가합니다."
+
+#: setup.php
+msgid "Deferred RRD Write Allowance (seconds)"
+msgstr "지연된 RRD 쓰기 허용 시간 (초)"
+
+#: setup.php
+msgid "Cacti Log Size Warning (MB)"
+msgstr "Cacti 로그 크기 경고 (MB)"
+
+#: setup.php
+msgid "Warn when the Cacti log grows beyond this size, which usually means log rotation is not running."
+msgstr "Cacti 로그가 이 크기를 초과하면 경고합니다. 일반적으로 이는 로그 순환이 실행되지 않고 있음을 의미합니다."
