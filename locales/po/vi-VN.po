@@ -1,0 +1,1542 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
+# SPDX-FileCopyrightText: 2026 Thomas Vincent <thomasvincent@gmail.com>
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: doctor 0.6.1\n"
+"Report-Msgid-Bugs-To: https://github.com/somethingwithproof/plugin_doctor/issues\n"
+"PO-Revision-Date: 2026-11-26 00:00+0000\n"
+"Last-Translator: Thomas Vincent <thomasvincent@gmail.com>\n"
+"Language-Team: Thomas Vincent <thomasvincent@gmail.com>\n"
+"Language: vi-VN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: cli/doctor.php
+#, php-format
+msgid "Available repairs: %s"
+msgstr "Các bản sửa chữa khả dụng: %s"
+
+#: cli/doctor.php
+#, php-format
+msgid "Unknown format %s. Use text, json, nagios, or prometheus."
+msgstr "Định dạng không xác định %s. Hãy sử dụng text, json, nagios hoặc prometheus."
+
+#: cli/doctor.php
+#, php-format
+msgid "Redaction could not complete, so %s was not written."
+msgstr "Không thể hoàn tất quá trình che dữ liệu nhạy cảm, vì vậy %s chưa được ghi."
+
+#: cli/doctor.php
+#, php-format
+msgid "Wrote %s. Review it before sharing; values after password, secret, token, and community names are masked."
+msgstr "Đã ghi %s. Hãy kiểm tra lại trước khi chia sẻ; các giá trị sau tên password, secret, token và community đã được che."
+
+#: cli/doctor.php doctor_functions.php
+msgid "Unknown repair"
+msgstr "Bản sửa chữa không xác định"
+
+#: cli/doctor.php
+msgid "Refusing to repair without --yes."
+msgstr "Từ chối sửa chữa khi không có --yes."
+
+#: cli/doctor.php
+msgid "Select a supported symptom and text or JSON output."
+msgstr "Chọn một triệu chứng được hỗ trợ và đầu ra dạng text hoặc JSON."
+
+#: cli/doctor.php doctor_web.php
+msgid "Accepted warning"
+msgstr "Cảnh báo đã chấp nhận"
+
+#: doctor_access.php doctor_functions.php
+msgid "Device availability"
+msgstr "Tính khả dụng của thiết bị"
+
+#: doctor_access.php
+msgid "Device permissions could not be evaluated."
+msgstr "Không thể đánh giá quyền của thiết bị."
+
+#: doctor_access.php
+msgid "The configured PHP CLI cannot run Doctor checks."
+msgstr "PHP CLI đã cấu hình không thể chạy các kiểm tra của Doctor."
+
+#: doctor_access.php
+msgid "Doctor checks failed or exceeded their time limit. Review the Doctor log."
+msgstr "Các kiểm tra của Doctor đã thất bại hoặc vượt quá giới hạn thời gian. Hãy xem nhật ký Doctor."
+
+#: doctor_diagnosis.php
+msgid "Graphs stopped updating"
+msgstr "Biểu đồ ngừng cập nhật"
+
+#: doctor_diagnosis.php
+msgid "Polling is slow"
+msgstr "Quá trình thu thập dữ liệu bị chậm"
+
+#: doctor_diagnosis.php
+msgid "Devices are missing or unavailable"
+msgstr "Thiết bị bị thiếu hoặc không khả dụng"
+
+#: doctor_diagnosis.php
+msgid "Doctor alerts are missing"
+msgstr "Thiếu cảnh báo Doctor"
+
+#: doctor_diagnosis.php
+msgid "Check the poller scheduler and the affected poller log, then verify a new completed cycle."
+msgstr "Kiểm tra bộ lập lịch poller và nhật ký của poller bị ảnh hưởng, sau đó xác minh một chu kỳ mới đã hoàn tất."
+
+#: doctor_diagnosis.php
+msgid "Collection may have stopped."
+msgstr "Quá trình thu thập có thể đã dừng."
+
+#: doctor_diagnosis.php
+msgid "Collected values may not be reaching disk."
+msgstr "Các giá trị đã thu thập có thể chưa được ghi xuống đĩa."
+
+#: doctor_diagnosis.php
+msgid "Inspect the output queue and Boost flush history; verify that the queue drains and RRD timestamps advance."
+msgstr "Kiểm tra hàng đợi đầu ra và lịch sử xả dữ liệu của Boost; xác minh rằng hàng đợi được giải phóng và dấu thời gian RRD tăng lên."
+
+#: doctor_diagnosis.php
+msgid "Check storage capacity, runtime-directory permissions and the last RRD update; account for deferred writes."
+msgstr "Kiểm tra dung lượng lưu trữ, quyền thư mục thời gian chạy và lần cập nhật RRD cuối cùng; tính đến các thao tác ghi bị hoãn."
+
+#: doctor_diagnosis.php
+msgid "RRD storage needs investigation."
+msgstr "Cần điều tra bộ nhớ lưu trữ RRD."
+
+#: doctor_diagnosis.php
+msgid "Collection work may be exceeding its time budget."
+msgstr "Tác vụ thu thập có thể đang vượt quá ngân sách thời gian."
+
+#: doctor_diagnosis.php
+msgid "Compare cycle duration with the polling interval and inspect device timeouts before increasing concurrency."
+msgstr "So sánh thời lượng chu kỳ với khoảng thời gian thăm dò và kiểm tra thời gian chờ của thiết bị trước khi tăng mức độ đồng thời."
+
+#: doctor_diagnosis.php
+msgid "Compare database counters during a slow cycle and inspect query plans before changing server limits."
+msgstr "So sánh các bộ đếm cơ sở dữ liệu trong một chu kỳ chậm và kiểm tra kế hoạch truy vấn trước khi thay đổi giới hạn máy chủ."
+
+#: doctor_diagnosis.php
+msgid "Database pressure may be contributing to slow polling."
+msgstr "Áp lực cơ sở dữ liệu có thể đang góp phần làm chậm quá trình thăm dò."
+
+#: doctor_diagnosis.php
+msgid "Collection prerequisites or reachability may be failing."
+msgstr "Các điều kiện tiên quyết để thu thập hoặc khả năng kết nối tới đích có thể đang gặp lỗi."
+
+#: doctor_diagnosis.php
+msgid "Verify the affected device permissions, reachability, credentials and assigned poller using Cacti diagnostics."
+msgstr "Xác minh quyền, khả năng kết nối, thông tin xác thực và poller được gán của thiết bị bị ảnh hưởng bằng công cụ chẩn đoán Cacti."
+
+#: doctor_diagnosis.php
+msgid "Scheduled checks or mail delivery need attention."
+msgstr "Cần chú ý các kiểm tra theo lịch trình hoặc việc gửi thư."
+
+#: doctor_diagnosis.php
+msgid "Verify scheduling and recipient settings, inspect retained delivery attempts, and send a Cacti test email."
+msgstr "Xác minh cài đặt lập lịch và người nhận, kiểm tra các lần thử gửi được lưu lại và gửi một email thử nghiệm của Cacti."
+
+#: doctor_diagnosis.php
+msgid "Possible causes require verification; matching checks do not establish a root cause."
+msgstr "Các nguyên nhân có thể xảy ra cần được xác minh; các kiểm tra khớp không xác lập nguyên nhân gốc rễ."
+
+#: doctor_diagnosis.php
+msgid "No cause is established by the available observations. Run fresh diagnostics and investigate the symptom directly."
+msgstr "Không có nguyên nhân nào được xác lập từ các quan sát hiện có. Hãy chạy chẩn đoán mới và điều tra trực tiếp triệu chứng."
+
+#: doctor_functions.php
+msgid "At least 24 hours since server startup and FLUSH STATUS. Counters are cumulative and may have different reset histories; confirm trends during a representative workload before tuning."
+msgstr "Ít nhất 24 giờ kể từ khi khởi động máy chủ và FLUSH STATUS. Các bộ đếm là tích lũy và có thể có lịch sử đặt lại khác nhau; hãy xác nhận xu hướng trong khối lượng công việc đại diện trước khi tinh chỉnh."
+
+#: doctor_functions.php
+msgid "Cumulative tuning advice is deferred: obtain valid uptime and at least 24 hours since startup and FLUSH STATUS. Missing metrics or an inconsistent sample cannot establish database health."
+msgstr "Khuyến nghị tinh chỉnh tích lũy bị hoãn lại: cần có thời gian hoạt động hợp lệ và ít nhất 24 giờ kể từ khi khởi động cũng như FLUSH STATUS. Thiếu số liệu hoặc mẫu không nhất quán không thể xác lập tình trạng cơ sở dữ liệu."
+
+#: doctor_functions.php
+msgid "Database observation window"
+msgstr "Cửa sổ quan sát cơ sở dữ liệu"
+
+#: doctor_functions.php
+msgid "Connection metrics are unavailable or invalid. Check access to SHOW GLOBAL STATUS and SHOW GLOBAL VARIABLES; do not treat missing metrics as an idle server."
+msgstr "Các số liệu kết nối không khả dụng hoặc không hợp lệ. Kiểm tra quyền truy cập SHOW GLOBAL STATUS và SHOW GLOBAL VARIABLES; không coi việc thiếu số liệu là máy chủ đang nhàn rỗi."
+
+#: doctor_functions.php
+#, php-format
+msgid "Current connections: %.0f / %.0f (%s); recorded peak: %.0f (%s of the current limit)."
+msgstr "Kết nối hiện tại: %.0f / %.0f (%s); đỉnh đã ghi nhận: %.0f (%s của giới hạn hiện tại)."
+
+#: doctor_functions.php
+msgid "Review connection pooling and poller concurrency. Check database-host memory headroom before raising max_connections; the historical peak may reflect an older limit."
+msgstr "Xem xét việc gộp kết nối và mức độ đồng thời của poller. Kiểm tra khoảng dự phòng bộ nhớ của máy chủ cơ sở dữ liệu trước khi tăng max_connections; mức đỉnh lịch sử có thể phản ánh giới hạn cũ hơn."
+
+#: doctor_functions.php
+msgid "Connection capacity"
+msgstr "Dung lượng kết nối"
+
+#: doctor_functions.php
+msgid "InnoDB buffer pool reads"
+msgstr "Lượt đọc vùng đệm InnoDB"
+
+#: doctor_functions.php
+msgid "Review query plans and the working set. Consider innodb_buffer_pool_size only after measuring memory available on the database host; a cumulative miss ratio alone does not prove memory pressure."
+msgstr "Xem xét kế hoạch truy vấn và tập dữ liệu làm việc. Chỉ cân nhắc innodb_buffer_pool_size sau khi đo bộ nhớ khả dụng trên máy chủ cơ sở dữ liệu; chỉ riêng tỷ lệ trượt tích lũy không chứng minh được áp lực bộ nhớ."
+
+#: doctor_functions.php
+msgid "On-disk temporary tables"
+msgstr "Bảng tạm trên đĩa"
+
+#: doctor_functions.php
+msgid "Review query plans, sorting, grouping, and temporary-table data types before changing memory limits. Some tables must use disk; memory limits and accounting differ between MySQL and MariaDB versions."
+msgstr "Xem xét kế hoạch truy vấn, sắp xếp, nhóm và kiểu dữ liệu của bảng tạm trước khi thay đổi giới hạn bộ nhớ. Một số bảng bắt buộc phải dùng đĩa; giới hạn bộ nhớ và cách thống kê khác nhau giữa các phiên bản MySQL và MariaDB."
+
+#: doctor_functions.php
+msgid "Connection thread creation"
+msgstr "Tạo luồng kết nối"
+
+#: doctor_functions.php
+msgid "Review connection reuse and thread_cache_size. Check the server thread-handling mode before tuning; thread-pool implementations do not behave like one-thread-per-connection servers."
+msgstr "Xem xét việc tái sử dụng kết nối và thread_cache_size. Kiểm tra chế độ xử lý luồng của máy chủ trước khi tinh chỉnh; các triển khai nhóm luồng không hoạt động giống máy chủ một luồng trên mỗi kết nối."
+
+#: doctor_functions.php
+msgid "Review slow-query logging, long_query_time, and query plans before changing server buffers. This counter depends on the configured slow-query threshold and does not identify individual statements."
+msgstr "Xem xét nhật ký truy vấn chậm, long_query_time và kế hoạch truy vấn trước khi thay đổi bộ đệm máy chủ. Bộ đếm này phụ thuộc vào ngưỡng truy vấn chậm đã cấu hình và không xác định từng câu lệnh riêng lẻ."
+
+#: doctor_functions.php
+msgid "Slow statements"
+msgstr "Câu lệnh chậm"
+
+#: doctor_functions.php
+msgid "Cumulative advice deferred until the observation window is sufficient."
+msgstr "Khuyến nghị tích lũy được hoãn cho đến khi cửa sổ quan sát đủ dài."
+
+#: doctor_functions.php
+msgid "Thread-cache advice is not assessed: thread_handling is unavailable or is not one-thread-per-connection. Review the active thread-pool implementation instead."
+msgstr "Khuyến nghị bộ nhớ đệm luồng không được đánh giá: thread_handling không khả dụng hoặc không ở chế độ one-thread-per-connection. Hãy xem xét triển khai nhóm luồng đang hoạt động thay thế."
+
+#: doctor_functions.php
+#, php-format
+msgid "Required counters are missing or invalid: %s, %s. Check server-version support and monitoring permissions."
+msgstr "Các bộ đếm bắt buộc bị thiếu hoặc không hợp lệ: %s, %s. Kiểm tra hỗ trợ phiên bản máy chủ và quyền giám sát."
+
+#: doctor_functions.php
+msgid "A counter reset since the prior sample; collect another representative interval before tuning."
+msgstr "Một bộ đếm đã đặt lại kể từ mẫu trước đó; hãy thu thập một khoảng thời gian đại diện khác trước khi tinh chỉnh."
+
+#: doctor_functions.php
+#, php-format
+msgid "Insufficient activity: %.0f %s; at least %d observations are needed for this advisory."
+msgstr "Hoạt động chưa đủ: %.0f %s; cần ít nhất %d quan sát cho khuyến nghị này."
+
+#: doctor_functions.php
+msgid "Counters are inconsistent or were reset independently. Collect a new representative sample before tuning."
+msgstr "Các bộ đếm không nhất quán hoặc đã được đặt lại độc lập. Hãy thu thập một mẫu đại diện mới trước khi tinh chỉnh."
+
+#: doctor_functions.php
+msgid "The interval sample is too small or counters reset; collect another representative interval before tuning."
+msgstr "Mẫu khoảng thời gian quá nhỏ hoặc các bộ đếm đã đặt lại; hãy thu thập một khoảng thời gian đại diện khác trước khi tinh chỉnh."
+
+#: doctor_functions.php
+#, php-format
+msgid "Interval %s / %s: %.0f / %.0f (%s); investigation threshold: %s."
+msgstr "Khoảng %s / %s: %.0f / %.0f (%s); ngưỡng điều tra: %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "Cumulative %s / %s: %.0f / %.0f (%s); investigation threshold: %s."
+msgstr "Tích lũy %s / %s: %.0f / %.0f (%s); ngưỡng điều tra: %s."
+
+#: doctor_functions.php
+msgid "This counter can omit memory-mapped temporary files on MySQL; a low ratio does not rule out disk use."
+msgstr "Bộ đếm này có thể bỏ sót các tệp tạm ánh xạ bộ nhớ trên MySQL; tỷ lệ thấp không loại trừ việc sử dụng đĩa."
+
+#: doctor_functions.php
+msgid "Redo-log advice deferred until the observation window is sufficient and Innodb_log_waits is available."
+msgstr "Khuyến nghị nhật ký redo được hoãn cho đến khi cửa sổ quan sát đủ dài và Innodb_log_waits khả dụng."
+
+#: doctor_functions.php
+#, php-format
+msgid "Cumulative Innodb_log_waits: %.0f."
+msgstr "Innodb_log_waits tích lũy: %.0f."
+
+#: doctor_functions.php
+msgid "Investigate transaction sizes, log-buffer pressure, and storage latency. Recheck the rate under load before considering innodb_log_buffer_size; this historical count is not evidence of a current stall."
+msgstr "Điều tra kích thước giao dịch, áp lực bộ đệm nhật ký và độ trễ lưu trữ. Kiểm tra lại tốc độ khi có tải trước khi cân nhắc innodb_log_buffer_size; số đếm lịch sử này không phải là bằng chứng về tình trạng tắc nghẽn hiện tại."
+
+#: doctor_functions.php
+msgid "InnoDB log-buffer waits"
+msgstr "Lượt chờ bộ đệm nhật ký InnoDB"
+
+#: doctor_functions.php
+msgid "installed Cacti composer.json"
+msgstr "tệp composer.json của Cacti đã cài đặt"
+
+#: doctor_functions.php
+#, php-format
+msgid "Cacti %s installer requirement"
+msgstr "yêu cầu trình cài đặt Cacti %s"
+
+#: doctor_functions.php
+msgid "PHP compatibility with installed Cacti"
+msgstr "Khả năng tương thích của PHP với Cacti đã cài đặt"
+
+#: doctor_functions.php
+#, php-format
+msgid "Running PHP %s; installed Cacti %s."
+msgstr "Đang chạy PHP %s; đã cài đặt Cacti %s."
+
+#: doctor_functions.php
+msgid "Could not establish Cacti's PHP requirement. Check the installed Cacti composer.json or release documentation; Doctor does not assume compatibility."
+msgstr "Không thể xác định yêu cầu PHP của Cacti. Kiểm tra tệp composer.json của Cacti đã cài đặt hoặc tài liệu phát hành; Doctor không giả định tính tương thích."
+
+#: doctor_functions.php
+#, php-format
+msgid "PHP >= %s and < %s"
+msgstr "PHP >= %s và < %s"
+
+#: doctor_functions.php
+#, php-format
+msgid "PHP >= %s"
+msgstr "PHP >= %s"
+
+#: doctor_functions.php
+#, php-format
+msgid "Requires %s (%s). Running PHP meets that requirement."
+msgstr "Yêu cầu %s (%s). PHP đang chạy đáp ứng yêu cầu đó."
+
+#: doctor_functions.php
+#, php-format
+msgid "Requires %s (%s). Running PHP does not meet that requirement."
+msgstr "Yêu cầu %s (%s). PHP đang chạy không đáp ứng yêu cầu đó."
+
+#: doctor_functions.php
+#, php-format
+msgid "Detected %s; Doctor requires Cacti 1.2.20 or newer."
+msgstr "Đã phát hiện %s; Doctor yêu cầu Cacti 1.2.20 trở lên."
+
+#: doctor_functions.php
+msgid "Supported Cacti version"
+msgstr "Phiên bản Cacti được hỗ trợ"
+
+#: doctor_functions.php
+msgid "PHP upstream security support"
+msgstr "Hỗ trợ bảo mật thượng nguồn cho PHP"
+
+#: doctor_functions.php
+msgid "This checks the PHP release branch, not whether this patch release is up to date or whether your OS vendor backports fixes. Cacti compatibility is checked separately."
+msgstr "Mục này kiểm tra nhánh phát hành PHP, không kiểm tra bản vá hiện tại đã mới nhất hay nhà cung cấp hệ điều hành có chuyển ngược bản sửa lỗi hay không. Khả năng tương thích với Cacti được kiểm tra riêng."
+
+#: doctor_functions.php
+#, php-format
+msgid "Running PHP %s; upstream security-support status is unknown or this is a prerelease. Check https://www.php.net/supported-versions.php and update Doctor's support data."
+msgstr "Đang chạy PHP %s; không rõ trạng thái hỗ trợ bảo mật thượng nguồn hoặc đây là bản phát hành trước. Kiểm tra https://www.php.net/supported-versions.php và cập nhật dữ liệu hỗ trợ của Doctor."
+
+#: doctor_functions.php
+#, php-format
+msgid "Running PHP %s; PHP %s receives upstream security fixes through %s."
+msgstr "Đang chạy PHP %s; PHP %s nhận các bản sửa lỗi bảo mật thượng nguồn đến hết %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "Running PHP %s; PHP %s no longer receives upstream security fixes; support ended %s. Upgrade to a supported PHP branch compatible with your Cacti installation, or confirm security maintenance with your OS vendor."
+msgstr "Đang chạy PHP %s; PHP %s không còn nhận các bản sửa lỗi bảo mật thượng nguồn; hỗ trợ đã kết thúc vào %s. Hãy nâng cấp lên nhánh PHP được hỗ trợ tương thích với bản cài đặt Cacti của bạn, hoặc xác nhận việc bảo trì bảo mật với nhà cung cấp hệ điều hành."
+
+#: doctor_functions.php
+msgid "Required current CLI PHP extensions"
+msgstr "Các phần mở rộng PHP CLI hiện tại bắt buộc"
+
+#: doctor_functions.php
+msgid "Required web PHP extensions"
+msgstr "Các phần mở rộng PHP web bắt buộc"
+
+#: doctor_functions.php
+#, php-format
+msgid "Missing: %s. Install them through the operating system package manager."
+msgstr "Thiếu: %s. Hãy cài đặt chúng qua trình quản lý gói của hệ điều hành."
+
+#: doctor_functions.php
+msgid "All PHP extensions required by the Cacti installer are loaded in this PHP context."
+msgstr "Tất cả phần mở rộng PHP do trình cài đặt Cacti yêu cầu đều đã được nạp trong ngữ cảnh PHP này."
+
+#: doctor_functions.php
+msgid "Doctor does not execute configured binaries while running as root."
+msgstr "Doctor không thực thi các tệp nhị phân đã cấu hình khi đang chạy với quyền root."
+
+#: doctor_functions.php
+#, php-format
+msgid "The file name %s is not expected for %s, so Doctor did not execute it."
+msgstr "Tên tệp %s không đúng như mong đợi cho %s, nên Doctor đã không thực thi tệp đó."
+
+#: doctor_functions.php
+msgid "Doctor is running as root, so permission checks describe root rather than the web server or poller account, configured binaries are not executed, and repairs are refused. Run Doctor as the Cacti poller user."
+msgstr "Doctor đang chạy với quyền root, nên các kiểm tra quyền phản ánh tài khoản root thay vì tài khoản máy chủ web hoặc poller, các tệp nhị phân đã cấu hình không được thực thi và các thao tác sửa chữa bị từ chối. Hãy chạy Doctor với tư cách người dùng poller của Cacti."
+
+#: doctor_functions.php
+msgid "Doctor privileges"
+msgstr "Quyền của Doctor"
+
+#: doctor_functions.php
+msgid "Doctor is running without root privileges."
+msgstr "Doctor đang chạy không có quyền root."
+
+#: doctor_functions.php
+msgid "Required CLI PHP extensions"
+msgstr "Các phần mở rộng PHP CLI bắt buộc"
+
+#: doctor_functions.php
+msgid "The configured PHP CLI executable is unavailable, so its extensions cannot be checked."
+msgstr "Tệp thực thi PHP CLI đã cấu hình không khả dụng, nên không thể kiểm tra các phần mở rộng của nó."
+
+#: doctor_functions.php
+msgid "shell_exec() is disabled, so Doctor cannot compare the CLI PHP extensions with Cacti requirements."
+msgstr "shell_exec() đã bị vô hiệu hóa, nên Doctor không thể so sánh các phần mở rộng PHP CLI với yêu cầu của Cacti."
+
+#: doctor_functions.php
+msgid "The configured PHP CLI executable did not return a valid extension list."
+msgstr "Tệp thực thi PHP CLI đã cấu hình không trả về danh sách phần mở rộng hợp lệ."
+
+#: doctor_functions.php
+#, php-format
+msgid "Missing from CLI PHP: %s. The web and CLI PHP configurations are separate on many systems."
+msgstr "Thiếu trong CLI PHP: %s. Cấu hình PHP web và CLI tách biệt trên nhiều hệ thống."
+
+#: doctor_functions.php
+msgid "The configured PHP CLI has every extension required by Cacti."
+msgstr "PHP CLI đã cấu hình có đầy đủ mọi phần mở rộng do Cacti yêu cầu."
+
+#: doctor_functions.php
+msgid "GD TrueType support"
+msgstr "Hỗ trợ GD TrueType"
+
+#: doctor_functions.php
+msgid "Recommended PHP features"
+msgstr "Các tính năng PHP được khuyến nghị"
+
+#: doctor_functions.php
+#, php-format
+msgid "Unavailable: %s. Cacti can run without these features, but related functionality may be limited."
+msgstr "Không khả dụng: %s. Cacti vẫn có thể chạy mà không có các tính năng này, nhưng chức năng liên quan có thể bị hạn chế."
+
+#: doctor_functions.php
+msgid "The optional gettext, SNMP, and GD TrueType features are available."
+msgstr "Các tính năng tùy chọn gettext, SNMP và GD TrueType đều khả dụng."
+
+#: doctor_functions.php
+#, php-format
+msgid "memory_limit is %s (%dM or more is recommended)"
+msgstr "memory_limit là %s (khuyến nghị %dM trở lên)"
+
+#: doctor_functions.php
+#, php-format
+msgid "max_execution_time is %d seconds (60 or more is recommended)"
+msgstr "max_execution_time là %d giây (khuyến nghị 60 trở lên)"
+
+#: doctor_functions.php
+msgid "date.timezone is not set"
+msgstr "date.timezone chưa được thiết lập"
+
+#: doctor_functions.php
+msgid "unset"
+msgstr "chưa đặt"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s. Current values: %s"
+msgstr "%s. Giá trị hiện tại: %s"
+
+#: doctor_functions.php
+msgid "PHP runtime configuration"
+msgstr "Cấu hình thời gian chạy PHP"
+
+#: doctor_functions.php
+msgid "Database connection"
+msgstr "Kết nối cơ sở dữ liệu"
+
+#: doctor_functions.php
+#, php-format
+msgid "Query failed: %s"
+msgstr "Truy vấn thất bại: %s"
+
+#: doctor_functions.php
+msgid "A read-only query completed successfully."
+msgstr "Một truy vấn chỉ đọc đã hoàn tất thành công."
+
+#: doctor_functions.php
+msgid "The database returned an unexpected result."
+msgstr "Cơ sở dữ liệu đã trả về kết quả không mong đợi."
+
+#: doctor_functions.php
+#, php-format
+msgid "Doctor could not determine the database server version from %s."
+msgstr "Doctor không thể xác định phiên bản máy chủ cơ sở dữ liệu từ %s."
+
+#: doctor_functions.php
+msgid "Supported database server"
+msgstr "Máy chủ cơ sở dữ liệu được hỗ trợ"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s %s detected; this Cacti branch recommends %s %s or newer."
+msgstr "Đã phát hiện %s %s; nhánh Cacti này khuyến nghị %s %s trở lên."
+
+#: doctor_functions.php
+#, php-format
+msgid "Database character set is %s and collation is %s. Cacti requires utf8mb4."
+msgstr "Bộ ký tự của cơ sở dữ liệu là %s và đối chiếu là %s. Cacti yêu cầu utf8mb4."
+
+#: doctor_functions.php
+msgid "unknown"
+msgstr "không xác định"
+
+#: doctor_functions.php
+msgid "Database character set"
+msgstr "Bộ ký tự cơ sở dữ liệu"
+
+#: doctor_functions.php
+msgid "Database timezone support"
+msgstr "Hỗ trợ múi giờ của cơ sở dữ liệu"
+
+#: doctor_functions.php
+msgid "The Cacti database account cannot read mysql.time_zone_name. Grant SELECT access and populate the database timezone tables."
+msgstr "Tài khoản cơ sở dữ liệu Cacti không thể đọc mysql.time_zone_name. Hãy cấp quyền SELECT và nạp dữ liệu cho các bảng múi giờ của cơ sở dữ liệu."
+
+#: doctor_functions.php
+#, php-format
+msgid "The database timezone table is accessible and contains %d entries."
+msgstr "Bảng múi giờ của cơ sở dữ liệu có thể truy cập và chứa %d mục."
+
+#: doctor_functions.php
+msgid "The database timezone table is accessible but empty. Populate the system timezone tables."
+msgstr "Bảng múi giờ của cơ sở dữ liệu có thể truy cập nhưng đang trống. Hãy nạp dữ liệu cho các bảng múi giờ hệ thống."
+
+#: doctor_functions.php
+msgid "Core tables used by Cacti are present."
+msgstr "Các bảng cốt lõi mà Cacti sử dụng đều hiện diện."
+
+#: doctor_functions.php
+#, php-format
+msgid "Missing core tables: %s. Restore or upgrade the database before attempting other repairs."
+msgstr "Thiếu các bảng cốt lõi: %s. Hãy khôi phục hoặc nâng cấp cơ sở dữ liệu trước khi thử các sửa chữa khác."
+
+#: doctor_functions.php
+msgid "Core database tables"
+msgstr "Các bảng cơ sở dữ liệu cốt lõi"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s is missing (%s)"
+msgstr "%s bị thiếu (%s)"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s is not writable (%s)"
+msgstr "%s không có quyền ghi (%s)"
+
+#: doctor_functions.php
+msgid "Runtime directories"
+msgstr "Thư mục thời gian chạy"
+
+#: doctor_functions.php
+msgid "The cache, log, and RRA directories exist and are writable."
+msgstr "Các thư mục bộ nhớ đệm, nhật ký và RRA đều tồn tại và có quyền ghi."
+
+#: doctor_functions.php
+msgid "Cacti configuration file"
+msgstr "Tệp cấu hình Cacti"
+
+#: doctor_functions.php
+msgid "include/config.php is missing or unreadable."
+msgstr "include/config.php bị thiếu hoặc không thể đọc."
+
+#: doctor_functions.php
+msgid "include/config.php is readable. POSIX mode-bit checks do not apply on Windows."
+msgstr "include/config.php có thể đọc. Kiểm tra bit chế độ POSIX không áp dụng trên Windows."
+
+#: doctor_functions.php
+msgid "include/config.php is writable by other users. Remove world-write permission because this file contains database credentials."
+msgstr "include/config.php có thể bị người dùng khác ghi. Hãy gỡ bỏ quyền ghi cho mọi người vì tệp này chứa thông tin đăng nhập cơ sở dữ liệu."
+
+#: doctor_functions.php
+msgid "include/config.php is group-writable. Confirm that every member of the owning group is trusted."
+msgstr "include/config.php có quyền ghi cho nhóm. Hãy xác nhận rằng mọi thành viên của nhóm sở hữu đều đáng tin cậy."
+
+#: doctor_functions.php
+msgid "include/config.php is readable by all local users and contains database credentials. Restrict it to the owner and the web server group."
+msgstr "include/config.php có thể đọc được bởi tất cả người dùng cục bộ và chứa thông tin đăng nhập cơ sở dữ liệu. Hãy giới hạn quyền truy cập chỉ cho chủ sở hữu và nhóm máy chủ web."
+
+#: doctor_functions.php
+msgid "include/config.php is readable and is not world-readable, group-writable, or world-writable."
+msgstr "include/config.php có thể đọc và không cho phép mọi người đọc, nhóm ghi hoặc mọi người ghi."
+
+#: doctor_functions.php
+msgid "Cacti log file"
+msgstr "Tệp nhật ký Cacti"
+
+#: doctor_functions.php
+msgid "The log file does not exist. Its parent directory is not writable."
+msgstr "Tệp nhật ký không tồn tại. Thư mục cha của nó không có quyền ghi."
+
+#: doctor_functions.php
+msgid "The log file does not exist. Its parent directory is writable, so Cacti can create it."
+msgstr "Tệp nhật ký không tồn tại. Thư mục cha của nó có quyền ghi, nên Cacti có thể tạo tệp này."
+
+#: doctor_functions.php
+msgid "The configured log path must be a readable and writable regular file."
+msgstr "Đường dẫn nhật ký đã cấu hình phải là một tệp thông thường có quyền đọc và ghi."
+
+#: doctor_functions.php
+#, php-format
+msgid "The log is readable and writable and is %s MiB."
+msgstr "Nhật ký có quyền đọc và ghi và có dung lượng %s MiB."
+
+#: doctor_functions.php
+msgid "The log is readable and writable."
+msgstr "Nhật ký có quyền đọc và ghi."
+
+#: doctor_functions.php
+msgid "Verify that Cacti log rotation is enabled."
+msgstr "Xác minh rằng tính năng xoay vòng nhật ký Cacti đã được bật."
+
+#: doctor_functions.php
+#, php-format
+msgid "Executable found at %s."
+msgstr "Đã tìm thấy tệp thực thi tại %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "The %s setting is empty, missing, or not executable."
+msgstr "Cài đặt %s trống, bị thiếu hoặc không thể thực thi."
+
+#: doctor_functions.php
+#, php-format
+msgid "The %s setting is empty, missing, or not executable: %s"
+msgstr "Cài đặt %s trống, bị thiếu hoặc không thể thực thi: %s"
+
+#: doctor_functions.php
+msgid "Doctor could not determine its version."
+msgstr "Doctor không thể xác định phiên bản của nó."
+
+#: doctor_functions.php
+#, php-format
+msgid "Detected version %s."
+msgstr "Đã phát hiện phiên bản %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "Detected version %s; version %s or newer is recommended."
+msgstr "Đã phát hiện phiên bản %s; khuyến nghị phiên bản %s trở lên."
+
+#: doctor_functions.php
+#, php-format
+msgid "Detected version %s; version %s or newer is required."
+msgstr "Đã phát hiện phiên bản %s; yêu cầu phiên bản %s trở lên."
+
+#: doctor_functions.php
+#, php-format
+msgid "Detected version %s; minimum is %s."
+msgstr "Đã phát hiện phiên bản %s; tối thiểu là %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "%s executable"
+msgstr "Tệp thực thi %s"
+
+#: doctor_functions.php
+msgid "poller_type is not cmd.php or Spine"
+msgstr "poller_type không phải là cmd.php hoặc Spine"
+
+#: doctor_functions.php
+msgid "poller_interval is not a supported value"
+msgstr "poller_interval không phải là giá trị được hỗ trợ"
+
+#: doctor_functions.php
+msgid "Poller configuration"
+msgstr "Cấu hình Poller"
+
+#: doctor_functions.php
+#, php-format
+msgid "Poller is %s with a %d-second interval."
+msgstr "Poller là %s với khoảng thời gian %d giây."
+
+#: doctor_functions.php
+msgid "Main poller freshness"
+msgstr "Độ mới của poller chính"
+
+#: doctor_functions.php
+msgid "No completed main-poller run was found. This can be expected before the first poll."
+msgstr "Không tìm thấy lượt chạy hoàn tất nào của poller chính. Điều này có thể bình thường trước lần thăm dò đầu tiên."
+
+#: doctor_functions.php
+#, php-format
+msgid "Last completed run was %d seconds ago; failure threshold is %d seconds."
+msgstr "Lần chạy hoàn tất cuối cùng cách đây %d giây; ngưỡng lỗi là %d giây."
+
+#: doctor_functions.php
+msgid "Database schema version"
+msgstr "Phiên bản lược đồ cơ sở dữ liệu"
+
+#: doctor_functions.php
+msgid "The version table is empty or unreadable, so the schema version is unknown."
+msgstr "Bảng version trống hoặc không thể đọc, nên không rõ phiên bản lược đồ."
+
+#: doctor_functions.php
+msgid "The version table still reads new_install, so the installer never finished. Open install/ in a browser to complete it."
+msgstr "Bảng version vẫn ghi là new_install, nên trình cài đặt chưa hoàn tất. Hãy mở install/ trong trình duyệt để hoàn tất quá trình này."
+
+#: doctor_functions.php
+#, php-format
+msgid "The database schema is at %s but the installed code is %s. Open install/ in a browser to finish the upgrade."
+msgstr "Lược đồ cơ sở dữ liệu đang ở %s nhưng mã nguồn đã cài đặt là %s. Hãy mở install/ trong trình duyệt để hoàn tất việc nâng cấp."
+
+#: doctor_functions.php
+#, php-format
+msgid "The database schema (%s) is newer than the installed code (%s). The code may have been rolled back."
+msgstr "Lược đồ cơ sở dữ liệu (%s) mới hơn mã nguồn đã cài đặt (%s). Mã nguồn có thể đã được khôi phục về phiên bản trước."
+
+#: doctor_functions.php
+#, php-format
+msgid "The database schema (%s) matches the installed code."
+msgstr "Lược đồ cơ sở dữ liệu (%s) khớp với mã nguồn đã cài đặt."
+
+#: doctor_functions.php
+msgid "Main poller run time"
+msgstr "Thời gian chạy poller chính"
+
+#: doctor_functions.php
+msgid "No completed run time is recorded yet."
+msgstr "Chưa có thời gian chạy hoàn tất nào được ghi nhận."
+
+#: doctor_functions.php
+#, php-format
+msgid "The last main-poller run took %s seconds of the %d-second interval."
+msgstr "Lần chạy poller chính cuối cùng mất %s giây trong khoảng thời gian %d giây."
+
+#: doctor_functions.php
+msgid "Runs that outlast the interval overlap and lose data; add poller processes or threads, or use Spine."
+msgstr "Các lượt chạy kéo dài quá khoảng thời gian sẽ chồng lấn và làm mất dữ liệu; hãy thêm tiến trình hoặc luồng poller, hoặc sử dụng Spine."
+
+#: doctor_functions.php
+msgid "Little headroom remains before polls overlap."
+msgstr "Còn rất ít khoảng dự phòng trước khi các lần thăm dò chồng lấn nhau."
+
+#: doctor_functions.php
+#, php-format
+msgid "%d poller_output rows are older than two polling intervals and were never written to RRD files. Check the Cacti log for \"Poller Output Table not Empty\" and confirm max_heap_table_size is large enough."
+msgstr "%d hàng trong poller_output đã cũ hơn hai khoảng thời gian thăm dò và chưa bao giờ được ghi vào tệp RRD. Kiểm tra nhật ký Cacti để tìm \"Poller Output Table not Empty\" và xác nhận max_heap_table_size đủ lớn."
+
+#: doctor_functions.php
+msgid "Unprocessed poller output"
+msgstr "Đầu ra poller chưa được xử lý"
+
+#: doctor_functions.php
+msgid "No stale rows remain in poller_output."
+msgstr "Không còn hàng cũ nào trong poller_output."
+
+#: doctor_functions.php
+msgid "No remote pollers are enabled."
+msgstr "Không có poller từ xa nào được bật."
+
+#: doctor_functions.php
+msgid "Remote pollers"
+msgstr "Các poller từ xa"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s (ID %s) has never reported"
+msgstr "%s (ID %s) chưa bao giờ báo cáo"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s (ID %s) last reported %d seconds ago"
+msgstr "%s (ID %s) báo cáo lần cuối cách đây %d giây"
+
+#: doctor_functions.php
+#, php-format
+msgid "The failure threshold is %d seconds."
+msgstr "Ngưỡng lỗi là %d giây."
+
+#: doctor_functions.php
+#, php-format
+msgid "%d enabled remote pollers reported within %d seconds."
+msgstr "%d poller từ xa đang bật đã báo cáo trong vòng %d giây."
+
+#: doctor_functions.php
+msgid "Enabled plugin files"
+msgstr "Tệp plugin đang bật"
+
+#: doctor_functions.php
+#, php-format
+msgid "Enabled plugins are missing from %s: %s. Restore their files or disable them in Plugin Management."
+msgstr "Các plugin đang bật bị thiếu khỏi %s: %s. Hãy khôi phục tệp của chúng hoặc tắt chúng trong Quản lý Plugin."
+
+#: doctor_functions.php
+msgid "Every enabled plugin has its setup.php in place."
+msgstr "Mọi plugin đã bật đều có tệp setup.php đúng vị trí."
+
+#: doctor_functions.php
+msgid "Boost RRD updates"
+msgstr "Cập nhật RRD của Boost"
+
+#: doctor_functions.php
+msgid "Boost is disabled, so the poller writes RRD files directly."
+msgstr "Boost đang tắt, vì vậy poller ghi trực tiếp vào các tệp RRD."
+
+#: doctor_functions.php
+msgid "Boost is enabled but has no recorded run. This can be expected before its first flush."
+msgstr "Boost đã được bật nhưng chưa có lần chạy nào được ghi nhận. Điều này có thể bình thường trước lần xả dữ liệu đầu tiên."
+
+#: doctor_functions.php
+#, php-format
+msgid "Boost last flushed %d seconds ago, more than twice its %d-minute interval. Graphs stop updating until it runs; check the Cacti log for BOOST errors."
+msgstr "Boost đã xả dữ liệu lần cuối cách đây %d giây, nhiều hơn gấp đôi khoảng thời gian %d phút của nó. Biểu đồ sẽ ngừng cập nhật cho đến khi nó chạy; hãy kiểm tra nhật ký Cacti để tìm lỗi BOOST."
+
+#: doctor_functions.php
+#, php-format
+msgid "poller_output_boost holds %d rows, above the %d-row limit that forces a flush. Boost is falling behind."
+msgstr "poller_output_boost đang giữ %d hàng, vượt quá giới hạn %d hàng buộc phải xả dữ liệu. Boost đang bị chậm tiến độ."
+
+#: doctor_functions.php
+#, php-format
+msgid "Boost last flushed %d seconds ago with %d rows waiting."
+msgstr "Boost đã xả dữ liệu lần cuối cách đây %d giây với %d hàng đang chờ."
+
+#: doctor_functions.php doctor_rrd.php
+#, php-format
+msgid "Checked a sample of %d active data sources that rotates hourly; a pass does not cover every file."
+msgstr "Đã kiểm tra một mẫu gồm %d nguồn dữ liệu đang hoạt động được xoay vòng hằng giờ; một lượt kiểm tra không bao quát mọi tệp."
+
+#: doctor_functions.php
+#, php-format
+msgid "%d of %d active data sources have no RRD file, for example %s. New data sources get one after their first poll; otherwise check the RRA directory and its permissions."
+msgstr "%d trên %d nguồn dữ liệu đang hoạt động không có tệp RRD, ví dụ %s. Các nguồn dữ liệu mới sẽ có tệp sau lần thăm dò đầu tiên; nếu không, hãy kiểm tra thư mục RRA và quyền của thư mục đó."
+
+#: doctor_functions.php
+msgid "RRD files"
+msgstr "Các tệp RRD"
+
+#: doctor_functions.php
+#, php-format
+msgid "All %d active data sources have an RRD file."
+msgstr "Tất cả %d nguồn dữ liệu đang hoạt động đều có tệp RRD."
+
+#: doctor_functions.php
+#, php-format
+msgid "Doctor could not measure free space for %s."
+msgstr "Doctor không thể đo dung lượng trống cho %s."
+
+#: doctor_functions.php
+msgid "RRA disk space"
+msgstr "Dung lượng đĩa RRA"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s (%s GiB) free on the file system holding %s."
+msgstr "Còn trống %s (%s GiB) trên hệ thống tệp chứa %s."
+
+#: doctor_functions.php
+msgid "RRD updates fail silently when the disk fills."
+msgstr "Các bản cập nhật RRD sẽ âm thầm thất bại khi đĩa đầy."
+
+#: doctor_functions.php
+msgid "Database clock"
+msgstr "Đồng hồ cơ sở dữ liệu"
+
+#: doctor_functions.php
+msgid "Doctor could not read the database clock."
+msgstr "Doctor không thể đọc đồng hồ cơ sở dữ liệu."
+
+#: doctor_functions.php
+#, php-format
+msgid "The database and PHP clocks differ by %d seconds."
+msgstr "Đồng hồ cơ sở dữ liệu và đồng hồ PHP chênh lệch nhau %d giây."
+
+#: doctor_functions.php
+msgid "Poll timestamps will be misaligned; synchronise both hosts with NTP."
+msgstr "Dấu thời gian thăm dò sẽ bị lệch; hãy đồng bộ hóa cả hai máy chủ bằng NTP."
+
+#: doctor_functions.php
+msgid "Synchronise both hosts with NTP."
+msgstr "Đồng bộ hóa cả hai máy chủ bằng NTP."
+
+#: doctor_functions.php
+msgid "Spine configuration"
+msgstr "Cấu hình Spine"
+
+#: doctor_functions.php
+msgid "Spine is not the configured poller."
+msgstr "Spine không phải là poller được cấu hình."
+
+#: doctor_functions.php
+msgid "path_spine_config is not set, so Spine uses its compiled-in search path and Doctor cannot verify which file it reads."
+msgstr "path_spine_config chưa được đặt, vì vậy Spine sử dụng đường dẫn tìm kiếm được biên dịch sẵn và Doctor không thể xác minh tệp nào đang được đọc."
+
+#: doctor_functions.php
+#, php-format
+msgid "The Spine configuration file is missing or unreadable: %s."
+msgstr "Tệp cấu hình Spine bị thiếu hoặc không thể đọc được: %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "DB_Database is %s but Cacti uses %s"
+msgstr "DB_Database là %s nhưng Cacti sử dụng %s"
+
+#: doctor_functions.php
+#, php-format
+msgid "DB_User is %s but Cacti uses %s"
+msgstr "DB_User là %s nhưng Cacti sử dụng %s"
+
+#: doctor_functions.php
+msgid "the file is world-readable and holds the database password"
+msgstr "tệp có quyền đọc cho mọi người dùng và chứa mật khẩu cơ sở dữ liệu"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s uses the same database and user as Cacti."
+msgstr "%s sử dụng cùng cơ sở dữ liệu và người dùng với Cacti."
+
+#: doctor_functions.php
+#, php-format
+msgid "%s is %s"
+msgstr "%s là %s"
+
+#: doctor_functions.php
+msgid "Cacti recommends ON; doublewrite may stay off only on ZFS or similar journaling storage."
+msgstr "Cacti khuyến nghị đặt là ON; doublewrite chỉ có thể tắt trên ZFS hoặc hệ thống lưu trữ ghi nhật ký tương tự."
+
+#: doctor_functions.php
+msgid "InnoDB safety settings"
+msgstr "Thiết lập an toàn InnoDB"
+
+#: doctor_functions.php
+msgid "innodb_file_per_table and innodb_doublewrite are enabled."
+msgstr "innodb_file_per_table và innodb_doublewrite đã được bật."
+
+#: doctor_functions.php
+#, php-format
+msgid "None of the last %d log lines report an error."
+msgstr "Không có dòng nào trong %d dòng nhật ký gần nhất báo lỗi."
+
+#: doctor_functions.php
+msgid "Recent log errors"
+msgstr "Lỗi nhật ký gần đây"
+
+#: doctor_functions.php
+#, php-format
+msgid "%d of the last %d log lines report an error. Most frequent (%dx): %s"
+msgstr "%d trên %d dòng nhật ký gần nhất báo lỗi. Thường gặp nhất (%dx): %s"
+
+#: doctor_functions.php
+msgid "The Cacti log is not readable; see the Cacti log file check."
+msgstr "Không thể đọc nhật ký Cacti; xem phần kiểm tra tệp nhật ký Cacti."
+
+#: doctor_functions.php
+msgid "No enabled devices are configured."
+msgstr "Không có thiết bị nào được bật được cấu hình."
+
+#: doctor_functions.php
+#, php-format
+msgid "All %d enabled devices are up."
+msgstr "Tất cả %d thiết bị đã bật đều đang hoạt động."
+
+#: doctor_functions.php
+#, php-format
+msgid "%d of %d enabled devices are down and %d recovering."
+msgstr "%d trên %d thiết bị đã bật đang ngừng hoạt động và %d thiết bị đang khôi phục."
+
+#: doctor_functions.php
+msgid "The down devices could not be listed."
+msgstr "Không thể liệt kê các thiết bị đang ngừng hoạt động."
+
+#: doctor_functions.php
+#, php-format
+msgid "%s down since %s"
+msgstr "%s ngừng hoạt động từ %s"
+
+#: doctor_functions.php
+#, php-format
+msgid "Longest down: %s."
+msgstr "Ngừng hoạt động lâu nhất: %s."
+
+#: doctor_functions.php
+msgid "With most devices down, check the poller host's network and SNMP settings first."
+msgstr "Khi hầu hết thiết bị ngừng hoạt động, hãy kiểm tra cấu hình mạng và SNMP của máy chủ poller trước."
+
+#: doctor_functions.php
+msgid "Doctor could not read device status from the host table."
+msgstr "Doctor không thể đọc trạng thái thiết bị từ bảng host."
+
+#: doctor_functions.php
+#, php-format
+msgid "Cacti Doctor on %s: %d failed, %d warnings"
+msgstr "Cacti Doctor trên %s: %d thất bại, %d cảnh báo"
+
+#: doctor_functions.php
+#, php-format
+msgid "%d Cacti Doctor checks changed status on %s."
+msgstr "%d mục kiểm tra của Cacti Doctor đã thay đổi trạng thái trên %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "Totals: %d passed, %d warnings, %d failed."
+msgstr "Tổng cộng: %d đạt, %d cảnh báo, %d thất bại."
+
+#: doctor_functions.php
+#, php-format
+msgid "Refusing to overwrite %s."
+msgstr "Từ chối ghi đè %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "Cannot create %s."
+msgstr "Không thể tạo %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "Could not make %s private."
+msgstr "Không thể đặt %s thành riêng tư."
+
+#: doctor_functions.php
+#, php-format
+msgid "Writing %s failed."
+msgstr "Ghi %s thất bại."
+
+#: doctor_functions.php
+msgid "Repair runtime directories"
+msgstr "Sửa chữa các thư mục thực thi"
+
+#: doctor_functions.php
+msgid "Create missing cache, log, and RRA directories and add owner read/write/execute permission without removing existing permissions."
+msgstr "Tạo các thư mục cache, log và RRA bị thiếu và thêm quyền đọc/ghi/thực thi cho chủ sở hữu mà không xóa các quyền hiện có."
+
+#: doctor_functions.php
+msgid "The requested repair is not allow-listed."
+msgstr "Yêu cầu sửa chữa không nằm trong danh sách cho phép."
+
+#: doctor_functions.php
+msgid "No repair handler is registered."
+msgstr "Không có trình xử lý sửa chữa nào được đăng ký."
+
+#: doctor_functions.php
+msgid "Repair unavailable"
+msgstr "Không thể sửa chữa"
+
+#: doctor_functions.php
+msgid "Repairs are refused while running as root. Run Doctor as the Cacti poller user."
+msgstr "Từ chối sửa chữa khi đang chạy với quyền root. Hãy chạy Doctor với tư cách người dùng poller của Cacti."
+
+#: doctor_functions.php
+msgid "The Cacti base directory cannot be resolved."
+msgstr "Không thể phân giải thư mục gốc của Cacti."
+
+#: doctor_functions.php
+#, php-format
+msgid "%s: path is outside the Cacti installation"
+msgstr "%s: đường dẫn nằm ngoài thư mục cài đặt Cacti"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s: symbolic links are not repaired"
+msgstr "%s: liên kết tượng trưng không được sửa chữa"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s: directory creation failed"
+msgstr "%s: tạo thư mục thất bại"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s: could not add owner permissions"
+msgstr "%s: không thể thêm quyền cho chủ sở hữu"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s: still not a writable directory"
+msgstr "%s: vẫn không phải là thư mục có thể ghi"
+
+#: doctor_functions.php
+msgid "Runtime directories now exist and are writable by the current process."
+msgstr "Các thư mục thực thi hiện đã tồn tại và tiến trình hiện tại có thể ghi vào đó."
+
+#: doctor_functions.php
+msgid "Cacti"
+msgstr "Cacti"
+
+#: doctor_functions.php
+msgid "Database"
+msgstr "Cơ sở dữ liệu"
+
+#: doctor_functions.php
+msgid "Database health"
+msgstr "Tình trạng cơ sở dữ liệu"
+
+#: doctor_functions.php
+msgid "Devices"
+msgstr "Thiết bị"
+
+#: doctor_functions.php setup.php
+msgid "Doctor"
+msgstr "Doctor"
+
+#: doctor_functions.php
+msgid "Filesystem"
+msgstr "Hệ thống tệp"
+
+#: doctor_functions.php
+msgid "Logging"
+msgstr "Ghi nhật ký"
+
+#: doctor_functions.php
+msgid "PHP"
+msgstr "PHP"
+
+#: doctor_functions.php
+msgid "Poller"
+msgstr "Poller"
+
+#: doctor_functions.php
+msgid "Prerequisites"
+msgstr "Điều kiện tiên quyết"
+
+#: doctor_functions.php
+msgid "Repair"
+msgstr "Sửa chữa"
+
+#: doctor_functions.php
+msgid "Security"
+msgstr "Bảo mật"
+
+#: doctor_functions.php
+msgid "PASS"
+msgstr "ĐẠT"
+
+#: doctor_functions.php
+msgid "WARN"
+msgstr "CẢNH BÁO"
+
+#: doctor_functions.php
+msgid "FAIL"
+msgstr "THẤT BẠI"
+
+#: doctor_functions.php
+msgid "UNKNOWN"
+msgstr "KHÔNG XÁC ĐỊNH"
+
+#: doctor_rrd.php
+msgid "Data source freshness could not be assessed."
+msgstr "Không thể đánh giá độ mới của nguồn dữ liệu."
+
+#: doctor_rrd.php
+msgid "RRD update freshness"
+msgstr "Độ mới của bản cập nhật RRD"
+
+#: doctor_rrd.php
+msgid "The deferred-write interval is unknown; configure it before judging file age."
+msgstr "Không rõ khoảng thời gian ghi trễ; hãy cấu hình nó trước khi đánh giá tuổi tệp."
+
+#: doctor_rrd.php
+#, php-format
+msgid "Checked %d files; %d stale files across %d devices; %d unavailable or future-dated files."
+msgstr "Đã kiểm tra %d tệp; %d tệp cũ trên %d thiết bị; %d tệp không khả dụng hoặc có dấu thời gian trong tương lai."
+
+#: doctor_rrd.php
+msgid "File age includes the collection interval and configured deferred-write allowance; verify the poller and flush process before changing data."
+msgstr "Tuổi tệp bao gồm khoảng thời gian thu thập và mức dung sai ghi trễ đã cấu hình; hãy xác minh poller và tiến trình xả dữ liệu trước khi thay đổi dữ liệu."
+
+#: doctor_scheduling.php
+msgid "Scheduled checks are disabled. Enable them in Settings > Doctor to retain samples and alert on changes."
+msgstr "Các kiểm tra theo lịch đang bị tắt. Hãy bật chúng trong Cài đặt > Doctor để lưu giữ mẫu và cảnh báo khi có thay đổi."
+
+#: doctor_scheduling.php
+msgid "Scheduled report freshness"
+msgstr "Độ mới của báo cáo theo lịch"
+
+#: doctor_scheduling.php
+#, php-format
+msgid "%s UTC"
+msgstr "%s UTC"
+
+#: doctor_scheduling.php
+#, php-format
+msgid "Last started: %s; last completed: %s."
+msgstr "Bắt đầu lần cuối: %s; hoàn tất lần cuối: %s."
+
+#: doctor_scheduling.php
+msgid "never"
+msgstr "chưa bao giờ"
+
+#: doctor_scheduling.php
+msgid "Results are missing or stale. Check the primary poller and DOCTOR log for startup, timeout, or persistence errors."
+msgstr "Kết quả bị thiếu hoặc đã cũ. Hãy kiểm tra poller chính và nhật ký DOCTOR để tìm lỗi khởi động, hết thời gian chờ hoặc lỗi lưu trữ."
+
+#: doctor_scheduling.php
+msgid "A completed diagnostic run is recent; this does not mean all checks passed."
+msgstr "Một lượt chạy chẩn đoán đã hoàn tất gần đây; điều này không có nghĩa là tất cả các mục kiểm tra đều đạt."
+
+#: doctor_scheduling.php
+msgid "Doctor alert state is invalid. Restore doctor_alert_pending from backup before retrying."
+msgstr "Trạng thái cảnh báo của Doctor không hợp lệ. Hãy khôi phục doctor_alert_pending từ bản sao lưu trước khi thử lại."
+
+#: doctor_scheduling.php
+msgid "Doctor alert transitions are invalid; no email was sent."
+msgstr "Các chuyển đổi cảnh báo của Doctor không hợp lệ; không có email nào được gửi."
+
+#: doctor_scheduling.php
+msgid "Alert delivery"
+msgstr "Gửi cảnh báo"
+
+#: doctor_scheduling.php
+#, php-format
+msgid "%d check transitions await delivery; attempts: %d of 3."
+msgstr "%d chuyển đổi trạng thái kiểm tra đang chờ gửi; số lần thử: %d trên 3."
+
+#: doctor_scheduling.php
+msgid "Automatic retries exhausted. Correct Cacti mail settings, then run Doctor with --scheduled --retry-alerts as the poller user."
+msgstr "Đã hết số lần thử lại tự động. Hãy sửa cài đặt thư của Cacti, sau đó chạy Doctor với --scheduled --retry-alerts dưới tư cách người dùng poller."
+
+#: doctor_scheduling.php
+#, php-format
+msgid "Next eligible retry: %s UTC, after a primary poller cycle."
+msgstr "Lần thử lại đủ điều kiện tiếp theo: %s UTC, sau một chu kỳ poller chính."
+
+#: doctor_scheduling.php
+msgid "No alert recipients are currently configured; pending transitions are retained."
+msgstr "Hiện chưa có người nhận cảnh báo nào được cấu hình; các chuyển đổi đang chờ được giữ lại."
+
+#: doctor_scheduling.php
+msgid "No retained alert is awaiting delivery. Mail-server acceptance does not prove inbox delivery."
+msgstr "Không có cảnh báo được giữ lại nào đang chờ gửi. Việc máy chủ thư chấp nhận không chứng minh được thư đã vào hộp thư đến."
+
+#: doctor_scheduling.php
+msgid "Doctor retained status changes (UTC). Repeated changes for one check are coalesced; an out-and-back transition is retained."
+msgstr "Các thay đổi trạng thái được Doctor giữ lại (UTC). Các thay đổi lặp lại cho một mục kiểm tra được gộp lại; một chuyển đổi đi-rồi-về vẫn được giữ lại."
+
+#: doctor_scheduling.php
+#, php-format
+msgid "%s: %s -> %s (latest change %s)"
+msgstr "%s: %s -> %s (thay đổi mới nhất %s)"
+
+#: doctor_scheduling.php
+#, php-format
+msgid "%d further status changes are not listed because the alert queue reached its storage limit."
+msgstr "%d thay đổi trạng thái khác không được liệt kê vì hàng đợi cảnh báo đã đạt giới hạn lưu trữ."
+
+#: doctor_scheduling.php
+msgid "Open Utilities > Doctor for current measurements, recommended actions, and verification steps."
+msgstr "Mở Tiện ích > Doctor để xem các số đo hiện tại, hành động được đề xuất và các bước xác minh."
+
+#: doctor_scheduling.php
+#, php-format
+msgid "Cacti Doctor: %d retained status changes"
+msgstr "Cacti Doctor: %d thay đổi trạng thái được giữ lại"
+
+#: doctor_scheduling.php
+msgid "Doctor schedule is already running or the database lock is unavailable."
+msgstr "Lịch chạy Doctor đang chạy hoặc khóa cơ sở dữ liệu không khả dụng."
+
+#: doctor_web.php
+msgid "The finding could not be acknowledged. Run Doctor again, then acknowledge the current result."
+msgstr "Không thể xác nhận phát hiện này. Hãy chạy lại Doctor, sau đó xác nhận kết quả hiện tại."
+
+#: doctor_web.php
+msgid "The warning exception could not be saved. Use a fresh assessed warning, an owner, a reason and an expiry within 90 days."
+msgstr "Không thể lưu ngoại lệ cảnh báo. Hãy sử dụng một cảnh báo mới được đánh giá, có người phụ trách, lý do và thời hạn trong vòng 90 ngày."
+
+#: doctor_web.php
+msgid "Confirm repair"
+msgstr "Xác nhận sửa chữa"
+
+#: doctor_web.php
+msgid "Approval expires after five minutes and is invalidated by a changed filesystem. The acting account must be able to create directories or change owner permissions."
+msgstr "Phê duyệt hết hạn sau năm phút và sẽ mất hiệu lực nếu hệ thống tệp thay đổi. Tài khoản thực hiện phải có khả năng tạo thư mục hoặc thay đổi quyền của chủ sở hữu."
+
+#: doctor_web.php
+msgid "Repair prerequisites are not met. No changes will be made."
+msgstr "Không đáp ứng các điều kiện tiên quyết để sửa chữa. Sẽ không có thay đổi nào được thực hiện."
+
+#: doctor_web.php
+msgid "Cancel"
+msgstr "Hủy"
+
+#: doctor_web.php
+#, php-format
+msgid "Last observation: %s UTC."
+msgstr "Quan sát lần cuối: %s UTC."
+
+#: doctor_web.php
+msgid "No completed diagnostic report is available."
+msgstr "Không có báo cáo chẩn đoán đã hoàn tất nào khả dụng."
+
+#: doctor_web.php
+msgid "Health is unknown: observations are missing or stale."
+msgstr "Không rõ tình trạng: các quan sát bị thiếu hoặc đã cũ."
+
+#: doctor_web.php
+msgid "Run diagnostic checks"
+msgstr "Chạy kiểm tra chẩn đoán"
+
+#: doctor_web.php
+msgid "Doctor settings"
+msgstr "Cài đặt Doctor"
+
+#: doctor_web.php setup.php
+msgid "Cacti Doctor"
+msgstr "Cacti Doctor"
+
+#: doctor_web.php
+#, php-format
+msgid "Installation health: %d passed, %d warnings, %d failed"
+msgstr "Tình trạng cài đặt: %d đạt, %d cảnh báo, %d thất bại"
+
+#: doctor_web.php
+msgid "Category"
+msgstr "Danh mục"
+
+#: doctor_web.php
+msgid "Check"
+msgstr "Kiểm tra"
+
+#: doctor_web.php
+msgid "Status"
+msgstr "Trạng thái"
+
+#: doctor_web.php
+msgid "Details"
+msgstr "Chi tiết"
+
+#: doctor_web.php
+msgid "Action"
+msgstr "Hành động"
+
+#: doctor_web.php
+msgid "Acknowledged; health status unchanged."
+msgstr "Đã xác nhận; tình trạng hệ thống không thay đổi."
+
+#: doctor_web.php
+msgid "Acknowledge"
+msgstr "Xác nhận"
+
+#: doctor_web.php
+#, php-format
+msgid "Owner: %s; review by %s UTC. Reason: %s"
+msgstr "Người phụ trách: %s; xem xét trước %s UTC. Lý do: %s"
+
+#: doctor_web.php
+msgid "Investigate a symptom"
+msgstr "Điều tra triệu chứng"
+
+#: doctor_web.php
+msgid "Investigate"
+msgstr "Điều tra"
+
+#: doctor_web.php
+msgid "Recent scheduled checks"
+msgstr "Các kiểm tra theo lịch gần đây"
+
+#: doctor_web.php
+msgid "Failed"
+msgstr "Thất bại"
+
+#: doctor_web.php
+msgid "Observation (UTC)"
+msgstr "Quan sát (UTC)"
+
+#: doctor_web.php
+msgid "Passed"
+msgstr "Đạt"
+
+#: doctor_web.php
+msgid "Warnings"
+msgstr "Cảnh báo"
+
+#: doctor_web.php
+msgid "Warning exceptions"
+msgstr "Ngoại lệ cảnh báo"
+
+#: doctor_web.php
+msgid "Owner"
+msgstr "Người phụ trách"
+
+#: doctor_web.php
+msgid "Reason"
+msgstr "Lý do"
+
+#: doctor_web.php
+msgid "Review date (UTC)"
+msgstr "Ngày xem xét (UTC)"
+
+#: doctor_web.php
+msgid "Accept warning"
+msgstr "Chấp nhận cảnh báo"
+
+#: doctor_web.php
+msgid "Expired"
+msgstr "Đã hết hạn"
+
+#: doctor_web.php
+msgid "Check not present in this report; verify its ID."
+msgstr "Mục kiểm tra không có trong báo cáo này; hãy xác minh ID của nó."
+
+#: doctor_web.php
+msgid "Remove exception"
+msgstr "Xóa ngoại lệ"
+
+#: doctor_web.php
+msgid "Audit history"
+msgstr "Lịch sử kiểm toán"
+
+#: doctor_workflows.php
+msgid "Repair refused"
+msgstr "Từ chối sửa chữa"
+
+#: doctor_workflows.php
+msgid "The approved plan is expired or the filesystem changed. Preview the repair again."
+msgstr "Kế hoạch đã phê duyệt đã hết hạn hoặc hệ thống tệp đã thay đổi. Hãy xem trước bản sửa chữa lại."
+
+#: doctor_workflows.php
+msgid "The audit record could not be saved. No repair was attempted."
+msgstr "Không thể lưu bản ghi kiểm toán. Chưa có hành động sửa chữa nào được thực hiện."
+
+#: doctor_workflows.php
+msgid "The completion audit failed; inspect the filesystem and the started audit record."
+msgstr "Kiểm toán hoàn tất thất bại; hãy kiểm tra hệ thống tệp và bản ghi kiểm toán đã bắt đầu."
+
+#: setup.php
+msgid "Doctor Administrator"
+msgstr "Quản trị viên Doctor"
+
+#: setup.php
+msgid "Doctor Operator"
+msgstr "Người vận hành Doctor"
+
+#: setup.php
+msgid "Doctor Viewer"
+msgstr "Người xem Doctor"
+
+#: setup.php
+msgid "Utilities"
+msgstr "Tiện ích"
+
+#: setup.php
+msgid "System Administration"
+msgstr "Quản trị hệ thống"
+
+#: setup.php
+msgid "Scheduled Checks"
+msgstr "Kiểm tra theo lịch"
+
+#: setup.php
+msgid "Run Checks on a Schedule"
+msgstr "Chạy kiểm tra theo lịch"
+
+#: setup.php
+msgid "Run every Doctor check in the background after the poller and record each check's status."
+msgstr "Chạy mọi mục kiểm tra của Doctor ở chế độ nền sau poller và ghi lại trạng thái của từng mục kiểm tra."
+
+#: setup.php
+msgid "Check Interval"
+msgstr "Khoảng thời gian kiểm tra"
+
+#: setup.php
+msgid "How often the scheduled checks run."
+msgstr "Tần suất chạy các kiểm tra theo lịch."
+
+#: setup.php
+msgid "Every 15 Minutes"
+msgstr "Mỗi 15 phút"
+
+#: setup.php
+msgid "Every Hour"
+msgstr "Mỗi giờ"
+
+#: setup.php
+msgid "Every 6 Hours"
+msgstr "Mỗi 6 giờ"
+
+#: setup.php
+msgid "Every Day"
+msgstr "Mỗi ngày"
+
+#: setup.php
+msgid "Alert Email Addresses"
+msgstr "Địa chỉ email cảnh báo"
+
+#: setup.php
+msgid "Comma-separated addresses to email when a check starts or stops failing. Leave empty to only log changes to the Cacti log."
+msgstr "Các địa chỉ được phân tách bằng dấu phẩy để gửi email khi một mục kiểm tra bắt đầu hoặc ngừng thất bại. Để trống nếu chỉ muốn ghi các thay đổi vào nhật ký Cacti."
+
+#: setup.php
+msgid "Alert on Warnings"
+msgstr "Gửi cảnh báo khi ở trạng thái cảnh báo"
+
+#: setup.php
+msgid "Also alert when a check moves into or out of a warning."
+msgstr "Đồng thời gửi cảnh báo khi một phép kiểm tra chuyển vào hoặc thoát khỏi trạng thái cảnh báo."
+
+#: setup.php
+msgid "Thresholds"
+msgstr "Ngưỡng"
+
+#: setup.php
+msgid "Poller Run Time Warning (percent)"
+msgstr "Cảnh báo thời gian chạy Poller (phần trăm)"
+
+#: setup.php
+msgid "Warn when the last main-poller run used this share of the polling interval. Runs that take the whole interval always fail."
+msgstr "Cảnh báo khi lần chạy poller chính gần nhất sử dụng tỷ lệ này của chu kỳ thăm dò. Các lần chạy chiếm trọn toàn bộ chu kỳ luôn bị tính là thất bại."
+
+#: setup.php
+msgid "RRA Disk Free Warning (percent)"
+msgstr "Cảnh báo dung lượng đĩa trống RRA (phần trăm)"
+
+#: setup.php
+msgid "Warn when free space on the RRA file system drops below this percentage."
+msgstr "Cảnh báo khi dung lượng trống trên hệ thống tệp RRA giảm xuống dưới tỷ lệ phần trăm này."
+
+#: setup.php
+msgid "Fail when free space on the RRA file system drops below this percentage."
+msgstr "Báo lỗi khi dung lượng trống trên hệ thống tệp RRA giảm xuống dưới tỷ lệ phần trăm này."
+
+#: setup.php
+msgid "RRA Disk Free Failure (percent)"
+msgstr "Lỗi dung lượng đĩa trống RRA (phần trăm)"
+
+#: setup.php
+msgid "Clock Drift Warning (seconds)"
+msgstr "Cảnh báo độ lệch đồng hồ (giây)"
+
+#: setup.php
+msgid "Warn when the database and PHP clocks differ by more than this."
+msgstr "Cảnh báo khi đồng hồ cơ sở dữ liệu và PHP lệch nhau quá mức này."
+
+#: setup.php
+msgid "Clock Drift Failure (seconds)"
+msgstr "Lỗi độ lệch đồng hồ (giây)"
+
+#: setup.php
+msgid "Fail when the database and PHP clocks differ by more than this."
+msgstr "Báo lỗi khi đồng hồ cơ sở dữ liệu và PHP lệch nhau quá mức này."
+
+#: setup.php
+msgid "RRD Stale Intervals"
+msgstr "Số chu kỳ RRD quá hạn"
+
+#: setup.php
+msgid "Warn after this many collection intervals without a file update (1 to 100)."
+msgstr "Cảnh báo sau số chu kỳ thu thập này nếu tệp không được cập nhật (1 đến 100)."
+
+#: setup.php
+msgid "Additional disk-write delay for external caching (0 to 86400). Boost adds its own allowance."
+msgstr "Độ trễ ghi đĩa bổ sung cho bộ nhớ đệm ngoài (0 đến 86400). Boost tự cộng thêm mức dự phòng riêng của nó."
+
+#: setup.php
+msgid "Deferred RRD Write Allowance (seconds)"
+msgstr "Mức cho phép hoãn ghi RRD (giây)"
+
+#: setup.php
+msgid "Cacti Log Size Warning (MB)"
+msgstr "Cảnh báo kích thước nhật ký Cacti (MB)"
+
+#: setup.php
+msgid "Warn when the Cacti log grows beyond this size, which usually means log rotation is not running."
+msgstr "Cảnh báo khi nhật ký Cacti vượt quá kích thước này, thường cho thấy việc xoay vòng nhật ký không hoạt động."

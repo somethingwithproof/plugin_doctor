@@ -1,0 +1,1542 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
+# SPDX-FileCopyrightText: 2026 Thomas Vincent <thomasvincent@gmail.com>
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: doctor 0.6.1\n"
+"Report-Msgid-Bugs-To: https://github.com/somethingwithproof/plugin_doctor/issues\n"
+"PO-Revision-Date: 2026-11-26 00:00+0000\n"
+"Last-Translator: Thomas Vincent <thomasvincent@gmail.com>\n"
+"Language-Team: Thomas Vincent <thomasvincent@gmail.com>\n"
+"Language: ru-RU\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
+
+#: cli/doctor.php
+#, php-format
+msgid "Available repairs: %s"
+msgstr "Доступные исправления: %s"
+
+#: cli/doctor.php
+#, php-format
+msgid "Unknown format %s. Use text, json, nagios, or prometheus."
+msgstr "Неизвестный формат %s. Используйте text, json, nagios или prometheus."
+
+#: cli/doctor.php
+#, php-format
+msgid "Redaction could not complete, so %s was not written."
+msgstr "Маскирование данных не удалось завершить, поэтому файл %s не был записан."
+
+#: cli/doctor.php
+#, php-format
+msgid "Wrote %s. Review it before sharing; values after password, secret, token, and community names are masked."
+msgstr "Записано в %s. Проверьте файл перед отправкой; значения после имён password, secret, token и community замаскированы."
+
+#: cli/doctor.php doctor_functions.php
+msgid "Unknown repair"
+msgstr "Неизвестное исправление"
+
+#: cli/doctor.php
+msgid "Refusing to repair without --yes."
+msgstr "Исправление отклонено без флага --yes."
+
+#: cli/doctor.php
+msgid "Select a supported symptom and text or JSON output."
+msgstr "Выберите поддерживаемый симптом и текстовый или JSON-вывод."
+
+#: cli/doctor.php doctor_web.php
+msgid "Accepted warning"
+msgstr "Принятое предупреждение"
+
+#: doctor_access.php doctor_functions.php
+msgid "Device availability"
+msgstr "Доступность устройств"
+
+#: doctor_access.php
+msgid "Device permissions could not be evaluated."
+msgstr "Не удалось оценить разрешения устройств."
+
+#: doctor_access.php
+msgid "The configured PHP CLI cannot run Doctor checks."
+msgstr "Настроенный PHP CLI не может запускать проверки Doctor."
+
+#: doctor_access.php
+msgid "Doctor checks failed or exceeded their time limit. Review the Doctor log."
+msgstr "Проверки Doctor завершились с ошибкой или превысили лимит времени. Проверьте журнал Doctor."
+
+#: doctor_diagnosis.php
+msgid "Graphs stopped updating"
+msgstr "Графики перестали обновляться"
+
+#: doctor_diagnosis.php
+msgid "Polling is slow"
+msgstr "Медленный опрос"
+
+#: doctor_diagnosis.php
+msgid "Devices are missing or unavailable"
+msgstr "Устройства отсутствуют или недоступны"
+
+#: doctor_diagnosis.php
+msgid "Doctor alerts are missing"
+msgstr "Оповещения Doctor отсутствуют"
+
+#: doctor_diagnosis.php
+msgid "Check the poller scheduler and the affected poller log, then verify a new completed cycle."
+msgstr "Проверьте планировщик опросчика и журнал затронутого опросчика, затем убедитесь в завершении нового цикла."
+
+#: doctor_diagnosis.php
+msgid "Collection may have stopped."
+msgstr "Возможно, сбор данных остановлен."
+
+#: doctor_diagnosis.php
+msgid "Collected values may not be reaching disk."
+msgstr "Возможно, собранные значения не записываются на диск."
+
+#: doctor_diagnosis.php
+msgid "Inspect the output queue and Boost flush history; verify that the queue drains and RRD timestamps advance."
+msgstr "Проверьте очередь вывода и журнал сброса Boost; убедитесь, что очередь очищается, а временные метки RRD обновляются."
+
+#: doctor_diagnosis.php
+msgid "Check storage capacity, runtime-directory permissions and the last RRD update; account for deferred writes."
+msgstr "Проверьте свободное место в хранилище, разрешения для каталога среды выполнения и последнее обновление RRD; учитывайте отложенную запись."
+
+#: doctor_diagnosis.php
+msgid "RRD storage needs investigation."
+msgstr "Хранилище RRD требует проверки."
+
+#: doctor_diagnosis.php
+msgid "Collection work may be exceeding its time budget."
+msgstr "Возможно, сбор данных превышает отведённое время."
+
+#: doctor_diagnosis.php
+msgid "Compare cycle duration with the polling interval and inspect device timeouts before increasing concurrency."
+msgstr "Сравните длительность цикла с интервалом опроса и проверьте таймауты устройств перед увеличением параллелизма."
+
+#: doctor_diagnosis.php
+msgid "Compare database counters during a slow cycle and inspect query plans before changing server limits."
+msgstr "Сравните счётчики базы данных во время медленного цикла и изучите планы запросов перед изменением ограничений сервера."
+
+#: doctor_diagnosis.php
+msgid "Database pressure may be contributing to slow polling."
+msgstr "Возможно, нагрузка на базу данных замедляет опрос."
+
+#: doctor_diagnosis.php
+msgid "Collection prerequisites or reachability may be failing."
+msgstr "Возможно, не выполняются предварительные условия сбора данных или отсутствует доступность."
+
+#: doctor_diagnosis.php
+msgid "Verify the affected device permissions, reachability, credentials and assigned poller using Cacti diagnostics."
+msgstr "Проверьте разрешения, доступность, учётные данные и назначенный опросчик для затронутого устройства с помощью диагностики Cacti."
+
+#: doctor_diagnosis.php
+msgid "Scheduled checks or mail delivery need attention."
+msgstr "Запланированные проверки или доставка почты требуют внимания."
+
+#: doctor_diagnosis.php
+msgid "Verify scheduling and recipient settings, inspect retained delivery attempts, and send a Cacti test email."
+msgstr "Проверьте настройки расписания и получателей, изучите сохранённые попытки доставки и отправьте тестовое письмо Cacti."
+
+#: doctor_diagnosis.php
+msgid "Possible causes require verification; matching checks do not establish a root cause."
+msgstr "Возможные причины требуют проверки; совпадение результатов проверок не определяет первопричину."
+
+#: doctor_diagnosis.php
+msgid "No cause is established by the available observations. Run fresh diagnostics and investigate the symptom directly."
+msgstr "Имеющиеся наблюдения не позволяют установить причину. Запустите новую диагностику и исследуйте симптом напрямую."
+
+#: doctor_functions.php
+msgid "At least 24 hours since server startup and FLUSH STATUS. Counters are cumulative and may have different reset histories; confirm trends during a representative workload before tuning."
+msgstr "Не менее 24 часов с момента запуска сервера и FLUSH STATUS. Счётчики являются накопительными и могли сбрасываться в разное время; перед настройкой подтвердите тенденции при репрезентативной нагрузке."
+
+#: doctor_functions.php
+msgid "Cumulative tuning advice is deferred: obtain valid uptime and at least 24 hours since startup and FLUSH STATUS. Missing metrics or an inconsistent sample cannot establish database health."
+msgstr "Рекомендации по настройке на основе накопительных счётчиков отложены: необходимо получить корректное время работы и не менее 24 часов с момента запуска и FLUSH STATUS. Отсутствующие метрики или несогласованная выборка не позволяют оценить состояние базы данных."
+
+#: doctor_functions.php
+msgid "Database observation window"
+msgstr "Окно наблюдения базы данных"
+
+#: doctor_functions.php
+msgid "Connection metrics are unavailable or invalid. Check access to SHOW GLOBAL STATUS and SHOW GLOBAL VARIABLES; do not treat missing metrics as an idle server."
+msgstr "Метрики подключений недоступны или некорректны. Проверьте доступ к SHOW GLOBAL STATUS и SHOW GLOBAL VARIABLES; не считайте отсутствие метрик признаком простоя сервера."
+
+#: doctor_functions.php
+#, php-format
+msgid "Current connections: %.0f / %.0f (%s); recorded peak: %.0f (%s of the current limit)."
+msgstr "Текущие подключения: %.0f / %.0f (%s); зафиксированный пик: %.0f (%s от текущего лимита)."
+
+#: doctor_functions.php
+msgid "Review connection pooling and poller concurrency. Check database-host memory headroom before raising max_connections; the historical peak may reflect an older limit."
+msgstr "Проверьте пул подключений и параллелизм опросчика. Перед увеличением max_connections оцените запас памяти на хосте базы данных; исторический пик может отражать прежний лимит."
+
+#: doctor_functions.php
+msgid "Connection capacity"
+msgstr "Запас подключений"
+
+#: doctor_functions.php
+msgid "InnoDB buffer pool reads"
+msgstr "Чтения буферного пула InnoDB"
+
+#: doctor_functions.php
+msgid "Review query plans and the working set. Consider innodb_buffer_pool_size only after measuring memory available on the database host; a cumulative miss ratio alone does not prove memory pressure."
+msgstr "Изучите планы запросов и рабочий набор данных. Изменяйте innodb_buffer_pool_size только после измерения доступной памяти на хосте базы данных; сама по себе накопительная доля промахов не доказывает нехватку памяти."
+
+#: doctor_functions.php
+msgid "On-disk temporary tables"
+msgstr "Временные таблицы на диске"
+
+#: doctor_functions.php
+msgid "Review query plans, sorting, grouping, and temporary-table data types before changing memory limits. Some tables must use disk; memory limits and accounting differ between MySQL and MariaDB versions."
+msgstr "Изучите планы запросов, сортировку, группировку и типы данных временных таблиц перед изменением ограничений памяти. Некоторые таблицы неизбежно создаются на диске; ограничения памяти и их учёт различаются между версиями MySQL и MariaDB."
+
+#: doctor_functions.php
+msgid "Connection thread creation"
+msgstr "Создание потоков подключений"
+
+#: doctor_functions.php
+msgid "Review connection reuse and thread_cache_size. Check the server thread-handling mode before tuning; thread-pool implementations do not behave like one-thread-per-connection servers."
+msgstr "Проверьте повторное использование подключений и параметр thread_cache_size. Перед настройкой проверьте режим обработки потоков на сервере; реализации с пулом потоков ведут себя иначе, чем серверы с моделью один-поток-на-подключение."
+
+#: doctor_functions.php
+msgid "Review slow-query logging, long_query_time, and query plans before changing server buffers. This counter depends on the configured slow-query threshold and does not identify individual statements."
+msgstr "Изучите журнал медленных запросов, long_query_time и планы запросов перед изменением буферов сервера. Этот счётчик зависит от настроенного порога медленных запросов и не указывает на конкретные запросы."
+
+#: doctor_functions.php
+msgid "Slow statements"
+msgstr "Медленные запросы"
+
+#: doctor_functions.php
+msgid "Cumulative advice deferred until the observation window is sufficient."
+msgstr "Рекомендации по накопительным метрикам отложены до накопления достаточного окна наблюдения."
+
+#: doctor_functions.php
+msgid "Thread-cache advice is not assessed: thread_handling is unavailable or is not one-thread-per-connection. Review the active thread-pool implementation instead."
+msgstr "Рекомендации по кэшу потоков не оцениваются: параметр thread_handling недоступен или не использует режим one-thread-per-connection. Вместо этого проверьте активную реализацию пула потоков."
+
+#: doctor_functions.php
+#, php-format
+msgid "Required counters are missing or invalid: %s, %s. Check server-version support and monitoring permissions."
+msgstr "Необходимые счётчики отсутствуют или некорректны: %s, %s. Проверьте поддержку версией сервера и разрешения на мониторинг."
+
+#: doctor_functions.php
+msgid "A counter reset since the prior sample; collect another representative interval before tuning."
+msgstr "С момента предыдущей выборки произошёл сброс счётчика; перед настройкой соберите данные за другой репрезентативный интервал."
+
+#: doctor_functions.php
+#, php-format
+msgid "Insufficient activity: %.0f %s; at least %d observations are needed for this advisory."
+msgstr "Недостаточная активность: %.0f %s; для этой рекомендации требуется не менее %d наблюдений."
+
+#: doctor_functions.php
+msgid "Counters are inconsistent or were reset independently. Collect a new representative sample before tuning."
+msgstr "Счётчики несогласованы или были сброшены независимо друг от друга. Перед настройкой соберите новую репрезентативную выборку."
+
+#: doctor_functions.php
+msgid "The interval sample is too small or counters reset; collect another representative interval before tuning."
+msgstr "Интервальная выборка слишком мала или счётчики были сброшены; перед настройкой соберите данные за другой репрезентативный интервал."
+
+#: doctor_functions.php
+#, php-format
+msgid "Interval %s / %s: %.0f / %.0f (%s); investigation threshold: %s."
+msgstr "За интервал %s / %s: %.0f / %.0f (%s); порог для анализа: %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "Cumulative %s / %s: %.0f / %.0f (%s); investigation threshold: %s."
+msgstr "Накопительно %s / %s: %.0f / %.0f (%s); порог для анализа: %s."
+
+#: doctor_functions.php
+msgid "This counter can omit memory-mapped temporary files on MySQL; a low ratio does not rule out disk use."
+msgstr "Этот счётчик в MySQL может не учитывать временные файлы с отображением в память (mmap); низкое значение не исключает использование диска."
+
+#: doctor_functions.php
+msgid "Redo-log advice deferred until the observation window is sufficient and Innodb_log_waits is available."
+msgstr "Рекомендации по журналу повторов (redo log) отложены до накопления достаточного окна наблюдения и доступности Innodb_log_waits."
+
+#: doctor_functions.php
+#, php-format
+msgid "Cumulative Innodb_log_waits: %.0f."
+msgstr "Накопительное значение Innodb_log_waits: %.0f."
+
+#: doctor_functions.php
+msgid "Investigate transaction sizes, log-buffer pressure, and storage latency. Recheck the rate under load before considering innodb_log_buffer_size; this historical count is not evidence of a current stall."
+msgstr "Исследуйте размер транзакций, нагрузку на буфер журнала и задержки хранилища. Перепроверьте частоту событий под нагрузкой перед изменением innodb_log_buffer_size; это историческое значение не свидетельствует о текущей блокировке."
+
+#: doctor_functions.php
+msgid "InnoDB log-buffer waits"
+msgstr "Ожидания буфера журнала InnoDB"
+
+#: doctor_functions.php
+msgid "installed Cacti composer.json"
+msgstr "установленный файл composer.json Cacti"
+
+#: doctor_functions.php
+#, php-format
+msgid "Cacti %s installer requirement"
+msgstr "требование установщика Cacti %s"
+
+#: doctor_functions.php
+msgid "PHP compatibility with installed Cacti"
+msgstr "Совместимость PHP с установленным Cacti"
+
+#: doctor_functions.php
+#, php-format
+msgid "Running PHP %s; installed Cacti %s."
+msgstr "Используется PHP %s; установленный Cacti %s."
+
+#: doctor_functions.php
+msgid "Could not establish Cacti's PHP requirement. Check the installed Cacti composer.json or release documentation; Doctor does not assume compatibility."
+msgstr "Не удалось определить требования Cacti к версии PHP. Проверьте установленный файл composer.json Cacti или документацию к выпуску; Doctor не предполагает совместимость по умолчанию."
+
+#: doctor_functions.php
+#, php-format
+msgid "PHP >= %s and < %s"
+msgstr "PHP >= %s и < %s"
+
+#: doctor_functions.php
+#, php-format
+msgid "PHP >= %s"
+msgstr "PHP >= %s"
+
+#: doctor_functions.php
+#, php-format
+msgid "Requires %s (%s). Running PHP meets that requirement."
+msgstr "Требуется %s (%s). Текущая версия PHP соответствует этому требованию."
+
+#: doctor_functions.php
+#, php-format
+msgid "Requires %s (%s). Running PHP does not meet that requirement."
+msgstr "Требуется %s (%s). Текущая версия PHP не соответствует этому требованию."
+
+#: doctor_functions.php
+#, php-format
+msgid "Detected %s; Doctor requires Cacti 1.2.20 or newer."
+msgstr "Обнаружена версия %s; для работы Doctor требуется Cacti 1.2.20 или новее."
+
+#: doctor_functions.php
+msgid "Supported Cacti version"
+msgstr "Поддерживаемая версия Cacti"
+
+#: doctor_functions.php
+msgid "PHP upstream security support"
+msgstr "Официальная поддержка безопасности PHP"
+
+#: doctor_functions.php
+msgid "This checks the PHP release branch, not whether this patch release is up to date or whether your OS vendor backports fixes. Cacti compatibility is checked separately."
+msgstr "Проверяется ветка выпуска PHP, а не актуальность конкретного патч-релиза или наличие бэкпортов исправлений от поставщика ОС. Совместимость с Cacti проверяется отдельно."
+
+#: doctor_functions.php
+#, php-format
+msgid "Running PHP %s; upstream security-support status is unknown or this is a prerelease. Check https://www.php.net/supported-versions.php and update Doctor's support data."
+msgstr "Используется PHP %s; статус официальной поддержки безопасности неизвестен либо это предварительный выпуск. Проверьте https://www.php.net/supported-versions.php и обновите данные поддержки Doctor."
+
+#: doctor_functions.php
+#, php-format
+msgid "Running PHP %s; PHP %s receives upstream security fixes through %s."
+msgstr "Используется PHP %s; ветка PHP %s получает официальные исправления безопасности до %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "Running PHP %s; PHP %s no longer receives upstream security fixes; support ended %s. Upgrade to a supported PHP branch compatible with your Cacti installation, or confirm security maintenance with your OS vendor."
+msgstr "Используется PHP %s; ветка PHP %s больше не получает официальных исправлений безопасности; поддержка завершилась %s. Обновитесь до поддерживаемой ветки PHP, совместимой с вашей установкой Cacti, или уточните наличие поддержки безопасности у поставщика ОС."
+
+#: doctor_functions.php
+msgid "Required current CLI PHP extensions"
+msgstr "Обязательные расширения текущего CLI PHP"
+
+#: doctor_functions.php
+msgid "Required web PHP extensions"
+msgstr "Обязательные расширения веб-PHP"
+
+#: doctor_functions.php
+#, php-format
+msgid "Missing: %s. Install them through the operating system package manager."
+msgstr "Отсутствуют: %s. Установите их через менеджер пакетов операционной системы."
+
+#: doctor_functions.php
+msgid "All PHP extensions required by the Cacti installer are loaded in this PHP context."
+msgstr "Все расширения PHP, требуемые установщиком Cacti, загружены в данном контексте PHP."
+
+#: doctor_functions.php
+msgid "Doctor does not execute configured binaries while running as root."
+msgstr "Doctor не запускает настроенные исполняемые файлы при работе с правами root."
+
+#: doctor_functions.php
+#, php-format
+msgid "The file name %s is not expected for %s, so Doctor did not execute it."
+msgstr "Имя файла %s не соответствует ожидаемому для %s, поэтому Doctor не стал его запускать."
+
+#: doctor_functions.php
+msgid "Doctor is running as root, so permission checks describe root rather than the web server or poller account, configured binaries are not executed, and repairs are refused. Run Doctor as the Cacti poller user."
+msgstr "Doctor запущен с правами root, поэтому проверки разрешений относятся к пользователю root, а не к учётной записи веб-сервера или опросчика, настроенные исполняемые файлы не запускаются, а операции исправления отклоняются. Запустите Doctor от имени пользователя опросчика Cacti."
+
+#: doctor_functions.php
+msgid "Doctor privileges"
+msgstr "Привилегии Doctor"
+
+#: doctor_functions.php
+msgid "Doctor is running without root privileges."
+msgstr "Doctor запущен без привилегий root."
+
+#: doctor_functions.php
+msgid "Required CLI PHP extensions"
+msgstr "Обязательные расширения CLI PHP"
+
+#: doctor_functions.php
+msgid "The configured PHP CLI executable is unavailable, so its extensions cannot be checked."
+msgstr "Настроенный исполняемый файл PHP CLI недоступен, поэтому проверить его расширения невозможно."
+
+#: doctor_functions.php
+msgid "shell_exec() is disabled, so Doctor cannot compare the CLI PHP extensions with Cacti requirements."
+msgstr "Функция shell_exec() отключена, поэтому Doctor не может сравнить расширения CLI PHP с требованиями Cacti."
+
+#: doctor_functions.php
+msgid "The configured PHP CLI executable did not return a valid extension list."
+msgstr "Настроенный исполняемый файл PHP CLI не вернул корректный список расширений."
+
+#: doctor_functions.php
+#, php-format
+msgid "Missing from CLI PHP: %s. The web and CLI PHP configurations are separate on many systems."
+msgstr "Отсутствуют в CLI PHP: %s. Во многих системах конфигурации веб-PHP и CLI PHP разделены."
+
+#: doctor_functions.php
+msgid "The configured PHP CLI has every extension required by Cacti."
+msgstr "В настроенном PHP CLI присутствуют все расширения, требуемые Cacti."
+
+#: doctor_functions.php
+msgid "GD TrueType support"
+msgstr "поддержка GD TrueType"
+
+#: doctor_functions.php
+msgid "Recommended PHP features"
+msgstr "Рекомендуемые возможности PHP"
+
+#: doctor_functions.php
+#, php-format
+msgid "Unavailable: %s. Cacti can run without these features, but related functionality may be limited."
+msgstr "Недоступно: %s. Cacti может работать без этих возможностей, но связанная функциональность может быть ограничена."
+
+#: doctor_functions.php
+msgid "The optional gettext, SNMP, and GD TrueType features are available."
+msgstr "Дополнительные возможности gettext, SNMP и GD TrueType доступны."
+
+#: doctor_functions.php
+#, php-format
+msgid "memory_limit is %s (%dM or more is recommended)"
+msgstr "memory_limit равен %s (рекомендуется %dM или больше)"
+
+#: doctor_functions.php
+#, php-format
+msgid "max_execution_time is %d seconds (60 or more is recommended)"
+msgstr "max_execution_time составляет %d сек. (рекомендуется 60 или больше)"
+
+#: doctor_functions.php
+msgid "date.timezone is not set"
+msgstr "date.timezone не задан"
+
+#: doctor_functions.php
+msgid "unset"
+msgstr "не задано"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s. Current values: %s"
+msgstr "%s. Текущие значения: %s"
+
+#: doctor_functions.php
+msgid "PHP runtime configuration"
+msgstr "Конфигурация среды выполнения PHP"
+
+#: doctor_functions.php
+msgid "Database connection"
+msgstr "Подключение к базе данных"
+
+#: doctor_functions.php
+#, php-format
+msgid "Query failed: %s"
+msgstr "Ошибка выполнения запроса: %s"
+
+#: doctor_functions.php
+msgid "A read-only query completed successfully."
+msgstr "Запрос только для чтения выполнен успешно."
+
+#: doctor_functions.php
+msgid "The database returned an unexpected result."
+msgstr "База данных вернула неожиданный результат."
+
+#: doctor_functions.php
+#, php-format
+msgid "Doctor could not determine the database server version from %s."
+msgstr "Doctor не удалось определить версию сервера базы данных из %s."
+
+#: doctor_functions.php
+msgid "Supported database server"
+msgstr "Поддерживаемый сервер базы данных"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s %s detected; this Cacti branch recommends %s %s or newer."
+msgstr "Обнаружен %s %s; для этой ветки Cacti рекомендуется %s %s или новее."
+
+#: doctor_functions.php
+#, php-format
+msgid "Database character set is %s and collation is %s. Cacti requires utf8mb4."
+msgstr "Кодировка базы данных — %s, сопоставление — %s. Для Cacti требуется utf8mb4."
+
+#: doctor_functions.php
+msgid "unknown"
+msgstr "неизвестно"
+
+#: doctor_functions.php
+msgid "Database character set"
+msgstr "Кодировка базы данных"
+
+#: doctor_functions.php
+msgid "Database timezone support"
+msgstr "Поддержка часовых поясов в базе данных"
+
+#: doctor_functions.php
+msgid "The Cacti database account cannot read mysql.time_zone_name. Grant SELECT access and populate the database timezone tables."
+msgstr "Учётная запись базы данных Cacti не может читать таблицу mysql.time_zone_name. Предоставьте право SELECT и заполните таблицы часовых поясов базы данных."
+
+#: doctor_functions.php
+#, php-format
+msgid "The database timezone table is accessible and contains %d entries."
+msgstr "Таблица часовых поясов базы данных доступна и содержит записей: %d."
+
+#: doctor_functions.php
+msgid "The database timezone table is accessible but empty. Populate the system timezone tables."
+msgstr "Таблица часовых поясов базы данных доступна, но пуста. Заполните системные таблицы часовых поясов."
+
+#: doctor_functions.php
+msgid "Core tables used by Cacti are present."
+msgstr "Основные таблицы, используемые Cacti, присутствуют."
+
+#: doctor_functions.php
+#, php-format
+msgid "Missing core tables: %s. Restore or upgrade the database before attempting other repairs."
+msgstr "Отсутствуют основные таблицы: %s. Восстановите или обновите базу данных перед выполнением других исправлений."
+
+#: doctor_functions.php
+msgid "Core database tables"
+msgstr "Основные таблицы базы данных"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s is missing (%s)"
+msgstr "%s отсутствует (%s)"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s is not writable (%s)"
+msgstr "%s недоступен для записи (%s)"
+
+#: doctor_functions.php
+msgid "Runtime directories"
+msgstr "Каталоги среды выполнения"
+
+#: doctor_functions.php
+msgid "The cache, log, and RRA directories exist and are writable."
+msgstr "Каталоги кэша, журналов и RRA существуют и доступны для записи."
+
+#: doctor_functions.php
+msgid "Cacti configuration file"
+msgstr "Файл конфигурации Cacti"
+
+#: doctor_functions.php
+msgid "include/config.php is missing or unreadable."
+msgstr "Файл include/config.php отсутствует или недоступен для чтения."
+
+#: doctor_functions.php
+msgid "include/config.php is readable. POSIX mode-bit checks do not apply on Windows."
+msgstr "Файл include/config.php доступен для чтения. Проверки битов режима POSIX не применяются в Windows."
+
+#: doctor_functions.php
+msgid "include/config.php is writable by other users. Remove world-write permission because this file contains database credentials."
+msgstr "Файл include/config.php доступен для записи другим пользователям. Удалите право записи для всех, так как этот файл содержит учётные данные базы данных."
+
+#: doctor_functions.php
+msgid "include/config.php is group-writable. Confirm that every member of the owning group is trusted."
+msgstr "Файл include/config.php доступен для записи группе. Убедитесь, что все участники группы-владельца являются доверенными."
+
+#: doctor_functions.php
+msgid "include/config.php is readable by all local users and contains database credentials. Restrict it to the owner and the web server group."
+msgstr "Файл include/config.php доступен для чтения всем локальным пользователям и содержит учётные данные базы данных. Ограничьте доступ только владельцем и группой веб-сервера."
+
+#: doctor_functions.php
+msgid "include/config.php is readable and is not world-readable, group-writable, or world-writable."
+msgstr "Файл include/config.php доступен для чтения и не открыт для чтения всем, а также для записи группе или всем пользователям."
+
+#: doctor_functions.php
+msgid "Cacti log file"
+msgstr "Файл журнала Cacti"
+
+#: doctor_functions.php
+msgid "The log file does not exist. Its parent directory is not writable."
+msgstr "Файл журнала не существует. Его родительский каталог недоступен для записи."
+
+#: doctor_functions.php
+msgid "The log file does not exist. Its parent directory is writable, so Cacti can create it."
+msgstr "Файл журнала не существует. Его родительский каталог доступен для записи, поэтому Cacti сможет создать файл."
+
+#: doctor_functions.php
+msgid "The configured log path must be a readable and writable regular file."
+msgstr "Настроенный путь к журналу должен указывать на обычный файл, доступный для чтения и записи."
+
+#: doctor_functions.php
+#, php-format
+msgid "The log is readable and writable and is %s MiB."
+msgstr "Файл журнала доступен для чтения и записи; его размер составляет %s МиБ."
+
+#: doctor_functions.php
+msgid "The log is readable and writable."
+msgstr "Файл журнала доступен для чтения и записи."
+
+#: doctor_functions.php
+msgid "Verify that Cacti log rotation is enabled."
+msgstr "Убедитесь, что ротация журнала Cacti включена."
+
+#: doctor_functions.php
+#, php-format
+msgid "Executable found at %s."
+msgstr "Исполняемый файл найден по пути %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "The %s setting is empty, missing, or not executable."
+msgstr "Параметр %s пуст, отсутствует или указывает на неисполняемый файл."
+
+#: doctor_functions.php
+#, php-format
+msgid "The %s setting is empty, missing, or not executable: %s"
+msgstr "Параметр %s пуст, отсутствует или указывает на неисполняемый файл: %s"
+
+#: doctor_functions.php
+msgid "Doctor could not determine its version."
+msgstr "Doctor не удалось определить его версию."
+
+#: doctor_functions.php
+#, php-format
+msgid "Detected version %s."
+msgstr "Обнаружена версия %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "Detected version %s; version %s or newer is recommended."
+msgstr "Обнаружена версия %s; рекомендуется версия %s или новее."
+
+#: doctor_functions.php
+#, php-format
+msgid "Detected version %s; version %s or newer is required."
+msgstr "Обнаружена версия %s; требуется версия %s или новее."
+
+#: doctor_functions.php
+#, php-format
+msgid "Detected version %s; minimum is %s."
+msgstr "Обнаружена версия %s; минимально требуемая — %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "%s executable"
+msgstr "Исполняемый файл %s"
+
+#: doctor_functions.php
+msgid "poller_type is not cmd.php or Spine"
+msgstr "poller_type не равен cmd.php или Spine"
+
+#: doctor_functions.php
+msgid "poller_interval is not a supported value"
+msgstr "poller_interval имеет неподдерживаемое значение"
+
+#: doctor_functions.php
+msgid "Poller configuration"
+msgstr "Конфигурация опросчика"
+
+#: doctor_functions.php
+#, php-format
+msgid "Poller is %s with a %d-second interval."
+msgstr "Используется опросчик %s с интервалом %d сек."
+
+#: doctor_functions.php
+msgid "Main poller freshness"
+msgstr "Актуальность работы главного опросчика"
+
+#: doctor_functions.php
+msgid "No completed main-poller run was found. This can be expected before the first poll."
+msgstr "Завершённые запуски главного опросчика не найдены. Это нормально до выполнения первого опроса."
+
+#: doctor_functions.php
+#, php-format
+msgid "Last completed run was %d seconds ago; failure threshold is %d seconds."
+msgstr "Последний завершённый запуск был %d сек. назад; порог сбоя составляет %d сек."
+
+#: doctor_functions.php
+msgid "Database schema version"
+msgstr "Версия схемы базы данных"
+
+#: doctor_functions.php
+msgid "The version table is empty or unreadable, so the schema version is unknown."
+msgstr "Таблица version пуста или недоступна для чтения, поэтому версия схемы неизвестна."
+
+#: doctor_functions.php
+msgid "The version table still reads new_install, so the installer never finished. Open install/ in a browser to complete it."
+msgstr "В таблице version всё ещё указано значение new_install, поэтому установка не была завершена. Откройте install/ в браузере для завершения."
+
+#: doctor_functions.php
+#, php-format
+msgid "The database schema is at %s but the installed code is %s. Open install/ in a browser to finish the upgrade."
+msgstr "Схема базы данных имеет версию %s, но установленный код — %s. Откройте install/ в браузере для завершения обновления."
+
+#: doctor_functions.php
+#, php-format
+msgid "The database schema (%s) is newer than the installed code (%s). The code may have been rolled back."
+msgstr "Схема базы данных (%s) новее установленного кода (%s). Возможно, был выполнен откат кода."
+
+#: doctor_functions.php
+#, php-format
+msgid "The database schema (%s) matches the installed code."
+msgstr "Схема базы данных (%s) соответствует установленному коду."
+
+#: doctor_functions.php
+msgid "Main poller run time"
+msgstr "Время выполнения главного опросчика"
+
+#: doctor_functions.php
+msgid "No completed run time is recorded yet."
+msgstr "Время завершённого запуска ещё не зафиксировано."
+
+#: doctor_functions.php
+#, php-format
+msgid "The last main-poller run took %s seconds of the %d-second interval."
+msgstr "Последний запуск главного опросчика занял %s сек. из интервала в %d сек."
+
+#: doctor_functions.php
+msgid "Runs that outlast the interval overlap and lose data; add poller processes or threads, or use Spine."
+msgstr "Запуски, превышающие интервал, перекрываются и приводят к потере данных; добавьте процессы или потоки опросчика либо используйте Spine."
+
+#: doctor_functions.php
+msgid "Little headroom remains before polls overlap."
+msgstr "Остаётся мало запаса времени до перекрытия циклов опроса."
+
+#: doctor_functions.php
+#, php-format
+msgid "%d poller_output rows are older than two polling intervals and were never written to RRD files. Check the Cacti log for \"Poller Output Table not Empty\" and confirm max_heap_table_size is large enough."
+msgstr "Обнаружено строк poller_output старше двух интервалов опроса, не записанных в файлы RRD: %d. Проверьте журнал Cacti на наличие сообщения \"Poller Output Table not Empty\" и убедитесь, что значение max_heap_table_size достаточно велико."
+
+#: doctor_functions.php
+msgid "Unprocessed poller output"
+msgstr "Необработанный вывод опросчика"
+
+#: doctor_functions.php
+msgid "No stale rows remain in poller_output."
+msgstr "Устаревших строк в poller_output не осталось."
+
+#: doctor_functions.php
+msgid "No remote pollers are enabled."
+msgstr "Удалённые опросчики не включены."
+
+#: doctor_functions.php
+msgid "Remote pollers"
+msgstr "Удалённые опросчики"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s (ID %s) has never reported"
+msgstr "%s (ID %s) никогда не отправлял отчёты"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s (ID %s) last reported %d seconds ago"
+msgstr "%s (ID %s) последний раз отправлял отчёт %d сек. назад"
+
+#: doctor_functions.php
+#, php-format
+msgid "The failure threshold is %d seconds."
+msgstr "Порог сбоя составляет %d сек."
+
+#: doctor_functions.php
+#, php-format
+msgid "%d enabled remote pollers reported within %d seconds."
+msgstr "Включённые удалённые опросчики (%d) отчитались в течение %d сек."
+
+#: doctor_functions.php
+msgid "Enabled plugin files"
+msgstr "Файлы включённых плагинов"
+
+#: doctor_functions.php
+#, php-format
+msgid "Enabled plugins are missing from %s: %s. Restore their files or disable them in Plugin Management."
+msgstr "Включённые плагины отсутствуют в %s: %s. Восстановите их файлы или отключите их в разделе управления плагинами."
+
+#: doctor_functions.php
+msgid "Every enabled plugin has its setup.php in place."
+msgstr "У каждого включённого плагина имеется файл setup.php."
+
+#: doctor_functions.php
+msgid "Boost RRD updates"
+msgstr "Обновления RRD в Boost"
+
+#: doctor_functions.php
+msgid "Boost is disabled, so the poller writes RRD files directly."
+msgstr "Модуль Boost отключён, поэтому опросчик записывает RRD-файлы напрямую."
+
+#: doctor_functions.php
+msgid "Boost is enabled but has no recorded run. This can be expected before its first flush."
+msgstr "Модуль Boost включён, но его запуски не зафиксированы. Это ожидаемо до первого сброса буфера."
+
+#: doctor_functions.php
+#, php-format
+msgid "Boost last flushed %d seconds ago, more than twice its %d-minute interval. Graphs stop updating until it runs; check the Cacti log for BOOST errors."
+msgstr "Последний сброс буфера Boost выполнен %d с назад, что более чем вдвое превышает заданный интервал (%d мин). Графики перестанут обновляться до его запуска; проверьте журнал Cacti на наличие ошибок BOOST."
+
+#: doctor_functions.php
+#, php-format
+msgid "poller_output_boost holds %d rows, above the %d-row limit that forces a flush. Boost is falling behind."
+msgstr "Таблица poller_output_boost содержит %d строк, что превышает лимит (%d строк) для принудительного сброса буфера. Boost отстаёт от графика."
+
+#: doctor_functions.php
+#, php-format
+msgid "Boost last flushed %d seconds ago with %d rows waiting."
+msgstr "Последний сброс буфера Boost выполнен %d с назад, ожидают обработки %d строк."
+
+#: doctor_functions.php doctor_rrd.php
+#, php-format
+msgid "Checked a sample of %d active data sources that rotates hourly; a pass does not cover every file."
+msgstr "Проверена выборка из %d активных источников данных (ротируется ежечасно); один проход не охватывает все файлы."
+
+#: doctor_functions.php
+#, php-format
+msgid "%d of %d active data sources have no RRD file, for example %s. New data sources get one after their first poll; otherwise check the RRA directory and its permissions."
+msgstr "У %d из %d активных источников данных отсутствует RRD-файл, например %s. Для новых источников данных файл создаётся после первого опроса; в ином случае проверьте каталог RRA и разрешения для него."
+
+#: doctor_functions.php
+msgid "RRD files"
+msgstr "Файлы RRD"
+
+#: doctor_functions.php
+#, php-format
+msgid "All %d active data sources have an RRD file."
+msgstr "У всех %d активных источников данных имеется RRD-файл."
+
+#: doctor_functions.php
+#, php-format
+msgid "Doctor could not measure free space for %s."
+msgstr "Doctor не удалось измерить свободное место для %s."
+
+#: doctor_functions.php
+msgid "RRA disk space"
+msgstr "Свободное место для RRA"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s (%s GiB) free on the file system holding %s."
+msgstr "%s (%s GiB) свободно в файловой системе, содержащей %s."
+
+#: doctor_functions.php
+msgid "RRD updates fail silently when the disk fills."
+msgstr "При переполнении диска обновления RRD завершаются сбоем без вывода сообщений."
+
+#: doctor_functions.php
+msgid "Database clock"
+msgstr "Часы базы данных"
+
+#: doctor_functions.php
+msgid "Doctor could not read the database clock."
+msgstr "Doctor не удалось считать время часов базы данных."
+
+#: doctor_functions.php
+#, php-format
+msgid "The database and PHP clocks differ by %d seconds."
+msgstr "Часы базы данных и PHP расходятся на %d с."
+
+#: doctor_functions.php
+msgid "Poll timestamps will be misaligned; synchronise both hosts with NTP."
+msgstr "Метки времени опросов будут рассинхронизированы; синхронизируйте оба узла с помощью NTP."
+
+#: doctor_functions.php
+msgid "Synchronise both hosts with NTP."
+msgstr "Синхронизируйте оба узла с помощью NTP."
+
+#: doctor_functions.php
+msgid "Spine configuration"
+msgstr "Конфигурация Spine"
+
+#: doctor_functions.php
+msgid "Spine is not the configured poller."
+msgstr "Spine не настроен в качестве опросчика."
+
+#: doctor_functions.php
+msgid "path_spine_config is not set, so Spine uses its compiled-in search path and Doctor cannot verify which file it reads."
+msgstr "Параметр path_spine_config не задан, поэтому Spine использует путь поиска, заданный при компиляции, и Doctor не может проверить, какой файл он читает."
+
+#: doctor_functions.php
+#, php-format
+msgid "The Spine configuration file is missing or unreadable: %s."
+msgstr "Файл конфигурации Spine отсутствует или недоступен для чтения: %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "DB_Database is %s but Cacti uses %s"
+msgstr "Параметр DB_Database имеет значение %s, но Cacti использует %s"
+
+#: doctor_functions.php
+#, php-format
+msgid "DB_User is %s but Cacti uses %s"
+msgstr "Параметр DB_User имеет значение %s, но Cacti использует %s"
+
+#: doctor_functions.php
+msgid "the file is world-readable and holds the database password"
+msgstr "файл доступен для чтения всем пользователям и содержит пароль базы данных"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s uses the same database and user as Cacti."
+msgstr "%s использует ту же базу данных и того же пользователя, что и Cacti."
+
+#: doctor_functions.php
+#, php-format
+msgid "%s is %s"
+msgstr "%s имеет значение %s"
+
+#: doctor_functions.php
+msgid "Cacti recommends ON; doublewrite may stay off only on ZFS or similar journaling storage."
+msgstr "Cacti рекомендует значение ON; отключать doublewrite допустимо только в ZFS или аналогичных журналируемых хранилищах."
+
+#: doctor_functions.php
+msgid "InnoDB safety settings"
+msgstr "Параметры безопасности InnoDB"
+
+#: doctor_functions.php
+msgid "innodb_file_per_table and innodb_doublewrite are enabled."
+msgstr "Параметры innodb_file_per_table и innodb_doublewrite включены."
+
+#: doctor_functions.php
+#, php-format
+msgid "None of the last %d log lines report an error."
+msgstr "Ни в одной из последних %d строк журнала не обнаружено ошибок."
+
+#: doctor_functions.php
+msgid "Recent log errors"
+msgstr "Недавние ошибки в журнале"
+
+#: doctor_functions.php
+#, php-format
+msgid "%d of the last %d log lines report an error. Most frequent (%dx): %s"
+msgstr "Ошибки обнаружены в %d из последних %d строк журнала. Наиболее частая (%dx): %s"
+
+#: doctor_functions.php
+msgid "The Cacti log is not readable; see the Cacti log file check."
+msgstr "Журнал Cacti недоступен для чтения; см. проверку файла журнала Cacti."
+
+#: doctor_functions.php
+msgid "No enabled devices are configured."
+msgstr "Включённые устройства не настроены."
+
+#: doctor_functions.php
+#, php-format
+msgid "All %d enabled devices are up."
+msgstr "Все %d включённых устройств работают."
+
+#: doctor_functions.php
+#, php-format
+msgid "%d of %d enabled devices are down and %d recovering."
+msgstr "%d из %d включённых устройств недоступны, а %d находятся в состоянии восстановления."
+
+#: doctor_functions.php
+msgid "The down devices could not be listed."
+msgstr "Не удалось получить список недоступных устройств."
+
+#: doctor_functions.php
+#, php-format
+msgid "%s down since %s"
+msgstr "%s недоступно с %s"
+
+#: doctor_functions.php
+#, php-format
+msgid "Longest down: %s."
+msgstr "Дольше всех недоступно: %s."
+
+#: doctor_functions.php
+msgid "With most devices down, check the poller host's network and SNMP settings first."
+msgstr "Если большинство устройств недоступно, в первую очередь проверьте сетевые настройки и параметры SNMP узла опросчика."
+
+#: doctor_functions.php
+msgid "Doctor could not read device status from the host table."
+msgstr "Doctor не удалось считать состояние устройств из таблицы host."
+
+#: doctor_functions.php
+#, php-format
+msgid "Cacti Doctor on %s: %d failed, %d warnings"
+msgstr "Cacti Doctor на %s: ошибок — %d, предупреждений — %d"
+
+#: doctor_functions.php
+#, php-format
+msgid "%d Cacti Doctor checks changed status on %s."
+msgstr "У %d проверок Cacti Doctor изменилось состояние на %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "Totals: %d passed, %d warnings, %d failed."
+msgstr "Итого: пройдено — %d, предупреждений — %d, ошибок — %d."
+
+#: doctor_functions.php
+#, php-format
+msgid "Refusing to overwrite %s."
+msgstr "Отказ от перезаписи %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "Cannot create %s."
+msgstr "Не удаётся создать %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "Could not make %s private."
+msgstr "Не удалось ограничить доступ к %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "Writing %s failed."
+msgstr "Ошибка записи в %s."
+
+#: doctor_functions.php
+msgid "Repair runtime directories"
+msgstr "Восстановить каталоги времени выполнения"
+
+#: doctor_functions.php
+msgid "Create missing cache, log, and RRA directories and add owner read/write/execute permission without removing existing permissions."
+msgstr "Создать отсутствующие каталоги кэша, журналов и RRA и добавить владельцу права на чтение, запись и выполнение без удаления существующих разрешений."
+
+#: doctor_functions.php
+msgid "The requested repair is not allow-listed."
+msgstr "Запрошенное восстановление не входит в список разрешённых."
+
+#: doctor_functions.php
+msgid "No repair handler is registered."
+msgstr "Обработчик восстановления не зарегистрирован."
+
+#: doctor_functions.php
+msgid "Repair unavailable"
+msgstr "Восстановление недоступно"
+
+#: doctor_functions.php
+msgid "Repairs are refused while running as root. Run Doctor as the Cacti poller user."
+msgstr "Выполнение восстановления от имени root запрещено. Запустите Doctor от имени пользователя опросчика Cacti."
+
+#: doctor_functions.php
+msgid "The Cacti base directory cannot be resolved."
+msgstr "Не удаётся определить базовый каталог Cacti."
+
+#: doctor_functions.php
+#, php-format
+msgid "%s: path is outside the Cacti installation"
+msgstr "%s: путь находится за пределами каталога установки Cacti"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s: symbolic links are not repaired"
+msgstr "%s: символические ссылки не восстанавливаются"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s: directory creation failed"
+msgstr "%s: не удалось создать каталог"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s: could not add owner permissions"
+msgstr "%s: не удалось добавить разрешения владельцу"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s: still not a writable directory"
+msgstr "%s: по-прежнему не является каталогом с правом записи"
+
+#: doctor_functions.php
+msgid "Runtime directories now exist and are writable by the current process."
+msgstr "Каталоги времени выполнения теперь существуют и доступны текущему процессу для записи."
+
+#: doctor_functions.php
+msgid "Cacti"
+msgstr "Cacti"
+
+#: doctor_functions.php
+msgid "Database"
+msgstr "База данных"
+
+#: doctor_functions.php
+msgid "Database health"
+msgstr "Состояние базы данных"
+
+#: doctor_functions.php
+msgid "Devices"
+msgstr "Устройства"
+
+#: doctor_functions.php setup.php
+msgid "Doctor"
+msgstr "Doctor"
+
+#: doctor_functions.php
+msgid "Filesystem"
+msgstr "Файловая система"
+
+#: doctor_functions.php
+msgid "Logging"
+msgstr "Журналирование"
+
+#: doctor_functions.php
+msgid "PHP"
+msgstr "PHP"
+
+#: doctor_functions.php
+msgid "Poller"
+msgstr "Опросчик"
+
+#: doctor_functions.php
+msgid "Prerequisites"
+msgstr "Предварительные требования"
+
+#: doctor_functions.php
+msgid "Repair"
+msgstr "Восстановление"
+
+#: doctor_functions.php
+msgid "Security"
+msgstr "Безопасность"
+
+#: doctor_functions.php
+msgid "PASS"
+msgstr "ПРОЙДЕНО"
+
+#: doctor_functions.php
+msgid "WARN"
+msgstr "ПРЕДУПРЕЖДЕНИЕ"
+
+#: doctor_functions.php
+msgid "FAIL"
+msgstr "ОШИБКА"
+
+#: doctor_functions.php
+msgid "UNKNOWN"
+msgstr "НЕИЗВЕСТНО"
+
+#: doctor_rrd.php
+msgid "Data source freshness could not be assessed."
+msgstr "Не удалось оценить актуальность источников данных."
+
+#: doctor_rrd.php
+msgid "RRD update freshness"
+msgstr "Актуальность обновлений RRD"
+
+#: doctor_rrd.php
+msgid "The deferred-write interval is unknown; configure it before judging file age."
+msgstr "Интервал отложенной записи неизвестен; настройте его перед оценкой возраста файлов."
+
+#: doctor_rrd.php
+#, php-format
+msgid "Checked %d files; %d stale files across %d devices; %d unavailable or future-dated files."
+msgstr "Проверено файлов: %d; устаревших: %d (на %d устройствах); недоступных или с датой в будущем: %d."
+
+#: doctor_rrd.php
+msgid "File age includes the collection interval and configured deferred-write allowance; verify the poller and flush process before changing data."
+msgstr "Возраст файла включает интервал сбора и настроенный допуск отложенной записи; проверьте опросчик и процесс сброса буфера перед изменением данных."
+
+#: doctor_scheduling.php
+msgid "Scheduled checks are disabled. Enable them in Settings > Doctor to retain samples and alert on changes."
+msgstr "Проверки по расписанию отключены. Включите их в разделе «Настройки > Doctor», чтобы сохранять выборки и получать оповещения об изменениях."
+
+#: doctor_scheduling.php
+msgid "Scheduled report freshness"
+msgstr "Актуальность отчётов по расписанию"
+
+#: doctor_scheduling.php
+#, php-format
+msgid "%s UTC"
+msgstr "%s UTC"
+
+#: doctor_scheduling.php
+#, php-format
+msgid "Last started: %s; last completed: %s."
+msgstr "Последний запуск: %s; последнее завершение: %s."
+
+#: doctor_scheduling.php
+msgid "never"
+msgstr "никогда"
+
+#: doctor_scheduling.php
+msgid "Results are missing or stale. Check the primary poller and DOCTOR log for startup, timeout, or persistence errors."
+msgstr "Результаты отсутствуют или устарели. Проверьте основной опросчик и журнал DOCTOR на наличие ошибок запуска, превышения времени ожидания или сохранения данных."
+
+#: doctor_scheduling.php
+msgid "A completed diagnostic run is recent; this does not mean all checks passed."
+msgstr "Недавний запуск диагностики завершён; это не означает, что все проверки пройдены."
+
+#: doctor_scheduling.php
+msgid "Doctor alert state is invalid. Restore doctor_alert_pending from backup before retrying."
+msgstr "Состояние оповещений Doctor недопустимо. Восстановите doctor_alert_pending из резервной копии перед повторной попыткой."
+
+#: doctor_scheduling.php
+msgid "Doctor alert transitions are invalid; no email was sent."
+msgstr "Переходы состояний оповещений Doctor недопустимы; письмо не отправлено."
+
+#: doctor_scheduling.php
+msgid "Alert delivery"
+msgstr "Доставка оповещений"
+
+#: doctor_scheduling.php
+#, php-format
+msgid "%d check transitions await delivery; attempts: %d of 3."
+msgstr "Ожидают отправки переходов состояний проверок: %d; попыток: %d из 3."
+
+#: doctor_scheduling.php
+msgid "Automatic retries exhausted. Correct Cacti mail settings, then run Doctor with --scheduled --retry-alerts as the poller user."
+msgstr "Автоматические повторные попытки исчерпаны. Исправьте настройки почты Cacti, затем запустите Doctor с флагами --scheduled --retry-alerts от имени пользователя опросчика."
+
+#: doctor_scheduling.php
+#, php-format
+msgid "Next eligible retry: %s UTC, after a primary poller cycle."
+msgstr "Следующая возможная попытка: %s UTC, после цикла основного опросчика."
+
+#: doctor_scheduling.php
+msgid "No alert recipients are currently configured; pending transitions are retained."
+msgstr "Получатели оповещений сейчас не настроены; ожидающие переходы состояний сохранены."
+
+#: doctor_scheduling.php
+msgid "No retained alert is awaiting delivery. Mail-server acceptance does not prove inbox delivery."
+msgstr "Сохранённых оповещений, ожидающих доставки, нет. Принятие письма почтовым сервером не гарантирует доставку во входящие."
+
+#: doctor_scheduling.php
+msgid "Doctor retained status changes (UTC). Repeated changes for one check are coalesced; an out-and-back transition is retained."
+msgstr "Сохранённые изменения состояния Doctor (UTC). Повторные изменения для одной проверки объединяются; переход с возвратом в исходное состояние сохраняется."
+
+#: doctor_scheduling.php
+#, php-format
+msgid "%s: %s -> %s (latest change %s)"
+msgstr "%s: %s -> %s (последнее изменение: %s)"
+
+#: doctor_scheduling.php
+#, php-format
+msgid "%d further status changes are not listed because the alert queue reached its storage limit."
+msgstr "Ещё %d изменений состояния не перечислены, так как очередь оповещений достигла предела хранения."
+
+#: doctor_scheduling.php
+msgid "Open Utilities > Doctor for current measurements, recommended actions, and verification steps."
+msgstr "Откройте раздел «Инструменты > Doctor» для просмотра текущих показателей, рекомендуемых действий и шагов проверки."
+
+#: doctor_scheduling.php
+#, php-format
+msgid "Cacti Doctor: %d retained status changes"
+msgstr "Cacti Doctor: сохранённых изменений состояния — %d"
+
+#: doctor_scheduling.php
+msgid "Doctor schedule is already running or the database lock is unavailable."
+msgstr "Проверка Doctor по расписанию уже выполняется или блокировка базы данных недоступна."
+
+#: doctor_web.php
+msgid "The finding could not be acknowledged. Run Doctor again, then acknowledge the current result."
+msgstr "Не удалось подтвердить ознакомление с результатом проверки. Запустите Doctor повторно, затем подтвердите текущий результат."
+
+#: doctor_web.php
+msgid "The warning exception could not be saved. Use a fresh assessed warning, an owner, a reason and an expiry within 90 days."
+msgstr "Не удалось сохранить исключение для предупреждения. Укажите актуальное подтверждённое предупреждение, владельца, причину и срок действия не более 90 дней."
+
+#: doctor_web.php
+msgid "Confirm repair"
+msgstr "Подтвердить восстановление"
+
+#: doctor_web.php
+msgid "Approval expires after five minutes and is invalidated by a changed filesystem. The acting account must be able to create directories or change owner permissions."
+msgstr "Подтверждение истекает через пять минут и становится недействительным при изменении файловой системы. Действующая учётная запись должна иметь права на создание каталогов или изменение разрешений владельца."
+
+#: doctor_web.php
+msgid "Repair prerequisites are not met. No changes will be made."
+msgstr "Предварительные требования для восстановления не выполнены. Изменения не будут внесены."
+
+#: doctor_web.php
+msgid "Cancel"
+msgstr "Отмена"
+
+#: doctor_web.php
+#, php-format
+msgid "Last observation: %s UTC."
+msgstr "Последнее наблюдение: %s UTC."
+
+#: doctor_web.php
+msgid "No completed diagnostic report is available."
+msgstr "Завершённые диагностические отчёты отсутствуют."
+
+#: doctor_web.php
+msgid "Health is unknown: observations are missing or stale."
+msgstr "Состояние неизвестно: данные наблюдений отсутствуют или устарели."
+
+#: doctor_web.php
+msgid "Run diagnostic checks"
+msgstr "Запустить диагностические проверки"
+
+#: doctor_web.php
+msgid "Doctor settings"
+msgstr "Настройки Doctor"
+
+#: doctor_web.php setup.php
+msgid "Cacti Doctor"
+msgstr "Cacti Doctor"
+
+#: doctor_web.php
+#, php-format
+msgid "Installation health: %d passed, %d warnings, %d failed"
+msgstr "Состояние установки: пройдено — %d, предупреждений — %d, ошибок — %d"
+
+#: doctor_web.php
+msgid "Category"
+msgstr "Категория"
+
+#: doctor_web.php
+msgid "Check"
+msgstr "Проверка"
+
+#: doctor_web.php
+msgid "Status"
+msgstr "Статус"
+
+#: doctor_web.php
+msgid "Details"
+msgstr "Подробности"
+
+#: doctor_web.php
+msgid "Action"
+msgstr "Действие"
+
+#: doctor_web.php
+msgid "Acknowledged; health status unchanged."
+msgstr "Подтверждено; состояние работоспособности не изменилось."
+
+#: doctor_web.php
+msgid "Acknowledge"
+msgstr "Подтвердить"
+
+#: doctor_web.php
+#, php-format
+msgid "Owner: %s; review by %s UTC. Reason: %s"
+msgstr "Владелец: %s; пересмотреть до %s UTC. Причина: %s"
+
+#: doctor_web.php
+msgid "Investigate a symptom"
+msgstr "Исследовать симптом"
+
+#: doctor_web.php
+msgid "Investigate"
+msgstr "Исследовать"
+
+#: doctor_web.php
+msgid "Recent scheduled checks"
+msgstr "Недавние проверки по расписанию"
+
+#: doctor_web.php
+msgid "Failed"
+msgstr "Ошибки"
+
+#: doctor_web.php
+msgid "Observation (UTC)"
+msgstr "Наблюдение (UTC)"
+
+#: doctor_web.php
+msgid "Passed"
+msgstr "Пройдено"
+
+#: doctor_web.php
+msgid "Warnings"
+msgstr "Предупреждения"
+
+#: doctor_web.php
+msgid "Warning exceptions"
+msgstr "Исключения для предупреждений"
+
+#: doctor_web.php
+msgid "Owner"
+msgstr "Владелец"
+
+#: doctor_web.php
+msgid "Reason"
+msgstr "Причина"
+
+#: doctor_web.php
+msgid "Review date (UTC)"
+msgstr "Дата пересмотра (UTC)"
+
+#: doctor_web.php
+msgid "Accept warning"
+msgstr "Принять предупреждение"
+
+#: doctor_web.php
+msgid "Expired"
+msgstr "Истекло"
+
+#: doctor_web.php
+msgid "Check not present in this report; verify its ID."
+msgstr "Проверка отсутствует в этом отчёте; проверьте её ID."
+
+#: doctor_web.php
+msgid "Remove exception"
+msgstr "Удалить исключение"
+
+#: doctor_web.php
+msgid "Audit history"
+msgstr "Журнал аудита"
+
+#: doctor_workflows.php
+msgid "Repair refused"
+msgstr "В восстановлении отказано"
+
+#: doctor_workflows.php
+msgid "The approved plan is expired or the filesystem changed. Preview the repair again."
+msgstr "Утверждённый план истёк или файловая система изменилась. Выполните предварительный просмотр восстановления ещё раз."
+
+#: doctor_workflows.php
+msgid "The audit record could not be saved. No repair was attempted."
+msgstr "Не удалось сохранить запись аудита. Попытка восстановления не выполнялась."
+
+#: doctor_workflows.php
+msgid "The completion audit failed; inspect the filesystem and the started audit record."
+msgstr "Сбой аудита завершения; проверьте файловую систему и начатую запись аудита."
+
+#: setup.php
+msgid "Doctor Administrator"
+msgstr "Администратор Doctor"
+
+#: setup.php
+msgid "Doctor Operator"
+msgstr "Оператор Doctor"
+
+#: setup.php
+msgid "Doctor Viewer"
+msgstr "Наблюдатель Doctor"
+
+#: setup.php
+msgid "Utilities"
+msgstr "Инструменты"
+
+#: setup.php
+msgid "System Administration"
+msgstr "Администрирование системы"
+
+#: setup.php
+msgid "Scheduled Checks"
+msgstr "Проверки по расписанию"
+
+#: setup.php
+msgid "Run Checks on a Schedule"
+msgstr "Запускать проверки по расписанию"
+
+#: setup.php
+msgid "Run every Doctor check in the background after the poller and record each check's status."
+msgstr "Выполнять все проверки Doctor в фоновом режиме после опросчика и записывать состояние каждой проверки."
+
+#: setup.php
+msgid "Check Interval"
+msgstr "Интервал проверок"
+
+#: setup.php
+msgid "How often the scheduled checks run."
+msgstr "Как часто выполняются проверки по расписанию."
+
+#: setup.php
+msgid "Every 15 Minutes"
+msgstr "Каждые 15 минут"
+
+#: setup.php
+msgid "Every Hour"
+msgstr "Каждый час"
+
+#: setup.php
+msgid "Every 6 Hours"
+msgstr "Каждые 6 часов"
+
+#: setup.php
+msgid "Every Day"
+msgstr "Каждый день"
+
+#: setup.php
+msgid "Alert Email Addresses"
+msgstr "Адреса эл. почты для оповещений"
+
+#: setup.php
+msgid "Comma-separated addresses to email when a check starts or stops failing. Leave empty to only log changes to the Cacti log."
+msgstr "Список адресов эл. почты через запятую для отправки оповещений при появлении или устранении сбоя проверки. Оставьте пустым, чтобы только записывать изменения в журнал Cacti."
+
+#: setup.php
+msgid "Alert on Warnings"
+msgstr "Оповещать о предупреждениях"
+
+#: setup.php
+msgid "Also alert when a check moves into or out of a warning."
+msgstr "Также оповещать при переходе проверки в состояние предупреждения или выходе из него."
+
+#: setup.php
+msgid "Thresholds"
+msgstr "Пороговые значения"
+
+#: setup.php
+msgid "Poller Run Time Warning (percent)"
+msgstr "Предупреждение о времени работы опросчика (проценты)"
+
+#: setup.php
+msgid "Warn when the last main-poller run used this share of the polling interval. Runs that take the whole interval always fail."
+msgstr "Выдавать предупреждение, если последний запуск основного опросчика занял указанную долю интервала опроса. Запуски, занимающие весь интервал, всегда завершаются сбоем."
+
+#: setup.php
+msgid "RRA Disk Free Warning (percent)"
+msgstr "Предупреждение о свободном месте на диске RRA (проценты)"
+
+#: setup.php
+msgid "Warn when free space on the RRA file system drops below this percentage."
+msgstr "Выдавать предупреждение, если свободное место в файловой системе RRA падает ниже этого процента."
+
+#: setup.php
+msgid "Fail when free space on the RRA file system drops below this percentage."
+msgstr "Регистрировать сбой, если свободное место в файловой системе RRA падает ниже этого процента."
+
+#: setup.php
+msgid "RRA Disk Free Failure (percent)"
+msgstr "Сбой по свободному месту на диске RRA (проценты)"
+
+#: setup.php
+msgid "Clock Drift Warning (seconds)"
+msgstr "Предупреждение о расхождении часов (секунды)"
+
+#: setup.php
+msgid "Warn when the database and PHP clocks differ by more than this."
+msgstr "Выдавать предупреждение, если часы базы данных и PHP расходятся более чем на указанное значение."
+
+#: setup.php
+msgid "Clock Drift Failure (seconds)"
+msgstr "Сбой из-за расхождения часов (секунды)"
+
+#: setup.php
+msgid "Fail when the database and PHP clocks differ by more than this."
+msgstr "Регистрировать сбой, если часы базы данных и PHP расходятся более чем на указанное значение."
+
+#: setup.php
+msgid "RRD Stale Intervals"
+msgstr "Интервалы устаревания RRD"
+
+#: setup.php
+msgid "Warn after this many collection intervals without a file update (1 to 100)."
+msgstr "Выдавать предупреждение после указанного числа интервалов сбора данных без обновления файла (от 1 до 100)."
+
+#: setup.php
+msgid "Additional disk-write delay for external caching (0 to 86400). Boost adds its own allowance."
+msgstr "Дополнительная задержка записи на диск для внешнего кэширования (от 0 до 86400). Boost добавляет собственный допуск."
+
+#: setup.php
+msgid "Deferred RRD Write Allowance (seconds)"
+msgstr "Допуск отложенной записи RRD (секунды)"
+
+#: setup.php
+msgid "Cacti Log Size Warning (MB)"
+msgstr "Предупреждение о размере журнала Cacti (МБ)"
+
+#: setup.php
+msgid "Warn when the Cacti log grows beyond this size, which usually means log rotation is not running."
+msgstr "Выдавать предупреждение, если журнал Cacti превышает этот размер, что обычно означает, что ротация журналов не работает."
