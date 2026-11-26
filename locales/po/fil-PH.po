@@ -1,0 +1,1542 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
+# SPDX-FileCopyrightText: 2026 Thomas Vincent <thomasvincent@gmail.com>
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: doctor 0.6.1\n"
+"Report-Msgid-Bugs-To: https://github.com/somethingwithproof/plugin_doctor/issues\n"
+"PO-Revision-Date: 2026-11-26 00:00+0000\n"
+"Last-Translator: Thomas Vincent <thomasvincent@gmail.com>\n"
+"Language-Team: Thomas Vincent <thomasvincent@gmail.com>\n"
+"Language: fil-PH\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1 && n != 2 && n != 3 && (n % 10 == 4 || n % 10 == 6 || n % 10 == 9));\n"
+
+#: cli/doctor.php
+#, php-format
+msgid "Available repairs: %s"
+msgstr "Mga magagamit na pag-aayos: %s"
+
+#: cli/doctor.php
+#, php-format
+msgid "Unknown format %s. Use text, json, nagios, or prometheus."
+msgstr "Hindi kilalang format na %s. Gumamit ng text, json, nagios, o prometheus."
+
+#: cli/doctor.php
+#, php-format
+msgid "Redaction could not complete, so %s was not written."
+msgstr "Hindi makumpleto ang pag-redact, kaya hindi naisulat ang %s."
+
+#: cli/doctor.php
+#, php-format
+msgid "Wrote %s. Review it before sharing; values after password, secret, token, and community names are masked."
+msgstr "Naisulat ang %s. Suriin ito bago ibahagi; naka-mask ang mga value pagkatapos ng mga pangalan ng password, secret, token, at community."
+
+#: cli/doctor.php doctor_functions.php
+msgid "Unknown repair"
+msgstr "Hindi kilalang pag-aayos"
+
+#: cli/doctor.php
+msgid "Refusing to repair without --yes."
+msgstr "Tumangging mag-ayos nang walang --yes."
+
+#: cli/doctor.php
+msgid "Select a supported symptom and text or JSON output."
+msgstr "Pumili ng sinusuportahang sintomas at output na text o JSON."
+
+#: cli/doctor.php doctor_web.php
+msgid "Accepted warning"
+msgstr "Tinanggap na babala"
+
+#: doctor_access.php doctor_functions.php
+msgid "Device availability"
+msgstr "Availability ng kagamitan"
+
+#: doctor_access.php
+msgid "Device permissions could not be evaluated."
+msgstr "Hindi masuri ang mga pahintulot ng kagamitan."
+
+#: doctor_access.php
+msgid "The configured PHP CLI cannot run Doctor checks."
+msgstr "Hindi mapatakbo ng naka-configure na PHP CLI ang mga pagsusuri ng Doctor."
+
+#: doctor_access.php
+msgid "Doctor checks failed or exceeded their time limit. Review the Doctor log."
+msgstr "Nabigo o lumampas sa takdang oras ang mga pagsusuri ng Doctor. Suriin ang Doctor log."
+
+#: doctor_diagnosis.php
+msgid "Graphs stopped updating"
+msgstr "Huminto sa pag-update ang mga graph"
+
+#: doctor_diagnosis.php
+msgid "Polling is slow"
+msgstr "Mabagal ang pag-poll"
+
+#: doctor_diagnosis.php
+msgid "Devices are missing or unavailable"
+msgstr "Nawawala o hindi maabot ang mga kagamitan"
+
+#: doctor_diagnosis.php
+msgid "Doctor alerts are missing"
+msgstr "Nawawala ang mga alerto ng Doctor"
+
+#: doctor_diagnosis.php
+msgid "Check the poller scheduler and the affected poller log, then verify a new completed cycle."
+msgstr "Suriin ang poller scheduler at ang apektadong poller log, pagkatapos ay kumpirmahin ang isang bagong natapos na siklo."
+
+#: doctor_diagnosis.php
+msgid "Collection may have stopped."
+msgstr "Maaaring huminto ang pangongolekta."
+
+#: doctor_diagnosis.php
+msgid "Collected values may not be reaching disk."
+msgstr "Maaaring hindi umaabot sa disk ang mga nakolektang value."
+
+#: doctor_diagnosis.php
+msgid "Inspect the output queue and Boost flush history; verify that the queue drains and RRD timestamps advance."
+msgstr "Siyasatin ang output queue at kasaysayan ng pag-flush ng Boost; tiyaking nauubos ang queue at umuusad ang mga timestamp ng RRD."
+
+#: doctor_diagnosis.php
+msgid "Check storage capacity, runtime-directory permissions and the last RRD update; account for deferred writes."
+msgstr "Suriin ang kapasidad ng storage, mga pahintulot sa runtime directory, at ang huling pag-update ng RRD; isaalang-alang ang mga ipinagpalibang pagsusulat."
+
+#: doctor_diagnosis.php
+msgid "RRD storage needs investigation."
+msgstr "Kailangang siyasatin ang RRD storage."
+
+#: doctor_diagnosis.php
+msgid "Collection work may be exceeding its time budget."
+msgstr "Maaaring lumalampas sa nakalaang oras ang gawain ng pangongolekta."
+
+#: doctor_diagnosis.php
+msgid "Compare cycle duration with the polling interval and inspect device timeouts before increasing concurrency."
+msgstr "Ihambing ang tagal ng siklo sa agwat ng pag-poll at siyasatin ang mga timeout ng device bago dagdagan ang concurrency."
+
+#: doctor_diagnosis.php
+msgid "Compare database counters during a slow cycle and inspect query plans before changing server limits."
+msgstr "Ihambing ang mga counter ng database sa isang mabagal na siklo at siyasatin ang mga query plan bago baguhin ang mga limitasyon ng server."
+
+#: doctor_diagnosis.php
+msgid "Database pressure may be contributing to slow polling."
+msgstr "Maaaring nakakaambag ang pressure sa database sa mabagal na pag-poll."
+
+#: doctor_diagnosis.php
+msgid "Collection prerequisites or reachability may be failing."
+msgstr "Maaaring nabibigo ang mga kinakailangan sa pangongolekta o ang pagiging abot ng device."
+
+#: doctor_diagnosis.php
+msgid "Verify the affected device permissions, reachability, credentials and assigned poller using Cacti diagnostics."
+msgstr "Kumpirmahin ang mga pahintulot, pagiging abot, mga kredensyal, at nakatalagang poller ng apektadong device gamit ang diagnostics ng Cacti."
+
+#: doctor_diagnosis.php
+msgid "Scheduled checks or mail delivery need attention."
+msgstr "Nangangailangan ng pansin ang mga naka-iskedyul na pagsusuri o ang paghahatid ng mail."
+
+#: doctor_diagnosis.php
+msgid "Verify scheduling and recipient settings, inspect retained delivery attempts, and send a Cacti test email."
+msgstr "Kumpirmahin ang mga setting ng iskedyul at tatanggap, siyasatin ang mga napanatiling pagsubok sa paghahatid, at magpadala ng test email ng Cacti."
+
+#: doctor_diagnosis.php
+msgid "Possible causes require verification; matching checks do not establish a root cause."
+msgstr "Nangangailangan ng pagberipika ang mga posibleng sanhi; ang mga tumutugmang pagsusuri ay hindi nagpapatunay ng pangunahing sanhi."
+
+#: doctor_diagnosis.php
+msgid "No cause is established by the available observations. Run fresh diagnostics and investigate the symptom directly."
+msgstr "Walang sanhing napatunayan mula sa mga magagamit na obserbasyon. Magpatakbo ng bagong diagnostics at direktang siyasatin ang sintomas."
+
+#: doctor_functions.php
+msgid "At least 24 hours since server startup and FLUSH STATUS. Counters are cumulative and may have different reset histories; confirm trends during a representative workload before tuning."
+msgstr "Hindi bababa sa 24 na oras mula nang mag-start ang server at ang FLUSH STATUS. Pinagsama-sama ang mga counter at maaaring may magkakaibang kasaysayan ng pag-reset; kumpirmahin ang mga trend sa panahon ng isang kinatawang workload bago mag-tune."
+
+#: doctor_functions.php
+msgid "Cumulative tuning advice is deferred: obtain valid uptime and at least 24 hours since startup and FLUSH STATUS. Missing metrics or an inconsistent sample cannot establish database health."
+msgstr "Ipinagpaliban ang pinagsama-samang payo sa pag-tune: kumuha ng wastong uptime at hindi bababa sa 24 na oras mula nang mag-start at ang FLUSH STATUS. Ang mga nawawalang sukatan o hindi pare-parehong sample ay hindi makapagpapatunay sa kalusugan ng database."
+
+#: doctor_functions.php
+msgid "Database observation window"
+msgstr "Panahon ng obserbasyon sa database"
+
+#: doctor_functions.php
+msgid "Connection metrics are unavailable or invalid. Check access to SHOW GLOBAL STATUS and SHOW GLOBAL VARIABLES; do not treat missing metrics as an idle server."
+msgstr "Hindi magagamit o hindi wasto ang mga sukatan ng koneksyon. Suriin ang access sa SHOW GLOBAL STATUS at SHOW GLOBAL VARIABLES; huwag ituring ang mga nawawalang sukatan bilang isang idle na server."
+
+#: doctor_functions.php
+#, php-format
+msgid "Current connections: %.0f / %.0f (%s); recorded peak: %.0f (%s of the current limit)."
+msgstr "Mga kasalukuyang koneksyon: %.0f / %.0f (%s); naitalang pinakamataas: %.0f (%s ng kasalukuyang limitasyon)."
+
+#: doctor_functions.php
+msgid "Review connection pooling and poller concurrency. Check database-host memory headroom before raising max_connections; the historical peak may reflect an older limit."
+msgstr "Suriin ang connection pooling at concurrency ng poller. Suriin ang natitirang memory ng database host bago itaas ang max_connections; ang makasaysayang pinakamataas na bilang ay maaaring sumasalamin sa mas lumang limitasyon."
+
+#: doctor_functions.php
+msgid "Connection capacity"
+msgstr "Kapasidad ng koneksyon"
+
+#: doctor_functions.php
+msgid "InnoDB buffer pool reads"
+msgstr "Mga pagbasa sa InnoDB buffer pool"
+
+#: doctor_functions.php
+msgid "Review query plans and the working set. Consider innodb_buffer_pool_size only after measuring memory available on the database host; a cumulative miss ratio alone does not prove memory pressure."
+msgstr "Suriin ang mga query plan at ang working set. Isaalang-alang lang ang innodb_buffer_pool_size pagkatapos sukatin ang magagamit na memory sa database host; ang pinagsama-samang miss ratio lamang ay hindi nagpapatunay ng pressure sa memory."
+
+#: doctor_functions.php
+msgid "On-disk temporary tables"
+msgstr "Mga pansamantalang table sa disk"
+
+#: doctor_functions.php
+msgid "Review query plans, sorting, grouping, and temporary-table data types before changing memory limits. Some tables must use disk; memory limits and accounting differ between MySQL and MariaDB versions."
+msgstr "Suriin ang mga query plan, pag-uuri, pagpapangkat, at mga uri ng data ng pansamantalang table bago baguhin ang mga limitasyon ng memory. Ang ilang table ay kailangang gumamit ng disk; magkaiba ang mga limitasyon ng memory at pagtutuos sa pagitan ng mga bersyon ng MySQL at MariaDB."
+
+#: doctor_functions.php
+msgid "Connection thread creation"
+msgstr "Paglikha ng thread ng koneksyon"
+
+#: doctor_functions.php
+msgid "Review connection reuse and thread_cache_size. Check the server thread-handling mode before tuning; thread-pool implementations do not behave like one-thread-per-connection servers."
+msgstr "Suriin ang muling paggamit ng koneksyon at ang thread_cache_size. Suriin ang thread-handling mode ng server bago mag-tune; hindi kumikilos ang mga implementasyon ng thread-pool na parang mga one-thread-per-connection server."
+
+#: doctor_functions.php
+msgid "Review slow-query logging, long_query_time, and query plans before changing server buffers. This counter depends on the configured slow-query threshold and does not identify individual statements."
+msgstr "Suriin ang pag-log ng mabagal na query, long_query_time, at mga query plan bago baguhin ang mga buffer ng server. Nakadepende ang counter na ito sa naka-configure na threshold ng mabagal na query at hindi ito tumutukoy ng mga indibidwal na pahayag."
+
+#: doctor_functions.php
+msgid "Slow statements"
+msgstr "Mababagal na pahayag"
+
+#: doctor_functions.php
+msgid "Cumulative advice deferred until the observation window is sufficient."
+msgstr "Ipinagpaliban ang pinagsama-samang payo hanggang sa maging sapat ang panahon ng obserbasyon."
+
+#: doctor_functions.php
+msgid "Thread-cache advice is not assessed: thread_handling is unavailable or is not one-thread-per-connection. Review the active thread-pool implementation instead."
+msgstr "Hindi sinuri ang payo sa thread-cache: hindi magagamit ang thread_handling o hindi ito one-thread-per-connection. Suriin na lang ang aktibong implementasyon ng thread-pool."
+
+#: doctor_functions.php
+#, php-format
+msgid "Required counters are missing or invalid: %s, %s. Check server-version support and monitoring permissions."
+msgstr "Nawawala o hindi wasto ang mga kinakailangang counter: %s, %s. Suriin ang suporta sa bersyon ng server at mga pahintulot sa pagsubaybay."
+
+#: doctor_functions.php
+msgid "A counter reset since the prior sample; collect another representative interval before tuning."
+msgstr "Nag-reset ang isang counter mula noong nakaraang sample; mangolekta ng isa pang kinatawang agwat bago mag-tune."
+
+#: doctor_functions.php
+#, php-format
+msgid "Insufficient activity: %.0f %s; at least %d observations are needed for this advisory."
+msgstr "Hindi sapat na aktibidad: %.0f %s; hindi bababa sa %d na obserbasyon ang kailangan para sa abisong ito."
+
+#: doctor_functions.php
+msgid "Counters are inconsistent or were reset independently. Collect a new representative sample before tuning."
+msgstr "Hindi pare-pareho o hiwalay na na-reset ang mga counter. Mangolekta ng bagong kinatawang sample bago mag-tune."
+
+#: doctor_functions.php
+msgid "The interval sample is too small or counters reset; collect another representative interval before tuning."
+msgstr "Masyadong maliit ang sample ng agwat o nag-reset ang mga counter; mangolekta ng isa pang kinatawang agwat bago mag-tune."
+
+#: doctor_functions.php
+#, php-format
+msgid "Interval %s / %s: %.0f / %.0f (%s); investigation threshold: %s."
+msgstr "Agwat na %s / %s: %.0f / %.0f (%s); threshold ng pagsisiyasat: %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "Cumulative %s / %s: %.0f / %.0f (%s); investigation threshold: %s."
+msgstr "Pinagsama-samang %s / %s: %.0f / %.0f (%s); threshold ng pagsisiyasat: %s."
+
+#: doctor_functions.php
+msgid "This counter can omit memory-mapped temporary files on MySQL; a low ratio does not rule out disk use."
+msgstr "Maaaring hindi maisama ng counter na ito ang mga memory-mapped na pansamantalang file sa MySQL; ang mababang ratio ay hindi nag-aalis ng posibilidad ng paggamit ng disk."
+
+#: doctor_functions.php
+msgid "Redo-log advice deferred until the observation window is sufficient and Innodb_log_waits is available."
+msgstr "Ipinagpaliban ang payo sa redo-log hanggang sa maging sapat ang panahon ng obserbasyon at magamit ang Innodb_log_waits."
+
+#: doctor_functions.php
+#, php-format
+msgid "Cumulative Innodb_log_waits: %.0f."
+msgstr "Pinagsama-samang Innodb_log_waits: %.0f."
+
+#: doctor_functions.php
+msgid "Investigate transaction sizes, log-buffer pressure, and storage latency. Recheck the rate under load before considering innodb_log_buffer_size; this historical count is not evidence of a current stall."
+msgstr "Siyasatin ang mga laki ng transaksyon, pressure sa log-buffer, at latency ng storage. Suriin muli ang rate habang may load bago isaalang-alang ang innodb_log_buffer_size; ang makasaysayang bilang na ito ay hindi patunay ng kasalukuyang pagtigil."
+
+#: doctor_functions.php
+msgid "InnoDB log-buffer waits"
+msgstr "Mga paghihintay sa InnoDB log-buffer"
+
+#: doctor_functions.php
+msgid "installed Cacti composer.json"
+msgstr "naka-install na composer.json ng Cacti"
+
+#: doctor_functions.php
+#, php-format
+msgid "Cacti %s installer requirement"
+msgstr "Kinakailangan ng installer ng Cacti %s"
+
+#: doctor_functions.php
+msgid "PHP compatibility with installed Cacti"
+msgstr "Pagkatugma ng PHP sa naka-install na Cacti"
+
+#: doctor_functions.php
+#, php-format
+msgid "Running PHP %s; installed Cacti %s."
+msgstr "Tumatakbong PHP %s; naka-install na Cacti %s."
+
+#: doctor_functions.php
+msgid "Could not establish Cacti's PHP requirement. Check the installed Cacti composer.json or release documentation; Doctor does not assume compatibility."
+msgstr "Hindi matiyak ang kinakailangan ng Cacti sa PHP. Suriin ang naka-install na composer.json ng Cacti o ang dokumentasyon ng release; hindi nagpapalagay ang Doctor ng pagkatugma."
+
+#: doctor_functions.php
+#, php-format
+msgid "PHP >= %s and < %s"
+msgstr "PHP >= %s at < %s"
+
+#: doctor_functions.php
+#, php-format
+msgid "PHP >= %s"
+msgstr "PHP >= %s"
+
+#: doctor_functions.php
+#, php-format
+msgid "Requires %s (%s). Running PHP meets that requirement."
+msgstr "Nangangailangan ng %s (%s). Natutugunan ng tumatakbong PHP ang kinakailangang iyon."
+
+#: doctor_functions.php
+#, php-format
+msgid "Requires %s (%s). Running PHP does not meet that requirement."
+msgstr "Nangangailangan ng %s (%s). Hindi natutugunan ng tumatakbong PHP ang kinakailangang iyon."
+
+#: doctor_functions.php
+#, php-format
+msgid "Detected %s; Doctor requires Cacti 1.2.20 or newer."
+msgstr "Nakita ang %s; nangangailangan ang Doctor ng Cacti 1.2.20 o mas bago."
+
+#: doctor_functions.php
+msgid "Supported Cacti version"
+msgstr "Sinusuportahang bersyon ng Cacti"
+
+#: doctor_functions.php
+msgid "PHP upstream security support"
+msgstr "Suporta sa seguridad mula sa upstream ng PHP"
+
+#: doctor_functions.php
+msgid "This checks the PHP release branch, not whether this patch release is up to date or whether your OS vendor backports fixes. Cacti compatibility is checked separately."
+msgstr "Sinusuri nito ang release branch ng PHP, hindi kung napapanahon ang patch release na ito o kung nagba-backport ng mga pag-aayos ang vendor ng iyong OS. Hiwalay na sinusuri ang pagkatugma sa Cacti."
+
+#: doctor_functions.php
+#, php-format
+msgid "Running PHP %s; upstream security-support status is unknown or this is a prerelease. Check https://www.php.net/supported-versions.php and update Doctor's support data."
+msgstr "Tumatakbong PHP %s; hindi alam ang status ng suporta sa seguridad mula sa upstream o isa itong prerelease. Suriin ang https://www.php.net/supported-versions.php at i-update ang data ng suporta ng Doctor."
+
+#: doctor_functions.php
+#, php-format
+msgid "Running PHP %s; PHP %s receives upstream security fixes through %s."
+msgstr "Tumatakbong PHP %s; nakakatanggap ang PHP %s ng mga pag-aayos sa seguridad mula sa upstream hanggang %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "Running PHP %s; PHP %s no longer receives upstream security fixes; support ended %s. Upgrade to a supported PHP branch compatible with your Cacti installation, or confirm security maintenance with your OS vendor."
+msgstr "Tumatakbong PHP %s; hindi na nakakatanggap ang PHP %s ng mga pag-aayos sa seguridad mula sa upstream; nagtapos ang suporta noong %s. Mag-upgrade sa isang sinusuportahang branch ng PHP na tugma sa iyong pag-install ng Cacti, o kumpirmahin ang pagpapanatili ng seguridad sa vendor ng iyong OS."
+
+#: doctor_functions.php
+msgid "Required current CLI PHP extensions"
+msgstr "Mga kinakailangang kasalukuyang CLI PHP extension"
+
+#: doctor_functions.php
+msgid "Required web PHP extensions"
+msgstr "Mga kinakailangang web PHP extension"
+
+#: doctor_functions.php
+#, php-format
+msgid "Missing: %s. Install them through the operating system package manager."
+msgstr "Nawawala: %s. I-install ang mga ito sa pamamagitan ng package manager ng operating system."
+
+#: doctor_functions.php
+msgid "All PHP extensions required by the Cacti installer are loaded in this PHP context."
+msgstr "Ang lahat ng PHP extension na kinakailangan ng installer ng Cacti ay naka-load sa kontekstong ito ng PHP."
+
+#: doctor_functions.php
+msgid "Doctor does not execute configured binaries while running as root."
+msgstr "Hindi nagpapatakbo ang Doctor ng mga naka-configure na binary habang tumatakbo bilang root."
+
+#: doctor_functions.php
+#, php-format
+msgid "The file name %s is not expected for %s, so Doctor did not execute it."
+msgstr "Hindi inaasahan ang pangalan ng file na %s para sa %s, kaya hindi ito pinatakbo ng Doctor."
+
+#: doctor_functions.php
+msgid "Doctor is running as root, so permission checks describe root rather than the web server or poller account, configured binaries are not executed, and repairs are refused. Run Doctor as the Cacti poller user."
+msgstr "Tumatakbo ang Doctor bilang root, kaya inilalarawan ng mga pagsusuri sa pahintulot ang root sa halip na ang account ng web server o poller, hindi pinapatakbo ang mga naka-configure na binary, at tinatanggihan ang mga pagkukumpuni. Patakbuhin ang Doctor bilang user ng Cacti poller."
+
+#: doctor_functions.php
+msgid "Doctor privileges"
+msgstr "Mga pribilehiyo ng Doctor"
+
+#: doctor_functions.php
+msgid "Doctor is running without root privileges."
+msgstr "Tumatakbo ang Doctor nang walang pribilehiyo ng root."
+
+#: doctor_functions.php
+msgid "Required CLI PHP extensions"
+msgstr "Mga kinakailangang CLI PHP extension"
+
+#: doctor_functions.php
+msgid "The configured PHP CLI executable is unavailable, so its extensions cannot be checked."
+msgstr "Hindi magagamit ang naka-configure na PHP CLI executable, kaya hindi masuri ang mga extension nito."
+
+#: doctor_functions.php
+msgid "shell_exec() is disabled, so Doctor cannot compare the CLI PHP extensions with Cacti requirements."
+msgstr "Naka-disable ang shell_exec(), kaya hindi maihambing ng Doctor ang mga CLI PHP extension sa mga kinakailangan ng Cacti."
+
+#: doctor_functions.php
+msgid "The configured PHP CLI executable did not return a valid extension list."
+msgstr "Hindi nagbalik ng wastong listahan ng extension ang naka-configure na PHP CLI executable."
+
+#: doctor_functions.php
+#, php-format
+msgid "Missing from CLI PHP: %s. The web and CLI PHP configurations are separate on many systems."
+msgstr "Nawawala sa CLI PHP: %s. Magkahiwalay ang mga konfigurasyon ng web at CLI PHP sa maraming system."
+
+#: doctor_functions.php
+msgid "The configured PHP CLI has every extension required by Cacti."
+msgstr "Taglay ng naka-configure na PHP CLI ang bawat extension na kinakailangan ng Cacti."
+
+#: doctor_functions.php
+msgid "GD TrueType support"
+msgstr "Suporta sa GD TrueType"
+
+#: doctor_functions.php
+msgid "Recommended PHP features"
+msgstr "Mga inirerekomendang feature ng PHP"
+
+#: doctor_functions.php
+#, php-format
+msgid "Unavailable: %s. Cacti can run without these features, but related functionality may be limited."
+msgstr "Hindi magagamit: %s. Maaaring tumakbo ang Cacti nang wala ang mga feature na ito, ngunit maaaring limitado ang mga kaugnay na functionality."
+
+#: doctor_functions.php
+msgid "The optional gettext, SNMP, and GD TrueType features are available."
+msgstr "Magagamit ang mga opsyonal na feature na gettext, SNMP, at GD TrueType."
+
+#: doctor_functions.php
+#, php-format
+msgid "memory_limit is %s (%dM or more is recommended)"
+msgstr "Ang memory_limit ay %s (inirerekomenda ang %dM o higit pa)"
+
+#: doctor_functions.php
+#, php-format
+msgid "max_execution_time is %d seconds (60 or more is recommended)"
+msgstr "Ang max_execution_time ay %d na segundo (inirerekomenda ang 60 o higit pa)"
+
+#: doctor_functions.php
+msgid "date.timezone is not set"
+msgstr "Hindi nakatakda ang date.timezone"
+
+#: doctor_functions.php
+msgid "unset"
+msgstr "hindi nakatakda"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s. Current values: %s"
+msgstr "%s. Mga kasalukuyang value: %s"
+
+#: doctor_functions.php
+msgid "PHP runtime configuration"
+msgstr "Konfigurasyon ng PHP runtime"
+
+#: doctor_functions.php
+msgid "Database connection"
+msgstr "Koneksyon sa database"
+
+#: doctor_functions.php
+#, php-format
+msgid "Query failed: %s"
+msgstr "Nabigo ang query: %s"
+
+#: doctor_functions.php
+msgid "A read-only query completed successfully."
+msgstr "Matagumpay na natapos ang isang read-only na query."
+
+#: doctor_functions.php
+msgid "The database returned an unexpected result."
+msgstr "Nagbalik ng hindi inaasahang resulta ang database."
+
+#: doctor_functions.php
+#, php-format
+msgid "Doctor could not determine the database server version from %s."
+msgstr "Hindi matukoy ng Doctor ang bersyon ng database server mula sa %s."
+
+#: doctor_functions.php
+msgid "Supported database server"
+msgstr "Sinusuportahang database server"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s %s detected; this Cacti branch recommends %s %s or newer."
+msgstr "Nakita ang %s %s; inirerekomenda ng branch na ito ng Cacti ang %s %s o mas bago."
+
+#: doctor_functions.php
+#, php-format
+msgid "Database character set is %s and collation is %s. Cacti requires utf8mb4."
+msgstr "Ang character set ng database ay %s at ang collation ay %s. Nangangailangan ang Cacti ng utf8mb4."
+
+#: doctor_functions.php
+msgid "unknown"
+msgstr "hindi alam"
+
+#: doctor_functions.php
+msgid "Database character set"
+msgstr "Character set ng database"
+
+#: doctor_functions.php
+msgid "Database timezone support"
+msgstr "Suporta sa timezone ng database"
+
+#: doctor_functions.php
+msgid "The Cacti database account cannot read mysql.time_zone_name. Grant SELECT access and populate the database timezone tables."
+msgstr "Hindi mabasa ng account ng database ng Cacti ang mysql.time_zone_name. Magbigay ng SELECT access at lagyan ng laman ang mga timezone table ng database."
+
+#: doctor_functions.php
+#, php-format
+msgid "The database timezone table is accessible and contains %d entries."
+msgstr "Maa-access ang timezone table ng database at naglalaman ng %d na entry."
+
+#: doctor_functions.php
+msgid "The database timezone table is accessible but empty. Populate the system timezone tables."
+msgstr "Maa-access ang timezone table ng database ngunit walang laman. Lagyan ng laman ang mga timezone table ng system."
+
+#: doctor_functions.php
+msgid "Core tables used by Cacti are present."
+msgstr "Naroroon ang mga pangunahing table na ginagamit ng Cacti."
+
+#: doctor_functions.php
+#, php-format
+msgid "Missing core tables: %s. Restore or upgrade the database before attempting other repairs."
+msgstr "Mga nawawalang pangunahing table: %s. I-restore o i-upgrade ang database bago subukan ang ibang pagkukumpuni."
+
+#: doctor_functions.php
+msgid "Core database tables"
+msgstr "Mga pangunahing table ng database"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s is missing (%s)"
+msgstr "Nawawala ang %s (%s)"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s is not writable (%s)"
+msgstr "Hindi nasusulatan ang %s (%s)"
+
+#: doctor_functions.php
+msgid "Runtime directories"
+msgstr "Mga runtime directory"
+
+#: doctor_functions.php
+msgid "The cache, log, and RRA directories exist and are writable."
+msgstr "Umiiral at nasusulatan ang mga directory ng cache, log, at RRA."
+
+#: doctor_functions.php
+msgid "Cacti configuration file"
+msgstr "File ng konfigurasyon ng Cacti"
+
+#: doctor_functions.php
+msgid "include/config.php is missing or unreadable."
+msgstr "Nawawala o hindi mabasa ang include/config.php."
+
+#: doctor_functions.php
+msgid "include/config.php is readable. POSIX mode-bit checks do not apply on Windows."
+msgstr "Nababasa ang include/config.php. Hindi nalalapat sa Windows ang mga pagsusuri sa POSIX mode-bit."
+
+#: doctor_functions.php
+msgid "include/config.php is writable by other users. Remove world-write permission because this file contains database credentials."
+msgstr "Nasusulatan ng ibang user ang include/config.php. Alisin ang pahintulot sa world-write dahil naglalaman ang file na ito ng mga kredensyal ng database."
+
+#: doctor_functions.php
+msgid "include/config.php is group-writable. Confirm that every member of the owning group is trusted."
+msgstr "Nasusulatan ng grupo ang include/config.php. Kumpirmahin na mapagkakatiwalaan ang bawat miyembro ng grupong nagmamay-ari."
+
+#: doctor_functions.php
+msgid "include/config.php is readable by all local users and contains database credentials. Restrict it to the owner and the web server group."
+msgstr "Nababasa ng lahat ng lokal na user ang include/config.php at naglalaman ito ng mga kredensyal ng database. Limitahan ito sa may-ari at sa grupo ng web server."
+
+#: doctor_functions.php
+msgid "include/config.php is readable and is not world-readable, group-writable, or world-writable."
+msgstr "Nababasa ang include/config.php at hindi ito world-readable, group-writable, o world-writable."
+
+#: doctor_functions.php
+msgid "Cacti log file"
+msgstr "Log file ng Cacti"
+
+#: doctor_functions.php
+msgid "The log file does not exist. Its parent directory is not writable."
+msgstr "Hindi umiiral ang log file. Hindi nasusulatan ang parent directory nito."
+
+#: doctor_functions.php
+msgid "The log file does not exist. Its parent directory is writable, so Cacti can create it."
+msgstr "Hindi umiiral ang log file. Nasusulatan ang parent directory nito, kaya magagawa ito ng Cacti."
+
+#: doctor_functions.php
+msgid "The configured log path must be a readable and writable regular file."
+msgstr "Ang naka-configure na path ng log ay dapat na isang regular na file na nababasa at nasusulatan."
+
+#: doctor_functions.php
+#, php-format
+msgid "The log is readable and writable and is %s MiB."
+msgstr "Nababasa at nasusulatan ang log at ito ay %s MiB."
+
+#: doctor_functions.php
+msgid "The log is readable and writable."
+msgstr "Nababasa at nasusulatan ang log."
+
+#: doctor_functions.php
+msgid "Verify that Cacti log rotation is enabled."
+msgstr "Kumpirmahin na naka-enable ang log rotation ng Cacti."
+
+#: doctor_functions.php
+#, php-format
+msgid "Executable found at %s."
+msgstr "Natagpuan ang executable sa %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "The %s setting is empty, missing, or not executable."
+msgstr "Walang laman, nawawala, o hindi executable ang setting na %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "The %s setting is empty, missing, or not executable: %s"
+msgstr "Walang laman, nawawala, o hindi executable ang setting na %s: %s"
+
+#: doctor_functions.php
+msgid "Doctor could not determine its version."
+msgstr "Hindi matukoy ng Doctor ang bersyon nito."
+
+#: doctor_functions.php
+#, php-format
+msgid "Detected version %s."
+msgstr "Nakita ang bersyon %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "Detected version %s; version %s or newer is recommended."
+msgstr "Nakita ang bersyon %s; inirerekomenda ang bersyon %s o mas bago."
+
+#: doctor_functions.php
+#, php-format
+msgid "Detected version %s; version %s or newer is required."
+msgstr "Nakita ang bersyon %s; kinakailangan ang bersyon %s o mas bago."
+
+#: doctor_functions.php
+#, php-format
+msgid "Detected version %s; minimum is %s."
+msgstr "Nakita ang bersyon %s; ang pinakamababa ay %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "%s executable"
+msgstr "%s executable"
+
+#: doctor_functions.php
+msgid "poller_type is not cmd.php or Spine"
+msgstr "Ang poller_type ay hindi cmd.php o Spine"
+
+#: doctor_functions.php
+msgid "poller_interval is not a supported value"
+msgstr "Ang poller_interval ay hindi sinusuportahang value"
+
+#: doctor_functions.php
+msgid "Poller configuration"
+msgstr "Konfigurasyon ng poller"
+
+#: doctor_functions.php
+#, php-format
+msgid "Poller is %s with a %d-second interval."
+msgstr "Ang poller ay %s na may agwat na %d segundo."
+
+#: doctor_functions.php
+msgid "Main poller freshness"
+msgstr "Pagiging bago ng pangunahing poller"
+
+#: doctor_functions.php
+msgid "No completed main-poller run was found. This can be expected before the first poll."
+msgstr "Walang nahanap na natapos na pagtakbo ng pangunahing poller. Maaaring asahan ito bago ang unang poll."
+
+#: doctor_functions.php
+#, php-format
+msgid "Last completed run was %d seconds ago; failure threshold is %d seconds."
+msgstr "Ang huling natapos na pagtakbo ay %d segundo ang nakalipas; ang threshold ng pagkabigo ay %d segundo."
+
+#: doctor_functions.php
+msgid "Database schema version"
+msgstr "Bersyon ng schema ng database"
+
+#: doctor_functions.php
+msgid "The version table is empty or unreadable, so the schema version is unknown."
+msgstr "Walang laman o hindi mabasa ang version table, kaya hindi alam ang bersyon ng schema."
+
+#: doctor_functions.php
+msgid "The version table still reads new_install, so the installer never finished. Open install/ in a browser to complete it."
+msgstr "Nakasaad pa rin sa version table ang new_install, kaya hindi kailanman natapos ang installer. Buksan ang install/ sa isang browser upang tapusin ito."
+
+#: doctor_functions.php
+#, php-format
+msgid "The database schema is at %s but the installed code is %s. Open install/ in a browser to finish the upgrade."
+msgstr "Ang schema ng database ay nasa %s ngunit ang naka-install na code ay %s. Buksan ang install/ sa isang browser upang tapusin ang pag-upgrade."
+
+#: doctor_functions.php
+#, php-format
+msgid "The database schema (%s) is newer than the installed code (%s). The code may have been rolled back."
+msgstr "Mas bago ang schema ng database (%s) kaysa sa naka-install na code (%s). Maaaring na-roll back ang code."
+
+#: doctor_functions.php
+#, php-format
+msgid "The database schema (%s) matches the installed code."
+msgstr "Tumutugma ang schema ng database (%s) sa naka-install na code."
+
+#: doctor_functions.php
+msgid "Main poller run time"
+msgstr "Oras ng pagtakbo ng pangunahing poller"
+
+#: doctor_functions.php
+msgid "No completed run time is recorded yet."
+msgstr "Wala pang naitalang oras ng natapos na pagtakbo."
+
+#: doctor_functions.php
+#, php-format
+msgid "The last main-poller run took %s seconds of the %d-second interval."
+msgstr "Ang huling pagtakbo ng pangunahing poller ay tumagal ng %s na segundo mula sa agwat na %d segundo."
+
+#: doctor_functions.php
+msgid "Runs that outlast the interval overlap and lose data; add poller processes or threads, or use Spine."
+msgstr "Ang mga pagtakbo na lumalampas sa agwat ay nagsasapawan at nawawalan ng data; magdagdag ng mga proseso o thread ng poller, o gumamit ng Spine."
+
+#: doctor_functions.php
+msgid "Little headroom remains before polls overlap."
+msgstr "Kaunting palugit na lang ang natitira bago magsapawan ang mga poll."
+
+#: doctor_functions.php
+#, php-format
+msgid "%d poller_output rows are older than two polling intervals and were never written to RRD files. Check the Cacti log for \"Poller Output Table not Empty\" and confirm max_heap_table_size is large enough."
+msgstr "%d na row ng poller_output ay mas luma kaysa sa dalawang agwat ng pag-poll at hindi kailanman naisulat sa mga RRD file. Suriin ang Cacti log para sa \"Poller Output Table not Empty\" at kumpirmahin na sapat ang laki ng max_heap_table_size."
+
+#: doctor_functions.php
+msgid "Unprocessed poller output"
+msgstr "Hindi naprosesong output ng poller"
+
+#: doctor_functions.php
+msgid "No stale rows remain in poller_output."
+msgstr "Walang natitirang lumang row sa poller_output."
+
+#: doctor_functions.php
+msgid "No remote pollers are enabled."
+msgstr "Walang naka-enable na remote poller."
+
+#: doctor_functions.php
+msgid "Remote pollers"
+msgstr "Mga remote poller"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s (ID %s) has never reported"
+msgstr "Hindi kailanman nag-ulat ang %s (ID %s)"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s (ID %s) last reported %d seconds ago"
+msgstr "Huling nag-ulat ang %s (ID %s) %d segundo ang nakalipas"
+
+#: doctor_functions.php
+#, php-format
+msgid "The failure threshold is %d seconds."
+msgstr "Ang threshold ng pagkabigo ay %d segundo."
+
+#: doctor_functions.php
+#, php-format
+msgid "%d enabled remote pollers reported within %d seconds."
+msgstr "%d na naka-enable na remote poller ang nag-ulat sa loob ng %d segundo."
+
+#: doctor_functions.php
+msgid "Enabled plugin files"
+msgstr "Mga file ng naka-enable na plugin"
+
+#: doctor_functions.php
+#, php-format
+msgid "Enabled plugins are missing from %s: %s. Restore their files or disable them in Plugin Management."
+msgstr "Nawawala ang mga naka-enable na plugin mula sa %s: %s. I-restore ang mga file nito o i-disable ang mga ito sa Plugin Management."
+
+#: doctor_functions.php
+msgid "Every enabled plugin has its setup.php in place."
+msgstr "May nakalagay na setup.php ang bawat naka-enable na plugin."
+
+#: doctor_functions.php
+msgid "Boost RRD updates"
+msgstr "Mga update ng Boost RRD"
+
+#: doctor_functions.php
+msgid "Boost is disabled, so the poller writes RRD files directly."
+msgstr "Naka-disable ang Boost, kaya direktang isinusulat ng poller ang mga RRD file."
+
+#: doctor_functions.php
+msgid "Boost is enabled but has no recorded run. This can be expected before its first flush."
+msgstr "Naka-enable ang Boost ngunit walang nakatalang paggana. Maaari itong asahan bago ang unang flush nito."
+
+#: doctor_functions.php
+#, php-format
+msgid "Boost last flushed %d seconds ago, more than twice its %d-minute interval. Graphs stop updating until it runs; check the Cacti log for BOOST errors."
+msgstr "Huling nag-flush ang Boost %d segundo na ang nakalipas, higit sa doble ng %d-minutong agwat nito. Hihinto ang pag-update ng mga graph hanggang sa gumana ito; suriin ang Cacti log para sa mga error ng BOOST."
+
+#: doctor_functions.php
+#, php-format
+msgid "poller_output_boost holds %d rows, above the %d-row limit that forces a flush. Boost is falling behind."
+msgstr "May hawak na %d row ang poller_output_boost, na lampas sa limitasyong %d row na nagpupuwersa ng flush. Nahuhuli ang Boost."
+
+#: doctor_functions.php
+#, php-format
+msgid "Boost last flushed %d seconds ago with %d rows waiting."
+msgstr "Huling nag-flush ang Boost %d segundo na ang nakalipas nang may %d row na naghihintay."
+
+#: doctor_functions.php doctor_rrd.php
+#, php-format
+msgid "Checked a sample of %d active data sources that rotates hourly; a pass does not cover every file."
+msgstr "Sinuri ang isang sample ng %d aktibong data source na umiikot bawat oras; hindi nasasaklaw ng isang pagsusuri ang bawat file."
+
+#: doctor_functions.php
+#, php-format
+msgid "%d of %d active data sources have no RRD file, for example %s. New data sources get one after their first poll; otherwise check the RRA directory and its permissions."
+msgstr "%d sa %d aktibong data source ang walang RRD file, halimbawa ay %s. Nagkakaroon nito ang mga bagong data source pagkatapos ng kanilang unang poll; kung hindi, suriin ang direktoryo ng RRA at ang mga pahintulot nito."
+
+#: doctor_functions.php
+msgid "RRD files"
+msgstr "Mga RRD file"
+
+#: doctor_functions.php
+#, php-format
+msgid "All %d active data sources have an RRD file."
+msgstr "May RRD file ang lahat ng %d aktibong data source."
+
+#: doctor_functions.php
+#, php-format
+msgid "Doctor could not measure free space for %s."
+msgstr "Hindi masukat ng Doctor ang libreng espasyo para sa %s."
+
+#: doctor_functions.php
+msgid "RRA disk space"
+msgstr "Espasyo sa disk ng RRA"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s (%s GiB) free on the file system holding %s."
+msgstr "%s (%s GiB) ang libre sa file system na naglalaman ng %s."
+
+#: doctor_functions.php
+msgid "RRD updates fail silently when the disk fills."
+msgstr "Tahimik na nabibigo ang mga update ng RRD kapag napuno ang disk."
+
+#: doctor_functions.php
+msgid "Database clock"
+msgstr "Orasan ng database"
+
+#: doctor_functions.php
+msgid "Doctor could not read the database clock."
+msgstr "Hindi mabasa ng Doctor ang orasan ng database."
+
+#: doctor_functions.php
+#, php-format
+msgid "The database and PHP clocks differ by %d seconds."
+msgstr "Nagkakaiba nang %d segundo ang mga orasan ng database at PHP."
+
+#: doctor_functions.php
+msgid "Poll timestamps will be misaligned; synchronise both hosts with NTP."
+msgstr "Hindi magtutugma ang mga timestamp ng poll; i-synchronize ang parehong host gamit ang NTP."
+
+#: doctor_functions.php
+msgid "Synchronise both hosts with NTP."
+msgstr "I-synchronize ang parehong host gamit ang NTP."
+
+#: doctor_functions.php
+msgid "Spine configuration"
+msgstr "Configuration ng Spine"
+
+#: doctor_functions.php
+msgid "Spine is not the configured poller."
+msgstr "Hindi Spine ang naka-configure na poller."
+
+#: doctor_functions.php
+msgid "path_spine_config is not set, so Spine uses its compiled-in search path and Doctor cannot verify which file it reads."
+msgstr "Hindi nakatakda ang path_spine_config, kaya ginagamit ng Spine ang compiled-in search path nito at hindi ma-verify ng Doctor kung aling file ang binabasa nito."
+
+#: doctor_functions.php
+#, php-format
+msgid "The Spine configuration file is missing or unreadable: %s."
+msgstr "Nawawala o hindi mabasa ang configuration file ng Spine: %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "DB_Database is %s but Cacti uses %s"
+msgstr "Ang DB_Database ay %s ngunit %s ang ginagamit ng Cacti"
+
+#: doctor_functions.php
+#, php-format
+msgid "DB_User is %s but Cacti uses %s"
+msgstr "Ang DB_User ay %s ngunit %s ang ginagamit ng Cacti"
+
+#: doctor_functions.php
+msgid "the file is world-readable and holds the database password"
+msgstr "nababasa ng lahat ang file at naglalaman ito ng password ng database"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s uses the same database and user as Cacti."
+msgstr "Ginagamit ng %s ang parehong database at user tulad ng Cacti."
+
+#: doctor_functions.php
+#, php-format
+msgid "%s is %s"
+msgstr "Ang %s ay %s"
+
+#: doctor_functions.php
+msgid "Cacti recommends ON; doublewrite may stay off only on ZFS or similar journaling storage."
+msgstr "Inirerekomenda ng Cacti ang ON; maaari lamang manatiling naka-off ang doublewrite sa ZFS o katulad na journaling storage."
+
+#: doctor_functions.php
+msgid "InnoDB safety settings"
+msgstr "Mga pangkaligtasang setting ng InnoDB"
+
+#: doctor_functions.php
+msgid "innodb_file_per_table and innodb_doublewrite are enabled."
+msgstr "Naka-enable ang innodb_file_per_table at innodb_doublewrite."
+
+#: doctor_functions.php
+#, php-format
+msgid "None of the last %d log lines report an error."
+msgstr "Wala sa huling %d linya ng log ang nag-uulat ng error."
+
+#: doctor_functions.php
+msgid "Recent log errors"
+msgstr "Mga kamakailang error sa log"
+
+#: doctor_functions.php
+#, php-format
+msgid "%d of the last %d log lines report an error. Most frequent (%dx): %s"
+msgstr "%d sa huling %d linya ng log ang nag-uulat ng error. Pinakamadalas (%dx): %s"
+
+#: doctor_functions.php
+msgid "The Cacti log is not readable; see the Cacti log file check."
+msgstr "Hindi mabasa ang Cacti log; tingnan ang pagsusuri sa log file ng Cacti."
+
+#: doctor_functions.php
+msgid "No enabled devices are configured."
+msgstr "Walang naka-configure na naka-enable na device."
+
+#: doctor_functions.php
+#, php-format
+msgid "All %d enabled devices are up."
+msgstr "Up ang lahat ng %d naka-enable na device."
+
+#: doctor_functions.php
+#, php-format
+msgid "%d of %d enabled devices are down and %d recovering."
+msgstr "%d sa %d naka-enable na device ang down at %d ang bumabawi."
+
+#: doctor_functions.php
+msgid "The down devices could not be listed."
+msgstr "Hindi mailista ang mga device na down."
+
+#: doctor_functions.php
+#, php-format
+msgid "%s down since %s"
+msgstr "%s ay down mula pa noong %s"
+
+#: doctor_functions.php
+#, php-format
+msgid "Longest down: %s."
+msgstr "Pinakamatagal na down: %s."
+
+#: doctor_functions.php
+msgid "With most devices down, check the poller host's network and SNMP settings first."
+msgstr "Dahil karamihan sa mga device ay down, suriin muna ang mga setting ng network at SNMP ng poller host."
+
+#: doctor_functions.php
+msgid "Doctor could not read device status from the host table."
+msgstr "Hindi mabasa ng Doctor ang status ng device mula sa talahanayan ng host."
+
+#: doctor_functions.php
+#, php-format
+msgid "Cacti Doctor on %s: %d failed, %d warnings"
+msgstr "Cacti Doctor sa %s: %d nabigo, %d babala"
+
+#: doctor_functions.php
+#, php-format
+msgid "%d Cacti Doctor checks changed status on %s."
+msgstr "%d pagsusuri ng Cacti Doctor ang nagbago ng status sa %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "Totals: %d passed, %d warnings, %d failed."
+msgstr "Kabuuan: %d pumasa, %d babala, %d nabigo."
+
+#: doctor_functions.php
+#, php-format
+msgid "Refusing to overwrite %s."
+msgstr "Tinatanggi ang pag-overwrite sa %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "Cannot create %s."
+msgstr "Hindi malikha ang %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "Could not make %s private."
+msgstr "Hindi magawang pribado ang %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "Writing %s failed."
+msgstr "Nabigo ang pagsusulat sa %s."
+
+#: doctor_functions.php
+msgid "Repair runtime directories"
+msgstr "Ayusin ang mga runtime directory"
+
+#: doctor_functions.php
+msgid "Create missing cache, log, and RRA directories and add owner read/write/execute permission without removing existing permissions."
+msgstr "Lumikha ng mga nawawalang direktoryo ng cache, log, at RRA at magdagdag ng pahintulot ng may-ari sa pagbasa/pagsulat/pagpapatakbo nang hindi inaalis ang mga kasalukuyang pahintulot."
+
+#: doctor_functions.php
+msgid "The requested repair is not allow-listed."
+msgstr "Ang hiniling na pag-aayos ay wala sa allow-list."
+
+#: doctor_functions.php
+msgid "No repair handler is registered."
+msgstr "Walang nakarehistrong tagapangasiwa ng pag-aayos."
+
+#: doctor_functions.php
+msgid "Repair unavailable"
+msgstr "Hindi available ang pag-aayos"
+
+#: doctor_functions.php
+msgid "Repairs are refused while running as root. Run Doctor as the Cacti poller user."
+msgstr "Tinatanggi ang mga pag-aayos habang tumatakbo bilang root. Patakbuhin ang Doctor bilang Cacti poller user."
+
+#: doctor_functions.php
+msgid "The Cacti base directory cannot be resolved."
+msgstr "Hindi ma-resolve ang base directory ng Cacti."
+
+#: doctor_functions.php
+#, php-format
+msgid "%s: path is outside the Cacti installation"
+msgstr "%s: ang path ay nasa labas ng pag-install ng Cacti"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s: symbolic links are not repaired"
+msgstr "%s: hindi inaayos ang mga symbolic link"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s: directory creation failed"
+msgstr "%s: nabigo ang paglikha ng direktoryo"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s: could not add owner permissions"
+msgstr "%s: hindi maidagdag ang mga pahintulot ng may-ari"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s: still not a writable directory"
+msgstr "%s: hindi pa rin isang direktoryong nasusulatan"
+
+#: doctor_functions.php
+msgid "Runtime directories now exist and are writable by the current process."
+msgstr "Umiiral na ngayon ang mga runtime directory at nasusulatan na ng kasalukuyang proseso."
+
+#: doctor_functions.php
+msgid "Cacti"
+msgstr "Cacti"
+
+#: doctor_functions.php
+msgid "Database"
+msgstr "Database"
+
+#: doctor_functions.php
+msgid "Database health"
+msgstr "Kalusugan ng database"
+
+#: doctor_functions.php
+msgid "Devices"
+msgstr "Mga Device"
+
+#: doctor_functions.php setup.php
+msgid "Doctor"
+msgstr "Doctor"
+
+#: doctor_functions.php
+msgid "Filesystem"
+msgstr "Filesystem"
+
+#: doctor_functions.php
+msgid "Logging"
+msgstr "Pag-log"
+
+#: doctor_functions.php
+msgid "PHP"
+msgstr "PHP"
+
+#: doctor_functions.php
+msgid "Poller"
+msgstr "Poller"
+
+#: doctor_functions.php
+msgid "Prerequisites"
+msgstr "Mga Kinakailangan"
+
+#: doctor_functions.php
+msgid "Repair"
+msgstr "Ayusin"
+
+#: doctor_functions.php
+msgid "Security"
+msgstr "Seguridad"
+
+#: doctor_functions.php
+msgid "PASS"
+msgstr "PUMASA"
+
+#: doctor_functions.php
+msgid "WARN"
+msgstr "BABALA"
+
+#: doctor_functions.php
+msgid "FAIL"
+msgstr "NABIGO"
+
+#: doctor_functions.php
+msgid "UNKNOWN"
+msgstr "HINDI ALAM"
+
+#: doctor_rrd.php
+msgid "Data source freshness could not be assessed."
+msgstr "Hindi masuri ang pagiging bago ng data source."
+
+#: doctor_rrd.php
+msgid "RRD update freshness"
+msgstr "Pagiging bago ng update ng RRD"
+
+#: doctor_rrd.php
+msgid "The deferred-write interval is unknown; configure it before judging file age."
+msgstr "Hindi alam ang agwat ng deferred-write; i-configure ito bago husgahan ang tagal mula nang huling ma-update ang file."
+
+#: doctor_rrd.php
+#, php-format
+msgid "Checked %d files; %d stale files across %d devices; %d unavailable or future-dated files."
+msgstr "Nasuri ang %d file; %d lumang file sa %d device; %d file na hindi available o may petsang panghinaharap."
+
+#: doctor_rrd.php
+msgid "File age includes the collection interval and configured deferred-write allowance; verify the poller and flush process before changing data."
+msgstr "Kasama sa tagal mula nang huling ma-update ang file ang agwat ng pagkolekta at ang naka-configure na palugit ng deferred-write; i-verify ang poller at ang proseso ng pag-flush bago baguhin ang data."
+
+#: doctor_scheduling.php
+msgid "Scheduled checks are disabled. Enable them in Settings > Doctor to retain samples and alert on changes."
+msgstr "Naka-disable ang mga nakaiskedyul na pagsusuri. I-enable ang mga ito sa Mga Setting > Doctor upang mapanatili ang mga sample at makapagpadala ng alerto sa mga pagbabago."
+
+#: doctor_scheduling.php
+msgid "Scheduled report freshness"
+msgstr "Pagiging bago ng nakaiskedyul na ulat"
+
+#: doctor_scheduling.php
+#, php-format
+msgid "%s UTC"
+msgstr "%s UTC"
+
+#: doctor_scheduling.php
+#, php-format
+msgid "Last started: %s; last completed: %s."
+msgstr "Huling sinimulan: %s; huling nakumpleto: %s."
+
+#: doctor_scheduling.php
+msgid "never"
+msgstr "hindi kailanman"
+
+#: doctor_scheduling.php
+msgid "Results are missing or stale. Check the primary poller and DOCTOR log for startup, timeout, or persistence errors."
+msgstr "Nawawala o luma na ang mga resulta. Suriin ang pangunahing poller at ang DOCTOR log para sa mga error sa pag-startup, timeout, o persistence."
+
+#: doctor_scheduling.php
+msgid "A completed diagnostic run is recent; this does not mean all checks passed."
+msgstr "Kamakailan lamang ang isang nakumpletong diagnostic run; hindi ito nangangahulugang pumasa ang lahat ng pagsusuri."
+
+#: doctor_scheduling.php
+msgid "Doctor alert state is invalid. Restore doctor_alert_pending from backup before retrying."
+msgstr "Hindi wasto ang estado ng alerto ng Doctor. I-restore ang doctor_alert_pending mula sa backup bago subukang muli."
+
+#: doctor_scheduling.php
+msgid "Doctor alert transitions are invalid; no email was sent."
+msgstr "Hindi wasto ang mga paglipat ng alerto ng Doctor; walang ipinadalang email."
+
+#: doctor_scheduling.php
+msgid "Alert delivery"
+msgstr "Paghahatid ng alerto"
+
+#: doctor_scheduling.php
+#, php-format
+msgid "%d check transitions await delivery; attempts: %d of 3."
+msgstr "%d paglipat ng pagsusuri ang naghihintay ng paghahatid; mga pagsubok: %d sa 3."
+
+#: doctor_scheduling.php
+msgid "Automatic retries exhausted. Correct Cacti mail settings, then run Doctor with --scheduled --retry-alerts as the poller user."
+msgstr "Naubos na ang mga awtomatikong pagsubok muli. Itama ang mga setting ng mail ng Cacti, pagkatapos ay patakbuhin ang Doctor gamit ang --scheduled --retry-alerts bilang poller user."
+
+#: doctor_scheduling.php
+#, php-format
+msgid "Next eligible retry: %s UTC, after a primary poller cycle."
+msgstr "Susunod na kwalipikadong pagsubok muli: %s UTC, pagkatapos ng isang cycle ng pangunahing poller."
+
+#: doctor_scheduling.php
+msgid "No alert recipients are currently configured; pending transitions are retained."
+msgstr "Walang kasalukuyang naka-configure na tatanggap ng alerto; pinapanatili ang mga nakabinbing paglipat."
+
+#: doctor_scheduling.php
+msgid "No retained alert is awaiting delivery. Mail-server acceptance does not prove inbox delivery."
+msgstr "Walang pinananatiling alerto ang naghihintay ng paghahatid. Ang pagtanggap ng mail server ay hindi nagpapatunay ng paghahatid sa inbox."
+
+#: doctor_scheduling.php
+msgid "Doctor retained status changes (UTC). Repeated changes for one check are coalesced; an out-and-back transition is retained."
+msgstr "Pinanatili ng Doctor ang mga pagbabago ng status (UTC). Pinagsasama-sama ang mga paulit-ulit na pagbabago para sa isang pagsusuri; pinapanatili ang paglipat na lumabas at bumalik."
+
+#: doctor_scheduling.php
+#, php-format
+msgid "%s: %s -> %s (latest change %s)"
+msgstr "%s: %s -> %s (pinakabagong pagbabago %s)"
+
+#: doctor_scheduling.php
+#, php-format
+msgid "%d further status changes are not listed because the alert queue reached its storage limit."
+msgstr "%d pang pagbabago ng status ang hindi nakalista dahil naabot na ng pila ng alerto ang limitasyon ng storage nito."
+
+#: doctor_scheduling.php
+msgid "Open Utilities > Doctor for current measurements, recommended actions, and verification steps."
+msgstr "Buksan ang Mga Utility > Doctor para sa mga kasalukuyang sukat, inirerekomendang aksyon, at hakbang sa pag-verify."
+
+#: doctor_scheduling.php
+#, php-format
+msgid "Cacti Doctor: %d retained status changes"
+msgstr "Cacti Doctor: %d pinananatiling pagbabago ng status"
+
+#: doctor_scheduling.php
+msgid "Doctor schedule is already running or the database lock is unavailable."
+msgstr "Tumatakbo na ang iskedyul ng Doctor o hindi available ang lock ng database."
+
+#: doctor_web.php
+msgid "The finding could not be acknowledged. Run Doctor again, then acknowledge the current result."
+msgstr "Hindi makilala ang natuklasan. Patakbuhin muli ang Doctor, pagkatapos ay kilalanin ang kasalukuyang resulta."
+
+#: doctor_web.php
+msgid "The warning exception could not be saved. Use a fresh assessed warning, an owner, a reason and an expiry within 90 days."
+msgstr "Hindi mai-save ang exception sa babala. Gumamit ng bagong nasuring babala, may-ari, dahilan, at pag-expire sa loob ng 90 araw."
+
+#: doctor_web.php
+msgid "Confirm repair"
+msgstr "Kumpirmahin ang pag-aayos"
+
+#: doctor_web.php
+msgid "Approval expires after five minutes and is invalidated by a changed filesystem. The acting account must be able to create directories or change owner permissions."
+msgstr "Nag-e-expire ang pag-apruba pagkalipas ng limang minuto at nawawalan ng bisa kapag nagbago ang filesystem. Dapat na makalikha ng mga direktoryo o makapagbago ng mga pahintulot ng may-ari ang gumaganap na account."
+
+#: doctor_web.php
+msgid "Repair prerequisites are not met. No changes will be made."
+msgstr "Hindi natutugunan ang mga kinakailangan sa pag-aayos. Walang gagawing pagbabago."
+
+#: doctor_web.php
+msgid "Cancel"
+msgstr "Kanselahin"
+
+#: doctor_web.php
+#, php-format
+msgid "Last observation: %s UTC."
+msgstr "Huling obserbasyon: %s UTC."
+
+#: doctor_web.php
+msgid "No completed diagnostic report is available."
+msgstr "Walang available na nakumpletong ulat ng diagnostic."
+
+#: doctor_web.php
+msgid "Health is unknown: observations are missing or stale."
+msgstr "Hindi alam ang kalusugan: nawawala o luma na ang mga obserbasyon."
+
+#: doctor_web.php
+msgid "Run diagnostic checks"
+msgstr "Patakbuhin ang mga diagnostic check"
+
+#: doctor_web.php
+msgid "Doctor settings"
+msgstr "Mga setting ng Doctor"
+
+#: doctor_web.php setup.php
+msgid "Cacti Doctor"
+msgstr "Cacti Doctor"
+
+#: doctor_web.php
+#, php-format
+msgid "Installation health: %d passed, %d warnings, %d failed"
+msgstr "Kalusugan ng pag-install: %d pumasa, %d babala, %d nabigo"
+
+#: doctor_web.php
+msgid "Category"
+msgstr "Kategorya"
+
+#: doctor_web.php
+msgid "Check"
+msgstr "Pagsusuri"
+
+#: doctor_web.php
+msgid "Status"
+msgstr "Katayuan"
+
+#: doctor_web.php
+msgid "Details"
+msgstr "Mga Detalye"
+
+#: doctor_web.php
+msgid "Action"
+msgstr "Aksyon"
+
+#: doctor_web.php
+msgid "Acknowledged; health status unchanged."
+msgstr "Kinilala; hindi nagbago ang status ng kalusugan."
+
+#: doctor_web.php
+msgid "Acknowledge"
+msgstr "Kilalanin"
+
+#: doctor_web.php
+#, php-format
+msgid "Owner: %s; review by %s UTC. Reason: %s"
+msgstr "May-ari: %s; suriin pagsapit ng %s UTC. Dahilan: %s"
+
+#: doctor_web.php
+msgid "Investigate a symptom"
+msgstr "Siyasatin ang isang sintomas"
+
+#: doctor_web.php
+msgid "Investigate"
+msgstr "Siyasatin"
+
+#: doctor_web.php
+msgid "Recent scheduled checks"
+msgstr "Mga kamakailang nakaiskedyul na pagsusuri"
+
+#: doctor_web.php
+msgid "Failed"
+msgstr "Nabigo"
+
+#: doctor_web.php
+msgid "Observation (UTC)"
+msgstr "Obserbasyon (UTC)"
+
+#: doctor_web.php
+msgid "Passed"
+msgstr "Pumasa"
+
+#: doctor_web.php
+msgid "Warnings"
+msgstr "Mga Babala"
+
+#: doctor_web.php
+msgid "Warning exceptions"
+msgstr "Mga exception sa babala"
+
+#: doctor_web.php
+msgid "Owner"
+msgstr "May-ari"
+
+#: doctor_web.php
+msgid "Reason"
+msgstr "Dahilan"
+
+#: doctor_web.php
+msgid "Review date (UTC)"
+msgstr "Petsa ng pagsusuri (UTC)"
+
+#: doctor_web.php
+msgid "Accept warning"
+msgstr "Tanggapin ang babala"
+
+#: doctor_web.php
+msgid "Expired"
+msgstr "Nag-expire na"
+
+#: doctor_web.php
+msgid "Check not present in this report; verify its ID."
+msgstr "Wala sa ulat na ito ang pagsusuri; i-verify ang ID nito."
+
+#: doctor_web.php
+msgid "Remove exception"
+msgstr "Alisin ang exception"
+
+#: doctor_web.php
+msgid "Audit history"
+msgstr "Kasaysayan ng audit"
+
+#: doctor_workflows.php
+msgid "Repair refused"
+msgstr "Tinanggihan ang pag-aayos"
+
+#: doctor_workflows.php
+msgid "The approved plan is expired or the filesystem changed. Preview the repair again."
+msgstr "Nag-expire na ang inaprubahang plano o nagbago ang filesystem. I-preview muli ang pag-aayos."
+
+#: doctor_workflows.php
+msgid "The audit record could not be saved. No repair was attempted."
+msgstr "Hindi mai-save ang tala ng audit. Walang sinubukang pag-aayos."
+
+#: doctor_workflows.php
+msgid "The completion audit failed; inspect the filesystem and the started audit record."
+msgstr "Nabigo ang audit sa pagkumpleto; siyasatin ang filesystem at ang sinimulang tala ng audit."
+
+#: setup.php
+msgid "Doctor Administrator"
+msgstr "Administrator ng Doctor"
+
+#: setup.php
+msgid "Doctor Operator"
+msgstr "Operator ng Doctor"
+
+#: setup.php
+msgid "Doctor Viewer"
+msgstr "Tagatingin ng Doctor"
+
+#: setup.php
+msgid "Utilities"
+msgstr "Mga Utility"
+
+#: setup.php
+msgid "System Administration"
+msgstr "Pangangasiwa ng Sistema"
+
+#: setup.php
+msgid "Scheduled Checks"
+msgstr "Mga Nakaiskedyul na Pagsusuri"
+
+#: setup.php
+msgid "Run Checks on a Schedule"
+msgstr "Patakbuhin ang mga Pagsusuri ayon sa Iskedyul"
+
+#: setup.php
+msgid "Run every Doctor check in the background after the poller and record each check's status."
+msgstr "Patakbuhin ang bawat pagsusuri ng Doctor sa background pagkatapos ng poller at itala ang status ng bawat pagsusuri."
+
+#: setup.php
+msgid "Check Interval"
+msgstr "Agwat ng Pagsusuri"
+
+#: setup.php
+msgid "How often the scheduled checks run."
+msgstr "Gaano kadalas tumatakbo ang mga nakaiskedyul na pagsusuri."
+
+#: setup.php
+msgid "Every 15 Minutes"
+msgstr "Bawat 15 Minuto"
+
+#: setup.php
+msgid "Every Hour"
+msgstr "Bawat Oras"
+
+#: setup.php
+msgid "Every 6 Hours"
+msgstr "Bawat 6 na Oras"
+
+#: setup.php
+msgid "Every Day"
+msgstr "Araw-araw"
+
+#: setup.php
+msgid "Alert Email Addresses"
+msgstr "Mga Email Address para sa Alerto"
+
+#: setup.php
+msgid "Comma-separated addresses to email when a check starts or stops failing. Leave empty to only log changes to the Cacti log."
+msgstr "Mga address na pinaghihiwalay ng kuwit na padadalhan ng email kapag nagsimula o humintong mabigo ang isang pagsusuri. Iwanang blangko upang i-log lamang ang mga pagbabago sa Cacti log."
+
+#: setup.php
+msgid "Alert on Warnings"
+msgstr "Mag-alert sa mga Babala"
+
+#: setup.php
+msgid "Also alert when a check moves into or out of a warning."
+msgstr "Mag-alert din kapag ang isang pagsusuri ay pumasok o lumabas sa estado ng babala."
+
+#: setup.php
+msgid "Thresholds"
+msgstr "Mga Threshold"
+
+#: setup.php
+msgid "Poller Run Time Warning (percent)"
+msgstr "Babala sa Oras ng Pagpapatakbo ng Poller (porsyento)"
+
+#: setup.php
+msgid "Warn when the last main-poller run used this share of the polling interval. Runs that take the whole interval always fail."
+msgstr "Magbabala kapag ang huling pagpapatakbo ng main-poller ay gumamit ng ganitong bahagi ng polling interval. Palaging nabibigo ang mga pagpapatakbo na sumasakop sa buong interval."
+
+#: setup.php
+msgid "RRA Disk Free Warning (percent)"
+msgstr "Babala sa Libreng Espasyo sa Disk ng RRA (porsyento)"
+
+#: setup.php
+msgid "Warn when free space on the RRA file system drops below this percentage."
+msgstr "Magbabala kapag ang libreng espasyo sa RRA file system ay bumaba sa mas mababa pa sa porsyentong ito."
+
+#: setup.php
+msgid "Fail when free space on the RRA file system drops below this percentage."
+msgstr "Mabigo kapag ang libreng espasyo sa RRA file system ay bumaba sa mas mababa pa sa porsyentong ito."
+
+#: setup.php
+msgid "RRA Disk Free Failure (percent)"
+msgstr "Pagkabigo sa Libreng Espasyo sa Disk ng RRA (porsyento)"
+
+#: setup.php
+msgid "Clock Drift Warning (seconds)"
+msgstr "Babala sa Clock Drift (segundo)"
+
+#: setup.php
+msgid "Warn when the database and PHP clocks differ by more than this."
+msgstr "Magbabala kapag ang mga orasan ng database at PHP ay nagkakaiba nang higit pa rito."
+
+#: setup.php
+msgid "Clock Drift Failure (seconds)"
+msgstr "Pagkabigo sa Clock Drift (segundo)"
+
+#: setup.php
+msgid "Fail when the database and PHP clocks differ by more than this."
+msgstr "Mabigo kapag ang mga orasan ng database at PHP ay nagkakaiba nang higit pa rito."
+
+#: setup.php
+msgid "RRD Stale Intervals"
+msgstr "Mga Stale Interval ng RRD"
+
+#: setup.php
+msgid "Warn after this many collection intervals without a file update (1 to 100)."
+msgstr "Magbabala pagkatapos ng ganitong karaming interval ng pagkolekta nang walang pag-update ng file (1 hanggang 100)."
+
+#: setup.php
+msgid "Additional disk-write delay for external caching (0 to 86400). Boost adds its own allowance."
+msgstr "Karagdagang pagkaantala sa pagsulat sa disk para sa panlabas na pag-cache (0 hanggang 86400). Nagdaragdag ang Boost ng sarili nitong palugit."
+
+#: setup.php
+msgid "Deferred RRD Write Allowance (seconds)"
+msgstr "Palugit sa Naantalang Pagsulat ng RRD (segundo)"
+
+#: setup.php
+msgid "Cacti Log Size Warning (MB)"
+msgstr "Babala sa Laki ng Cacti Log (MB)"
+
+#: setup.php
+msgid "Warn when the Cacti log grows beyond this size, which usually means log rotation is not running."
+msgstr "Magbabala kapag ang Cacti log ay lumaki nang lampas sa laking ito, na kadalasang nangangahulugang hindi tumatakbo ang log rotation."

@@ -1,0 +1,1542 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
+# SPDX-FileCopyrightText: 2026 Thomas Vincent <thomasvincent@gmail.com>
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: doctor 0.6.1\n"
+"Report-Msgid-Bugs-To: https://github.com/somethingwithproof/plugin_doctor/issues\n"
+"PO-Revision-Date: 2026-11-26 00:00+0000\n"
+"Last-Translator: Thomas Vincent <thomasvincent@gmail.com>\n"
+"Language-Team: Thomas Vincent <thomasvincent@gmail.com>\n"
+"Language: mg-MG\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: cli/doctor.php
+#, php-format
+msgid "Available repairs: %s"
+msgstr "Fanamboarana misy: %s"
+
+#: cli/doctor.php
+#, php-format
+msgid "Unknown format %s. Use text, json, nagios, or prometheus."
+msgstr "Endrika tsy fantatra %s. Ampiasao ny text, json, nagios, na prometheus."
+
+#: cli/doctor.php
+#, php-format
+msgid "Redaction could not complete, so %s was not written."
+msgstr "Tsy tontosa ny fanakonana angona miafina, ka tsy voasoratra ny %s."
+
+#: cli/doctor.php
+#, php-format
+msgid "Wrote %s. Review it before sharing; values after password, secret, token, and community names are masked."
+msgstr "Voasoratra ny %s. Jereo alohan'ny hizarana azy; voasarona ny sanda manaraka ny anaran'ny tenimiafina, tsiambaratelo, token, ary community."
+
+#: cli/doctor.php doctor_functions.php
+msgid "Unknown repair"
+msgstr "Fanamboarana tsy fantatra"
+
+#: cli/doctor.php
+msgid "Refusing to repair without --yes."
+msgstr "Mandà ny hanamboatra raha tsy misy --yes."
+
+#: cli/doctor.php
+msgid "Select a supported symptom and text or JSON output."
+msgstr "Misafidiana soritr'aretina tohanana sy vokatra text na JSON."
+
+#: cli/doctor.php doctor_web.php
+msgid "Accepted warning"
+msgstr "Fampitandremana nekena"
+
+#: doctor_access.php doctor_functions.php
+msgid "Device availability"
+msgstr "Fahazoana mifandray amin'ny fitaovana"
+
+#: doctor_access.php
+msgid "Device permissions could not be evaluated."
+msgstr "Tsy azo notombanana ny fahazoan-dalana amin'ny fitaovana."
+
+#: doctor_access.php
+msgid "The configured PHP CLI cannot run Doctor checks."
+msgstr "Tsy afaka manatanteraka ny fanamarinana Doctor ny PHP CLI voakirakira."
+
+#: doctor_access.php
+msgid "Doctor checks failed or exceeded their time limit. Review the Doctor log."
+msgstr "Tsy nahomby na nihoatra ny fe-potoana ny fanamarinana Doctor. Jereo ny firaketana Doctor."
+
+#: doctor_diagnosis.php
+msgid "Graphs stopped updating"
+msgstr "Nijanona tsy navaozina intsony ny tabilao"
+
+#: doctor_diagnosis.php
+msgid "Polling is slow"
+msgstr "Miadana ny fanangonana angona"
+
+#: doctor_diagnosis.php
+msgid "Devices are missing or unavailable"
+msgstr "Tsy hita na tsy azo tratrarina ny fitaovana"
+
+#: doctor_diagnosis.php
+msgid "Doctor alerts are missing"
+msgstr "Tsy hita ny fampitandreman'ny Doctor"
+
+#: doctor_diagnosis.php
+msgid "Check the poller scheduler and the affected poller log, then verify a new completed cycle."
+msgstr "Jereo ny fandaharam-potoanan'ny poller sy ny firaketan'ny poller voakasika, avy eo hamarino ny tsingerina vaovao vita."
+
+#: doctor_diagnosis.php
+msgid "Collection may have stopped."
+msgstr "Mety ho nijanona ny fanangonana."
+
+#: doctor_diagnosis.php
+msgid "Collected values may not be reaching disk."
+msgstr "Mety tsy tonga any amin'ny kapila ireo sanda voangona."
+
+#: doctor_diagnosis.php
+msgid "Inspect the output queue and Boost flush history; verify that the queue drains and RRD timestamps advance."
+msgstr "Jereo ny filaharana mivoaka sy ny tantaran'ny fanadiovana Boost; hamarino fa ritra ny filaharana ary mandroso ny marik'oran'ny RRD."
+
+#: doctor_diagnosis.php
+msgid "Check storage capacity, runtime-directory permissions and the last RRD update; account for deferred writes."
+msgstr "Jereo ny fahafahan'ny fitehirizana, ny fahazoan-dalana amin'ny lahatahiry fampandehanana ary ny fanavaozana RRD farany; raiso an-tsaina ireo fanoratana nahemotra."
+
+#: doctor_diagnosis.php
+msgid "RRD storage needs investigation."
+msgstr "Mila fanadihadiana ny fitehirizana RRD."
+
+#: doctor_diagnosis.php
+msgid "Collection work may be exceeding its time budget."
+msgstr "Mety mihoatra ny fe-potoana nomena azy ny asan'ny fanangonana."
+
+#: doctor_diagnosis.php
+msgid "Compare cycle duration with the polling interval and inspect device timeouts before increasing concurrency."
+msgstr "Ampitahao amin'ny elanelam-potoan'ny fanangonana ny faharetan'ny tsingerina ary jereo ny fe-potoana tapitra ho an'ny fitaovana alohan'ny hampitomboana ny fampiarahana asa."
+
+#: doctor_diagnosis.php
+msgid "Compare database counters during a slow cycle and inspect query plans before changing server limits."
+msgstr "Ampitahao ireo kaontera ao amin'ny tahiry angona mandritra ny tsingerina miadana ary jereo ny drafitry ny fangatahana alohan'ny hanovana ny fetran'ny mpizara."
+
+#: doctor_diagnosis.php
+msgid "Database pressure may be contributing to slow polling."
+msgstr "Mety ho anisan'ny mahatonga ny fanangonana miadana ny tsindry amin'ny tahiry angona."
+
+#: doctor_diagnosis.php
+msgid "Collection prerequisites or reachability may be failing."
+msgstr "Mety tsy mahomby ireo fepetra takian'ny fanangonana na ny fahafahana mifandray."
+
+#: doctor_diagnosis.php
+msgid "Verify the affected device permissions, reachability, credentials and assigned poller using Cacti diagnostics."
+msgstr "Hamarino amin'ny alalan'ny fitiliana Cacti ny fahazoan-dalana, ny fahafahana mifandray, ny mombamomba ny fanamarinana ary ny poller voatendry ho an'ny fitaovana voakasika."
+
+#: doctor_diagnosis.php
+msgid "Scheduled checks or mail delivery need attention."
+msgstr "Mila fanaraha-maso ny fanamarinana voalahatra na ny fandefasana mailaka."
+
+#: doctor_diagnosis.php
+msgid "Verify scheduling and recipient settings, inspect retained delivery attempts, and send a Cacti test email."
+msgstr "Hamarino ny fikirakirana ny fandaharam-potoana sy ny mpandray, jereo ireo andrana fandefasana notehirizina, ary mandefasa mailaka fanandramana Cacti."
+
+#: doctor_diagnosis.php
+msgid "Possible causes require verification; matching checks do not establish a root cause."
+msgstr "Mila fanamarinana ireo mety ho antony; tsy manaporofo ny tena fototry ny olana ireo fanamarinana mifanaraka."
+
+#: doctor_diagnosis.php
+msgid "No cause is established by the available observations. Run fresh diagnostics and investigate the symptom directly."
+msgstr "Tsy misy antony voaporofo avy amin'ireo fanamarihana misy. Manaova fitiliana vaovao ary hadihadio mivantana ilay soritr'olana."
+
+#: doctor_functions.php
+msgid "At least 24 hours since server startup and FLUSH STATUS. Counters are cumulative and may have different reset histories; confirm trends during a representative workload before tuning."
+msgstr "Farafahakeliny 24 ora hatramin'ny nanombohan'ny mpizara sy ny FLUSH STATUS. Mitambatra hatrany ireo kaontera ary mety samy hafa ny tantaran'ny famerenana azy; hamarino ny fironana mandritra ny vesatra asa mahasolo tena alohan'ny hanitsiana."
+
+#: doctor_functions.php
+msgid "Cumulative tuning advice is deferred: obtain valid uptime and at least 24 hours since startup and FLUSH STATUS. Missing metrics or an inconsistent sample cannot establish database health."
+msgstr "Nahemotra ny torohevitra fanitsiana mitambatra: makà fe-potoana fampandehanana marina sy farafahakeliny 24 ora hatramin'ny fanombohana sy ny FLUSH STATUS. Tsy afaka manaporofo ny fahasalaman'ny tahiry angona ireo metrika tsy ampy na santionany tsy mifanaraka."
+
+#: doctor_functions.php
+msgid "Database observation window"
+msgstr "Fe-potoana fanaraha-maso ny tahiry angona"
+
+#: doctor_functions.php
+msgid "Connection metrics are unavailable or invalid. Check access to SHOW GLOBAL STATUS and SHOW GLOBAL VARIABLES; do not treat missing metrics as an idle server."
+msgstr "Tsy hita na tsy manankery ireo metrika fifandraisana. Jereo ny fidirana amin'ny SHOW GLOBAL STATUS sy SHOW GLOBAL VARIABLES; aza raisina ho toy ny mpizara tsy miasa ireo metrika tsy ampy."
+
+#: doctor_functions.php
+#, php-format
+msgid "Current connections: %.0f / %.0f (%s); recorded peak: %.0f (%s of the current limit)."
+msgstr "Fifandraisana ankehitriny: %.0f / %.0f (%s); tampon'isa voarakitra: %.0f (%s amin'ny fetra ankehitriny)."
+
+#: doctor_functions.php
+msgid "Review connection pooling and poller concurrency. Check database-host memory headroom before raising max_connections; the historical peak may reflect an older limit."
+msgstr "Avereno jerena ny fitambaran'ny fifandraisana sy ny fampiarahana asan'ny poller. Jereo ny fahafahan'ny fitadidian'ny mpampiantrano tahiry angona alohan'ny hampitomboana ny max_connections; mety ho fetra taloha no taratry ny tampon'isa ara-tantara."
+
+#: doctor_functions.php
+msgid "Connection capacity"
+msgstr "Fahafahan'ny fifandraisana"
+
+#: doctor_functions.php
+msgid "InnoDB buffer pool reads"
+msgstr "Famakiana ao amin'ny buffer pool InnoDB"
+
+#: doctor_functions.php
+msgid "Review query plans and the working set. Consider innodb_buffer_pool_size only after measuring memory available on the database host; a cumulative miss ratio alone does not prove memory pressure."
+msgstr "Avereno jerena ny drafitry ny fangatahana sy ny angona ampiasaina. Hevero ny innodb_buffer_pool_size aorian'ny fandrefesana ny fitadidiana misy eo amin'ny mpampiantrano tahiry angona ihany; tsy manaporofo ny tsindry amin'ny fitadidiana irery ny taham-pahadisoana mitambatra."
+
+#: doctor_functions.php
+msgid "On-disk temporary tables"
+msgstr "Tabilao vonjimaika an-kapila"
+
+#: doctor_functions.php
+msgid "Review query plans, sorting, grouping, and temporary-table data types before changing memory limits. Some tables must use disk; memory limits and accounting differ between MySQL and MariaDB versions."
+msgstr "Avereno jerena ny drafitry ny fangatahana, ny fandaharana, ny fanakambanana ary ny karazana angona amin'ny tabilao vonjimaika alohan'ny hanovana ny fetran'ny fitadidiana. Tsy maintsy mampiasa kapila ny tabilao sasany; samy hafa ny fetran'ny fitadidiana sy ny fanisana eo amin'ny kinova MySQL sy MariaDB."
+
+#: doctor_functions.php
+msgid "Connection thread creation"
+msgstr "Famoronana thread fifandraisana"
+
+#: doctor_functions.php
+msgid "Review connection reuse and thread_cache_size. Check the server thread-handling mode before tuning; thread-pool implementations do not behave like one-thread-per-connection servers."
+msgstr "Avereno jerena ny fampiasana indray ny fifandraisana sy ny thread_cache_size. Jereo ny fomba fitantanana thread an'ny mpizara alohan'ny hanitsiana; tsy mitovy fihetsika amin'ny mpizara thread iray isaky ny fifandraisana ireo fampiharana thread-pool."
+
+#: doctor_functions.php
+msgid "Review slow-query logging, long_query_time, and query plans before changing server buffers. This counter depends on the configured slow-query threshold and does not identify individual statements."
+msgstr "Avereno jerena ny firaketana fangatahana miadana, ny long_query_time, ary ny drafitry ny fangatahana alohan'ny hanovana ireo buffer-n'ny mpizara. Miankina amin'ny fetran'ny fangatahana miadana voakirikira ity kaontera ity ary tsy manondro baiko tsirairay."
+
+#: doctor_functions.php
+msgid "Slow statements"
+msgstr "Baiko miadana"
+
+#: doctor_functions.php
+msgid "Cumulative advice deferred until the observation window is sufficient."
+msgstr "Nahemotra ny torohevitra mitambatra mandra-pahampy ny fe-potoana fanaraha-maso."
+
+#: doctor_functions.php
+msgid "Thread-cache advice is not assessed: thread_handling is unavailable or is not one-thread-per-connection. Review the active thread-pool implementation instead."
+msgstr "Tsy voamarina ny torohevitra momba ny cache-n'ny thread: tsy hita ny thread_handling na tsy one-thread-per-connection. Avereno jerena kosa ny fampiharana thread-pool miasa."
+
+#: doctor_functions.php
+#, php-format
+msgid "Required counters are missing or invalid: %s, %s. Check server-version support and monitoring permissions."
+msgstr "Tsy hita na tsy manankery ireo kaontera ilaina: %s, %s. Jereo ny fanohanan'ny kinovan'ny mpizara sy ny fahazoan-dalana fanaraha-maso."
+
+#: doctor_functions.php
+msgid "A counter reset since the prior sample; collect another representative interval before tuning."
+msgstr "Nisy kaontera naverina tamin'ny voalohany hatramin'ny santionany teo aloha; manangòna elanelam-potoana mahasolo tena hafa alohan'ny hanitsiana."
+
+#: doctor_functions.php
+#, php-format
+msgid "Insufficient activity: %.0f %s; at least %d observations are needed for this advisory."
+msgstr "Tsy ampy ny hetsika: %.0f %s; ilaina farafahakeliny fanamarihana %d ho an'ity torohevitra ity."
+
+#: doctor_functions.php
+msgid "Counters are inconsistent or were reset independently. Collect a new representative sample before tuning."
+msgstr "Tsy mifanaraka ireo kaontera na naverina tamin'ny voalohany mitokana. Manangòna santionany vaovao mahasolo tena alohan'ny hanitsiana."
+
+#: doctor_functions.php
+msgid "The interval sample is too small or counters reset; collect another representative interval before tuning."
+msgstr "Kely loatra ny santionan'ny elanelam-potoana na naverina tamin'ny voalohany ireo kaontera; manangòna elanelam-potoana mahasolo tena hafa alohan'ny hanitsiana."
+
+#: doctor_functions.php
+#, php-format
+msgid "Interval %s / %s: %.0f / %.0f (%s); investigation threshold: %s."
+msgstr "Elanelam-potoana %s / %s: %.0f / %.0f (%s); fetra fanadihadiana: %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "Cumulative %s / %s: %.0f / %.0f (%s); investigation threshold: %s."
+msgstr "Mitambatra %s / %s: %.0f / %.0f (%s); fetra fanadihadiana: %s."
+
+#: doctor_functions.php
+msgid "This counter can omit memory-mapped temporary files on MySQL; a low ratio does not rule out disk use."
+msgstr "Mety tsy hanisa ny rakitra vonjimaika voasoritra an-tadidy ao amin'ny MySQL ity kaontera ity; tsy manilika ny fampiasana kapila ny tahan'isa ambany."
+
+#: doctor_functions.php
+msgid "Redo-log advice deferred until the observation window is sufficient and Innodb_log_waits is available."
+msgstr "Nahemotra ny torohevitra redo-log mandra-pahampy ny fe-potoana fanaraha-maso sy ahitana ny Innodb_log_waits."
+
+#: doctor_functions.php
+#, php-format
+msgid "Cumulative Innodb_log_waits: %.0f."
+msgstr "Innodb_log_waits mitambatra: %.0f."
+
+#: doctor_functions.php
+msgid "Investigate transaction sizes, log-buffer pressure, and storage latency. Recheck the rate under load before considering innodb_log_buffer_size; this historical count is not evidence of a current stall."
+msgstr "Hadihadio ny haben'ny fifanakalozana, ny tsindry amin'ny buffer-n'ny firaketana, ary ny fahatarana amin'ny fitehirizana. Hamarino indray ny taham-piasana ao anatin'ny vesatra alohan'ny hieritreretana ny innodb_log_buffer_size; tsy porofon'ny fijanonana ankehitriny ity isa ara-tantara ity."
+
+#: doctor_functions.php
+msgid "InnoDB log-buffer waits"
+msgstr "Fiandrasana ny log-buffer InnoDB"
+
+#: doctor_functions.php
+msgid "installed Cacti composer.json"
+msgstr "composer.json an'ny Cacti napetraka"
+
+#: doctor_functions.php
+#, php-format
+msgid "Cacti %s installer requirement"
+msgstr "Fepetra takian'ny mpanapetraka Cacti %s"
+
+#: doctor_functions.php
+msgid "PHP compatibility with installed Cacti"
+msgstr "Fifanarahana PHP amin'ny Cacti napetraka"
+
+#: doctor_functions.php
+#, php-format
+msgid "Running PHP %s; installed Cacti %s."
+msgstr "Mampiasa PHP %s; Cacti %s napetraka."
+
+#: doctor_functions.php
+msgid "Could not establish Cacti's PHP requirement. Check the installed Cacti composer.json or release documentation; Doctor does not assume compatibility."
+msgstr "Tsy afaka namaritra ny fepetra PHP takian'ny Cacti. Jereo ny composer.json an'ny Cacti napetraka na ny tahirin-kevitry ny famoahana; tsy manao vinavina fifanarahana ny Doctor."
+
+#: doctor_functions.php
+#, php-format
+msgid "PHP >= %s and < %s"
+msgstr "PHP >= %s ary < %s"
+
+#: doctor_functions.php
+#, php-format
+msgid "PHP >= %s"
+msgstr "PHP >= %s"
+
+#: doctor_functions.php
+#, php-format
+msgid "Requires %s (%s). Running PHP meets that requirement."
+msgstr "Mitaky %s (%s). Mahafeno izany fepetra izany ny PHP mandeha ankehitriny."
+
+#: doctor_functions.php
+#, php-format
+msgid "Requires %s (%s). Running PHP does not meet that requirement."
+msgstr "Mitaky %s (%s). Tsy mahafeno izany fepetra izany ny PHP mandeha ankehitriny."
+
+#: doctor_functions.php
+#, php-format
+msgid "Detected %s; Doctor requires Cacti 1.2.20 or newer."
+msgstr "Hita ny %s; mitaky Cacti 1.2.20 na vaovao kokoa ny Doctor."
+
+#: doctor_functions.php
+msgid "Supported Cacti version"
+msgstr "Kinova Cacti tohanana"
+
+#: doctor_functions.php
+msgid "PHP upstream security support"
+msgstr "Fanohanana ara-piarovana avy amin'ny loharanon'ny PHP"
+
+#: doctor_functions.php
+msgid "This checks the PHP release branch, not whether this patch release is up to date or whether your OS vendor backports fixes. Cacti compatibility is checked separately."
+msgstr "Manamarina ny sampana famoahana PHP ity, fa tsy hoe vaovao ity kinova fanitsiana ity na mamerina fanitsiana ny mpamatsy OS anao. Hamarinina mitokana ny fifanarahana amin'ny Cacti."
+
+#: doctor_functions.php
+#, php-format
+msgid "Running PHP %s; upstream security-support status is unknown or this is a prerelease. Check https://www.php.net/supported-versions.php and update Doctor's support data."
+msgstr "Mampiasa PHP %s; tsy fantatra ny satan'ny fanohanana ara-piarovana avy amin'ny loharano na kinova mialoha ity. Jereo ny https://www.php.net/supported-versions.php ary havaozy ny angona fanohanan'ny Doctor."
+
+#: doctor_functions.php
+#, php-format
+msgid "Running PHP %s; PHP %s receives upstream security fixes through %s."
+msgstr "Mampiasa PHP %s; ny PHP %s dia mahazo fanitsiana fiarovana avy amin'ny loharano hatramin'ny %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "Running PHP %s; PHP %s no longer receives upstream security fixes; support ended %s. Upgrade to a supported PHP branch compatible with your Cacti installation, or confirm security maintenance with your OS vendor."
+msgstr "Mampiasa PHP %s; ny PHP %s dia tsy mahazo fanitsiana fiarovana avy amin'ny loharano intsony; nifarana tamin'ny %s ny fanohanana. Manavao amin'ny sampana PHP tohanana mifanaraka amin'ny fametrahana Cacti anao, na hamarino amin'ny mpamatsy OS anao ny fikojakojana ara-piarovana."
+
+#: doctor_functions.php
+msgid "Required current CLI PHP extensions"
+msgstr "Fanitarana PHP CLI ankehitriny ilaina"
+
+#: doctor_functions.php
+msgid "Required web PHP extensions"
+msgstr "Fanitarana PHP tranonkala ilaina"
+
+#: doctor_functions.php
+#, php-format
+msgid "Missing: %s. Install them through the operating system package manager."
+msgstr "Tsy ampy: %s. Apetraho amin'ny alalan'ny mpitantana fonosan'ny rafitra fiasa izy ireo."
+
+#: doctor_functions.php
+msgid "All PHP extensions required by the Cacti installer are loaded in this PHP context."
+msgstr "Voatahiry ao anatin'ity tontolo PHP ity avokoa ireo fanitarana PHP rehetra takian'ny mpanapetraka Cacti."
+
+#: doctor_functions.php
+msgid "Doctor does not execute configured binaries while running as root."
+msgstr "Tsy mampandeha ireo rakitra azo tanterahina voakirikira ny Doctor rehefa mandeha amin'ny maha root."
+
+#: doctor_functions.php
+#, php-format
+msgid "The file name %s is not expected for %s, so Doctor did not execute it."
+msgstr "Ny anaran-drakitra %s dia tsy andrasana ho an'ny %s, koa tsy nampandehan'ny Doctor izany."
+
+#: doctor_functions.php
+msgid "Doctor is running as root, so permission checks describe root rather than the web server or poller account, configured binaries are not executed, and repairs are refused. Run Doctor as the Cacti poller user."
+msgstr "Mandeha amin'ny maha root ny Doctor, koa mamaritra ny root fa tsy ny mpizara tranonkala na ny kaonty poller ny fanamarinana fahazoan-dalana, tsy mandeha ireo rakitra azo tanterahina voakirikira, ary lavina ny fanamboarana. Alefaso amin'ny maha mpampiasa poller Cacti ny Doctor."
+
+#: doctor_functions.php
+msgid "Doctor privileges"
+msgstr "Fahazoan-dalan'ny Doctor"
+
+#: doctor_functions.php
+msgid "Doctor is running without root privileges."
+msgstr "Mandeha tsy misy fahazoan-dalana root ny Doctor."
+
+#: doctor_functions.php
+msgid "Required CLI PHP extensions"
+msgstr "Fanitarana PHP CLI ilaina"
+
+#: doctor_functions.php
+msgid "The configured PHP CLI executable is unavailable, so its extensions cannot be checked."
+msgstr "Tsy hita ilay rakitra azo tanterahina PHP CLI voakirikira, koa tsy azo hamarinina ireo fanitarany."
+
+#: doctor_functions.php
+msgid "shell_exec() is disabled, so Doctor cannot compare the CLI PHP extensions with Cacti requirements."
+msgstr "Tsy mandeha ny shell_exec(), koa tsy afaka mampitaha ireo fanitarana PHP CLI amin'ny fepetra takian'ny Cacti ny Doctor."
+
+#: doctor_functions.php
+msgid "The configured PHP CLI executable did not return a valid extension list."
+msgstr "Tsy namerina lisitra fanitarana manankery ilay rakitra azo tanterahina PHP CLI voakirikira."
+
+#: doctor_functions.php
+#, php-format
+msgid "Missing from CLI PHP: %s. The web and CLI PHP configurations are separate on many systems."
+msgstr "Tsy ampy ao amin'ny PHP CLI: %s. Misaraka ny fikirakirana PHP tranonkala sy CLI amin'ny rafitra maro."
+
+#: doctor_functions.php
+msgid "The configured PHP CLI has every extension required by Cacti."
+msgstr "Manana ny fanitarana rehetra takian'ny Cacti ilay PHP CLI voakirikira."
+
+#: doctor_functions.php
+msgid "GD TrueType support"
+msgstr "Fanohanan'ny GD TrueType"
+
+#: doctor_functions.php
+msgid "Recommended PHP features"
+msgstr "Fomba fiasa PHP atoro"
+
+#: doctor_functions.php
+#, php-format
+msgid "Unavailable: %s. Cacti can run without these features, but related functionality may be limited."
+msgstr "Tsy misy: %s. Afaka mandeha tsy misy ireo fomba fiasa ireo ny Cacti, saingy mety ho voafetra ireo fiasa mifandraika aminy."
+
+#: doctor_functions.php
+msgid "The optional gettext, SNMP, and GD TrueType features are available."
+msgstr "Misy ireo fomba fiasa tsy voatery gettext, SNMP, ary GD TrueType."
+
+#: doctor_functions.php
+#, php-format
+msgid "memory_limit is %s (%dM or more is recommended)"
+msgstr "memory_limit dia %s (%dM na mihoatra no atoro)"
+
+#: doctor_functions.php
+#, php-format
+msgid "max_execution_time is %d seconds (60 or more is recommended)"
+msgstr "max_execution_time dia %d segondra (60 na mihoatra no atoro)"
+
+#: doctor_functions.php
+msgid "date.timezone is not set"
+msgstr "tsy voafaritra ny date.timezone"
+
+#: doctor_functions.php
+msgid "unset"
+msgstr "tsy voafaritra"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s. Current values: %s"
+msgstr "%s. Sanda ankehitriny: %s"
+
+#: doctor_functions.php
+msgid "PHP runtime configuration"
+msgstr "Fikirakirana fampandehanana PHP"
+
+#: doctor_functions.php
+msgid "Database connection"
+msgstr "Fifandraisana amin'ny tahiry angona"
+
+#: doctor_functions.php
+#, php-format
+msgid "Query failed: %s"
+msgstr "Tsy nahomby ny fangatahana: %s"
+
+#: doctor_functions.php
+msgid "A read-only query completed successfully."
+msgstr "Vita soa aman-tsara ny fangatahana famakiana ihany."
+
+#: doctor_functions.php
+msgid "The database returned an unexpected result."
+msgstr "Namerina vokatra tsy nampoizina ny tahiry angona."
+
+#: doctor_functions.php
+#, php-format
+msgid "Doctor could not determine the database server version from %s."
+msgstr "Tsy afaka namaritra ny kinovan'ny mpizara tahiry angona avy amin'ny %s ny Doctor."
+
+#: doctor_functions.php
+msgid "Supported database server"
+msgstr "Mpizara tahiry angona tohanana"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s %s detected; this Cacti branch recommends %s %s or newer."
+msgstr "%s %s no hita; ity sampana Cacti ity dia manoro %s %s na vaovao kokoa."
+
+#: doctor_functions.php
+#, php-format
+msgid "Database character set is %s and collation is %s. Cacti requires utf8mb4."
+msgstr "Ny character set an'ny tahiry angona dia %s ary ny collation dia %s. Mitaky utf8mb4 ny Cacti."
+
+#: doctor_functions.php
+msgid "unknown"
+msgstr "tsy fantatra"
+
+#: doctor_functions.php
+msgid "Database character set"
+msgstr "Character set an'ny tahiry angona"
+
+#: doctor_functions.php
+msgid "Database timezone support"
+msgstr "Fanohanana faritr'ora an'ny tahiry angona"
+
+#: doctor_functions.php
+msgid "The Cacti database account cannot read mysql.time_zone_name. Grant SELECT access and populate the database timezone tables."
+msgstr "Tsy afaka mamaky ny mysql.time_zone_name ny kaonty tahiry angona Cacti. Omeo fidirana SELECT ary fenoy ireo tabilao faritr'oran'ny tahiry angona."
+
+#: doctor_functions.php
+#, php-format
+msgid "The database timezone table is accessible and contains %d entries."
+msgstr "Azo idirana ny tabilao faritr'oran'ny tahiry angona ary misy fidirana %d."
+
+#: doctor_functions.php
+msgid "The database timezone table is accessible but empty. Populate the system timezone tables."
+msgstr "Azo idirana ny tabilao faritr'oran'ny tahiry angona saingy foana. Fenoy ireo tabilao faritr'oran'ny rafitra."
+
+#: doctor_functions.php
+msgid "Core tables used by Cacti are present."
+msgstr "Misy ireo tabilao fototra ampiasain'ny Cacti."
+
+#: doctor_functions.php
+#, php-format
+msgid "Missing core tables: %s. Restore or upgrade the database before attempting other repairs."
+msgstr "Tsy ampy ireo tabilao fototra: %s. Avereno na havaozy ny tahiry angona alohan'ny hanandramana fanamboarana hafa."
+
+#: doctor_functions.php
+msgid "Core database tables"
+msgstr "Tabilao fototry ny tahiry angona"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s is missing (%s)"
+msgstr "%s dia tsy hita (%s)"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s is not writable (%s)"
+msgstr "%s dia tsy azo soratana (%s)"
+
+#: doctor_functions.php
+msgid "Runtime directories"
+msgstr "Lahatahiry fampandehanana"
+
+#: doctor_functions.php
+msgid "The cache, log, and RRA directories exist and are writable."
+msgstr "Misy ary azo soratana ireo lahatahiry cache, firaketana, ary RRA."
+
+#: doctor_functions.php
+msgid "Cacti configuration file"
+msgstr "Rakitra fikirakirana Cacti"
+
+#: doctor_functions.php
+msgid "include/config.php is missing or unreadable."
+msgstr "Tsy hita na tsy azo vakiana ny include/config.php."
+
+#: doctor_functions.php
+msgid "include/config.php is readable. POSIX mode-bit checks do not apply on Windows."
+msgstr "Azo vakiana ny include/config.php. Tsy mihatra amin'ny Windows ny fanamarinana mode-bit POSIX."
+
+#: doctor_functions.php
+msgid "include/config.php is writable by other users. Remove world-write permission because this file contains database credentials."
+msgstr "Azo soratan'ny mpampiasa hafa ny include/config.php. Esory ny fahazoan-dalana fanoratana ho an'ny rehetra satria misy mombamomba ny fanamarinana tahiry angona ity rakitra ity."
+
+#: doctor_functions.php
+msgid "include/config.php is group-writable. Confirm that every member of the owning group is trusted."
+msgstr "Azo soratan'ny vondrona ny include/config.php. Hamarino fa azo itokisana avokoa ny mpikambana tsirairay ao amin'ny vondrona tompony."
+
+#: doctor_functions.php
+msgid "include/config.php is readable by all local users and contains database credentials. Restrict it to the owner and the web server group."
+msgstr "Azo vakian'ny mpampiasa eo an-toerana rehetra ny include/config.php ary misy mombamomba ny fanamarinana tahiry angona. Ferana ho an'ny tompony sy ny vondron'ny mpizara tranonkala ihany izany."
+
+#: doctor_functions.php
+msgid "include/config.php is readable and is not world-readable, group-writable, or world-writable."
+msgstr "Azo vakiana ny include/config.php ary tsy azo vakian'ny rehetra, tsy azo soratan'ny vondrona, na tsy azo soratan'ny rehetra."
+
+#: doctor_functions.php
+msgid "Cacti log file"
+msgstr "Rakitra firaketana Cacti"
+
+#: doctor_functions.php
+msgid "The log file does not exist. Its parent directory is not writable."
+msgstr "Tsy misy ny rakitra firaketana. Tsy azo soratana ny lahatahiry ray aman-dreniny."
+
+#: doctor_functions.php
+msgid "The log file does not exist. Its parent directory is writable, so Cacti can create it."
+msgstr "Tsy misy ny rakitra firaketana. Azo soratana ny lahatahiry ray aman-dreniny, koa afaka mamorona azy ny Cacti."
+
+#: doctor_functions.php
+msgid "The configured log path must be a readable and writable regular file."
+msgstr "Tsy maintsy rakitra mahazatra azo vakiana sy azo soratana ny lalan'ny firaketana voakirikira."
+
+#: doctor_functions.php
+#, php-format
+msgid "The log is readable and writable and is %s MiB."
+msgstr "Azo vakiana sy azo soratana ny firaketana ary %s MiB ny habeny."
+
+#: doctor_functions.php
+msgid "The log is readable and writable."
+msgstr "Azo vakiana sy azo soratana ny firaketana."
+
+#: doctor_functions.php
+msgid "Verify that Cacti log rotation is enabled."
+msgstr "Hamarino fa mandeha ny fihodinan'ny firaketana Cacti."
+
+#: doctor_functions.php
+#, php-format
+msgid "Executable found at %s."
+msgstr "Hita ao amin'ny %s ny rakitra azo tanterahina."
+
+#: doctor_functions.php
+#, php-format
+msgid "The %s setting is empty, missing, or not executable."
+msgstr "Foana, tsy hita, na tsy azo tanterahina ny fikirakirana %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "The %s setting is empty, missing, or not executable: %s"
+msgstr "Foana, tsy hita, na tsy azo tanterahina ny fikirakirana %s: %s"
+
+#: doctor_functions.php
+msgid "Doctor could not determine its version."
+msgstr "Tsy afaka namaritra ny kinovany ny Doctor."
+
+#: doctor_functions.php
+#, php-format
+msgid "Detected version %s."
+msgstr "Kinova %s no hita."
+
+#: doctor_functions.php
+#, php-format
+msgid "Detected version %s; version %s or newer is recommended."
+msgstr "Kinova %s no hita; atoro ny kinova %s na vaovao kokoa."
+
+#: doctor_functions.php
+#, php-format
+msgid "Detected version %s; version %s or newer is required."
+msgstr "Kinova %s no hita; ilaina ny kinova %s na vaovao kokoa."
+
+#: doctor_functions.php
+#, php-format
+msgid "Detected version %s; minimum is %s."
+msgstr "Kinova %s no hita; %s ny ambany indrindra."
+
+#: doctor_functions.php
+#, php-format
+msgid "%s executable"
+msgstr "Rakitra azo tanterahina %s"
+
+#: doctor_functions.php
+msgid "poller_type is not cmd.php or Spine"
+msgstr "poller_type dia tsy cmd.php na Spine"
+
+#: doctor_functions.php
+msgid "poller_interval is not a supported value"
+msgstr "poller_interval dia tsy sanda tohanana"
+
+#: doctor_functions.php
+msgid "Poller configuration"
+msgstr "Fikirakirana poller"
+
+#: doctor_functions.php
+#, php-format
+msgid "Poller is %s with a %d-second interval."
+msgstr "Ny poller dia %s miaraka amin'ny elanelam-potoana %d segondra."
+
+#: doctor_functions.php
+msgid "Main poller freshness"
+msgstr "Fahavaozan'ny poller fototra"
+
+#: doctor_functions.php
+msgid "No completed main-poller run was found. This can be expected before the first poll."
+msgstr "Tsy nahitana fampandehanana poller fototra vita. Mety ho ara-dalàna izany alohan'ny fanangonana voalohany."
+
+#: doctor_functions.php
+#, php-format
+msgid "Last completed run was %d seconds ago; failure threshold is %d seconds."
+msgstr "%d segondra lasa izay no nisy fampandehanana vita farany; %d segondra ny fetran'ny tsy fahombiazana."
+
+#: doctor_functions.php
+msgid "Database schema version"
+msgstr "Kinovan'ny rafitry ny tahiry angona"
+
+#: doctor_functions.php
+msgid "The version table is empty or unreadable, so the schema version is unknown."
+msgstr "Foana na tsy azo vakiana ny tabilao version, koa tsy fantatra ny kinovan'ny rafitra."
+
+#: doctor_functions.php
+msgid "The version table still reads new_install, so the installer never finished. Open install/ in a browser to complete it."
+msgstr "Mbola mamaky new_install ny tabilao version, koa tsy vita mihitsy ny mpanapetraka. Sokafy ao amin'ny mpitety tranonkala ny install/ mba hamitana azy."
+
+#: doctor_functions.php
+#, php-format
+msgid "The database schema is at %s but the installed code is %s. Open install/ in a browser to finish the upgrade."
+msgstr "Eo amin'ny %s ny rafitry ny tahiry angona fa %s kosa ny kaody napetraka. Sokafy ao amin'ny mpitety tranonkala ny install/ mba hamitana ny fanavaozana."
+
+#: doctor_functions.php
+#, php-format
+msgid "The database schema (%s) is newer than the installed code (%s). The code may have been rolled back."
+msgstr "Ny rafitry ny tahiry angona (%s) dia vaovao kokoa noho ny kaody napetraka (%s). Mety ho naverina tamin'ny taloha ny kaody."
+
+#: doctor_functions.php
+#, php-format
+msgid "The database schema (%s) matches the installed code."
+msgstr "Mifanaraka amin'ny kaody napetraka ny rafitry ny tahiry angona (%s)."
+
+#: doctor_functions.php
+msgid "Main poller run time"
+msgstr "Faharetan'ny fampandehanana poller fototra"
+
+#: doctor_functions.php
+msgid "No completed run time is recorded yet."
+msgstr "Tsy mbola misy faharetan'ny fampandehanana vita voarakitra."
+
+#: doctor_functions.php
+#, php-format
+msgid "The last main-poller run took %s seconds of the %d-second interval."
+msgstr "Naharitra %s segondra tamin'ny elanelam-potoana %d segondra ny fampandehanana poller fototra farany."
+
+#: doctor_functions.php
+msgid "Runs that outlast the interval overlap and lose data; add poller processes or threads, or use Spine."
+msgstr "Mifanosona sy manary angona ireo fampandehanana mihoatra ny elanelam-potoana; ampio dingana na thread poller, na ampiasao ny Spine."
+
+#: doctor_functions.php
+msgid "Little headroom remains before polls overlap."
+msgstr "Kely sisa ny elanelana alohan'ny hifanosonan'ny fanangonana."
+
+#: doctor_functions.php
+#, php-format
+msgid "%d poller_output rows are older than two polling intervals and were never written to RRD files. Check the Cacti log for \"Poller Output Table not Empty\" and confirm max_heap_table_size is large enough."
+msgstr "Andalana poller_output miisa %d no antitra kokoa noho ny elanelam-potoana fanangonana roa ary tsy voasoratra tao anatin'ny rakitra RRD mihitsy. Jereo ao amin'ny firaketana Cacti ny \"Poller Output Table not Empty\" ary hamarino fa ampy tsara ny haben'ny max_heap_table_size."
+
+#: doctor_functions.php
+msgid "Unprocessed poller output"
+msgstr "Voka-pamoahan'ny poller tsy voakarakara"
+
+#: doctor_functions.php
+msgid "No stale rows remain in poller_output."
+msgstr "Tsy misy andalana lany andro intsony ao amin'ny poller_output."
+
+#: doctor_functions.php
+msgid "No remote pollers are enabled."
+msgstr "Tsy misy poller lavitra mandeha."
+
+#: doctor_functions.php
+msgid "Remote pollers"
+msgstr "Poller lavitra"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s (ID %s) has never reported"
+msgstr "%s (ID %s) dia tsy mbola nanao tatitra mihitsy"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s (ID %s) last reported %d seconds ago"
+msgstr "%s (ID %s) dia nanao tatitra farany %d segondra lasa izay"
+
+#: doctor_functions.php
+#, php-format
+msgid "The failure threshold is %d seconds."
+msgstr "%d segondra ny fetran'ny tsy fahombiazana."
+
+#: doctor_functions.php
+#, php-format
+msgid "%d enabled remote pollers reported within %d seconds."
+msgstr "Poller lavitra mandeha miisa %d no nanao tatitra tao anatin'ny %d segondra."
+
+#: doctor_functions.php
+msgid "Enabled plugin files"
+msgstr "Rakitra plugin mandeha"
+
+#: doctor_functions.php
+#, php-format
+msgid "Enabled plugins are missing from %s: %s. Restore their files or disable them in Plugin Management."
+msgstr "Tsy hita ao amin'ny %s ireo plugin mandeha: %s. Avereno ny rakitra misy azy ireo na atsaharo ao amin'ny Plugin Management."
+
+#: doctor_functions.php
+msgid "Every enabled plugin has its setup.php in place."
+msgstr "Manana ny setup.php eo amin'ny toerany avokoa ny plugin rehetra alefa."
+
+#: doctor_functions.php
+msgid "Boost RRD updates"
+msgstr "Fanavaozana RRD avy amin'ny Boost"
+
+#: doctor_functions.php
+msgid "Boost is disabled, so the poller writes RRD files directly."
+msgstr "Tsy alefa ny Boost, ka manoratra mivantana ny rakitra RRD ny poller."
+
+#: doctor_functions.php
+msgid "Boost is enabled but has no recorded run. This can be expected before its first flush."
+msgstr "Alefa ny Boost saingy tsy misy fampandehanana voarakitra. Mety ho ara-dalàna izany alohan'ny famoahana angona voalohany."
+
+#: doctor_functions.php
+#, php-format
+msgid "Boost last flushed %d seconds ago, more than twice its %d-minute interval. Graphs stop updating until it runs; check the Cacti log for BOOST errors."
+msgstr "Namoaka angona farany %d segondra lasa izay ny Boost, izay mihoatra ny indroa amin'ny elanelam-potoany %d minitra. Mijanona tsy mihavao ny kisary mandra-pandehany; jereo ny firaketana Cacti raha misy hadisoana BOOST."
+
+#: doctor_functions.php
+#, php-format
+msgid "poller_output_boost holds %d rows, above the %d-row limit that forces a flush. Boost is falling behind."
+msgstr "Mitahiry andalana %d ny poller_output_boost, mihoatra ny fetra %d andalana izay manery famoahana angona. Taraiky ny Boost."
+
+#: doctor_functions.php
+#, php-format
+msgid "Boost last flushed %d seconds ago with %d rows waiting."
+msgstr "Namoaka angona farany %d segondra lasa izay ny Boost ary misy andalana %d miandry."
+
+#: doctor_functions.php doctor_rrd.php
+#, php-format
+msgid "Checked a sample of %d active data sources that rotates hourly; a pass does not cover every file."
+msgstr "Nanamarina santionany loharanon-drakitra mavitrika %d izay miodina isan'ora; tsy mandrakotra ny rakitra rehetra ny fandalovana iray."
+
+#: doctor_functions.php
+#, php-format
+msgid "%d of %d active data sources have no RRD file, for example %s. New data sources get one after their first poll; otherwise check the RRA directory and its permissions."
+msgstr "%d amin'ny loharanon-drakitra mavitrika %d no tsy manana rakitra RRD, ohatra %s. Mahazo iray ny loharanon-drakitra vaovao aorian'ny fanangonana voalohany; raha tsy izany dia jereo ny lahatahiry RRA sy ny fahazoan-dalany."
+
+#: doctor_functions.php
+msgid "RRD files"
+msgstr "Rakitra RRD"
+
+#: doctor_functions.php
+#, php-format
+msgid "All %d active data sources have an RRD file."
+msgstr "Manana rakitra RRD avokoa ny loharanon-drakitra mavitrika %d rehetra."
+
+#: doctor_functions.php
+#, php-format
+msgid "Doctor could not measure free space for %s."
+msgstr "Tsy afaka nandrefy ny toerana malalaka ho an'ny %s ny Doctor."
+
+#: doctor_functions.php
+msgid "RRA disk space"
+msgstr "Toerana kapila RRA"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s (%s GiB) free on the file system holding %s."
+msgstr "%s (%s GiB) malalaka ao amin'ny rafitra rakitra mitahiry ny %s."
+
+#: doctor_functions.php
+msgid "RRD updates fail silently when the disk fills."
+msgstr "Tsy mahomby tsy misy filazana ny fanavaozana RRD rehefa feno ny kapila."
+
+#: doctor_functions.php
+msgid "Database clock"
+msgstr "Famantaranandron'ny tahiry angona"
+
+#: doctor_functions.php
+msgid "Doctor could not read the database clock."
+msgstr "Tsy afaka namaky ny famantaranandron'ny tahiry angona ny Doctor."
+
+#: doctor_functions.php
+#, php-format
+msgid "The database and PHP clocks differ by %d seconds."
+msgstr "Misy elanelana %d segondra ny famantaranandron'ny tahiry angona sy ny PHP."
+
+#: doctor_functions.php
+msgid "Poll timestamps will be misaligned; synchronise both hosts with NTP."
+msgstr "Tsy hifanaraka ny mariky ny ora fanangonana; ampifanaraho amin'ny NTP ireo mpampiantrano roa."
+
+#: doctor_functions.php
+msgid "Synchronise both hosts with NTP."
+msgstr "Ampifanaraho amin'ny NTP ireo mpampiantrano roa."
+
+#: doctor_functions.php
+msgid "Spine configuration"
+msgstr "Fikirakirana Spine"
+
+#: doctor_functions.php
+msgid "Spine is not the configured poller."
+msgstr "Tsy ny Spine no poller voakirakira."
+
+#: doctor_functions.php
+msgid "path_spine_config is not set, so Spine uses its compiled-in search path and Doctor cannot verify which file it reads."
+msgstr "Tsy voafaritra ny path_spine_config, ka mampiasa ny lalam-pikarohana tafiditra ao anatiny ny Spine ary tsy afaka manamarina izay rakitra vakiny ny Doctor."
+
+#: doctor_functions.php
+#, php-format
+msgid "The Spine configuration file is missing or unreadable: %s."
+msgstr "Tsy hita na tsy azo vakiana ny rakitra fikirakirana Spine: %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "DB_Database is %s but Cacti uses %s"
+msgstr "Ny DB_Database dia %s fa ny Cacti mampiasa %s"
+
+#: doctor_functions.php
+#, php-format
+msgid "DB_User is %s but Cacti uses %s"
+msgstr "Ny DB_User dia %s fa ny Cacti mampiasa %s"
+
+#: doctor_functions.php
+msgid "the file is world-readable and holds the database password"
+msgstr "azo vakian'ny rehetra ny rakitra ary mitahiry ny tenimiafin'ny tahiry angona"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s uses the same database and user as Cacti."
+msgstr "Mampiasa ny tahiry angona sy mpampiasa mitovy amin'ny Cacti ny %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "%s is %s"
+msgstr "Ny %s dia %s"
+
+#: doctor_functions.php
+msgid "Cacti recommends ON; doublewrite may stay off only on ZFS or similar journaling storage."
+msgstr "Manoro hevitra ON ny Cacti; tsy azo avela ho tsy alefa ny doublewrite raha tsy amin'ny ZFS na fitahirizana misy diarin'asa mitovy aminy."
+
+#: doctor_functions.php
+msgid "InnoDB safety settings"
+msgstr "Fikirakirana fiarovana InnoDB"
+
+#: doctor_functions.php
+msgid "innodb_file_per_table and innodb_doublewrite are enabled."
+msgstr "Alefa ny innodb_file_per_table sy ny innodb_doublewrite."
+
+#: doctor_functions.php
+#, php-format
+msgid "None of the last %d log lines report an error."
+msgstr "Tsy misy na iray aza amin'ireo andalana firaketana %d farany milaza hadisoana."
+
+#: doctor_functions.php
+msgid "Recent log errors"
+msgstr "Hadisoana farany tao amin'ny firaketana"
+
+#: doctor_functions.php
+#, php-format
+msgid "%d of the last %d log lines report an error. Most frequent (%dx): %s"
+msgstr "%d amin'ireo andalana firaketana %d farany no milaza hadisoana. Matetika indrindra (%dx): %s"
+
+#: doctor_functions.php
+msgid "The Cacti log is not readable; see the Cacti log file check."
+msgstr "Tsy azo vakiana ny firaketana Cacti; jereo ny fanamarinana ny rakitra firaketana Cacti."
+
+#: doctor_functions.php
+msgid "No enabled devices are configured."
+msgstr "Tsy misy fitaovana alefa voakirakira."
+
+#: doctor_functions.php
+#, php-format
+msgid "All %d enabled devices are up."
+msgstr "Azo ifandraisana avokoa ny fitaovana alefa %d rehetra."
+
+#: doctor_functions.php
+#, php-format
+msgid "%d of %d enabled devices are down and %d recovering."
+msgstr "%d amin'ireo fitaovana alefa %d no tsy azo ifandraisana ary %d no miverina amin'ny laoniny."
+
+#: doctor_functions.php
+msgid "The down devices could not be listed."
+msgstr "Tsy azo natao lisitra ireo fitaovana tsy azo ifandraisana."
+
+#: doctor_functions.php
+#, php-format
+msgid "%s down since %s"
+msgstr "%s tsy azo ifandraisana hatramin'ny %s"
+
+#: doctor_functions.php
+#, php-format
+msgid "Longest down: %s."
+msgstr "Tsy azo ifandraisana ela indrindra: %s."
+
+#: doctor_functions.php
+msgid "With most devices down, check the poller host's network and SNMP settings first."
+msgstr "Rehefa tsy azo ifandraisana ny ankamaroan'ny fitaovana dia jereo aloha ny tambajotra sy ny fikirakirana SNMP an'ny mpampiantrano poller."
+
+#: doctor_functions.php
+msgid "Doctor could not read device status from the host table."
+msgstr "Tsy afaka namaky ny satan'ny fitaovana avy amin'ny tabilao host ny Doctor."
+
+#: doctor_functions.php
+#, php-format
+msgid "Cacti Doctor on %s: %d failed, %d warnings"
+msgstr "Cacti Doctor ao amin'ny %s: %d tsy nahomby, %d fampitandremana"
+
+#: doctor_functions.php
+#, php-format
+msgid "%d Cacti Doctor checks changed status on %s."
+msgstr "Fanamarinana Cacti Doctor %d no niova sata tao amin'ny %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "Totals: %d passed, %d warnings, %d failed."
+msgstr "Fitambarany: %d nahomby, %d fampitandremana, %d tsy nahomby."
+
+#: doctor_functions.php
+#, php-format
+msgid "Refusing to overwrite %s."
+msgstr "Mandà ny hanoratra eo ambonin'ny %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "Cannot create %s."
+msgstr "Tsy afaka mamorona %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "Could not make %s private."
+msgstr "Tsy afaka nanao ny %s ho manokana."
+
+#: doctor_functions.php
+#, php-format
+msgid "Writing %s failed."
+msgstr "Tsy nahomby ny fanoratana %s."
+
+#: doctor_functions.php
+msgid "Repair runtime directories"
+msgstr "Fanamboarana ny lahatahiry fampandehanana"
+
+#: doctor_functions.php
+msgid "Create missing cache, log, and RRA directories and add owner read/write/execute permission without removing existing permissions."
+msgstr "Mamorona ny lahatahiry cache, firaketana, ary RRA izay tsy ampy ary manampy fahazoan-dalana hamaky/hanoratra/hanatanteraka ho an'ny tompony nefa tsy manala ny fahazoan-dalana efa misy."
+
+#: doctor_functions.php
+msgid "The requested repair is not allow-listed."
+msgstr "Tsy tafiditra ao amin'ny lisitra nahazoana alalana ny fanamboarana nangatahina."
+
+#: doctor_functions.php
+msgid "No repair handler is registered."
+msgstr "Tsy misy mpikirakira fanamboarana voasoratra."
+
+#: doctor_functions.php
+msgid "Repair unavailable"
+msgstr "Tsy misy ny fanamboarana"
+
+#: doctor_functions.php
+msgid "Repairs are refused while running as root. Run Doctor as the Cacti poller user."
+msgstr "Lavina ny fanamboarana rehefa mandeha amin'ny kaonty root. Alefaso amin'ny maha-mpampiasa poller Cacti ny Doctor."
+
+#: doctor_functions.php
+msgid "The Cacti base directory cannot be resolved."
+msgstr "Tsy hita ny lahatahiry fototra Cacti."
+
+#: doctor_functions.php
+#, php-format
+msgid "%s: path is outside the Cacti installation"
+msgstr "%s: ivelan'ny fametrahana Cacti ny lalana"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s: symbolic links are not repaired"
+msgstr "%s: tsy amboarina ny rohy an'ohatra"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s: directory creation failed"
+msgstr "%s: tsy nahomby ny famoronana lahatahiry"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s: could not add owner permissions"
+msgstr "%s: tsy afaka nanampy fahazoan-dalana ho an'ny tompony"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s: still not a writable directory"
+msgstr "%s: mbola tsy lahatahiry azo soratana"
+
+#: doctor_functions.php
+msgid "Runtime directories now exist and are writable by the current process."
+msgstr "Efa misy ankehitriny ny lahatahiry fampandehanana ary azon'ny dingana ankehitriny soratana."
+
+#: doctor_functions.php
+msgid "Cacti"
+msgstr "Cacti"
+
+#: doctor_functions.php
+msgid "Database"
+msgstr "Tahiry angona"
+
+#: doctor_functions.php
+msgid "Database health"
+msgstr "Fahasalaman'ny tahiry angona"
+
+#: doctor_functions.php
+msgid "Devices"
+msgstr "Fitaovana"
+
+#: doctor_functions.php setup.php
+msgid "Doctor"
+msgstr "Doctor"
+
+#: doctor_functions.php
+msgid "Filesystem"
+msgstr "Rafitra rakitra"
+
+#: doctor_functions.php
+msgid "Logging"
+msgstr "Firaketana"
+
+#: doctor_functions.php
+msgid "PHP"
+msgstr "PHP"
+
+#: doctor_functions.php
+msgid "Poller"
+msgstr "Poller"
+
+#: doctor_functions.php
+msgid "Prerequisites"
+msgstr "Fepetra mialoha"
+
+#: doctor_functions.php
+msgid "Repair"
+msgstr "Fanamboarana"
+
+#: doctor_functions.php
+msgid "Security"
+msgstr "Fiarovana"
+
+#: doctor_functions.php
+msgid "PASS"
+msgstr "NAHOMBY"
+
+#: doctor_functions.php
+msgid "WARN"
+msgstr "FAMPITANDREMANA"
+
+#: doctor_functions.php
+msgid "FAIL"
+msgstr "TSY NAHOMBY"
+
+#: doctor_functions.php
+msgid "UNKNOWN"
+msgstr "TSY FANTATRA"
+
+#: doctor_rrd.php
+msgid "Data source freshness could not be assessed."
+msgstr "Tsy azo tombanana ny fahavaozan'ny loharanon-drakitra."
+
+#: doctor_rrd.php
+msgid "RRD update freshness"
+msgstr "Fahavaozan'ny fanavaozana RRD"
+
+#: doctor_rrd.php
+msgid "The deferred-write interval is unknown; configure it before judging file age."
+msgstr "Tsy fantatra ny elanelam-potoana fanoratana nahemotra; kirakirao izany alohan'ny hanombanana ny fotoana lasa hatramin'ny fanavaozana farany ny rakitra."
+
+#: doctor_rrd.php
+#, php-format
+msgid "Checked %d files; %d stale files across %d devices; %d unavailable or future-dated files."
+msgstr "Nanamarina rakitra %d; rakitra tsy nohavaozina ela %d manerana fitaovana %d; rakitra tsy hita na manana daty amin'ny hoavy %d."
+
+#: doctor_rrd.php
+msgid "File age includes the collection interval and configured deferred-write allowance; verify the poller and flush process before changing data."
+msgstr "Ny fotoana lasa hatramin'ny fanavaozana farany ny rakitra dia ahitana ny elanelam-potoana fanangonana sy ny fe-potoana fanoratana nahemotra voakirakira; hamarino ny poller sy ny dingana famoahana angona alohan'ny hanovana angona."
+
+#: doctor_scheduling.php
+msgid "Scheduled checks are disabled. Enable them in Settings > Doctor to retain samples and alert on changes."
+msgstr "Tsy alefa ny fanamarinana voalahatra. Alefaso ao amin'ny Fikirakirana > Doctor izany mba hitahirizana santionany sy handefasana fampandrenesana rehefa misy fiovana."
+
+#: doctor_scheduling.php
+msgid "Scheduled report freshness"
+msgstr "Fahavaozan'ny tatitra voalahatra"
+
+#: doctor_scheduling.php
+#, php-format
+msgid "%s UTC"
+msgstr "%s UTC"
+
+#: doctor_scheduling.php
+#, php-format
+msgid "Last started: %s; last completed: %s."
+msgstr "Natomboka farany: %s; vita farany: %s."
+
+#: doctor_scheduling.php
+msgid "never"
+msgstr "tsy mbola nisy"
+
+#: doctor_scheduling.php
+msgid "Results are missing or stale. Check the primary poller and DOCTOR log for startup, timeout, or persistence errors."
+msgstr "Tsy hita na efa ela ny valiny. Jereo ny poller fototra sy ny firaketana DOCTOR raha misy hadisoana fanombohana, fahataperan'ny fe-potoana, na fitahirizana."
+
+#: doctor_scheduling.php
+msgid "A completed diagnostic run is recent; this does not mean all checks passed."
+msgstr "Vao haingana ny fampandehanana fitiliana vita; tsy midika izany fa nahomby avokoa ny fanamarinana rehetra."
+
+#: doctor_scheduling.php
+msgid "Doctor alert state is invalid. Restore doctor_alert_pending from backup before retrying."
+msgstr "Tsy manan-kery ny satan'ny fampandrenesana Doctor. Avereno avy amin'ny tahiry fiarovana ny doctor_alert_pending alohan'ny hanandramana indray."
+
+#: doctor_scheduling.php
+msgid "Doctor alert transitions are invalid; no email was sent."
+msgstr "Tsy manan-kery ny fiovan'ny fampandrenesana Doctor; tsy nisy mailaka nalefa."
+
+#: doctor_scheduling.php
+msgid "Alert delivery"
+msgstr "Fandefasana fampandrenesana"
+
+#: doctor_scheduling.php
+#, php-format
+msgid "%d check transitions await delivery; attempts: %d of 3."
+msgstr "Fiovana fanamarinana %d no miandry fandefasana; fanandramana: %d amin'ny 3."
+
+#: doctor_scheduling.php
+msgid "Automatic retries exhausted. Correct Cacti mail settings, then run Doctor with --scheduled --retry-alerts as the poller user."
+msgstr "Lany ny fanandramana mandeha ho azy. Ahitsio ny fikirakirana mailaka Cacti, dia alefaso amin'ny --scheduled --retry-alerts ny Doctor amin'ny maha-mpampiasa poller."
+
+#: doctor_scheduling.php
+#, php-format
+msgid "Next eligible retry: %s UTC, after a primary poller cycle."
+msgstr "Fanandramana manaraka azo atao: %s UTC, aorian'ny tsingerin'ny poller fototra iray."
+
+#: doctor_scheduling.php
+msgid "No alert recipients are currently configured; pending transitions are retained."
+msgstr "Tsy misy mpandray fampandrenesana voakirakira amin'izao fotoana izao; tazonina ireo fiovana miandry."
+
+#: doctor_scheduling.php
+msgid "No retained alert is awaiting delivery. Mail-server acceptance does not prove inbox delivery."
+msgstr "Tsy misy fampandrenesana voatazona miandry fandefasana. Ny faneken'ny mpizara mailaka dia tsy manaporofo ny fahatongavana ao amin'ny boaty fandraisana."
+
+#: doctor_scheduling.php
+msgid "Doctor retained status changes (UTC). Repeated changes for one check are coalesced; an out-and-back transition is retained."
+msgstr "Fiovan'ny sata voatazon'ny Doctor (UTC). Atambatra ny fiovana miverimberina ho an'ny fanamarinana iray; tazonina ny fiovana mivoaka sy miverina."
+
+#: doctor_scheduling.php
+#, php-format
+msgid "%s: %s -> %s (latest change %s)"
+msgstr "%s: %s -> %s (fiovana farany %s)"
+
+#: doctor_scheduling.php
+#, php-format
+msgid "%d further status changes are not listed because the alert queue reached its storage limit."
+msgstr "Fiovan'ny sata %d fanampiny no tsy voatanisa satria nahatratra ny fetran'ny fitahirizany ny filaharan'ny fampandrenesana."
+
+#: doctor_scheduling.php
+msgid "Open Utilities > Doctor for current measurements, recommended actions, and verification steps."
+msgstr "Sokafy ny Fitaovana fanampiny > Doctor raha hijery ny fandrefesana ankehitriny, ny hetsika aroso, ary ny dingana fanamarinana."
+
+#: doctor_scheduling.php
+#, php-format
+msgid "Cacti Doctor: %d retained status changes"
+msgstr "Cacti Doctor: fiovan'ny sata voatazona %d"
+
+#: doctor_scheduling.php
+msgid "Doctor schedule is already running or the database lock is unavailable."
+msgstr "Efa mandeha ny fandaharam-potoanan'ny Doctor na tsy azo ampiasaina ny hidin'ny tahiry angona."
+
+#: doctor_web.php
+msgid "The finding could not be acknowledged. Run Doctor again, then acknowledge the current result."
+msgstr "Tsy azo nekena ny zavatra hita. Alefaso indray ny Doctor, dia ekeo ny valiny ankehitriny."
+
+#: doctor_web.php
+msgid "The warning exception could not be saved. Use a fresh assessed warning, an owner, a reason and an expiry within 90 days."
+msgstr "Tsy azo notahirizina ny fanavahana fampitandremana. Mampiasà fampitandremana vao nohamarinina, tompony, antony ary fahatapitr'andro ao anatin'ny 90 andro."
+
+#: doctor_web.php
+msgid "Confirm repair"
+msgstr "Hamafiso ny fanamboarana"
+
+#: doctor_web.php
+msgid "Approval expires after five minutes and is invalidated by a changed filesystem. The acting account must be able to create directories or change owner permissions."
+msgstr "Lany daty afaka dimy minitra ny fankatoavana ary foanana raha miova ny rafitra rakitra. Tsy maintsy afaka mamorona lahatahiry na manova ny fahazoan-dalan'ny tompony ny kaonty manatanteraka."
+
+#: doctor_web.php
+msgid "Repair prerequisites are not met. No changes will be made."
+msgstr "Tsy feno ny fepetra mialoha ho an'ny fanamboarana. Tsy hisy fanovana hatao."
+
+#: doctor_web.php
+msgid "Cancel"
+msgstr "Foano"
+
+#: doctor_web.php
+#, php-format
+msgid "Last observation: %s UTC."
+msgstr "Fanamarinana farany: %s UTC."
+
+#: doctor_web.php
+msgid "No completed diagnostic report is available."
+msgstr "Tsy misy tatitra fitiliana vita azo jerena."
+
+#: doctor_web.php
+msgid "Health is unknown: observations are missing or stale."
+msgstr "Tsy fantatra ny fahasalamana: tsy ampy na efa ela ny fanamarinana."
+
+#: doctor_web.php
+msgid "Run diagnostic checks"
+msgstr "Alefaso ny fanamarinana fitiliana"
+
+#: doctor_web.php
+msgid "Doctor settings"
+msgstr "Fikirakirana Doctor"
+
+#: doctor_web.php setup.php
+msgid "Cacti Doctor"
+msgstr "Cacti Doctor"
+
+#: doctor_web.php
+#, php-format
+msgid "Installation health: %d passed, %d warnings, %d failed"
+msgstr "Fahasalaman'ny fametrahana: %d nahomby, %d fampitandremana, %d tsy nahomby"
+
+#: doctor_web.php
+msgid "Category"
+msgstr "Sokajy"
+
+#: doctor_web.php
+msgid "Check"
+msgstr "Fanamarinana"
+
+#: doctor_web.php
+msgid "Status"
+msgstr "Toetra"
+
+#: doctor_web.php
+msgid "Details"
+msgstr "Antsipiriany"
+
+#: doctor_web.php
+msgid "Action"
+msgstr "Hetsika"
+
+#: doctor_web.php
+msgid "Acknowledged; health status unchanged."
+msgstr "Voaray an-tsoratra; tsy niova ny satan'ny fahasalamana."
+
+#: doctor_web.php
+msgid "Acknowledge"
+msgstr "Ekeo"
+
+#: doctor_web.php
+#, php-format
+msgid "Owner: %s; review by %s UTC. Reason: %s"
+msgstr "Tompony: %s; jereo mialoha ny %s UTC. Antony: %s"
+
+#: doctor_web.php
+msgid "Investigate a symptom"
+msgstr "Hanadihady famantarana olana"
+
+#: doctor_web.php
+msgid "Investigate"
+msgstr "Hadihadio"
+
+#: doctor_web.php
+msgid "Recent scheduled checks"
+msgstr "Fanamarinana voalahatra farany"
+
+#: doctor_web.php
+msgid "Failed"
+msgstr "Tsy nahomby"
+
+#: doctor_web.php
+msgid "Observation (UTC)"
+msgstr "Fanamarinana (UTC)"
+
+#: doctor_web.php
+msgid "Passed"
+msgstr "Nahomby"
+
+#: doctor_web.php
+msgid "Warnings"
+msgstr "Fampitandremana"
+
+#: doctor_web.php
+msgid "Warning exceptions"
+msgstr "Fanavahana fampitandremana"
+
+#: doctor_web.php
+msgid "Owner"
+msgstr "Tompony"
+
+#: doctor_web.php
+msgid "Reason"
+msgstr "Antony"
+
+#: doctor_web.php
+msgid "Review date (UTC)"
+msgstr "Daty famerenana mijery (UTC)"
+
+#: doctor_web.php
+msgid "Accept warning"
+msgstr "Ekeo ny fampitandremana"
+
+#: doctor_web.php
+msgid "Expired"
+msgstr "Lany daty"
+
+#: doctor_web.php
+msgid "Check not present in this report; verify its ID."
+msgstr "Tsy hita ao amin'ity tatitra ity ny fanamarinana; hamarino ny ID-ny."
+
+#: doctor_web.php
+msgid "Remove exception"
+msgstr "Esory ny fanavahana"
+
+#: doctor_web.php
+msgid "Audit history"
+msgstr "Tantaran'ny fanaraha-maso"
+
+#: doctor_workflows.php
+msgid "Repair refused"
+msgstr "Lavina ny fanamboarana"
+
+#: doctor_workflows.php
+msgid "The approved plan is expired or the filesystem changed. Preview the repair again."
+msgstr "Lany daty ny drafitra nankatoavina na niova ny rafitra rakitra. Jereo mialoha indray ny fanamboarana."
+
+#: doctor_workflows.php
+msgid "The audit record could not be saved. No repair was attempted."
+msgstr "Tsy azo notahirizina ny firaketana fanaraha-maso. Tsy nisy fanamboarana natao."
+
+#: doctor_workflows.php
+msgid "The completion audit failed; inspect the filesystem and the started audit record."
+msgstr "Tsy nahomby ny fanaraha-maso famaranana; jereo ny rafitra rakitra sy ny firaketana fanaraha-maso natomboka."
+
+#: setup.php
+msgid "Doctor Administrator"
+msgstr "Mpitantana Doctor"
+
+#: setup.php
+msgid "Doctor Operator"
+msgstr "Mpandraharaha Doctor"
+
+#: setup.php
+msgid "Doctor Viewer"
+msgstr "Mpijery Doctor"
+
+#: setup.php
+msgid "Utilities"
+msgstr "Fitaovana fanampiny"
+
+#: setup.php
+msgid "System Administration"
+msgstr "Fitantanana ny rafitra"
+
+#: setup.php
+msgid "Scheduled Checks"
+msgstr "Fanamarinana voalahatra"
+
+#: setup.php
+msgid "Run Checks on a Schedule"
+msgstr "Alefaso araka ny fandaharam-potoana ny fanamarinana"
+
+#: setup.php
+msgid "Run every Doctor check in the background after the poller and record each check's status."
+msgstr "Alefaso ao ambadika aorian'ny poller ny fanamarinana Doctor rehetra ary raketo ny satan'ny fanamarinana tsirairay."
+
+#: setup.php
+msgid "Check Interval"
+msgstr "Elanelam-potoana fanamarinana"
+
+#: setup.php
+msgid "How often the scheduled checks run."
+msgstr "Matetika manao ahoana ny fandehan'ny fanamarinana voalahatra."
+
+#: setup.php
+msgid "Every 15 Minutes"
+msgstr "Isaky ny 15 minitra"
+
+#: setup.php
+msgid "Every Hour"
+msgstr "Isan'ora"
+
+#: setup.php
+msgid "Every 6 Hours"
+msgstr "Isaky ny 6 ora"
+
+#: setup.php
+msgid "Every Day"
+msgstr "Isan'andro"
+
+#: setup.php
+msgid "Alert Email Addresses"
+msgstr "Adiresy mailaka fampandrenesana"
+
+#: setup.php
+msgid "Comma-separated addresses to email when a check starts or stops failing. Leave empty to only log changes to the Cacti log."
+msgstr "Adiresy misaraka faingo handefasana mailaka rehefa manomboka na mijanona tsy mahomby ny fanamarinana iray. Avelao ho foana raha toa ka hirakitra ny fiovana ao amin'ny firaketana Cacti ihany."
+
+#: setup.php
+msgid "Alert on Warnings"
+msgstr "Fampandrenesana amin'ny fampitandremana"
+
+#: setup.php
+msgid "Also alert when a check moves into or out of a warning."
+msgstr "Mampandre ihany koa rehefa miditra na mivoaka amin'ny toetra fampitandremana ny fanamarinana iray."
+
+#: setup.php
+msgid "Thresholds"
+msgstr "Fetra"
+
+#: setup.php
+msgid "Poller Run Time Warning (percent)"
+msgstr "Fampitandremana momba ny faharetan'ny fiasan'ny poller (isanjato)"
+
+#: setup.php
+msgid "Warn when the last main-poller run used this share of the polling interval. Runs that take the whole interval always fail."
+msgstr "Mampitandrina rehefa nampiasa io ampahan'ny elanelam-potoan'ny fanangonana io ny fiasan'ny poller fototra farany. Tsy mahomby foana ny fiasana izay mandany ny elanelam-potoana manontolo."
+
+#: setup.php
+msgid "RRA Disk Free Warning (percent)"
+msgstr "Fampitandremana ny habaka malalaka amin'ny kapila RRA (isanjato)"
+
+#: setup.php
+msgid "Warn when free space on the RRA file system drops below this percentage."
+msgstr "Mampitandrina rehefa midina ambanin'io isanjato io ny habaka malalaka ao amin'ny rafi-drakitra RRA."
+
+#: setup.php
+msgid "Fail when free space on the RRA file system drops below this percentage."
+msgstr "Milaza tsy fahombiazana rehefa midina ambanin'io isanjato io ny habaka malalaka ao amin'ny rafi-drakitra RRA."
+
+#: setup.php
+msgid "RRA Disk Free Failure (percent)"
+msgstr "Tsy fahombiazan'ny habaka malalaka amin'ny kapila RRA (isanjato)"
+
+#: setup.php
+msgid "Clock Drift Warning (seconds)"
+msgstr "Fampitandremana ny fahasamihafan'ny famantaranandro (segondra)"
+
+#: setup.php
+msgid "Warn when the database and PHP clocks differ by more than this."
+msgstr "Mampitandrina rehefa mihoatra noho io ny elanelan'ny famantaranandron'ny tahiry sy ny PHP."
+
+#: setup.php
+msgid "Clock Drift Failure (seconds)"
+msgstr "Tsy fahombiazan'ny fahasamihafan'ny famantaranandro (segondra)"
+
+#: setup.php
+msgid "Fail when the database and PHP clocks differ by more than this."
+msgstr "Milaza tsy fahombiazana rehefa mihoatra noho io ny elanelan'ny famantaranandron'ny tahiry sy ny PHP."
+
+#: setup.php
+msgid "RRD Stale Intervals"
+msgstr "Elanelam-potoana tsy navaozan'ny RRD"
+
+#: setup.php
+msgid "Warn after this many collection intervals without a file update (1 to 100)."
+msgstr "Mampitandrina aorian'io isan'ny elanelam-potoana fanangonana tsy nisy fanavaozana rakitra io (1 hatramin'ny 100)."
+
+#: setup.php
+msgid "Additional disk-write delay for external caching (0 to 86400). Boost adds its own allowance."
+msgstr "Fahatarana fanampiny amin'ny fanoratana amin'ny kapila ho an'ny tahiry vonjimaika ivelany (0 hatramin'ny 86400). Manampy ny fetra omeny manokana ny Boost."
+
+#: setup.php
+msgid "Deferred RRD Write Allowance (seconds)"
+msgstr "Fetra fanemorana ny fanoratana RRD (segondra)"
+
+#: setup.php
+msgid "Cacti Log Size Warning (MB)"
+msgstr "Fampitandremana ny haben'ny firaketana Cacti (MB)"
+
+#: setup.php
+msgid "Warn when the Cacti log grows beyond this size, which usually means log rotation is not running."
+msgstr "Mampitandrina rehefa mihoatra io habe io ny firaketana Cacti, izay midika matetika fa tsy mandeha ny fihodinan'ny firaketana."

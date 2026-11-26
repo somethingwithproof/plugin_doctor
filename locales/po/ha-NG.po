@@ -1,0 +1,1542 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
+# SPDX-FileCopyrightText: 2026 Thomas Vincent <thomasvincent@gmail.com>
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: doctor 0.6.1\n"
+"Report-Msgid-Bugs-To: https://github.com/somethingwithproof/plugin_doctor/issues\n"
+"PO-Revision-Date: 2026-11-26 00:00+0000\n"
+"Last-Translator: Thomas Vincent <thomasvincent@gmail.com>\n"
+"Language-Team: Thomas Vincent <thomasvincent@gmail.com>\n"
+"Language: ha-NG\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: cli/doctor.php
+#, php-format
+msgid "Available repairs: %s"
+msgstr "Gyare-gyaren da ke samuwa: %s"
+
+#: cli/doctor.php
+#, php-format
+msgid "Unknown format %s. Use text, json, nagios, or prometheus."
+msgstr "Tsarin %s da ba a sani ba. Yi amfani da text, json, nagios, ko prometheus."
+
+#: cli/doctor.php
+#, php-format
+msgid "Redaction could not complete, so %s was not written."
+msgstr "Ba a iya kammala ɓoye bayanan sirri ba, don haka ba a rubuta %s ba."
+
+#: cli/doctor.php
+#, php-format
+msgid "Wrote %s. Review it before sharing; values after password, secret, token, and community names are masked."
+msgstr "An rubuta %s. Duba shi kafin rabawa; an rufe ƙimomin da ke bayan sunayen password, secret, token, da community."
+
+#: cli/doctor.php doctor_functions.php
+msgid "Unknown repair"
+msgstr "Gyara da ba a sani ba"
+
+#: cli/doctor.php
+msgid "Refusing to repair without --yes."
+msgstr "An ƙi yin gyara ba tare da --yes ba."
+
+#: cli/doctor.php
+msgid "Select a supported symptom and text or JSON output."
+msgstr "Zaɓi alamar matsala da ake goyon baya da fitarwar text ko JSON."
+
+#: cli/doctor.php doctor_web.php
+msgid "Accepted warning"
+msgstr "Gargaɗin da aka karɓa"
+
+#: doctor_access.php doctor_functions.php
+msgid "Device availability"
+msgstr "Samuwar na'ura"
+
+#: doctor_access.php
+msgid "Device permissions could not be evaluated."
+msgstr "Ba a iya tantance izinin na'ura ba."
+
+#: doctor_access.php
+msgid "The configured PHP CLI cannot run Doctor checks."
+msgstr "PHP CLI da aka saita ba za ta iya gudanar da binciken Doctor ba."
+
+#: doctor_access.php
+msgid "Doctor checks failed or exceeded their time limit. Review the Doctor log."
+msgstr "Binciken Doctor ya gaza ko ya wuce ƙayyadadden lokacinsa. Duba rajistar Doctor."
+
+#: doctor_diagnosis.php
+msgid "Graphs stopped updating"
+msgstr "Jadawalai sun daina sabuntawa"
+
+#: doctor_diagnosis.php
+msgid "Polling is slow"
+msgstr "Tattara bayanai (polling) yana tafiya a hankali"
+
+#: doctor_diagnosis.php
+msgid "Devices are missing or unavailable"
+msgstr "Na'urori sun ɓace ko ba sa samuwa"
+
+#: doctor_diagnosis.php
+msgid "Doctor alerts are missing"
+msgstr "Faɗakarwar Doctor sun ɓace"
+
+#: doctor_diagnosis.php
+msgid "Check the poller scheduler and the affected poller log, then verify a new completed cycle."
+msgstr "Duba mai tsara lokacin poller da rajistar poller da abin ya shafa, sannan ka tabbatar da sabon zagayen da aka kammala."
+
+#: doctor_diagnosis.php
+msgid "Collection may have stopped."
+msgstr "Wataƙila tattarawa ya tsaya."
+
+#: doctor_diagnosis.php
+msgid "Collected values may not be reaching disk."
+msgstr "Wataƙila ƙimomin da aka tattara ba sa isa rumbun ajiya."
+
+#: doctor_diagnosis.php
+msgid "Inspect the output queue and Boost flush history; verify that the queue drains and RRD timestamps advance."
+msgstr "Bincika jerin fitarwa da tarihin sharewa na Boost; ka tabbatar jerin yana raguwa kuma tambarin lokacin RRD yana ci gaba."
+
+#: doctor_diagnosis.php
+msgid "Check storage capacity, runtime-directory permissions and the last RRD update; account for deferred writes."
+msgstr "Duba ƙarfin ajiya, izinin jakar aiki na lokacin gudanarwa da sabuntawar RRD ta ƙarshe; ka yi la'akari da rubuce-rubucen da aka jinkirta."
+
+#: doctor_diagnosis.php
+msgid "RRD storage needs investigation."
+msgstr "Ma'ajiyar RRD tana buƙatar bincike."
+
+#: doctor_diagnosis.php
+msgid "Collection work may be exceeding its time budget."
+msgstr "Wataƙila aikin tattarawa yana wucewa lokacin da aka keɓe masa."
+
+#: doctor_diagnosis.php
+msgid "Compare cycle duration with the polling interval and inspect device timeouts before increasing concurrency."
+msgstr "Kwatanta tsawon zagaye da tazarar polling sannan ka bincika ƙarewar lokacin na'urori kafin ka ƙara yawan ayyukan lokaci guda."
+
+#: doctor_diagnosis.php
+msgid "Compare database counters during a slow cycle and inspect query plans before changing server limits."
+msgstr "Kwatanta masu ƙidaya na rumbun bayanai yayin zagaye mai nauyi sannan ka bincika tsare-tsaren tambayoyi kafin ka canja iyakokin sabar."
+
+#: doctor_diagnosis.php
+msgid "Database pressure may be contributing to slow polling."
+msgstr "Wataƙila matsin rumbun bayanai yana taimakawa wajen jinkirin polling."
+
+#: doctor_diagnosis.php
+msgid "Collection prerequisites or reachability may be failing."
+msgstr "Wataƙila sharuɗɗan tattarawa ko samun damar isa suna gazawa."
+
+#: doctor_diagnosis.php
+msgid "Verify the affected device permissions, reachability, credentials and assigned poller using Cacti diagnostics."
+msgstr "Tabbatar da izinin na'urar da abin ya shafa, samun damar isa gare ta, bayanan shiga da poller ɗin da aka keɓe mata ta amfani da binciken Cacti."
+
+#: doctor_diagnosis.php
+msgid "Scheduled checks or mail delivery need attention."
+msgstr "Binciken da aka tsara ko isar da saƙon imel suna buƙatar kulawa."
+
+#: doctor_diagnosis.php
+msgid "Verify scheduling and recipient settings, inspect retained delivery attempts, and send a Cacti test email."
+msgstr "Tabbatar da saitin tsara lokaci da na masu karɓa, ka bincika yunƙurin isarwa da aka ajiye, sannan ka aika imel na gwaji na Cacti."
+
+#: doctor_diagnosis.php
+msgid "Possible causes require verification; matching checks do not establish a root cause."
+msgstr "Dalilan da ka iya yiwuwa suna buƙatar tabbatarwa; dacewar bincike ba ta tabbatar da tushen matsala ba."
+
+#: doctor_diagnosis.php
+msgid "No cause is established by the available observations. Run fresh diagnostics and investigate the symptom directly."
+msgstr "Babu wani dalili da aka tabbatar daga lura da ake da su. Gudanar da sabon bincike kuma ka bincika alamar kai tsaye."
+
+#: doctor_functions.php
+msgid "At least 24 hours since server startup and FLUSH STATUS. Counters are cumulative and may have different reset histories; confirm trends during a representative workload before tuning."
+msgstr "Aƙalla sa'o'i 24 tun bayan kunna sabar da FLUSH STATUS. Masu ƙidaya na taruwa ne kuma suna iya samun tarihin sake saiti daban-daban; tabbatar da yanayin yayin aikin gwaji mai wakilci kafin daidaitawa."
+
+#: doctor_functions.php
+msgid "Cumulative tuning advice is deferred: obtain valid uptime and at least 24 hours since startup and FLUSH STATUS. Missing metrics or an inconsistent sample cannot establish database health."
+msgstr "An jinkirta shawarar daidaitawa mai taruwa: samu sahihin lokacin aiki da aƙalla sa'o'i 24 tun bayan kunnawa da FLUSH STATUS. Ma'aunan da suka ɓace ko samfurin da bai daidaita ba ba za su iya tabbatar da lafiyar rumbun bayanai ba."
+
+#: doctor_functions.php
+msgid "Database observation window"
+msgstr "Lokacin lura na rumbun bayanai"
+
+#: doctor_functions.php
+msgid "Connection metrics are unavailable or invalid. Check access to SHOW GLOBAL STATUS and SHOW GLOBAL VARIABLES; do not treat missing metrics as an idle server."
+msgstr "Ma'aunan haɗi ba su samuwa ko ba su da inganci. Duba izinin shiga SHOW GLOBAL STATUS da SHOW GLOBAL VARIABLES; kada ka ɗauki ma'aunan da suka ɓace a matsayin sabar da ba ta aiki."
+
+#: doctor_functions.php
+#, php-format
+msgid "Current connections: %.0f / %.0f (%s); recorded peak: %.0f (%s of the current limit)."
+msgstr "Haɗe-haɗe na yanzu: %.0f / %.0f (%s); kololuwar da aka rubuta: %.0f (%s na iyakar yanzu)."
+
+#: doctor_functions.php
+msgid "Review connection pooling and poller concurrency. Check database-host memory headroom before raising max_connections; the historical peak may reflect an older limit."
+msgstr "Duba haɗa haɗe-haɗe da aikin poller na lokaci guda. Duba sararin ƙwaƙwalwar na'urar rumbun bayanai kafin ƙara max_connections; kololuwar tarihi na iya nuna tsohuwar iyaka."
+
+#: doctor_functions.php
+msgid "Connection capacity"
+msgstr "Ƙarfin haɗi"
+
+#: doctor_functions.php
+msgid "InnoDB buffer pool reads"
+msgstr "Karatun InnoDB buffer pool"
+
+#: doctor_functions.php
+msgid "Review query plans and the working set. Consider innodb_buffer_pool_size only after measuring memory available on the database host; a cumulative miss ratio alone does not prove memory pressure."
+msgstr "Duba tsare-tsaren tambayoyi da rukunin aiki. Yi la'akari da innodb_buffer_pool_size kawai bayan auna ƙwaƙwalwar da ke akwai a na'urar rumbun bayanai; adadin gazawa mai taruwa kaɗai ba ya tabbatar da matsin ƙwaƙwalwa."
+
+#: doctor_functions.php
+msgid "On-disk temporary tables"
+msgstr "Tebura na wucin gadi a kan rumbun ajiya"
+
+#: doctor_functions.php
+msgid "Review query plans, sorting, grouping, and temporary-table data types before changing memory limits. Some tables must use disk; memory limits and accounting differ between MySQL and MariaDB versions."
+msgstr "Duba tsare-tsaren tambayoyi, jerawa, rukuni, da nau'ikan bayanai na teburin wucin gadi kafin canja iyakokin ƙwaƙwalwa. Wasu tebura dole su yi amfani da rumbun ajiya; iyakokin ƙwaƙwalwa da lissafi sun sha bamban tsakanin nau'ikan MySQL da MariaDB."
+
+#: doctor_functions.php
+msgid "Connection thread creation"
+msgstr "Ƙirƙirar zaren haɗi"
+
+#: doctor_functions.php
+msgid "Review connection reuse and thread_cache_size. Check the server thread-handling mode before tuning; thread-pool implementations do not behave like one-thread-per-connection servers."
+msgstr "Duba sake amfani da haɗi da thread_cache_size. Duba yanayin sarrafa zare na sabar kafin daidaitawa; tsarin thread-pool ba ya aiki kamar sabar mai zare ɗaya ga kowane haɗi."
+
+#: doctor_functions.php
+msgid "Review slow-query logging, long_query_time, and query plans before changing server buffers. This counter depends on the configured slow-query threshold and does not identify individual statements."
+msgstr "Duba rajistar tambayoyi masu nauyi, long_query_time, da tsare-tsaren tambayoyi kafin canja ma'ajiyar sabar. Wannan mai ƙidaya ya dogara da ƙayyadadden iyakar tambayoyi masu nauyi kuma ba ya gano ɗaiɗaikun umarni."
+
+#: doctor_functions.php
+msgid "Slow statements"
+msgstr "Umarni masu jinkiri"
+
+#: doctor_functions.php
+msgid "Cumulative advice deferred until the observation window is sufficient."
+msgstr "An jinkirta shawara mai taruwa har sai lokacin lura ya isa."
+
+#: doctor_functions.php
+msgid "Thread-cache advice is not assessed: thread_handling is unavailable or is not one-thread-per-connection. Review the active thread-pool implementation instead."
+msgstr "Ba a tantance shawarar thread-cache ba: thread_handling ba ya samuwa ko ba zare ɗaya ga kowane haɗi ba ne. Maimakon haka duba tsarin thread-pool da ke aiki."
+
+#: doctor_functions.php
+#, php-format
+msgid "Required counters are missing or invalid: %s, %s. Check server-version support and monitoring permissions."
+msgstr "Masu ƙidaya da ake buƙata sun ɓace ko ba su da inganci: %s, %s. Duba goyon bayan nau'in sabar da izinin sa ido."
+
+#: doctor_functions.php
+msgid "A counter reset since the prior sample; collect another representative interval before tuning."
+msgstr "An sake saita wani mai ƙidaya tun samfurin da ya gabata; tattara wani lokaci mai wakilci kafin daidaitawa."
+
+#: doctor_functions.php
+#, php-format
+msgid "Insufficient activity: %.0f %s; at least %d observations are needed for this advisory."
+msgstr "Rashin isasshen aiki: %.0f %s; ana buƙatar aƙalla lura %d don wannan shawara."
+
+#: doctor_functions.php
+msgid "Counters are inconsistent or were reset independently. Collect a new representative sample before tuning."
+msgstr "Masu ƙidaya ba su daidaita ba ko an sake saita su daban-daban. Tattara sabon samfuri mai wakilci kafin daidaitawa."
+
+#: doctor_functions.php
+msgid "The interval sample is too small or counters reset; collect another representative interval before tuning."
+msgstr "Samfurin tazarar ya yi ƙanƙanta ko an sake saita masu ƙidaya; tattara wani lokaci mai wakilci kafin daidaitawa."
+
+#: doctor_functions.php
+#, php-format
+msgid "Interval %s / %s: %.0f / %.0f (%s); investigation threshold: %s."
+msgstr "Tazarar %s / %s: %.0f / %.0f (%s); iyakar bincike: %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "Cumulative %s / %s: %.0f / %.0f (%s); investigation threshold: %s."
+msgstr "Taruwar %s / %s: %.0f / %.0f (%s); iyakar bincike: %s."
+
+#: doctor_functions.php
+msgid "This counter can omit memory-mapped temporary files on MySQL; a low ratio does not rule out disk use."
+msgstr "Wannan mai ƙidaya na iya tsallake fayilolin wucin gadi da aka haɗa da ƙwaƙwalwa a MySQL; ƙarancin rabo ba ya kore yiwuwar amfani da rumbun ajiya."
+
+#: doctor_functions.php
+msgid "Redo-log advice deferred until the observation window is sufficient and Innodb_log_waits is available."
+msgstr "An jinkirta shawarar redo-log har sai lokacin lura ya isa kuma Innodb_log_waits yana samuwa."
+
+#: doctor_functions.php
+#, php-format
+msgid "Cumulative Innodb_log_waits: %.0f."
+msgstr "Taruwar Innodb_log_waits: %.0f."
+
+#: doctor_functions.php
+msgid "Investigate transaction sizes, log-buffer pressure, and storage latency. Recheck the rate under load before considering innodb_log_buffer_size; this historical count is not evidence of a current stall."
+msgstr "Bincika girman ma'amaloli, matsin log-buffer, da jinkirin ma'ajiya. Sake duba adadin yayin nauyin aiki kafin la'akari da innodb_log_buffer_size; wannan ƙidayar tarihi ba hujja ce ta tsayawar yanzu ba."
+
+#: doctor_functions.php
+msgid "InnoDB log-buffer waits"
+msgstr "Jiran InnoDB log-buffer"
+
+#: doctor_functions.php
+msgid "installed Cacti composer.json"
+msgstr "composer.json na Cacti da aka shigar"
+
+#: doctor_functions.php
+#, php-format
+msgid "Cacti %s installer requirement"
+msgstr "Buƙatar mai shigar da Cacti %s"
+
+#: doctor_functions.php
+msgid "PHP compatibility with installed Cacti"
+msgstr "Dacewar PHP da Cacti da aka shigar"
+
+#: doctor_functions.php
+#, php-format
+msgid "Running PHP %s; installed Cacti %s."
+msgstr "Ana gudanar da PHP %s; an shigar da Cacti %s."
+
+#: doctor_functions.php
+msgid "Could not establish Cacti's PHP requirement. Check the installed Cacti composer.json or release documentation; Doctor does not assume compatibility."
+msgstr "Ba a iya tabbatar da buƙatar PHP ta Cacti ba. Duba composer.json na Cacti da aka shigar ko takardun saki; Doctor ba ya ɗauka cewa sun dace."
+
+#: doctor_functions.php
+#, php-format
+msgid "PHP >= %s and < %s"
+msgstr "PHP >= %s da < %s"
+
+#: doctor_functions.php
+#, php-format
+msgid "PHP >= %s"
+msgstr "PHP >= %s"
+
+#: doctor_functions.php
+#, php-format
+msgid "Requires %s (%s). Running PHP meets that requirement."
+msgstr "Yana buƙatar %s (%s). PHP da ke gudanarwa ya cika wannan buƙata."
+
+#: doctor_functions.php
+#, php-format
+msgid "Requires %s (%s). Running PHP does not meet that requirement."
+msgstr "Yana buƙatar %s (%s). PHP da ke gudanarwa bai cika wannan buƙata ba."
+
+#: doctor_functions.php
+#, php-format
+msgid "Detected %s; Doctor requires Cacti 1.2.20 or newer."
+msgstr "An gano %s; Doctor yana buƙatar Cacti 1.2.20 ko sabo."
+
+#: doctor_functions.php
+msgid "Supported Cacti version"
+msgstr "Nau'in Cacti da ake goyon baya"
+
+#: doctor_functions.php
+msgid "PHP upstream security support"
+msgstr "Goyon bayan tsaro na asali na PHP"
+
+#: doctor_functions.php
+msgid "This checks the PHP release branch, not whether this patch release is up to date or whether your OS vendor backports fixes. Cacti compatibility is checked separately."
+msgstr "Wannan yana duba reshen sakin PHP ne, ba ko wannan sakin gyara ya sabunta ko ko mai samar da OS naka yana mayar da gyare-gyare ba. Ana duba dacewar Cacti daban."
+
+#: doctor_functions.php
+#, php-format
+msgid "Running PHP %s; upstream security-support status is unknown or this is a prerelease. Check https://www.php.net/supported-versions.php and update Doctor's support data."
+msgstr "Ana gudanar da PHP %s; ba a san matsayin goyon bayan tsaro na asali ba ko wannan sakin farko ne. Duba https://www.php.net/supported-versions.php kuma ka sabunta bayanan goyon baya na Doctor."
+
+#: doctor_functions.php
+#, php-format
+msgid "Running PHP %s; PHP %s receives upstream security fixes through %s."
+msgstr "Ana gudanar da PHP %s; PHP %s yana karɓar gyare-gyaren tsaro na asali har zuwa %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "Running PHP %s; PHP %s no longer receives upstream security fixes; support ended %s. Upgrade to a supported PHP branch compatible with your Cacti installation, or confirm security maintenance with your OS vendor."
+msgstr "Ana gudanar da PHP %s; PHP %s ba ya ƙara karɓar gyare-gyaren tsaro na asali; goyon baya ya ƙare %s. Haɓaka zuwa reshen PHP da ake goyon baya mai dacewa da shigar Cacti naka, ko ka tabbatar da kulawar tsaro tare da mai samar da OS naka."
+
+#: doctor_functions.php
+msgid "Required current CLI PHP extensions"
+msgstr "Ƙarin PHP na CLI na yanzu da ake buƙata"
+
+#: doctor_functions.php
+msgid "Required web PHP extensions"
+msgstr "Ƙarin PHP na yanar gizo da ake buƙata"
+
+#: doctor_functions.php
+#, php-format
+msgid "Missing: %s. Install them through the operating system package manager."
+msgstr "Waɗanda suka ɓace: %s. Shigar da su ta mai sarrafa fakitin tsarin aiki."
+
+#: doctor_functions.php
+msgid "All PHP extensions required by the Cacti installer are loaded in this PHP context."
+msgstr "Duk ƙarin PHP da mai shigar da Cacti ke buƙata an ɗora su a wannan yanayin PHP."
+
+#: doctor_functions.php
+msgid "Doctor does not execute configured binaries while running as root."
+msgstr "Doctor ba ya gudanar da fayilolin shiri da aka saita yayin da yake aiki a matsayin root."
+
+#: doctor_functions.php
+#, php-format
+msgid "The file name %s is not expected for %s, so Doctor did not execute it."
+msgstr "Ba a yi tsammanin sunan fayil %s don %s ba, don haka Doctor bai gudanar da shi ba."
+
+#: doctor_functions.php
+msgid "Doctor is running as root, so permission checks describe root rather than the web server or poller account, configured binaries are not executed, and repairs are refused. Run Doctor as the Cacti poller user."
+msgstr "Doctor yana aiki a matsayin root, don haka binciken izini yana bayyana root ne maimakon asusun sabar yanar gizo ko na poller, ba a gudanar da fayilolin shiri da aka saita ba, kuma an ƙi gyare-gyare. Gudanar da Doctor a matsayin mai amfani na Cacti poller."
+
+#: doctor_functions.php
+msgid "Doctor privileges"
+msgstr "Izinin Doctor"
+
+#: doctor_functions.php
+msgid "Doctor is running without root privileges."
+msgstr "Doctor yana aiki ba tare da izinin root ba."
+
+#: doctor_functions.php
+msgid "Required CLI PHP extensions"
+msgstr "Ƙarin PHP na CLI da ake buƙata"
+
+#: doctor_functions.php
+msgid "The configured PHP CLI executable is unavailable, so its extensions cannot be checked."
+msgstr "Fayil ɗin gudanarwa na PHP CLI da aka saita ba ya samuwa, don haka ba za a iya duba ƙarinsa ba."
+
+#: doctor_functions.php
+msgid "shell_exec() is disabled, so Doctor cannot compare the CLI PHP extensions with Cacti requirements."
+msgstr "An kashe shell_exec(), don haka Doctor ba zai iya kwatanta ƙarin CLI PHP da buƙatun Cacti ba."
+
+#: doctor_functions.php
+msgid "The configured PHP CLI executable did not return a valid extension list."
+msgstr "Fayil ɗin gudanarwa na PHP CLI da aka saita bai dawo da ingantaccen jerin ƙari ba."
+
+#: doctor_functions.php
+#, php-format
+msgid "Missing from CLI PHP: %s. The web and CLI PHP configurations are separate on many systems."
+msgstr "Waɗanda suka ɓace daga CLI PHP: %s. Saitunan PHP na yanar gizo da na CLI suna daban a yawancin tsaruka."
+
+#: doctor_functions.php
+msgid "The configured PHP CLI has every extension required by Cacti."
+msgstr "PHP CLI da aka saita yana da kowane ƙari da Cacti ke buƙata."
+
+#: doctor_functions.php
+msgid "GD TrueType support"
+msgstr "Goyon bayan GD TrueType"
+
+#: doctor_functions.php
+msgid "Recommended PHP features"
+msgstr "Fasalolin PHP da aka ba da shawara"
+
+#: doctor_functions.php
+#, php-format
+msgid "Unavailable: %s. Cacti can run without these features, but related functionality may be limited."
+msgstr "Ba sa samuwa: %s. Cacti na iya aiki ba tare da waɗannan fasaloli ba, amma ayyukan da suka shafe su na iya samun iyaka."
+
+#: doctor_functions.php
+msgid "The optional gettext, SNMP, and GD TrueType features are available."
+msgstr "Fasalolin zaɓi na gettext, SNMP, da GD TrueType suna samuwa."
+
+#: doctor_functions.php
+#, php-format
+msgid "memory_limit is %s (%dM or more is recommended)"
+msgstr "memory_limit shine %s (ana ba da shawarar %dM ko fiye)"
+
+#: doctor_functions.php
+#, php-format
+msgid "max_execution_time is %d seconds (60 or more is recommended)"
+msgstr "max_execution_time shine daƙiƙa %d (ana ba da shawarar 60 ko fiye)"
+
+#: doctor_functions.php
+msgid "date.timezone is not set"
+msgstr "ba a saita date.timezone ba"
+
+#: doctor_functions.php
+msgid "unset"
+msgstr "ba a saita ba"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s. Current values: %s"
+msgstr "%s. Ƙimomin yanzu: %s"
+
+#: doctor_functions.php
+msgid "PHP runtime configuration"
+msgstr "Saitin lokacin gudanarwa na PHP"
+
+#: doctor_functions.php
+msgid "Database connection"
+msgstr "Haɗin rumbun bayanai"
+
+#: doctor_functions.php
+#, php-format
+msgid "Query failed: %s"
+msgstr "Tambaya ta gaza: %s"
+
+#: doctor_functions.php
+msgid "A read-only query completed successfully."
+msgstr "Tambayar karatu kawai ta kammala cikin nasara."
+
+#: doctor_functions.php
+msgid "The database returned an unexpected result."
+msgstr "Rumbun bayanai ya dawo da sakamakon da ba a yi tsammani ba."
+
+#: doctor_functions.php
+#, php-format
+msgid "Doctor could not determine the database server version from %s."
+msgstr "Doctor bai iya tantance nau'in sabar rumbun bayanai daga %s ba."
+
+#: doctor_functions.php
+msgid "Supported database server"
+msgstr "Sabar rumbun bayanai da ake goyon baya"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s %s detected; this Cacti branch recommends %s %s or newer."
+msgstr "An gano %s %s; wannan reshen Cacti yana ba da shawarar %s %s ko sabo."
+
+#: doctor_functions.php
+#, php-format
+msgid "Database character set is %s and collation is %s. Cacti requires utf8mb4."
+msgstr "Tsarin haruffan rumbun bayanai shine %s kuma tsarin jerawa shine %s. Cacti yana buƙatar utf8mb4."
+
+#: doctor_functions.php
+msgid "unknown"
+msgstr "ba a sani ba"
+
+#: doctor_functions.php
+msgid "Database character set"
+msgstr "Tsarin haruffan rumbun bayanai"
+
+#: doctor_functions.php
+msgid "Database timezone support"
+msgstr "Goyon bayan yankin lokaci na rumbun bayanai"
+
+#: doctor_functions.php
+msgid "The Cacti database account cannot read mysql.time_zone_name. Grant SELECT access and populate the database timezone tables."
+msgstr "Asusun rumbun bayanai na Cacti ba zai iya karanta mysql.time_zone_name ba. Ba da izinin SELECT kuma ka cika teburan yankin lokaci na rumbun bayanai."
+
+#: doctor_functions.php
+#, php-format
+msgid "The database timezone table is accessible and contains %d entries."
+msgstr "Ana iya samun damar shiga teburin yankin lokaci na rumbun bayanai kuma yana ƙunshe da bayanai %d."
+
+#: doctor_functions.php
+msgid "The database timezone table is accessible but empty. Populate the system timezone tables."
+msgstr "Ana iya samun damar shiga teburin yankin lokaci na rumbun bayanai amma babu komai a ciki. Cika teburan yankin lokaci na tsari."
+
+#: doctor_functions.php
+msgid "Core tables used by Cacti are present."
+msgstr "Babban teburan da Cacti ke amfani da su suna nan."
+
+#: doctor_functions.php
+#, php-format
+msgid "Missing core tables: %s. Restore or upgrade the database before attempting other repairs."
+msgstr "Babban teburan da suka ɓace: %s. Maido ko haɓaka rumbun bayanai kafin yunƙurin sauran gyare-gyare."
+
+#: doctor_functions.php
+msgid "Core database tables"
+msgstr "Babban teburan rumbun bayanai"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s is missing (%s)"
+msgstr "%s ya ɓace (%s)"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s is not writable (%s)"
+msgstr "%s ba ya rubutuwa (%s)"
+
+#: doctor_functions.php
+msgid "Runtime directories"
+msgstr "Jakunkunan lokacin gudanarwa"
+
+#: doctor_functions.php
+msgid "The cache, log, and RRA directories exist and are writable."
+msgstr "Jakunkunan cache, log, da RRA suna nan kuma suna rubutuwa."
+
+#: doctor_functions.php
+msgid "Cacti configuration file"
+msgstr "Fayil ɗin saiti na Cacti"
+
+#: doctor_functions.php
+msgid "include/config.php is missing or unreadable."
+msgstr "include/config.php ya ɓace ko ba ya karantuwa."
+
+#: doctor_functions.php
+msgid "include/config.php is readable. POSIX mode-bit checks do not apply on Windows."
+msgstr "include/config.php yana karantuwa. Binciken POSIX mode-bit ba ya aiki a Windows."
+
+#: doctor_functions.php
+msgid "include/config.php is writable by other users. Remove world-write permission because this file contains database credentials."
+msgstr "Sauran masu amfani za su iya rubutu a include/config.php. Cire izinin rubutu ga kowa saboda wannan fayil yana ƙunshe da bayanan shiga rumbun bayanai."
+
+#: doctor_functions.php
+msgid "include/config.php is group-writable. Confirm that every member of the owning group is trusted."
+msgstr "include/config.php yana rubutuwa ga rukuni. Tabbatar cewa kowane memba na rukunin da ke da shi abin dogaro ne."
+
+#: doctor_functions.php
+msgid "include/config.php is readable by all local users and contains database credentials. Restrict it to the owner and the web server group."
+msgstr "Duk masu amfani na gida za su iya karanta include/config.php kuma yana ƙunshe da bayanan shiga rumbun bayanai. Takaita shi ga mai shi da rukunin sabar yanar gizo kawai."
+
+#: doctor_functions.php
+msgid "include/config.php is readable and is not world-readable, group-writable, or world-writable."
+msgstr "include/config.php yana karantuwa kuma ba ya karantuwa ga kowa, ba ya rubutuwa ga rukuni, ko rubutuwa ga kowa."
+
+#: doctor_functions.php
+msgid "Cacti log file"
+msgstr "Fayil ɗin rajista na Cacti"
+
+#: doctor_functions.php
+msgid "The log file does not exist. Its parent directory is not writable."
+msgstr "Fayil ɗin rajista ba ya nan. Babbar jakar da ke riƙe da shi ba ta rubutuwa."
+
+#: doctor_functions.php
+msgid "The log file does not exist. Its parent directory is writable, so Cacti can create it."
+msgstr "Fayil ɗin rajista ba ya nan. Babbar jakar da ke riƙe da shi tana rubutuwa, don haka Cacti zai iya ƙirƙirar sa."
+
+#: doctor_functions.php
+msgid "The configured log path must be a readable and writable regular file."
+msgstr "Hanyar rajista da aka saita dole ne ta zama fayil na yau da kullum mai karantuwa da rubutuwa."
+
+#: doctor_functions.php
+#, php-format
+msgid "The log is readable and writable and is %s MiB."
+msgstr "Rajistar tana karantuwa da rubutuwa kuma girmanta %s MiB ne."
+
+#: doctor_functions.php
+msgid "The log is readable and writable."
+msgstr "Rajistar tana karantuwa da rubutuwa."
+
+#: doctor_functions.php
+msgid "Verify that Cacti log rotation is enabled."
+msgstr "Tabbatar cewa an kunna jujjuyawar rajistar Cacti."
+
+#: doctor_functions.php
+#, php-format
+msgid "Executable found at %s."
+msgstr "An sami fayil ɗin gudanarwa a %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "The %s setting is empty, missing, or not executable."
+msgstr "Saitin %s babu komai, ya ɓace, ko ba ya gudanarwa."
+
+#: doctor_functions.php
+#, php-format
+msgid "The %s setting is empty, missing, or not executable: %s"
+msgstr "Saitin %s babu komai, ya ɓace, ko ba ya gudanarwa: %s"
+
+#: doctor_functions.php
+msgid "Doctor could not determine its version."
+msgstr "Doctor bai iya tantance nau'insa ba."
+
+#: doctor_functions.php
+#, php-format
+msgid "Detected version %s."
+msgstr "An gano nau'i %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "Detected version %s; version %s or newer is recommended."
+msgstr "An gano nau'i %s; ana ba da shawarar nau'i %s ko sabo."
+
+#: doctor_functions.php
+#, php-format
+msgid "Detected version %s; version %s or newer is required."
+msgstr "An gano nau'i %s; ana buƙatar nau'i %s ko sabo."
+
+#: doctor_functions.php
+#, php-format
+msgid "Detected version %s; minimum is %s."
+msgstr "An gano nau'i %s; mafi ƙanƙanta shine %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "%s executable"
+msgstr "Fayil ɗin gudanarwa na %s"
+
+#: doctor_functions.php
+msgid "poller_type is not cmd.php or Spine"
+msgstr "poller_type ba cmd.php ko Spine ba ne"
+
+#: doctor_functions.php
+msgid "poller_interval is not a supported value"
+msgstr "poller_interval ba ƙima ce da ake goyon baya ba"
+
+#: doctor_functions.php
+msgid "Poller configuration"
+msgstr "Saitin Poller"
+
+#: doctor_functions.php
+#, php-format
+msgid "Poller is %s with a %d-second interval."
+msgstr "Poller shine %s tare da tazarar daƙiƙa %d."
+
+#: doctor_functions.php
+msgid "Main poller freshness"
+msgstr "Sabuntar babban poller"
+
+#: doctor_functions.php
+msgid "No completed main-poller run was found. This can be expected before the first poll."
+msgstr "Ba a sami gudanarwar babban poller da aka kammala ba. Ana iya tsammanin hakan kafin poll na farko."
+
+#: doctor_functions.php
+#, php-format
+msgid "Last completed run was %d seconds ago; failure threshold is %d seconds."
+msgstr "Gudanarwar ƙarshe da aka kammala ta kasance daƙiƙa %d da suka wuce; iyakar gazawa ita ce daƙiƙa %d."
+
+#: doctor_functions.php
+msgid "Database schema version"
+msgstr "Nau'in tsarin rumbun bayanai"
+
+#: doctor_functions.php
+msgid "The version table is empty or unreadable, so the schema version is unknown."
+msgstr "Teburin nau'i babu komai a ciki ko ba ya karantuwa, don haka ba a san nau'in tsarin ba."
+
+#: doctor_functions.php
+msgid "The version table still reads new_install, so the installer never finished. Open install/ in a browser to complete it."
+msgstr "Teburin nau'i har yanzu yana nuna new_install, don haka mai shigarwa bai ƙare ba. Buɗe install/ a cikin burauza don kammala shi."
+
+#: doctor_functions.php
+#, php-format
+msgid "The database schema is at %s but the installed code is %s. Open install/ in a browser to finish the upgrade."
+msgstr "Tsarin rumbun bayanai yana %s amma lambar da aka shigar tana %s. Buɗe install/ a cikin burauza don kammala haɓakawa."
+
+#: doctor_functions.php
+#, php-format
+msgid "The database schema (%s) is newer than the installed code (%s). The code may have been rolled back."
+msgstr "Tsarin rumbun bayanai (%s) ya fi lambar da aka shigar (%s) sabo. Wataƙila an mayar da lambar baya."
+
+#: doctor_functions.php
+#, php-format
+msgid "The database schema (%s) matches the installed code."
+msgstr "Tsarin rumbun bayanai (%s) ya dace da lambar da aka shigar."
+
+#: doctor_functions.php
+msgid "Main poller run time"
+msgstr "Lokacin gudanarwar babban poller"
+
+#: doctor_functions.php
+msgid "No completed run time is recorded yet."
+msgstr "Ba a rubuta lokacin gudanarwa da aka kammala ba tukuna."
+
+#: doctor_functions.php
+#, php-format
+msgid "The last main-poller run took %s seconds of the %d-second interval."
+msgstr "Gudanarwar babban poller ta ƙarshe ta ɗauki daƙiƙa %s cikin tazarar daƙiƙa %d."
+
+#: doctor_functions.php
+msgid "Runs that outlast the interval overlap and lose data; add poller processes or threads, or use Spine."
+msgstr "Gudanarwar da ta wuce tazarar tana haɗewa kuma tana asarar bayanai; ƙara matakan poller ko zaruruwa, ko yi amfani da Spine."
+
+#: doctor_functions.php
+msgid "Little headroom remains before polls overlap."
+msgstr "Ƙaramin sarari ne ya rage kafin polls su haɗe."
+
+#: doctor_functions.php
+#, php-format
+msgid "%d poller_output rows are older than two polling intervals and were never written to RRD files. Check the Cacti log for \"Poller Output Table not Empty\" and confirm max_heap_table_size is large enough."
+msgstr "Layukan poller_output guda %d sun fi tazarar polling biyu tsufa kuma ba a taɓa rubuta su zuwa fayilolin RRD ba. Duba rajistar Cacti don \"Poller Output Table not Empty\" kuma ka tabbatar max_heap_table_size ya isa girma."
+
+#: doctor_functions.php
+msgid "Unprocessed poller output"
+msgstr "Fitarwar poller da ba a sarrafa ba"
+
+#: doctor_functions.php
+msgid "No stale rows remain in poller_output."
+msgstr "Babu tsofaffin layuka da suka rage a poller_output."
+
+#: doctor_functions.php
+msgid "No remote pollers are enabled."
+msgstr "Babu poller na nesa da aka kunna."
+
+#: doctor_functions.php
+msgid "Remote pollers"
+msgstr "Pollers na nesa"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s (ID %s) has never reported"
+msgstr "%s (ID %s) bai taɓa bayar da rahoto ba"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s (ID %s) last reported %d seconds ago"
+msgstr "%s (ID %s) ya bayar da rahoto na ƙarshe daƙiƙa %d da suka wuce"
+
+#: doctor_functions.php
+#, php-format
+msgid "The failure threshold is %d seconds."
+msgstr "Iyakar gazawa ita ce daƙiƙa %d."
+
+#: doctor_functions.php
+#, php-format
+msgid "%d enabled remote pollers reported within %d seconds."
+msgstr "Pollers na nesa da aka kunna guda %d sun bayar da rahoto cikin daƙiƙa %d."
+
+#: doctor_functions.php
+msgid "Enabled plugin files"
+msgstr "Fayilolin ƙarin da aka kunna"
+
+#: doctor_functions.php
+#, php-format
+msgid "Enabled plugins are missing from %s: %s. Restore their files or disable them in Plugin Management."
+msgstr "Ƙarin da aka kunna sun ɓace daga %s: %s. Maido da fayilolinsu ko ka kashe su a Plugin Management."
+
+#: doctor_functions.php
+msgid "Every enabled plugin has its setup.php in place."
+msgstr "Kowane plugin da aka kunna yana da fayil ɗin setup.php a wurinsa."
+
+#: doctor_functions.php
+msgid "Boost RRD updates"
+msgstr "Sabuntawar Boost RRD"
+
+#: doctor_functions.php
+msgid "Boost is disabled, so the poller writes RRD files directly."
+msgstr "An kashe Boost, don haka poller yana rubuta fayilolin RRD kai tsaye."
+
+#: doctor_functions.php
+msgid "Boost is enabled but has no recorded run. This can be expected before its first flush."
+msgstr "An kunna Boost amma babu tarihin gudanarwa. Ana iya tsammanin hakan kafin fitarwarsa ta farko."
+
+#: doctor_functions.php
+#, php-format
+msgid "Boost last flushed %d seconds ago, more than twice its %d-minute interval. Graphs stop updating until it runs; check the Cacti log for BOOST errors."
+msgstr "Boost ya yi fitarwa ta ƙarshe daƙiƙa %d da suka wuce, fiye da ninki biyu na tazarar minti %d. Jadawalan zane sun daina sabuntawa har sai ya yi aiki; duba rajistar Cacti don kurakuran BOOST."
+
+#: doctor_functions.php
+#, php-format
+msgid "poller_output_boost holds %d rows, above the %d-row limit that forces a flush. Boost is falling behind."
+msgstr "poller_output_boost yana riƙe da layuka %d, sama da iyakar layuka %d da ke tilasta fitarwa. Boost yana komawa baya."
+
+#: doctor_functions.php
+#, php-format
+msgid "Boost last flushed %d seconds ago with %d rows waiting."
+msgstr "Boost ya yi fitarwa ta ƙarshe daƙiƙa %d da suka wuce tare da layuka %d suna jira."
+
+#: doctor_functions.php doctor_rrd.php
+#, php-format
+msgid "Checked a sample of %d active data sources that rotates hourly; a pass does not cover every file."
+msgstr "An duba samfurin tushen bayanai masu aiki %d da ke juyawa kowace awa; zagaye guda ba ya rufe kowane fayil."
+
+#: doctor_functions.php
+#, php-format
+msgid "%d of %d active data sources have no RRD file, for example %s. New data sources get one after their first poll; otherwise check the RRA directory and its permissions."
+msgstr "%d cikin tushen bayanai masu aiki %d ba su da fayil ɗin RRD, misali %s. Sabbin tushen bayanai suna samun guda bayan tattarawarsu ta farko; in ba haka ba duba babban fayil ɗin RRA da izininsa."
+
+#: doctor_functions.php
+msgid "RRD files"
+msgstr "Fayilolin RRD"
+
+#: doctor_functions.php
+#, php-format
+msgid "All %d active data sources have an RRD file."
+msgstr "Dukkan tushen bayanai masu aiki %d suna da fayil ɗin RRD."
+
+#: doctor_functions.php
+#, php-format
+msgid "Doctor could not measure free space for %s."
+msgstr "Doctor bai iya auna sararin da ya rage na %s ba."
+
+#: doctor_functions.php
+msgid "RRA disk space"
+msgstr "Sararin faifan RRA"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s (%s GiB) free on the file system holding %s."
+msgstr "%s (%s GiB) ya rage a tsarin fayilolin da ke riƙe da %s."
+
+#: doctor_functions.php
+msgid "RRD updates fail silently when the disk fills."
+msgstr "Sabuntawar RRD tana kasawa a ɓoye idan faifan ya cika."
+
+#: doctor_functions.php
+msgid "Database clock"
+msgstr "Agogon rumbun bayanai"
+
+#: doctor_functions.php
+msgid "Doctor could not read the database clock."
+msgstr "Doctor bai iya karanta agogon rumbun bayanai ba."
+
+#: doctor_functions.php
+#, php-format
+msgid "The database and PHP clocks differ by %d seconds."
+msgstr "Agogon rumbun bayanai da na PHP sun bambanta da daƙiƙa %d."
+
+#: doctor_functions.php
+msgid "Poll timestamps will be misaligned; synchronise both hosts with NTP."
+msgstr "Lokutan tattara bayanai za su kauce wa juna; daidaita duka na'urorin biyu da NTP."
+
+#: doctor_functions.php
+msgid "Synchronise both hosts with NTP."
+msgstr "Daidaita duka na'urorin biyu da NTP."
+
+#: doctor_functions.php
+msgid "Spine configuration"
+msgstr "Saitin Spine"
+
+#: doctor_functions.php
+msgid "Spine is not the configured poller."
+msgstr "Spine ba shi ne poller ɗin da aka saita ba."
+
+#: doctor_functions.php
+msgid "path_spine_config is not set, so Spine uses its compiled-in search path and Doctor cannot verify which file it reads."
+msgstr "Ba a saita path_spine_config ba, don haka Spine yana amfani da hanyar nema da aka haɗa a cikinsa kuma Doctor ba zai iya tantance wane fayil yake karantawa ba."
+
+#: doctor_functions.php
+#, php-format
+msgid "The Spine configuration file is missing or unreadable: %s."
+msgstr "Fayil ɗin saitin Spine ya ɓace ko ba ya karantuwa: %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "DB_Database is %s but Cacti uses %s"
+msgstr "DB_Database shi ne %s amma Cacti yana amfani da %s"
+
+#: doctor_functions.php
+#, php-format
+msgid "DB_User is %s but Cacti uses %s"
+msgstr "DB_User shi ne %s amma Cacti yana amfani da %s"
+
+#: doctor_functions.php
+msgid "the file is world-readable and holds the database password"
+msgstr "fayil ɗin yana buɗe ga kowa ya karanta kuma yana riƙe da kalmar sirrin rumbun bayanai"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s uses the same database and user as Cacti."
+msgstr "%s yana amfani da rumbun bayanai da mai amfani iri ɗaya da Cacti."
+
+#: doctor_functions.php
+#, php-format
+msgid "%s is %s"
+msgstr "%s shi ne %s"
+
+#: doctor_functions.php
+msgid "Cacti recommends ON; doublewrite may stay off only on ZFS or similar journaling storage."
+msgstr "Cacti yana ba da shawarar ON; doublewrite zai iya zama a kashe kawai a kan ZFS ko makamancin ma'ajiyar journaling."
+
+#: doctor_functions.php
+msgid "InnoDB safety settings"
+msgstr "Saitunan tsaron InnoDB"
+
+#: doctor_functions.php
+msgid "innodb_file_per_table and innodb_doublewrite are enabled."
+msgstr "An kunna innodb_file_per_table da innodb_doublewrite."
+
+#: doctor_functions.php
+#, php-format
+msgid "None of the last %d log lines report an error."
+msgstr "Babu ko ɗaya daga cikin layukan rajista %d na ƙarshe da ya ba da rahoton kuskure."
+
+#: doctor_functions.php
+msgid "Recent log errors"
+msgstr "Kurakuran rajista na baya-bayan nan"
+
+#: doctor_functions.php
+#, php-format
+msgid "%d of the last %d log lines report an error. Most frequent (%dx): %s"
+msgstr "%d cikin layukan rajista %d na ƙarshe sun ba da rahoton kuskure. Mafi yawan faruwa (%dx): %s"
+
+#: doctor_functions.php
+msgid "The Cacti log is not readable; see the Cacti log file check."
+msgstr "Rajistar Cacti ba ta karantuwa; duba binciken fayil ɗin rajistar Cacti."
+
+#: doctor_functions.php
+msgid "No enabled devices are configured."
+msgstr "Babu na'urori da aka kunna da aka saita."
+
+#: doctor_functions.php
+#, php-format
+msgid "All %d enabled devices are up."
+msgstr "Dukkan na'urorin da aka kunna %d suna kan layi."
+
+#: doctor_functions.php
+#, php-format
+msgid "%d of %d enabled devices are down and %d recovering."
+msgstr "%d cikin na'urorin da aka kunna %d ba sa samuwa kuma %d suna dawowa aiki."
+
+#: doctor_functions.php
+msgid "The down devices could not be listed."
+msgstr "Ba a iya jero na'urorin da ba sa samuwa ba."
+
+#: doctor_functions.php
+#, php-format
+msgid "%s down since %s"
+msgstr "%s ba ya samuwa tun %s"
+
+#: doctor_functions.php
+#, php-format
+msgid "Longest down: %s."
+msgstr "Mafi daɗewa ba ya samuwa: %s."
+
+#: doctor_functions.php
+msgid "With most devices down, check the poller host's network and SNMP settings first."
+msgstr "Ganin cewa yawancin na'urori ba sa samuwa, fara duba hanyar sadarwa da saitunan SNMP na na'urar poller."
+
+#: doctor_functions.php
+msgid "Doctor could not read device status from the host table."
+msgstr "Doctor bai iya karanta matsayin na'ura daga teburin host ba."
+
+#: doctor_functions.php
+#, php-format
+msgid "Cacti Doctor on %s: %d failed, %d warnings"
+msgstr "Cacti Doctor a kan %s: %d sun kasa, gargaɗi %d"
+
+#: doctor_functions.php
+#, php-format
+msgid "%d Cacti Doctor checks changed status on %s."
+msgstr "Binciken Cacti Doctor %d sun sauya matsayi a kan %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "Totals: %d passed, %d warnings, %d failed."
+msgstr "Jimilla: %d sun wuce, gargaɗi %d, %d sun kasa."
+
+#: doctor_functions.php
+#, php-format
+msgid "Refusing to overwrite %s."
+msgstr "An ƙi maye gurbin %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "Cannot create %s."
+msgstr "Ba za a iya ƙirƙirar %s ba."
+
+#: doctor_functions.php
+#, php-format
+msgid "Could not make %s private."
+msgstr "Ba a iya keɓance %s ya zama na sirri ba."
+
+#: doctor_functions.php
+#, php-format
+msgid "Writing %s failed."
+msgstr "Rubuta %s ya kasa."
+
+#: doctor_functions.php
+msgid "Repair runtime directories"
+msgstr "Gyara manyan fayilolin gudanarwa"
+
+#: doctor_functions.php
+msgid "Create missing cache, log, and RRA directories and add owner read/write/execute permission without removing existing permissions."
+msgstr "Ƙirƙiri manyan fayilolin cache, rajista, da RRA da suka ɓace sannan a ƙara izinin karatu/rubutu/aiwatarwa na mai mallaka ba tare da cire izinan da ke akwai ba."
+
+#: doctor_functions.php
+msgid "The requested repair is not allow-listed."
+msgstr "Gyaran da aka nema ba ya cikin jerin da aka amince da su."
+
+#: doctor_functions.php
+msgid "No repair handler is registered."
+msgstr "Babu mai kula da gyara da aka yi wa rajista."
+
+#: doctor_functions.php
+msgid "Repair unavailable"
+msgstr "Gyara ba ya samuwa"
+
+#: doctor_functions.php
+msgid "Repairs are refused while running as root. Run Doctor as the Cacti poller user."
+msgstr "An ƙi yin gyara yayin gudanarwa a matsayin root. Gudanar da Doctor a matsayin mai amfani na Cacti poller."
+
+#: doctor_functions.php
+msgid "The Cacti base directory cannot be resolved."
+msgstr "Ba za a iya gano tushen babban fayil ɗin Cacti ba."
+
+#: doctor_functions.php
+#, php-format
+msgid "%s: path is outside the Cacti installation"
+msgstr "%s: hanyar tana wajen shigarwar Cacti"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s: symbolic links are not repaired"
+msgstr "%s: ba a gyara hanyoyin haɗi na alama (symbolic links)"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s: directory creation failed"
+msgstr "%s: ƙirƙirar babban fayil ta kasa"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s: could not add owner permissions"
+msgstr "%s: ba a iya ƙara izinan mai mallaka ba"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s: still not a writable directory"
+msgstr "%s: har yanzu ba babban fayil da za a iya rubutu a cikinsa ba ne"
+
+#: doctor_functions.php
+msgid "Runtime directories now exist and are writable by the current process."
+msgstr "Manyan fayilolin gudanarwa sun kasance a yanzu kuma aikin da ke gudana zai iya rubutu a cikinsu."
+
+#: doctor_functions.php
+msgid "Cacti"
+msgstr "Cacti"
+
+#: doctor_functions.php
+msgid "Database"
+msgstr "Rumbun bayanai"
+
+#: doctor_functions.php
+msgid "Database health"
+msgstr "Lafiyar rumbun bayanai"
+
+#: doctor_functions.php
+msgid "Devices"
+msgstr "Na'urori"
+
+#: doctor_functions.php setup.php
+msgid "Doctor"
+msgstr "Doctor"
+
+#: doctor_functions.php
+msgid "Filesystem"
+msgstr "Tsarin fayiloli"
+
+#: doctor_functions.php
+msgid "Logging"
+msgstr "Ajiye rajista"
+
+#: doctor_functions.php
+msgid "PHP"
+msgstr "PHP"
+
+#: doctor_functions.php
+msgid "Poller"
+msgstr "Poller"
+
+#: doctor_functions.php
+msgid "Prerequisites"
+msgstr "Sharuɗɗan farko"
+
+#: doctor_functions.php
+msgid "Repair"
+msgstr "Gyara"
+
+#: doctor_functions.php
+msgid "Security"
+msgstr "Tsaro"
+
+#: doctor_functions.php
+msgid "PASS"
+msgstr "YA WUCE"
+
+#: doctor_functions.php
+msgid "WARN"
+msgstr "GARGAƊI"
+
+#: doctor_functions.php
+msgid "FAIL"
+msgstr "YA KASA"
+
+#: doctor_functions.php
+msgid "UNKNOWN"
+msgstr "BA A SANI BA"
+
+#: doctor_rrd.php
+msgid "Data source freshness could not be assessed."
+msgstr "Ba a iya tantance sabuntar tushen bayanai ba."
+
+#: doctor_rrd.php
+msgid "RRD update freshness"
+msgstr "Sabuntar sabunta RRD"
+
+#: doctor_rrd.php
+msgid "The deferred-write interval is unknown; configure it before judging file age."
+msgstr "Ba a san tazarar jinkirin rubutu ba; saita ta kafin a yanke hukunci kan tsawon lokacin da ya wuce tun sabuntawar fayil na ƙarshe."
+
+#: doctor_rrd.php
+#, php-format
+msgid "Checked %d files; %d stale files across %d devices; %d unavailable or future-dated files."
+msgstr "An duba fayiloli %d; fayiloli %d da suka daɗe ba a sabunta su ba a na'urori %d; fayiloli %d da ba sa samuwa ko masu kwanan watan gaba."
+
+#: doctor_rrd.php
+msgid "File age includes the collection interval and configured deferred-write allowance; verify the poller and flush process before changing data."
+msgstr "Tsawon lokacin da ya wuce tun sabuntawar fayil na ƙarshe ya haɗa da tazarar tattara bayanai da izinin jinkirin rubutu da aka saita; tantance poller da tsarin fitarwa kafin canza bayanai."
+
+#: doctor_scheduling.php
+msgid "Scheduled checks are disabled. Enable them in Settings > Doctor to retain samples and alert on changes."
+msgstr "An kashe bincike mai tsari. Kunna su a Settings > Doctor don adana samfurori da sanar da sauye-sauye."
+
+#: doctor_scheduling.php
+msgid "Scheduled report freshness"
+msgstr "Sabuntar rahoton da aka tsara"
+
+#: doctor_scheduling.php
+#, php-format
+msgid "%s UTC"
+msgstr "%s UTC"
+
+#: doctor_scheduling.php
+#, php-format
+msgid "Last started: %s; last completed: %s."
+msgstr "Fara na ƙarshe: %s; kammala na ƙarshe: %s."
+
+#: doctor_scheduling.php
+msgid "never"
+msgstr "ba a taɓa ba"
+
+#: doctor_scheduling.php
+msgid "Results are missing or stale. Check the primary poller and DOCTOR log for startup, timeout, or persistence errors."
+msgstr "Sakamakon ya ɓace ko ya tsufa. Duba babban poller da rajistar DOCTOR don kurakuran farawa, ƙurewar lokaci, ko ajiye bayanai."
+
+#: doctor_scheduling.php
+msgid "A completed diagnostic run is recent; this does not mean all checks passed."
+msgstr "Gudanarwar binciken da aka kammala na baya-bayan nan ne; wannan ba ya nufin duk binciken sun wuce ba."
+
+#: doctor_scheduling.php
+msgid "Doctor alert state is invalid. Restore doctor_alert_pending from backup before retrying."
+msgstr "Yanayin faɗakarwar Doctor ba daidai yake ba. Maido da doctor_alert_pending daga ajiyar baya kafin a sake gwadawa."
+
+#: doctor_scheduling.php
+msgid "Doctor alert transitions are invalid; no email was sent."
+msgstr "Canje-canjen yanayin faɗakarwar Doctor ba daidai suke ba; ba a aika imel ba."
+
+#: doctor_scheduling.php
+msgid "Alert delivery"
+msgstr "Isar da faɗakarwa"
+
+#: doctor_scheduling.php
+#, php-format
+msgid "%d check transitions await delivery; attempts: %d of 3."
+msgstr "Canje-canjen bincike %d suna jiran isarwa; yunƙuri: %d cikin 3."
+
+#: doctor_scheduling.php
+msgid "Automatic retries exhausted. Correct Cacti mail settings, then run Doctor with --scheduled --retry-alerts as the poller user."
+msgstr "Yunƙurin gwaji na atomatik ya ƙare. Gyara saitunan imel na Cacti, sannan ka gudanar da Doctor da --scheduled --retry-alerts a matsayin mai amfani na poller."
+
+#: doctor_scheduling.php
+#, php-format
+msgid "Next eligible retry: %s UTC, after a primary poller cycle."
+msgstr "Sake gwadawa na gaba da ya cancanta: %s UTC, bayan zagayen babban poller."
+
+#: doctor_scheduling.php
+msgid "No alert recipients are currently configured; pending transitions are retained."
+msgstr "Ba a saita masu karɓar faɗakarwa a halin yanzu ba; ana riƙe canje-canjen yanayi da ke jira."
+
+#: doctor_scheduling.php
+msgid "No retained alert is awaiting delivery. Mail-server acceptance does not prove inbox delivery."
+msgstr "Babu faɗakarwar da aka riƙe da ke jiran isarwa. Karɓa daga uwar garken imel ba ta tabbatar da isowa akwatin saƙo ba."
+
+#: doctor_scheduling.php
+msgid "Doctor retained status changes (UTC). Repeated changes for one check are coalesced; an out-and-back transition is retained."
+msgstr "Canje-canjen matsayi da Doctor ya riƙe (UTC). Canje-canjen da aka maimaita ga bincike guda ana haɗe su; canjin fita-da-dawowa ana riƙe shi."
+
+#: doctor_scheduling.php
+#, php-format
+msgid "%s: %s -> %s (latest change %s)"
+msgstr "%s: %s -> %s (canjin ƙarshe %s)"
+
+#: doctor_scheduling.php
+#, php-format
+msgid "%d further status changes are not listed because the alert queue reached its storage limit."
+msgstr "Ba a jero ƙarin canje-canjen matsayi %d ba saboda layin faɗakarwa ya kai iyakar ma'ajiyarsa."
+
+#: doctor_scheduling.php
+msgid "Open Utilities > Doctor for current measurements, recommended actions, and verification steps."
+msgstr "Buɗe Utilities > Doctor don ma'aunai na yanzu, matakan da aka ba da shawara, da matakan tantancewa."
+
+#: doctor_scheduling.php
+#, php-format
+msgid "Cacti Doctor: %d retained status changes"
+msgstr "Cacti Doctor: canje-canjen matsayi %d da aka riƙe"
+
+#: doctor_scheduling.php
+msgid "Doctor schedule is already running or the database lock is unavailable."
+msgstr "Tsarin lokacin Doctor yana gudana tuni ko kuma makullin rumbun bayanai ba ya samuwa."
+
+#: doctor_web.php
+msgid "The finding could not be acknowledged. Run Doctor again, then acknowledge the current result."
+msgstr "Ba a iya tabbatar da ganin sakamakon binciken ba. Sake gudanar da Doctor, sannan ka tabbatar da sakamakon na yanzu."
+
+#: doctor_web.php
+msgid "The warning exception could not be saved. Use a fresh assessed warning, an owner, a reason and an expiry within 90 days."
+msgstr "Ba a iya ajiye keɓancewar gargaɗi ba. Yi amfani da sabon gargaɗin da aka tantance, mai mallaka, dalili da ranar ƙarewa cikin kwanaki 90."
+
+#: doctor_web.php
+msgid "Confirm repair"
+msgstr "Tabbatar da gyara"
+
+#: doctor_web.php
+msgid "Approval expires after five minutes and is invalidated by a changed filesystem. The acting account must be able to create directories or change owner permissions."
+msgstr "Amincewar tana ƙarewa bayan mintuna biyar kuma canjin tsarin fayiloli yana soke ta. Dole ne asusun da ke aiki ya iya ƙirƙirar manyan fayiloli ko canza izinan mai mallaka."
+
+#: doctor_web.php
+msgid "Repair prerequisites are not met. No changes will be made."
+msgstr "Ba a cika sharuɗɗan farko na gyara ba. Ba za a yi wani sauyi ba."
+
+#: doctor_web.php
+msgid "Cancel"
+msgstr "Soke"
+
+#: doctor_web.php
+#, php-format
+msgid "Last observation: %s UTC."
+msgstr "Dubawa na ƙarshe: %s UTC."
+
+#: doctor_web.php
+msgid "No completed diagnostic report is available."
+msgstr "Babu rahoton bincike da aka kammala da ke samuwa."
+
+#: doctor_web.php
+msgid "Health is unknown: observations are missing or stale."
+msgstr "Ba a san yanayin lafiya ba: binciken ya ɓace ko ya tsufa."
+
+#: doctor_web.php
+msgid "Run diagnostic checks"
+msgstr "Gudanar da binciken gwaji"
+
+#: doctor_web.php
+msgid "Doctor settings"
+msgstr "Saitunan Doctor"
+
+#: doctor_web.php setup.php
+msgid "Cacti Doctor"
+msgstr "Cacti Doctor"
+
+#: doctor_web.php
+#, php-format
+msgid "Installation health: %d passed, %d warnings, %d failed"
+msgstr "Lafiyar shigarwa: %d sun wuce, gargaɗi %d, %d sun kasa"
+
+#: doctor_web.php
+msgid "Category"
+msgstr "Rukuni"
+
+#: doctor_web.php
+msgid "Check"
+msgstr "Bincike"
+
+#: doctor_web.php
+msgid "Status"
+msgstr "Yanayi"
+
+#: doctor_web.php
+msgid "Details"
+msgstr "Cikakken bayani"
+
+#: doctor_web.php
+msgid "Action"
+msgstr "Mataki"
+
+#: doctor_web.php
+msgid "Acknowledged; health status unchanged."
+msgstr "An tabbatar da gani; matsayin lafiya bai canza ba."
+
+#: doctor_web.php
+msgid "Acknowledge"
+msgstr "Amince"
+
+#: doctor_web.php
+#, php-format
+msgid "Owner: %s; review by %s UTC. Reason: %s"
+msgstr "Mai mallaka: %s; bita kafin %s UTC. Dalili: %s"
+
+#: doctor_web.php
+msgid "Investigate a symptom"
+msgstr "Binciki alama"
+
+#: doctor_web.php
+msgid "Investigate"
+msgstr "Bincika"
+
+#: doctor_web.php
+msgid "Recent scheduled checks"
+msgstr "Bincike masu tsari na baya-bayan nan"
+
+#: doctor_web.php
+msgid "Failed"
+msgstr "Sun kasa"
+
+#: doctor_web.php
+msgid "Observation (UTC)"
+msgstr "Dubawa (UTC)"
+
+#: doctor_web.php
+msgid "Passed"
+msgstr "Sun wuce"
+
+#: doctor_web.php
+msgid "Warnings"
+msgstr "Gargaɗi"
+
+#: doctor_web.php
+msgid "Warning exceptions"
+msgstr "Keɓancewar gargaɗi"
+
+#: doctor_web.php
+msgid "Owner"
+msgstr "Mai mallaka"
+
+#: doctor_web.php
+msgid "Reason"
+msgstr "Dalili"
+
+#: doctor_web.php
+msgid "Review date (UTC)"
+msgstr "Ranar bita (UTC)"
+
+#: doctor_web.php
+msgid "Accept warning"
+msgstr "Karɓi gargaɗi"
+
+#: doctor_web.php
+msgid "Expired"
+msgstr "Ya ƙare"
+
+#: doctor_web.php
+msgid "Check not present in this report; verify its ID."
+msgstr "Binciken ba ya cikin wannan rahoton; tantance ID ɗinsa."
+
+#: doctor_web.php
+msgid "Remove exception"
+msgstr "Cire keɓancewa"
+
+#: doctor_web.php
+msgid "Audit history"
+msgstr "Tarihin binciken tantancewa"
+
+#: doctor_workflows.php
+msgid "Repair refused"
+msgstr "An ƙi gyara"
+
+#: doctor_workflows.php
+msgid "The approved plan is expired or the filesystem changed. Preview the repair again."
+msgstr "Tsarin da aka amince da shi ya ƙare ko tsarin fayiloli ya canza. Sake duba samfurin gyaran."
+
+#: doctor_workflows.php
+msgid "The audit record could not be saved. No repair was attempted."
+msgstr "Ba a iya ajiye rikodin binciken tantancewa ba. Ba a yi ƙoƙarin gyara ba."
+
+#: doctor_workflows.php
+msgid "The completion audit failed; inspect the filesystem and the started audit record."
+msgstr "Binciken tantancewa na kammalawa ya kasa; duba tsarin fayiloli da rikodin binciken tantancewa da aka fara."
+
+#: setup.php
+msgid "Doctor Administrator"
+msgstr "Mai Kula da Doctor"
+
+#: setup.php
+msgid "Doctor Operator"
+msgstr "Mai Gudanar da Doctor"
+
+#: setup.php
+msgid "Doctor Viewer"
+msgstr "Mai Kallon Doctor"
+
+#: setup.php
+msgid "Utilities"
+msgstr "Kayan aiki"
+
+#: setup.php
+msgid "System Administration"
+msgstr "Gudanar da Tsari"
+
+#: setup.php
+msgid "Scheduled Checks"
+msgstr "Bincike Masu Tsari"
+
+#: setup.php
+msgid "Run Checks on a Schedule"
+msgstr "Gudanar da Bincike a kan Jadawali"
+
+#: setup.php
+msgid "Run every Doctor check in the background after the poller and record each check's status."
+msgstr "Gudanar da kowane binciken Doctor a ɓoye bayan poller kuma a ajiye matsayin kowane bincike."
+
+#: setup.php
+msgid "Check Interval"
+msgstr "Tazarar Bincike"
+
+#: setup.php
+msgid "How often the scheduled checks run."
+msgstr "Yawan lokacin da bincike masu tsari suke gudana."
+
+#: setup.php
+msgid "Every 15 Minutes"
+msgstr "Kowane Minti 15"
+
+#: setup.php
+msgid "Every Hour"
+msgstr "Kowace Awa"
+
+#: setup.php
+msgid "Every 6 Hours"
+msgstr "Kowace Awa 6"
+
+#: setup.php
+msgid "Every Day"
+msgstr "Kowace Rana"
+
+#: setup.php
+msgid "Alert Email Addresses"
+msgstr "Adiresoshin Imel na Faɗakarwa"
+
+#: setup.php
+msgid "Comma-separated addresses to email when a check starts or stops failing. Leave empty to only log changes to the Cacti log."
+msgstr "Adiresoshi da aka raba da waƙafi don aika imel idan bincike ya fara ko ya daina kasawa. Bar shi fanko don rubuta canje-canje a rajistar Cacti kawai."
+
+#: setup.php
+msgid "Alert on Warnings"
+msgstr "Faɗakarwa kan Gargaɗi"
+
+#: setup.php
+msgid "Also alert when a check moves into or out of a warning."
+msgstr "Haka ma a faɗakar idan bincike ya shiga ko ya fita daga yanayin gargaɗi."
+
+#: setup.php
+msgid "Thresholds"
+msgstr "Iyakokin Ma'auni"
+
+#: setup.php
+msgid "Poller Run Time Warning (percent)"
+msgstr "Gargaɗin Lokacin Gudanar da Poller (kashi cikin ɗari)"
+
+#: setup.php
+msgid "Warn when the last main-poller run used this share of the polling interval. Runs that take the whole interval always fail."
+msgstr "Yi gargaɗi idan gudanarwar main-poller ta ƙarshe ta yi amfani da wannan kason tazarar bincike. Gudanarwar da ta ɗauki dukan tazarar koyaushe tana kasa."
+
+#: setup.php
+msgid "RRA Disk Free Warning (percent)"
+msgstr "Gargaɗin Sararin Faifai na RRA (kashi cikin ɗari)"
+
+#: setup.php
+msgid "Warn when free space on the RRA file system drops below this percentage."
+msgstr "Yi gargaɗi idan sararin da ya rage a tsarin fayil na RRA ya sauka ƙasa da wannan kashi cikin ɗari."
+
+#: setup.php
+msgid "Fail when free space on the RRA file system drops below this percentage."
+msgstr "Kasa idan sararin da ya rage a tsarin fayil na RRA ya sauka ƙasa da wannan kashi cikin ɗari."
+
+#: setup.php
+msgid "RRA Disk Free Failure (percent)"
+msgstr "Gazawar Sararin Faifai na RRA (kashi cikin ɗari)"
+
+#: setup.php
+msgid "Clock Drift Warning (seconds)"
+msgstr "Gargaɗin Bambancin Agogo (daƙiƙoƙi)"
+
+#: setup.php
+msgid "Warn when the database and PHP clocks differ by more than this."
+msgstr "Yi gargaɗi idan agogon rumbun bayanai da na PHP suka bambanta da fiye da wannan."
+
+#: setup.php
+msgid "Clock Drift Failure (seconds)"
+msgstr "Gazawar Bambancin Agogo (daƙiƙoƙi)"
+
+#: setup.php
+msgid "Fail when the database and PHP clocks differ by more than this."
+msgstr "Kasa idan agogon rumbun bayanai da na PHP suka bambanta da fiye da wannan."
+
+#: setup.php
+msgid "RRD Stale Intervals"
+msgstr "Tazarorin RRD Marasa Sabuntawa"
+
+#: setup.php
+msgid "Warn after this many collection intervals without a file update (1 to 100)."
+msgstr "Yi gargaɗi bayan waɗannan tazarorin tattara bayanai ba tare da sabunta fayil ba (1 zuwa 100)."
+
+#: setup.php
+msgid "Additional disk-write delay for external caching (0 to 86400). Boost adds its own allowance."
+msgstr "Ƙarin jinkirin rubutawa a faifai don ajiyar waje (0 zuwa 86400). Boost yana ƙara nasa rangwamen."
+
+#: setup.php
+msgid "Deferred RRD Write Allowance (seconds)"
+msgstr "Rangwamen Jinkirin Rubutun RRD (daƙiƙoƙi)"
+
+#: setup.php
+msgid "Cacti Log Size Warning (MB)"
+msgstr "Gargaɗin Girman Rajistar Cacti (MB)"
+
+#: setup.php
+msgid "Warn when the Cacti log grows beyond this size, which usually means log rotation is not running."
+msgstr "Yi gargaɗi idan rajistar Cacti ta wuce wannan girman, wanda yawanci ke nufin juya rajista (log rotation) ba ya aiki."
