@@ -46,22 +46,22 @@ if (!defined('MESSAGE_LEVEL_ERROR')) {
 }
 
 /** @return mixed */
-function read_config_option($config_name, $force = false) {}
+function read_config_option($config_name, $force = false) { return ''; }
 
 /** @return void */
 function set_config_option($config_name, $value) {}
 
 /** @return string */
-function cacti_escapeshellarg($string, $quote = true) {}
+function cacti_escapeshellarg($string, $quote = true) { return ''; }
 
 /**
  * @param mixed $array
  * @return int
  */
-function cacti_sizeof($array) {}
+function cacti_sizeof($array) { return 0; }
 
 /** @return mixed */
-function db_fetch_cell($sql, $col_name = '', $log = true, $db_conn = false) {}
+function db_fetch_cell($sql, $col_name = '', $log = true, $db_conn = false) { return false; }
 
 /**
  * @param string $sql
@@ -71,7 +71,7 @@ function db_fetch_cell($sql, $col_name = '', $log = true, $db_conn = false) {}
  * @param mixed $db_conn
  * @return mixed
  */
-function db_fetch_cell_prepared($sql, $params = [], $col_name = '', $log = true, $db_conn = false) {}
+function db_fetch_cell_prepared($sql, $params = [], $col_name = '', $log = true, $db_conn = false) { return false; }
 
 /**
  * @param string $sql
@@ -79,7 +79,7 @@ function db_fetch_cell_prepared($sql, $params = [], $col_name = '', $log = true,
  * @param mixed $db_conn
  * @return array<int,array<string,mixed>>|false
  */
-function db_fetch_assoc($sql, $log = true, $db_conn = false) {}
+function db_fetch_assoc($sql, $log = true, $db_conn = false) { return []; }
 
 /**
  * @param string $sql
@@ -88,10 +88,10 @@ function db_fetch_assoc($sql, $log = true, $db_conn = false) {}
  * @param mixed $db_conn
  * @return array<int,array<string,mixed>>|false
  */
-function db_fetch_assoc_prepared($sql, $params = [], $log = true, $db_conn = false) {}
+function db_fetch_assoc_prepared($sql, $params = [], $log = true, $db_conn = false) { return []; }
 
 /** @return bool */
-function db_execute($sql, $log = true, $db_conn = false) {}
+function db_execute($sql, $log = true, $db_conn = false) { return true; }
 
 /**
  * @param string $sql
@@ -100,19 +100,19 @@ function db_execute($sql, $log = true, $db_conn = false) {}
  * @param mixed $db_conn
  * @return bool
  */
-function db_execute_prepared($sql, $params = [], $log = true, $db_conn = false) {}
+function db_execute_prepared($sql, $params = [], $log = true, $db_conn = false) { return true; }
 
 /** @return int|string */
-function db_fetch_insert_id($db_conn = false) {}
+function db_fetch_insert_id($db_conn = false) { return 0; }
 
 /** @return bool */
-function db_table_exists($table, $log = true, $db_conn = false) {}
+function db_table_exists($table, $log = true, $db_conn = false) { return false; }
 
 /** @return bool */
-function cacti_log($string, $output = false, $environ = 'CMDPHP', $level = '') {}
+function cacti_log($string, $output = false, $environ = 'CMDPHP', $level = '') { return true; }
 
 /** @return string */
-function send_mail($to, $from, $subject, $body, $attachments = '', $headers = '', $html = false) {}
+function send_mail($to, $from, $subject, $body, $attachments = '', $headers = '', $html = false) { return ''; }
 
 /** @return void */
 function exec_background($filename, $args = '', $redirect_args = '') {}
@@ -130,25 +130,25 @@ function exec_background($filename, $args = '', $redirect_args = '') {}
  * @param mixed $arg9
  * @return string
  */
-function __($text = '', $arg1 = null, $arg2 = null, $arg3 = null, $arg4 = null, $arg5 = null, $arg6 = null, $arg7 = null, $arg8 = null, $arg9 = null) {}
+function __($text = '', $arg1 = null, $arg2 = null, $arg3 = null, $arg4 = null, $arg5 = null, $arg6 = null, $arg7 = null, $arg8 = null, $arg9 = null) { return ''; }
 
 /** @return bool */
-function is_realm_allowed($realm, $check_user = false) {}
+function is_realm_allowed($realm, $check_user = false) { return false; }
 
 /** @return bool */
-function is_function_enabled($function_name) {}
+function is_function_enabled($function_name) { return false; }
 
 /** @return bool */
-function api_plugin_is_enabled($plugin) {}
+function api_plugin_is_enabled($plugin) { return false; }
 
 /** @return string|false */
-function cacti_plugin_path($plugin, $relative = '') {}
+function cacti_plugin_path($plugin, $relative = '') { return false; }
 
 /** @return void */
 function api_plugin_register_hook($plugin, $hook, $function, $file, $enable = false) {}
 
 /** @return bool|void */
-function api_plugin_register_realm($plugin, $file, $display, $admin = true) {}
+function api_plugin_register_realm($plugin, $file, $display, $admin = true) { return true; }
 
 /**
  * @param string $role
@@ -166,22 +166,22 @@ function auth_augment_roles($role, $files) {}
  * @param int $device_id
  * @return array<int,array<string,mixed>>
  */
-function get_allowed_devices($sql_where = '', $sql_order = 'description', $sql_limit = '', &$total_rows = 0, $user_id = 0, $device_id = 0) {}
+function get_allowed_devices($sql_where = '', $sql_order = 'description', $sql_limit = '', &$total_rows = 0, $user_id = 0, $device_id = 0) { return []; }
 
 /** @return mixed */
-function get_request_var($name, $default = '') {}
+function get_request_var($name, $default = '') { return ''; }
 
 /** @return mixed */
-function get_nfilter_request_var($name, $default = '') {}
+function get_nfilter_request_var($name, $default = '') { return ''; }
 
 /** @return bool */
-function csrf_check($fatal = true) {}
+function csrf_check($fatal = true) { return false; }
 
 /** @return string */
-function html_escape($text) {}
+function html_escape($text) { return ''; }
 
 /** @return string */
-function html_escape_attr($text) {}
+function html_escape_attr($text) { return ''; }
 
 /** @return void */
 function top_header() {}

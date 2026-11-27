@@ -176,14 +176,20 @@ test('doctor-run-checks returns redacted, filterable findings and never executes
 	];
 
 	$base = doctor_test_directory();
-	// Intentionally leave cache/ missing so filesystem.runtime_directories fails; ability must NOT repair it.
 	$GLOBALS['doctor_test_settings'] = ['path_cactilog' => $base . '/missing/cacti.log'];
+	$repairDirs = doctor_repair_directories();
+	$cacheExistedBefore = is_dir($repairDirs['cache']);
 
 	$report = doctor_ability_run_checks(12, new stdClass());
 	expect($report['summary']['total'])->toBe(count($report['findings']))
 		->and($report['summary']['pass'] + $report['summary']['warn'] + $report['summary']['fail'] + $report['summary']['info'])
 			->toBe($report['summary']['total'])
-		->and(is_dir($base . '/cache'))->toBeFalse();
+		->and(is_dir($repairDirs['cache']))->toBe($cacheExistedBefore);
+
+	// Even operators never receive global filesystem.rrd_files paths via MCP.
+	$GLOBALS['doctor_test_user_grants'][13] = [121];
+	$operatorReport = doctor_ability_run_checks(13, new stdClass());
+	expect(array_column($operatorReport['findings'], 'id'))->not->toContain('filesystem.rrd_files');
 
 	$findingIds = array_column($report['findings'], 'id');
 	expect($findingIds)->toContain('extra.health')

@@ -192,8 +192,8 @@ function doctor_alert_pending() {
 	}
 	foreach ($pending['events'] as $id => $event) {
 		if (!is_string($id) || !preg_match('/\A[a-z0-9_.]+\z/', $id) || !is_array($event) || count($event) !== 3
-			|| !isset($event[0], $event[1], $event[2]) || !in_array($event[0], ['new', 'pass', 'warn', 'fail', 'accepted'], true)
-			|| !in_array($event[1], ['pass', 'warn', 'fail', 'accepted'], true) || !is_int($event[2])) {
+			|| !isset($event[0], $event[1], $event[2]) || !in_array($event[0], ['new', 'pass', 'info', 'warn', 'fail', 'accepted'], true)
+			|| !in_array($event[1], ['pass', 'info', 'warn', 'fail', 'accepted'], true) || !is_int($event[2])) {
 			throw new RuntimeException(doctor_n_('Doctor alert transitions are invalid; no email was sent.'));
 		}
 	}
@@ -211,7 +211,7 @@ function doctor_alert_omitted($pending) {
  * the run still completes and the email still reports every change.
  */
 function doctor_store_alert_pending($pending) {
-	$rank = ['pass' => 0, 'accepted' => 0, 'warn' => 1, 'fail' => 2];
+	$rank = ['pass' => 0, 'info' => 0, 'accepted' => 0, 'warn' => 1, 'fail' => 2];
 	$json = json_encode($pending);
 	while (strlen($json) > doctor_setting_value_limit() && $pending['events'] !== []) {
 		$drop = null;

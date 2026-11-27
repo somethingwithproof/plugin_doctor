@@ -234,3 +234,34 @@ test('support bundle includes plugin attachments and redacts secrets across chec
 		->and($bundle)->not->toContain('topsecretvalue')
 		->and($bundle)->not->toContain('hidden-password');
 });
+
+test('array details are recursively redacted and info transitions do not break scheduled alerts', function () {
+	$validated = doctor_validate_plugin_check([
+		'id'          => 'sample.array_secret',
+		'plugin'      => 'sample',
+		'category'    => 'Sample',
+		'title'       => 'Array details',
+		'status'      => 'info',
+		'message'     => 'Info message.',
+		'details'     => [
+			'api_key' => 'never-leak-this',
+			'nested'  => ['note' => 'Bearer anothersecretvalue', 'ok' => 42]
+		],
+		'remediation' => ''
+	], 'sample');
+
+	expect($validated)->not->toBeNull()
+		->and($validated['details']['api_key'])->toBe('[redacted]')
+		->and($validated['details']['nested']['note'])->not->toContain('anothersecretvalue')
+		->and($validated['details']['nested']['ok'])->toBe(42);
+
+	$GLOBALS['doctor_test_settings'] = [
+		'doctor_alert_pending' => json_encode([
+			'events'   => ['sample.array_secret' => ['info', 'fail', 1700000000]],
+			'attempts' => 0,
+			'next'     => 1700000000
+		])
+	];
+	expect(doctor_alert_pending()['events'])->toHaveKey('sample.array_secret');
+	expect(doctor_state_changes(['cacti.version' => 'pass'], [$validated], true))->toBe([]);
+});

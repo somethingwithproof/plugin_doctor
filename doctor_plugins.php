@@ -208,10 +208,40 @@ function doctor_validate_plugin_check($descriptor, $expectedPlugin) {
 	$result['plugin_status'] = $status;
 	$result['title']         = doctor_redact($title);
 	$result['message']       = doctor_redact($message);
-	$result['details']       = is_string($details['value']) ? doctor_redact($details['value']) : $details['value'];
+	$result['details']       = doctor_redact_plugin_details($details['value']);
 	$result['remediation']   = $remediation !== '' ? doctor_redact($remediation) : '';
 
 	return $result;
+}
+
+/**
+ * Recursively redact string values inside plugin check details, including
+ * sensitive key-value pairs in associative arrays.
+ *
+ * @param mixed $value
+ * @return mixed
+ */
+function doctor_redact_plugin_details($value) {
+	if (is_string($value)) {
+		return doctor_redact($value);
+	}
+
+	if (!is_array($value)) {
+		return $value;
+	}
+
+	$secretKeyPattern = '/(?:authorization|password|passwd|passphrase|pass|secret|token|community|api[_-]?key|auth[_-]?key|priv(?:ate)?[_-]?key)/i';
+	$sanitized        = [];
+
+	foreach ($value as $key => $item) {
+		if (is_string($key) && preg_match($secretKeyPattern, $key)) {
+			$sanitized[$key] = '[redacted]';
+		} else {
+			$sanitized[$key] = doctor_redact_plugin_details($item);
+		}
+	}
+
+	return $sanitized;
 }
 
 /**
@@ -368,10 +398,10 @@ function doctor_collect_plugin_extensions($existingIds = [], $mode = 'run') {
 					}
 				}
 			}
-		} catch (Throwable $error) {
+		} catch (Exception $error) {
 			$failed       = true;
 			$errorMessage = doctor_redact($error->getMessage());
-		} catch (Exception $error) { // @phpstan-ignore-line PHP 5.4 lacks Throwable
+		} catch (Throwable $error) {
 			$failed       = true;
 			$errorMessage = doctor_redact($error->getMessage());
 		}

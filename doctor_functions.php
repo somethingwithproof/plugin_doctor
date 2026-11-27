@@ -1596,7 +1596,7 @@ function doctor_state_changes($previous, $results, $includeWarnings) {
 		$to   = (string) $result['status'];
 		$from = isset($previous[$result['id']]) ? $previous[$result['id']] : 'new';
 
-		if ($from === $to || ($from === 'new' && $to === 'pass')) {
+		if ($from === $to || ($from === 'new' && in_array($to, ['pass', 'info'], true))) {
 			continue;
 		}
 

@@ -150,8 +150,24 @@ function doctor_ability_run_checks($userId, $args) {
 			continue;
 		}
 
-		if ($level < 2 && in_array($id, ['filesystem.rrd_files', 'filesystem.rrd_stale'], true)) {
+		// Installation-wide RRD file paths are omitted; stale checks are scoped per user for operators and admins.
+		if ($id === 'filesystem.rrd_files') {
 			continue;
+		}
+
+		if ($id === 'filesystem.rrd_stale') {
+			if ($level < 2 || !function_exists('get_allowed_devices')) {
+				continue;
+			}
+			$total          = -1;
+			$allowedDevices = get_allowed_devices('', 'h1.id ASC', '', $total, $userId);
+			$allowedIds     = [];
+			foreach (is_array($allowedDevices) ? $allowedDevices : [] as $device) {
+				if (isset($device['id'])) {
+					$allowedIds[] = (int) $device['id'];
+				}
+			}
+			$result = doctor_check_rrd_stale($allowedIds);
 		}
 
 		if ($id === 'devices.health') {
@@ -272,9 +288,9 @@ function doctor_abilities_register($registrar) {
 	if (method_exists($registrar, 'registerCategory')) {
 		try {
 			$registrar->registerCategory('diagnostics', 'Diagnostics');
-		} catch (Throwable $error) {
+		} catch (Exception $error) {
 			// Category may already exist if registered earlier.
-		} catch (Exception $error) { // @phpstan-ignore-line PHP 5.4 lacks Throwable
+		} catch (Throwable $error) {
 			// Category may already exist if registered earlier.
 		}
 	}
