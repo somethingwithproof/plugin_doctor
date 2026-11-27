@@ -21,13 +21,17 @@ require_once __DIR__ . '/doctor_scheduling.php';
 require_once __DIR__ . '/doctor_rrd.php';
 require_once __DIR__ . '/doctor_diagnosis.php';
 require_once __DIR__ . '/doctor_workflows.php';
+require_once __DIR__ . '/doctor_plugins.php';
 
 /**
  * Run the initial set of non-mutating installation checks.
  *
+ * @param array<string,mixed>|null $databaseSample
+ * @param array<string,mixed> $previousDatabaseSample
+ * @param array<int,array{plugin:string,title:string,content:string}> $pluginAttachments
  * @return array<int,array<string,mixed>>
  */
-function doctor_run_checks(&$databaseSample = null, $previousDatabaseSample = []) {
+function doctor_run_checks(&$databaseSample = null, $previousDatabaseSample = [], &$pluginAttachments = []) {
 	$results   = [];
 	$results[] = doctor_check_privileges(doctor_running_as_root());
 	$results[] = doctor_check_cacti_version();
@@ -65,6 +69,20 @@ function doctor_run_checks(&$databaseSample = null, $previousDatabaseSample = []
 	$results[] = doctor_check_devices();
 	$results[] = doctor_check_schedule(time());
 	$results[] = doctor_check_alert_delivery(time());
+
+	$coreIds = [];
+	foreach ($results as $item) {
+		if (isset($item['id']) && is_string($item['id'])) {
+			$coreIds[] = $item['id'];
+		}
+	}
+
+	$attachments = [];
+	$pluginChecks = doctor_run_plugin_checks($coreIds, $attachments);
+	$pluginAttachments = $attachments;
+	if ($pluginChecks !== []) {
+		$results = array_merge($results, $pluginChecks);
+	}
 
 	return doctor_apply_acceptances($results);
 }
@@ -1690,7 +1708,7 @@ function doctor_prometheus_label($value) {
  * @param array<int,array<string,mixed>> $results
  */
 function doctor_format_prometheus($results, $now) {
-	$levels   = ['pass' => 0, 'warn' => 1, 'fail' => 2];
+	$levels   = ['pass' => 0, 'info' => 0, 'warn' => 1, 'fail' => 2];
 	$families = [
 		'cacti_doctor_check_status' => 'Actionable severity: 0 pass or accepted warning, 1 warn, 2 fail.',
 		'cacti_doctor_check_observed_status' => 'Observed severity, before warning exceptions: 0 pass, 1 warn, 2 fail.',
@@ -1702,10 +1720,11 @@ function doctor_format_prometheus($results, $now) {
 	// Decide each exception once, so an expiry during export cannot split a check's samples.
 	foreach ($results as $result) {
 		$accepted  = doctor_warning_accepted($result);
+		$level     = isset($levels[$result['status']]) ? $levels[$result['status']] : 0;
 		$samples[] = [
 			'labels' => '{id="' . doctor_prometheus_label($result['id']) . '",category="' . doctor_prometheus_label($result['category']) . '"} ',
-			'cacti_doctor_check_status' => $accepted ? 0 : $levels[$result['status']],
-			'cacti_doctor_check_observed_status' => $levels[$result['status']],
+			'cacti_doctor_check_status' => $accepted ? 0 : $level,
+			'cacti_doctor_check_observed_status' => $level,
 			'cacti_doctor_check_accepted' => $accepted ? 1 : 0
 		];
 	}
@@ -1814,8 +1833,9 @@ function doctor_redact_patterns($text) {
  * @param array<int,array<string,mixed>> $results
  * @param array<string,string> $context
  * @param array<int,string> $logLines
+ * @param array<int,array{plugin:string,title:string,content:string}> $attachments
  */
-function doctor_build_bundle($results, $context, $logLines) {
+function doctor_build_bundle($results, $context, $logLines, $attachments = []) {
 	$lines = ['Cacti Doctor support bundle', 'Generated: ' . date('Y-m-d H:i:s T'), '', '== Environment'];
 
 	foreach ($context as $name => $value) {
@@ -1837,6 +1857,19 @@ function doctor_build_bundle($results, $context, $logLines) {
 			$lines[] = $label . "\n" . doctor_diagnosis_text($diagnosis);
 		}
 	}
+
+	if (is_array($attachments) && $attachments !== []) {
+		$lines[] = '';
+		$lines[] = '== Plugin attachments';
+		foreach ($attachments as $attachment) {
+			if (!is_array($attachment) || !isset($attachment['plugin'], $attachment['title'], $attachment['content'])) {
+				continue;
+			}
+			$lines[] = '--- [' . (string) $attachment['plugin'] . '] ' . (string) $attachment['title'];
+			$lines[] = (string) $attachment['content'];
+		}
+	}
+
 	$lines[] = '';
 	$lines[] = '== Cacti log (last ' . count($logLines) . ' lines)';
 

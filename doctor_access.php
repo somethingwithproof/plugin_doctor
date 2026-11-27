@@ -17,6 +17,20 @@
  * more details.
  */
 
+/** Resolve an explicit user ID's Doctor access level for non-session callers such as MCP. */
+function doctor_user_access_level($userId) {
+	if ((int) $userId <= 0 || !function_exists('is_realm_allowed')) {
+		return 0;
+	}
+	foreach ([3 => 'doctor.php', 2 => 'doctor_operator.php', 1 => 'doctor_view.php'] as $level => $file) {
+		$id = db_fetch_cell_prepared('SELECT id FROM plugin_realms WHERE plugin = ? AND file = ?', ['doctor', $file]);
+		if ($id && is_realm_allowed((int) $id + 100, (int) $userId)) {
+			return $level;
+		}
+	}
+	return 0;
+}
+
 /** Higher levels include lower capabilities; Cacti resolves user and group grants. */
 function doctor_access_level() {
 	if (empty($_SESSION['sess_user_id']) || !function_exists('is_realm_allowed')) {
@@ -77,7 +91,7 @@ function doctor_web_results($results) {
 	foreach ($results as $result) {
 		if (!isset($result['id'], $result['category'], $result['status'], $result['summary'], $result['detail'])
 			|| !is_string($result['id']) || !preg_match('/\A[a-z0-9_.]+\z/', $result['id'])
-			|| !in_array($result['status'], ['pass', 'warn', 'fail'], true)) {
+			|| !in_array($result['status'], ['pass', 'warn', 'fail', 'info'], true)) {
 			continue;
 		}
 		// Replace the installation-wide device check and the CLI-only PHP settings.
@@ -87,9 +101,17 @@ function doctor_web_results($results) {
 		if ($result['id'] === 'logging.recent_errors' && !is_realm_allowed(18)) {
 			continue;
 		}
-		$repair = isset($result['repair']) && isset(doctor_available_repairs()[$result['repair']]) ? $result['repair'] : '';
-		$visible[] = doctor_result($result['id'], (string) $result['category'], $result['status'], doctor_redact((string) $result['summary']), doctor_redact((string) $result['detail']), $repair,
+		$isPlugin = isset($result['plugin']) && is_string($result['plugin']) && $result['plugin'] !== '' && $result['plugin'] !== 'doctor';
+		$repair   = !$isPlugin && isset($result['repair']) && isset(doctor_available_repairs()[$result['repair']]) ? $result['repair'] : '';
+		$entry    = doctor_result($result['id'], (string) $result['category'], $result['status'], doctor_redact((string) $result['summary']), doctor_redact((string) $result['detail']), $repair,
 			isset($result['assessment']) ? $result['assessment'] : 'assessed');
+		if ($isPlugin) {
+			$entry['plugin'] = $result['plugin'];
+			if (isset($result['remediation']) && is_string($result['remediation'])) {
+				$entry['remediation'] = doctor_redact($result['remediation']);
+			}
+		}
+		$visible[] = $entry;
 	}
 	$visible[] = doctor_visible_devices();
 	if (function_exists('get_allowed_devices')) {
@@ -129,7 +151,7 @@ function doctor_viewer_results($now) {
 	$fresh = read_config_option('doctor_schedule_enabled', true) === 'on' && $completed > 0 && $now >= $completed && $now - $completed <= doctor_report_max_age();
 	$results = [];
 	foreach ($state as $id => $status) {
-		if (in_array($id, ['devices.health', 'filesystem.rrd_files', 'filesystem.rrd_stale'], true) || !preg_match('/\A[a-z0-9_.]+\z/', $id) || !in_array($status, ['pass', 'warn', 'fail'], true)) {
+		if (in_array($id, ['devices.health', 'filesystem.rrd_files', 'filesystem.rrd_stale'], true) || !preg_match('/\A[a-z0-9_.]+\z/', $id) || !in_array($status, ['pass', 'warn', 'fail', 'info'], true)) {
 			continue;
 		}
 		$results[] = doctor_result($id, doctor_check_category($id), $fresh ? $status : 'unknown', $id, '', '', $fresh ? 'assessed' : 'not_assessed');

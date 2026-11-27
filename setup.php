@@ -50,6 +50,7 @@ function doctor_setup_hooks($enable = false) {
 	api_plugin_register_hook('doctor', 'draw_navigation_text', 'doctor_draw_navigation_text', 'setup.php', $enable);
 	api_plugin_register_hook('doctor', 'is_console_page', 'doctor_is_console_page', 'setup.php', $enable);
 	api_plugin_register_hook('doctor', 'poller_bottom', 'doctor_poller_bottom', 'doctor_functions.php', $enable);
+	api_plugin_register_hook('doctor', 'abilities_register', 'doctor_abilities_register', 'doctor_abilities.php', $enable);
 }
 
 function plugin_doctor_uninstall() {

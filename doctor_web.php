@@ -175,7 +175,7 @@ html_header($headers);
 $row = 0;
 foreach ($results as $result) {
 	$status = $fresh ? $result['status'] : 'unknown';
-	$class = $status === 'pass' ? 'deviceUp' : ($status === 'fail' ? 'deviceDown' : 'textWarning');
+	$class = $status === 'pass' ? 'deviceUp' : ($status === 'fail' ? 'deviceDown' : ($status === 'info' ? 'textInfo' : 'textWarning'));
 	print '<tr class="' . ($row++ % 2 ? 'even' : 'odd') . '"><td><span class="' . $class . '">' . html_escape(doctor_status_label($status)) . '</span>' . ($fresh && doctor_warning_accepted($result) ? ' (' . html_escape(__('Accepted warning', 'doctor')) . ')' : '') . '</td>';
 	print '<td>' . html_escape(doctor_category_label($result['category'])) . '</td><td>' . html_escape($result['summary']) . '</td>';
 	if ($access >= 2) {

@@ -4,9 +4,11 @@
     "type": "cacti-plugin",
     "license": "GPL-2.0-or-later",
     "require-dev": {
-        "pestphp/pest": "^2.36"
+        "pestphp/pest": "^2.36",
+        "phpstan/phpstan": "^2.1"
     },
     "scripts": {
+        "phpstan": "phpstan analyse --configuration=phpstan.neon --memory-limit=512M --no-progress",
         "test": "pest --no-configuration tests --display-warnings"
     },
     "config": {
