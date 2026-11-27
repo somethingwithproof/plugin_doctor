@@ -39,7 +39,7 @@ class ReleaseTests(unittest.TestCase):
         self.root = Path(self.temp.name) / "source"
         self.root.mkdir()
         self.out = Path(self.temp.name) / "dist"
-        for name in release.ROOT_FILES | {"cli/doctor.php", "images/logo.png", "schema/doctor.schema.yaml", "locales/po/cacti.pot", "locales/po/de-DE.po",
+        for name in release.ROOT_FILES | {"cli/doctor.php", "scripts/ss_doctor_stats.php", "images/logo.png", "schema/doctor.schema.yaml", "locales/po/cacti.pot", "locales/po/de-DE.po",
                                           "locales/LC_MESSAGES/de-DE.mo", "locales/build_gettext.sh", "docs/i18n/es-419/README.md", "vendor/private", ".env"}:
             path = self.root / name
             path.parent.mkdir(parents=True, exist_ok=True)
@@ -47,7 +47,7 @@ class ReleaseTests(unittest.TestCase):
         (self.root / "INFO").write_text("[info]\nname = doctor\nversion = 0.5.1\n")
         (self.root / "CHANGELOG.md").write_text("## 0.5.1 - 2026-11-08\n\n- Fixes.\n")
         subprocess.check_call(["git", "-C", str(self.root), "init", "-q"])
-        self.commit(*sorted(release.ROOT_FILES), "cli", "images", "schema", "locales", "docs", "vendor", ".env")
+        self.commit(*sorted(release.ROOT_FILES), "cli", "scripts", "images", "schema", "locales", "docs", "vendor", ".env")
 
     def test_semver(self):
         for tag in ["v1.0.0", "v0.5.1-rc.1", "v1.2.3+build.01"]:
@@ -114,6 +114,7 @@ class ReleaseTests(unittest.TestCase):
                 zipfile.ZipFile(self.out / "doctor-0.5.1.zip") as zipped:
             self.assertEqual(sorted(tar.getnames()), sorted(zipped.namelist()))
             self.assertIn("doctor/cli/doctor.php", tar.getnames())
+            self.assertIn("doctor/scripts/ss_doctor_stats.php", tar.getnames())
             self.assertIn("doctor/doctor_dependencies.php", tar.getnames())
             self.assertIn("doctor/schema/doctor.schema.yaml", tar.getnames())
             self.assertIn("doctor/locales/po/de-DE.po", tar.getnames())

@@ -191,30 +191,42 @@ function doctor_validate_plugin_check($descriptor, $expectedPlugin) {
 		return null;
 	}
 
-	$mappedStatus = $status === 'ok' ? 'pass' : $status;
-	$detailParts  = [$message];
-	if ($details['text'] !== '') {
-		$detailParts[] = $details['text'];
+	$mappedStatus        = $status === 'ok' ? 'pass' : $status;
+	$redactedTitle       = doctor_redact($title);
+	$redactedMessage     = doctor_redact($message);
+	$redactedDetails     = doctor_redact_plugin_details($details['value']);
+	$redactedRemediation = $remediation !== '' ? doctor_redact($remediation) : '';
+
+	$detailParts = array($redactedMessage);
+	if (is_string($redactedDetails)) {
+		if ($redactedDetails !== '') {
+			$detailParts[] = $redactedDetails;
+		}
+	} elseif (is_array($redactedDetails) && $redactedDetails !== array()) {
+		$encodedRedacted = json_encode($redactedDetails);
+		if (is_string($encodedRedacted)) {
+			$detailParts[] = $encodedRedacted;
+		}
 	}
-	if ($remediation !== '') {
-		$detailParts[] = 'Remediation: ' . $remediation;
+	if ($redactedRemediation !== '') {
+		$detailParts[] = 'Remediation: ' . $redactedRemediation;
 	}
 
 	$result = doctor_result(
 		$id,
 		$category,
 		$mappedStatus,
-		doctor_redact($title),
-		doctor_redact(implode(' ', $detailParts)),
+		$redactedTitle,
+		implode(' ', $detailParts),
 		'',
 		'assessed'
 	);
 	$result['plugin']        = $plugin;
 	$result['plugin_status'] = $status;
-	$result['title']         = doctor_redact($title);
-	$result['message']       = doctor_redact($message);
-	$result['details']       = doctor_redact_plugin_details($details['value']);
-	$result['remediation']   = $remediation !== '' ? doctor_redact($remediation) : '';
+	$result['title']         = $redactedTitle;
+	$result['message']       = $redactedMessage;
+	$result['details']       = $redactedDetails;
+	$result['remediation']   = $redactedRemediation;
 
 	return $result;
 }

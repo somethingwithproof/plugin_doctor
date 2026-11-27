@@ -100,10 +100,11 @@ function doctor_check_rrd_stale($allowedDevices = null, $now = null) {
  * @return array<string,mixed>
  */
 function doctor_evaluate_rrd_stale($sources, $now, $pollInterval, $intervals, $deferred, $limited) {
-	$stale = [];
-	$unknown = 0;
-	$devices = [];
-	$staleIds = [];
+	$staleCount = 0;
+	$topStale   = array();
+	$unknown    = 0;
+	$devices    = array();
+	$staleIds   = array();
 	foreach ($sources as $source) {
 		$step = max($pollInterval, (int) $source['rrd_step'], (int) $source['profile_step']);
 		$threshold = $step * $intervals + $deferred;
@@ -114,18 +115,34 @@ function doctor_evaluate_rrd_stale($sources, $now, $pollInterval, $intervals, $d
 		}
 		$age = $now - $mtime;
 		if ($age > $threshold) {
+			$staleCount++;
 			$devices[$source['host_id']] = true;
 			$staleIds[] = isset($source['local_data_id']) ? (int) $source['local_data_id'] : $source['path'];
-			$stale[] = ['age' => $age, 'text' => $source['description'] . ': ' . $source['path'] . ' (' . $age . 's)'];
+
+			// Maintain only the top 3 oldest stale entries in O(1) per item
+			// instead of formatting and sorting all stale sources.
+			$topCount = count($topStale);
+			if ($topCount < 3 || $age > $topStale[$topCount - 1]['age']) {
+				$entry = array('age' => $age, 'description' => $source['description'], 'path' => $source['path']);
+				$pos   = $topCount;
+				while ($pos > 0 && $age > $topStale[$pos - 1]['age']) {
+					if ($pos < 3) {
+						$topStale[$pos] = $topStale[$pos - 1];
+					}
+					$pos--;
+				}
+				if ($pos < 3) {
+					$topStale[$pos] = $entry;
+				}
+			}
 		}
 	}
-	usort($stale, function ($a, $b) { return $a['age'] === $b['age'] ? 0 : ($a['age'] > $b['age'] ? -1 : 1); });
-	$examples = [];
-	foreach (array_slice($stale, 0, 3) as $entry) {
-		$examples[] = $entry['text'];
+	$examples = array();
+	foreach ($topStale as $entry) {
+		$examples[] = $entry['description'] . ': ' . $entry['path'] . ' (' . $entry['age'] . 's)';
 	}
-	$detail = __('Checked %d files; %d stale files across %d devices; %d unavailable or future-dated files.', count($sources), count($stale), count($devices), $unknown, 'doctor');
-	if ($stale !== []) {
+	$detail = __('Checked %d files; %d stale files across %d devices; %d unavailable or future-dated files.', count($sources), $staleCount, count($devices), $unknown, 'doctor');
+	if ($staleCount > 0) {
 		$detail .= ' ' . implode('; ', $examples);
 	}
 	if ($limited) {
@@ -133,8 +150,8 @@ function doctor_evaluate_rrd_stale($sources, $now, $pollInterval, $intervals, $d
 	}
 	$detail .= ' ' . __('File age includes the collection interval and configured deferred-write allowance; verify the poller and flush process before changing data.', 'doctor');
 	// Missing files are reported by filesystem.rrd_files; only a sample with no readable file is unassessed.
-	$assessment = $sources === [] ? 'not_applicable' : ($unknown === count($sources) ? 'not_assessed' : 'assessed');
-	$result = doctor_result('filesystem.rrd_stale', 'Filesystem', $stale !== [] || $assessment === 'not_assessed' ? 'warn' : 'pass', __('RRD update freshness', 'doctor'), $detail, '', $assessment);
+	$assessment = $sources === array() ? 'not_applicable' : ($unknown === count($sources) ? 'not_assessed' : 'assessed');
+	$result = doctor_result('filesystem.rrd_stale', 'Filesystem', $staleCount > 0 || $assessment === 'not_assessed' ? 'warn' : 'pass', __('RRD update freshness', 'doctor'), $detail, '', $assessment);
 	// File ages in the detail grow every second, so an acknowledgment must bind to the stale set instead.
 	sort($staleIds);
 	$result['evidence'] = json_encode($staleIds);

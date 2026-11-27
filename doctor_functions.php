@@ -1653,14 +1653,54 @@ function doctor_read_log_tail($path, $maxLines = 1000, $bytes = 2097152) {
 	$contents = stream_get_contents($handle);
 	fclose($handle);
 
-	$lines = preg_split('/\r?\n/', trim((string) $contents));
-
-	// A partial first line is likely when the read starts mid-file.
-	if ($size > $bytes) {
-		array_shift($lines);
+	$contents = trim((string) $contents);
+	if ($contents === '' || $maxLines <= 0) {
+		return array();
 	}
 
-	return array_values(array_slice(array_filter($lines, 'strlen'), -$maxLines));
+	$startOffset = 0;
+	// A partial first line is likely when the read starts mid-file.
+	if ($size > $bytes) {
+		$firstNewline = strpos($contents, "\n");
+		if ($firstNewline === false) {
+			return array();
+		}
+		$startOffset = $firstNewline + 1;
+	}
+
+	// Scan backwards from the end using strrpos negative offsets (PHP 5.0+)
+	// so we allocate at most $maxLines strings without copying $contents.
+	$collected = array();
+	$totalLen  = strlen($contents);
+	$end       = $totalLen;
+	$count     = 0;
+
+	while ($end > $startOffset && $count < $maxLines) {
+		$searchOffset = $end - $totalLen - 1;
+		$nlPos        = strrpos($contents, "\n", $searchOffset);
+
+		if ($nlPos === false || $nlPos < $startOffset) {
+			$lineStart = $startOffset;
+			$hasMore   = false;
+		} else {
+			$lineStart = $nlPos + 1;
+			$hasMore   = true;
+		}
+
+		$line = rtrim(substr($contents, $lineStart, $end - $lineStart), "\r");
+		if ($line !== '') {
+			$collected[] = $line;
+			$count++;
+		}
+
+		if (!$hasMore) {
+			break;
+		}
+
+		$end = $nlPos;
+	}
+
+	return array_reverse($collected);
 }
 
 /**
@@ -1668,17 +1708,26 @@ function doctor_read_log_tail($path, $maxLines = 1000, $bytes = 2097152) {
  * @return array<string,mixed>
  */
 function doctor_evaluate_log_lines($lines) {
-	$messages = [];
+	$messages = array();
 	$errors   = 0;
 
 	foreach ($lines as $line) {
+		if (strpos($line, 'ERROR') === false
+			&& strpos($line, 'FATAL') === false
+			&& strpos($line, 'SQL Error') === false) {
+			continue;
+		}
+
 		if (!preg_match('/\bERROR\b|\bFATAL\b|SQL Error/', $line)) {
 			continue;
 		}
 
 		$errors++;
-		$message = preg_replace('/^.*? - /', '', $line, 1);
-		$message = preg_replace('/[0-9]+/', '#', $message);
+		$sepPos  = strpos($line, ' - ');
+		$message = $sepPos !== false ? substr($line, $sepPos + 3) : $line;
+		if (strpbrk($message, '0123456789') !== false) {
+			$message = preg_replace('/[0-9]+/', '#', $message);
+		}
 		$messages[$message] = isset($messages[$message]) ? $messages[$message] + 1 : 1;
 	}
 
@@ -2029,69 +2078,172 @@ function doctor_redact($text) {
 }
 
 /**
+ * Apply the six redaction regex passes to a single line or multiline YAML chunk,
+ * short-circuiting passes whose required literal tokens are absent and failing
+ * closed on any PCRE error.
+ *
+ * @param string $text
+ * @param string $keyPresencePattern
+ * @param string $yamlPattern
+ * @param string $quotedPattern
+ * @param string $unquotedSepPattern
+ * @param string $spaceSepPattern
+ * @return string|null null when any pattern failed
+ */
+function doctor_redact_chunk($text, $keyPresencePattern, $yamlPattern, $quotedPattern, $unquotedSepPattern, $spaceSepPattern) {
+	if (stripos($text, 'bearer') !== false || stripos($text, 'basic') !== false) {
+		$text = preg_replace('/(\b(?:Bearer|Basic)[ \t]+)(?:\\\\[^\r\n]|[^\s;,"\'\\\\\r\n])+/i', '$1[redacted]', $text);
+		if ($text === null) {
+			return null;
+		}
+	}
+
+	$hasKeyword = preg_match($keyPresencePattern, $text);
+	if ($hasKeyword === false) {
+		return null;
+	}
+
+	if ($hasKeyword === 1) {
+		$hasColon = strpos($text, ':') !== false;
+		$hasEqual = strpos($text, '=') !== false;
+		$hasQuote = strpos($text, '"') !== false || strpos($text, "'") !== false;
+
+		if ($hasColon && $hasQuote) {
+			$text = preg_replace_callback($yamlPattern, function ($matches) {
+				$quote = $matches[2][0];
+
+				return $matches[1] . $quote . '[redacted]' . $quote;
+			}, $text);
+			if ($text === null) {
+				return null;
+			}
+		}
+
+		if (($hasColon || $hasEqual) && $hasQuote) {
+			$text = preg_replace($quotedPattern, '$1$2[redacted]$2', $text);
+			if ($text === null) {
+				return null;
+			}
+		}
+
+		if ($hasColon || $hasEqual) {
+			$text = preg_replace($unquotedSepPattern, '$1[redacted]', $text);
+			if ($text === null) {
+				return null;
+			}
+		}
+
+		$text = preg_replace($spaceSepPattern, '$1[redacted]', $text);
+		if ($text === null) {
+			return null;
+		}
+	}
+
+	if (strpos($text, '://') !== false) {
+		$text = preg_replace('/(\b[a-z][a-z0-9+.\-]*:\/\/[^:\/@?#\s]+:)[^\/\s?#]+(@)/i', '$1[redacted]$2', $text);
+		if ($text === null) {
+			return null;
+		}
+	}
+
+	return $text;
+}
+
+/**
  * Apply redaction regex patterns sequentially, failing closed on any PCRE error.
+ *
+ * Multiline inputs skip clean lines in O(1) while grouping any line matching a
+ * secret keyword together with immediately following indented or empty lines so
+ * multiline YAML quoted scalars remain fully redacted.
  *
  * @param string $text
  * @return string|null null when any pattern failed
  */
 function doctor_redact_patterns($text) {
-	$text = preg_replace('/(\b(?:Bearer|Basic)[ \t]+)(?:\\\\[^\r\n]|[^\s;,"\'\\\\\r\n])+/i', '$1[redacted]', $text);
-	if ($text === null) {
-		return null;
-	}
-	// A leading word boundary keeps the key search linear in long words.
-	$keys = 'authorization|password|passwd|passphrase|pass|secret|token|community|api[_-]?key|auth[_-]?key|priv(?:ate)?[_-]?key';
+	static $keyPresencePattern = null;
+	static $yamlPattern        = null;
+	static $quotedPattern      = null;
+	static $unquotedSepPattern = null;
+	static $spaceSepPattern    = null;
 
-	// Only indented or empty lines continue a YAML scalar; a new log record
-	// must retain its own key for redaction. Accept log-style escapes as well
-	// as YAML doubled quotes, since bundle text does not identify its format.
-	$continuation = '(?:\r?\n(?![ \t]*["\']?\w*(?:' . $keys . ')\b["\']?[ \t]*[=:])(?=[ \t]|\r?$))';
-	// Runs of plain characters are consumed possessively as one unit, so long
-	// values keep few backtracking points and stay within PCRE's JIT stack.
-	$doubleQuoted = '"(?>\\\\(?:[^\r\n]|' . $continuation . ')|[^"\\\\\r\n]++|' . $continuation . ')*';
-	$singleQuoted = '\'(?>\'\'|\\\\[^\r\n]|[^\'\\\\\r\n]++|' . $continuation . ')*';
-	// Prefer a complete scalar before falling back to a truncated record.
-	$quotedValue = $doubleQuoted . '"|' . $singleQuoted . '\\\\?\'|'
-		. $doubleQuoted . '\\\\?(?=\r?$)|' . $singleQuoted . '\\\\?(?=\r?$)';
-	$text = preg_replace_callback('/(\b\w*(?:' . $keys . ')\b["\']?\s*:\s*)(' . $quotedValue . ')/im', function ($matches) {
-		$quote = $matches[2][0];
+	if ($keyPresencePattern === null) {
+		// A leading word boundary keeps the key search linear in long words.
+		$keys               = 'authorization|password|passwd|passphrase|pass|secret|token|community|api[_-]?key|auth[_-]?key|priv(?:ate)?[_-]?key';
+		$keyPresencePattern = '/(?:' . $keys . ')\b/i';
 
-		return $matches[1] . $quote . '[redacted]' . $quote;
-	}, $text);
-	if ($text === null) {
-		return null;
-	}
-
-	// Quoted value after a key (keyword, optionally prefixed by word chars so
-	// api_token / snmp_community match) + separator: JSON, YAML, and ini.
-	// Consume escaped characters together and fail closed at the line ending
-	// when a truncated log value has no closing quote.
-	$text = preg_replace('/(\b\w*(?:' . $keys . ')\b["\']?\s*[=:]\s*)(["\'])(?:\\\\[^\r\n]|(?!\2)[^\\\\\r\n])*+(?:\2|\\\\?(?=\r?$))/im', '$1$2[redacted]$2', $text);
-	if ($text === null) {
-		return null;
+		// Only indented or empty lines continue a YAML scalar; a new log record
+		// must retain its own key for redaction. Accept log-style escapes as well
+		// as YAML doubled quotes, since bundle text does not identify its format.
+		$continuation = '(?:\r?\n(?![ \t]*["\']?\w*(?:' . $keys . ')\b["\']?[ \t]*[=:])(?=[ \t]|\r?$))';
+		// Runs of plain characters are consumed possessively as one unit, so long
+		// values keep few backtracking points and stay within PCRE's JIT stack.
+		$doubleQuoted = '"(?>\\\\(?:[^\r\n]|' . $continuation . ')|[^"\\\\\r\n]++|' . $continuation . ')*';
+		$singleQuoted = '\'(?>\'\'|\\\\[^\r\n]|[^\'\\\\\r\n]++|' . $continuation . ')*';
+		// Prefer a complete scalar before falling back to a truncated record.
+		$quotedValue        = $doubleQuoted . '"|' . $singleQuoted . '\\\\?\'|'
+			. $doubleQuoted . '\\\\?(?=\r?$)|' . $singleQuoted . '\\\\?(?=\r?$)';
+		$yamlPattern        = '/(\b\w*(?:' . $keys . ')\b["\']?\s*:\s*)(' . $quotedValue . ')/im';
+		$quotedPattern      = '/(\b\w*(?:' . $keys . ')\b["\']?\s*[=:]\s*)(["\'])(?:\\\\[^\r\n]|(?!\2)[^\\\\\r\n])*+(?:\2|\\\\?(?=\r?$))/im';
+		$unquotedSepPattern = '/(\b\w*(?:' . $keys . ')\b["\']?\s*[=:]\s*)(?!["\'])[^\s;,"\'\r\n]+/i';
+		$spaceSepPattern    = '/(\b\w*(?:' . $keys . ')\b\s+)(?!["\'])[^\s;,"\'\r\n]+/i';
 	}
 
-	// Unquoted value after a key + "=" or ":" separator.
-	$text = preg_replace('/(\b\w*(?:' . $keys . ')\b["\']?\s*[=:]\s*)(?!["\'])[^\s;,"\'\r\n]+/i', '$1[redacted]', $text);
-	if ($text === null) {
-		return null;
+	if ($text === '') {
+		return '';
 	}
 
-	// Keyword followed by a space-separated value with no separator (e.g. an SNMP
-	// community, or "DB_Pass s3cret"). Fail-closed: this can also redact the word
-	// after the keyword in prose, which is acceptable for a shareable bundle.
-	$text = preg_replace('/(\b\w*(?:' . $keys . ')\b\s+)(?!["\'])[^\s;,"\'\r\n]+/i', '$1[redacted]', $text);
-	if ($text === null) {
-		return null;
+	if (strpos($text, "\n") === false) {
+		return doctor_redact_chunk($text, $keyPresencePattern, $yamlPattern, $quotedPattern, $unquotedSepPattern, $spaceSepPattern);
 	}
 
-	// Password in a URL userinfo: scheme://user:PASSWORD@host.
-	$text = preg_replace('/(\b[a-z][a-z0-9+.\-]*:\/\/[^:\/@?#\s]+:)[^\/\s?#]+(@)/i', '$1[redacted]$2', $text);
-	if ($text === null) {
-		return null;
+	$lines     = explode("\n", $text);
+	$lineCount = count($lines);
+	$output    = array();
+	$i         = 0;
+
+	while ($i < $lineCount) {
+		$line        = $lines[$i];
+		$hasAuth     = stripos($line, 'bearer') !== false || stripos($line, 'basic') !== false;
+		$hasUrl      = strpos($line, '://') !== false;
+		$hasKeyword  = preg_match($keyPresencePattern, $line);
+
+		if ($hasKeyword === false) {
+			return null;
+		}
+
+		if (!$hasAuth && !$hasUrl && $hasKeyword === 0) {
+			$output[] = $line;
+			$i++;
+			continue;
+		}
+
+		// Group immediately following empty or indented lines when this line
+		// could start a multiline YAML quoted scalar.
+		$chunkLines = array($line);
+		$i++;
+
+		if ($hasKeyword === 1 && strpos($line, ':') !== false
+			&& (strpos($line, '"') !== false || strpos($line, "'") !== false)) {
+			while ($i < $lineCount) {
+				$next = $lines[$i];
+				if ($next === '' || $next === "\r" || $next[0] === ' ' || $next[0] === "\t") {
+					$chunkLines[] = $next;
+					$i++;
+				} else {
+					break;
+				}
+			}
+		}
+
+		$chunk    = count($chunkLines) === 1 ? $chunkLines[0] : implode("\n", $chunkLines);
+		$redacted = doctor_redact_chunk($chunk, $keyPresencePattern, $yamlPattern, $quotedPattern, $unquotedSepPattern, $spaceSepPattern);
+		if ($redacted === null) {
+			return null;
+		}
+		$output[] = $redacted;
 	}
 
-	return $text;
+	return implode("\n", $output);
 }
 
 /**

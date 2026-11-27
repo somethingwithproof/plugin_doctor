@@ -91,46 +91,59 @@ function doctor_dependency_node($check) {
  * Return all upstream ancestor nodes for a given dependency node, ordered from
  * the highest (most upstream) root node to the immediate parent.
  *
+ * Precomputes the ancestor table once per process so repeated inference passes
+ * avoid rebuilding the reverse adjacency list or calling array_shift().
+ *
  * @param string $node
  * @return array<int,string>
  */
 function doctor_dependency_ancestors($node) {
-	$graph = doctor_dependency_graph();
-	if (!isset($graph[$node])) {
-		return [];
-	}
+	static $ancestorsByNode = null;
 
-	$parents = [];
-	foreach ($graph as $upstream => $children) {
-		foreach ($children as $child) {
-			if (!isset($parents[$child])) {
-				$parents[$child] = [];
+	if ($ancestorsByNode === null) {
+		$graph   = doctor_dependency_graph();
+		$parents = array();
+
+		foreach ($graph as $upstream => $children) {
+			foreach ($children as $child) {
+				if (!isset($parents[$child])) {
+					$parents[$child] = array();
+				}
+				$parents[$child][] = $upstream;
 			}
-			$parents[$child][] = $upstream;
 		}
-	}
 
-	$visited   = [$node => true];
-	$ancestors = [];
-	$queue     = [$node];
+		$ancestorsByNode = array();
 
-	while ($queue !== []) {
-		$current = array_shift($queue);
-		if (!isset($parents[$current])) {
-			continue;
-		}
-		foreach ($parents[$current] as $parent) {
-			if (isset($visited[$parent])) {
-				continue;
+		foreach ($graph as $target => $unused) {
+			$visited   = array($target => true);
+			$ancestors = array();
+			$queue     = array($target);
+			$head      = 0;
+
+			while ($head < count($queue)) {
+				$current = $queue[$head];
+				$head++;
+
+				if (!isset($parents[$current])) {
+					continue;
+				}
+				foreach ($parents[$current] as $parent) {
+					if (isset($visited[$parent])) {
+						continue;
+					}
+					$visited[$parent] = true;
+					$ancestors[]      = $parent;
+					$queue[]          = $parent;
+				}
 			}
-			$visited[$parent] = true;
-			$ancestors[]      = $parent;
-			$queue[]          = $parent;
+
+			// Reverse so the highest upstream root node appears first.
+			$ancestorsByNode[$target] = array_reverse($ancestors);
 		}
 	}
 
-	// Reverse so the highest upstream root node appears first.
-	return array_reverse($ancestors);
+	return isset($ancestorsByNode[$node]) ? $ancestorsByNode[$node] : array();
 }
 
 /**
@@ -146,56 +159,36 @@ function doctor_dependency_ancestors($node) {
  */
 function doctor_infer_root_causes($results) {
 	if (!is_array($results)) {
-		return [];
+		return array();
 	}
 
-	// Clear any prior inference annotations so repeated calls stay idempotent.
-	$annotated = [];
+	// Single first pass: clear prior inference annotations, index check IDs,
+	// cache each failing/warning check's dependency node, and record primary failures.
+	$annotated            = array();
+	$primaryFailureByNode = array();
+	$indexById            = array();
+	$candidateIndices     = array();
+	$nodeByIndex          = array();
+
 	foreach ($results as $index => $result) {
 		if (!is_array($result)) {
 			$annotated[$index] = $result;
 			continue;
 		}
+
 		unset($result['root_cause_id'], $result['suppressed_symptoms']);
 		$annotated[$index] = $result;
-	}
 
-	// Record the primary (first) failing check ID and index for each graph node.
-	$primaryFailureByNode = [];
-	$indexById            = [];
-
-	foreach ($annotated as $index => $result) {
-		if (!is_array($result) || !isset($result['id'], $result['status'])
+		if (!isset($result['id'], $result['status'])
 			|| !is_string($result['id']) || !is_string($result['status'])) {
 			continue;
 		}
 
 		$id             = $result['id'];
+		$status         = $result['status'];
 		$indexById[$id] = $index;
 
-		if ($result['status'] !== 'fail') {
-			continue;
-		}
-
-		$node = doctor_dependency_node($result);
-		if ($node !== null && !isset($primaryFailureByNode[$node])) {
-			$primaryFailureByNode[$node] = $id;
-		}
-	}
-
-	if ($primaryFailureByNode === []) {
-		return $annotated;
-	}
-
-	$suppressedByRoot = [];
-
-	foreach ($annotated as $index => $result) {
-		if (!is_array($result) || !isset($result['id'], $result['status'])
-			|| !is_string($result['id']) || !is_string($result['status'])) {
-			continue;
-		}
-
-		if (!in_array($result['status'], ['fail', 'warn'], true)) {
+		if ($status !== 'fail' && $status !== 'warn') {
 			continue;
 		}
 
@@ -204,25 +197,53 @@ function doctor_infer_root_causes($results) {
 			continue;
 		}
 
-		$ancestors = doctor_dependency_ancestors($node);
-		$rootId    = null;
+		$candidateIndices[]  = $index;
+		$nodeByIndex[$index] = $node;
 
-		foreach ($ancestors as $ancestor) {
+		if ($status === 'fail' && !isset($primaryFailureByNode[$node])) {
+			$primaryFailureByNode[$node] = $id;
+		}
+	}
+
+	if ($primaryFailureByNode === array()) {
+		return $annotated;
+	}
+
+	// Precompute the highest failing upstream root ID once per graph node
+	// so every check resolves its upstream cause in O(1).
+	$rootByNode = array();
+	foreach (doctor_dependency_graph() as $graphNode => $unused) {
+		foreach (doctor_dependency_ancestors($graphNode) as $ancestor) {
 			if (isset($primaryFailureByNode[$ancestor])) {
-				$rootId = $primaryFailureByNode[$ancestor];
+				$rootByNode[$graphNode] = $primaryFailureByNode[$ancestor];
 				break;
 			}
 		}
+	}
 
-		if ($rootId === null || $rootId === $result['id']) {
+	if ($rootByNode === array()) {
+		return $annotated;
+	}
+
+	$suppressedByRoot = array();
+
+	foreach ($candidateIndices as $index) {
+		$node = $nodeByIndex[$index];
+		if (!isset($rootByNode[$node])) {
+			continue;
+		}
+
+		$rootId  = $rootByNode[$node];
+		$checkId = $annotated[$index]['id'];
+		if ($rootId === $checkId) {
 			continue;
 		}
 
 		$annotated[$index]['root_cause_id'] = $rootId;
 		if (!isset($suppressedByRoot[$rootId])) {
-			$suppressedByRoot[$rootId] = [];
+			$suppressedByRoot[$rootId] = array();
 		}
-		$suppressedByRoot[$rootId][] = $result['id'];
+		$suppressedByRoot[$rootId][] = $checkId;
 	}
 
 	foreach ($suppressedByRoot as $rootId => $symptoms) {

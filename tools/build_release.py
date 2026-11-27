@@ -83,10 +83,10 @@ def version_from_tag(tag):
 def release_paths(root, revision):
     tracked = git_read(root, "paths", revision).decode().rstrip("\0").split("\0")
     paths = sorted(path for path in tracked if path in ROOT_FILES
-                   or path.startswith(("cli/", "images/", "schema/", "docs/screenshots/", "docs/i18n/", "locales/po/", "locales/LC_MESSAGES/"))
+                   or path.startswith(("cli/", "scripts/", "images/", "schema/", "docs/screenshots/", "docs/i18n/", "locales/po/", "locales/LC_MESSAGES/"))
                    or path == "docs/releasing.md")
     missing = ROOT_FILES - set(paths)
-    if missing or "cli/doctor.php" not in paths or "schema/doctor.schema.yaml" not in paths:
+    if missing or "cli/doctor.php" not in paths or "scripts/ss_doctor_stats.php" not in paths or "schema/doctor.schema.yaml" not in paths:
         raise ValueError("Release is missing required runtime or documentation files")
     if not any(path.startswith("locales/LC_MESSAGES/") and path.endswith(".mo") for path in paths):
         raise ValueError("Release is missing the compiled translation catalogs")

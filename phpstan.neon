@@ -19,6 +19,7 @@ parameters:
 		- doctor_abilities.php
 		- doctor_web.php
 		- cli/doctor.php
+		- scripts/ss_doctor_stats.php
 	scanFiles:
 		- tests/phpstan-stubs.php
 	dynamicConstantNames:
@@ -33,10 +34,9 @@ parameters:
 	ignoreErrors:
 		-
 			identifier: includeOnce.fileNotFound
-			path: cli/doctor.php
+			paths:
+				- cli/doctor.php
+				- scripts/ss_doctor_stats.php
 		-
 			message: '#^Parameter \#2 \$offenders of function doctor_evaluate_devices expects#'
 			path: doctor_access.php
-		-
-			message: '#^Parameter \#2 \$callback of function array_filter expects#'
-			path: doctor_functions.php

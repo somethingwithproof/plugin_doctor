@@ -200,6 +200,10 @@ test('100% of production PHP functions, classes, and methods have complete PHPDo
 	if (is_file($root . '/cli/doctor.php')) {
 		$files[] = $root . '/cli/doctor.php';
 	}
+	$scriptFiles = glob($root . '/scripts/*.php');
+	if (is_array($scriptFiles)) {
+		$files = array_merge($files, $scriptFiles);
+	}
 	sort($files);
 
 	expect($files)->not->toBeEmpty();

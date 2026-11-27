@@ -27,6 +27,7 @@
             <file>doctor_rrd.php</file>
             <file>doctor_scheduling.php</file>
             <file>doctor_workflows.php</file>
+            <file>scripts/ss_doctor_stats.php</file>
         </include>
     </source>
 </phpunit>
