@@ -1,4 +1,4 @@
-<!-- Source: README.md; SHA256: ee03c7ac68aca21c8155c29b5b43a1f206c2f0c379c8b07bb4113919c18aafde -->
+<!-- Source: README.md; SHA256: 490628bb7f70f4cf1a8c43b302246fd2e870725a6649c628762608b4a76db65b -->
 
 <!-- translations:start -->
 [English](../../../README.md) | [简体中文](../zh-CN/README.md) | [हिन्दी](../hi-IN/README.md) | [Español (España)](../es-ES/README.md) | [Español (Latinoamérica)](../es-419/README.md) | [العربية (السعودية)](../ar-SA/README.md) | [Afrikaans](../af-ZA/README.md) | [አማርኛ](../am-ET/README.md) | [العربية (مصر)](../ar-EG/README.md) | [العربية (المغرب)](../ar-MA/README.md) | [বাংলা](../bn-BD/README.md) | [Bosanski](../bs-BA/README.md) | [Deutsch](../de-DE/README.md) | [فارسی](../fa-IR/README.md) | [Filipino](../fil-PH/README.md) | [Français](../fr-FR/README.md) | [Français (Maroc)](../fr-MA/README.md) | [Français (Sénégal)](../fr-SN/README.md) | [Hausa](../ha-NG/README.md) | [עברית](../he-IL/README.md) | [Hrvatski](../hr-HR/README.md) | [Bahasa Indonesia](../id-ID/README.md) | [Igbo](README.md) | [Italiano](../it-IT/README.md) | [日本語](../ja-JP/README.md) | [한국어](../ko-KR/README.md) | [Malagasy](../mg-MG/README.md) | [मराठी](../mr-IN/README.md) | [Bahasa Melayu](../ms-MY/README.md) | [Nederlands](../nl-NL/README.md) | [Polski](../pl-PL/README.md) | [Português (Brasil)](../pt-BR/README.md) | [Русский](../ru-RU/README.md) | [Kinyarwanda](../rw-RW/README.md) | [Soomaali](../so-SO/README.md) | [Српски](../sr-RS/README.md) | [Svenska](../sv-SE/README.md) | [Kiswahili](../sw-KE/README.md) | [தமிழ்](../ta-IN/README.md) | [తెలుగు](../te-IN/README.md) | [ไทย](../th-TH/README.md) | [Türkçe](../tr-TR/README.md) | [Українська](../uk-UA/README.md) | [اردو](../ur-PK/README.md) | [Tiếng Việt](../vi-VN/README.md) | [isiXhosa](../xh-ZA/README.md) | [Yorùbá](../yo-NG/README.md) | [繁體中文](../zh-TW/README.md) | [isiZulu](../zu-ZA/README.md)
@@ -53,13 +53,15 @@ Nsogbu Cacti na-apụtakarị dị ka mgbaàmà: eserese ndị tọgbọrọ cha
 | Ngwaọrụ | Ngwaọrụ e nyere ike ndị dara ma ọ bụ na-agbake, atọ ndị dara ogologo oge kachasị na njehie ikpeazụ ha, na ọdịda mgbe ọtụtụ ngwaọrụ dara n'otu oge |
 | Poller | Ụdị poller na oge etiti ya, oge kemgbe isi poller mechara rụchaa ikpeazụ, oge ọrụ ma e jiri ya tụnyere oge etiti ahụ, mmepụta poller nke na-erughị faịlụ RRD ma ọlị, ndị poller dịpụrụ adịpụ kwụsịrị ịkọ akụkọ, Boost kwụsịrị ịrụ ọrụ, na nhazi Spine nke na-atụ aka na database dị iche |
 
-Nnyocha ọ bụla nwere ID kwụsiri ike, dị ka `database.timezone` ma ọ bụ `binary.rrdtool`, ka scripts wee nwee ike dabere na nsonaazụ nke ọ bụla.
+Nnyocha ọ bụla nwere ID kwụsiri ike, dị ka `database.timezone` ma ọ bụ `binary.rrdtool`, ka scripts wee nwee ike dabere na nsonaazụ nke ọ bụla. Plugins ndị e nyere ike nwere ike ịgbakwunye nnyocha ndị ọzọ na mgbakwunye ngwugwu nkwado site na hook `doctor_register_checks`, Doctor na-egosikwara `plugin_mcp` ikike nnyocha ọgụgụ naanị site na `abilities_register`.
 
 ## Mapụ koodu na nnwale
 
 | Omume | Mmejuputa | Ihe akaebe nnwale dị na repository a |
 |---|---|---|
-| Nnyocha nchọpụta nsogbu na ID akụkọ kwụsiri ike | [doctor_functions.php](../../../doctor_functions.php) | [DoctorFunctionsTest.php](../../../tests/DoctorFunctionsTest.php), [AssertDoctorReport.php](../../../tests/ci/AssertDoctorReport.php) |
+| Nnyocha nchọpụta nsogbu na ID akụkọ kwụsiri ike | [doctor_functions.php](../../../doctor_functions.php) | [DoctorFunctionsTest.php](../../../tests/DoctorFunctionsTest.php), [DatabaseHealthTest.php](../../../tests/DatabaseHealthTest.php), [AssertDoctorReport.php](../../../tests/ci/AssertDoctorReport.php) |
+| Hook nnyocha plugin (`doctor_register_checks`) | [doctor_plugins.php](../../../doctor_plugins.php) | [PluginHooksTest.php](../../../tests/PluginHooksTest.php) |
+| Ikike nnyocha MCP (`abilities_register`) | [doctor_abilities.php](../../../doctor_abilities.php) | [AbilitiesTest.php](../../../tests/AbilitiesTest.php) |
 | Ohere dabere na ọrụ na akụkọ weebụ e degharịrị ihe nzuzo | [doctor_access.php](../../../doctor_access.php), [doctor_web.php](../../../doctor_web.php) | [AccessTest.php](../../../tests/AccessTest.php), [WebAccessTest.php](../../../tests/WebAccessTest.php) |
 | Nnyocha mgbaàmà a na-eduzi | [doctor_diagnosis.php](../../../doctor_diagnosis.php) | [DiagnosisTest.php](../../../tests/DiagnosisTest.php) |
 | Ịdị ọhụrụ RRD na njikwa ide ihe e yigharịrị | [doctor_rrd.php](../../../doctor_rrd.php) | [RrdFreshnessTest.php](../../../tests/RrdFreshnessTest.php) |
@@ -200,7 +202,7 @@ php plugins/doctor/cli/doctor.php --format=prometheus > /var/lib/node_exporter/t
 php plugins/doctor/cli/doctor.php --bundle=/tmp/cacti-doctor.txt
 ```
 
-Ngwugwu ahụ bụ otu faịlụ ederede nwere ụdị Doctor, Cacti, PHP, OS, na nchekwa data, ọnụọgụgụ poller na Boost, akụkọ zuru ezu, na ahịrị 200 ikpeazụ nke ndekọ Cacti. A na-ekpuchi uru ndị na-eso aha okwuntụghe, ihe nzuzo, token, community, na igodo. Doctor na-emepụta faịlụ ahụ ka ọ bụrụ naanị onye nwe ya nwere ike ịgụ ma jụ idekwasị faịlụ dị adị. Nyochaa ya tupu ị bipụta ya ebe ọ bụla.
+Ngwugwu ahụ bụ otu faịlụ ederede nwere ụdị Doctor, Cacti, PHP, OS, na nchekwa data, ọnụọgụgụ poller na Boost, akụkọ zuru ezu, mgbakwunye ngwugwu nkwado ọ bụla nke plugin n'okpuru `== Plugin attachments`, na ahịrị 200 ikpeazụ nke ndekọ Cacti. A na-ekpuchi uru ndị na-eso aha okwuntụghe, ihe nzuzo, token, community, na igodo. Doctor na-emepụta faịlụ ahụ ka ọ bụrụ naanị onye nwe ya nwere ike ịgụ ma jụ idekwasị faịlụ dị adị. Nyochaa ya tupu ị bipụta ya ebe ọ bụla.
 
 ## Iwu nrụzi
 
@@ -246,6 +248,63 @@ A na-egbochi ọkwa ịdọ aka na ntị a haziri ahazi mgbe mgbapụ ahụ na-a
 
 Mmelite elu na-emepụta `plugin_doctor_audit` na `plugin_doctor_acceptance` n'agbanweghị data ngwa Cacti. Bupụ akụkọ ọ bụla ị chọrọ tupu iwepụ: mwepụ na-ewepụ ma tebụl plọgịn abụọ ahụ ma ntọala ya. Iweghachi faịlụ plọgịn na-ahapụ tebụl ndị ahụ ka ha dị maka nnyocha, mana ụdị ochie anaghị asọpụrụ mgbapụ ịdọ aka na ntị.
 
+## Nnyocha plugin (`doctor_register_checks`)
+
+Plugins Cacti e nyere ike nwere ike inye nnyocha nchọpụta nsogbu nke ọgụgụ naanị na mgbakwunye ngwugwu nkwado nhọrọ site na ịdebanye aha hook `doctor_register_checks`:
+
+```php
+api_plugin_register_hook('sample', 'doctor_register_checks', 'sample_doctor_checks', 'setup.php');
+```
+
+Doctor na-akpọ plugins e nyere ike ma na-abụghị nke ejikọtara ọnụ ndị e debanyere aha na `doctor_register_checks` (na-amafe `doctor` na `cacti`), na-achọta faịlụ hook kpọmkwem n'ime ndekọ nke plugin ahụ n'onwe ya. Callback ahụ na-anata `['mode' => 'run' | 'list', 'plugin' => '<slug>']` ma weghachite ma ọ bụ ndepụta nke nkọwa nnyocha ma ọ bụ envelopu nwere `checks` na `attachments` nhọrọ:
+
+```php
+function sample_doctor_checks($context) {
+	return [
+		'checks' => [
+			[
+				'id'          => 'sample.queue_depth',
+				'plugin'      => 'sample',
+				'category'    => 'Sample',
+				'title'       => 'Sample queue depth',
+				'status'      => 'ok',
+				'message'     => 'Queue is healthy.',
+				'details'     => ['pending' => 0],
+				'remediation' => ''
+			]
+		],
+		'attachments' => [
+			[
+				'title'   => 'Sample diagnostics',
+				'content' => "worker=ok\n"
+			]
+		]
+	];
+}
+```
+
+A na-enyochacha nkọwa nnyocha plugin ọ bụla tupu e tinye ya:
+
+- Igodo achọrọ: `id`, `plugin`, `category`, `title`, `status`, `message`, `details`, na `remediation`.
+- `plugin` ga-adabarịrị na slug plugin e debanyere aha (`[a-z0-9_]{1,64}`). `id` ga-adabarịrị na `[a-z0-9_.]{1,128}`, malite na `<plugin>.`, ma ghara ịdaba n'otu ID nnyocha isi ma ọ bụ nke plugin ọzọ dị adị.
+- `status` ga-abụrịrị `ok`, `warn`, `fail`, ma ọ bụ `info`. `ok` na-egosipụta dị ka `pass` n'akụkọ Doctor; `info` bụ maka ozi naanị ma ọ naghị akpata ọdịda na CLI, Nagios, Prometheus, ma ọ bụ ọkwa a haziri oge.
+- `category` (ruo bytes 64) na `title` (ruo bytes 256) ga-abụrịrị eriri na-enweghị oghere efu na-enweghị mkpụrụedemede njikwa. `message` (na-enweghị oghere efu, ruo bytes 2048) na `remediation` (ruo bytes 2048) ga-abụrịrị eriri ederede.
+- `details` na-anabata eriri ederede (ruo bytes 8192) ma ọ bụ usoro scalar/nested array (omimi kachasị 4, JSON e debere ruo bytes 16384; a na-ajụ objects na resources).
+- Mgbakwunye ngwugwu nkwado nhọrọ chọrọ `title` na-abụghị efu (ruo bytes 128, enweghị mkpụrụedemede njikwa) na eriri `content` ruo bytes 65536 (64 KiB).
+
+Doctor na-amanye oke nke nnyocha 32 na mgbakwunye 8 maka plugin ọ bụla (nnyocha plugin 64 na mgbakwunye 32 na mkpokọta). Hook ọ bụla na-agba n'ime oke `try`/`catch` nke ya ka e wee kpuchie ihe nzuzo dị na mwepu ma ọ bụ data na-abụghị array ma dekọọ ha na ndekọ Cacti (ngalaba `DOCTOR`) n'emetụtaghị nnyocha isi ma ọ bụ plugins ndị ọzọ. A na-ajụ nkọwa ndị emebiri emebi ma dekọọ ha na ndekọ ebe ndị ziri ezi sitere n'otu plugin ahụ ka na-aga n'ihu. Nnyocha plugin na-abụ mgbe niile maka ọgụgụ naanị (`repairable: false`), a na-ekpuchikwa uru eriri na igodo nzuzo tupu ngosi, mbupụ, ma ọ bụ nchikọta. Nnyocha plugin a kwadoro na-apụta na UI weebụ, mmepụta CLI ederede/JSON/Nagios/Prometheus, nsochi ọnọdụ a haziri oge, na ngwugwu nkwado.
+
+## Njikọta MCP (`abilities_register`)
+
+Doctor na-edebanye aha hook `abilities_register` (`doctor_abilities_register` na `doctor_abilities.php`) ka `plugin_mcp` wee chọpụta ikike nnyocha ya mgbe e nyere ma plugins abụọ ahụ ike. Doctor na-edebanye aha ụdị `diagnostics` (`Diagnostics`) na ikike abụọ nke ọgụgụ naanị, nke na-adịghị emebi ihe, na nke idempotent:
+
+| ID Ikike | Arụmụka nhọrọ | Mmepụta |
+|---|---|---|
+| `doctor-run-checks` | `category` (eriri, kachasị mkpụrụedemede 64), `status` (`pass`, `ok`, `warn`, `fail`, `info`) | `summary` (`total`, `pass`, `warn`, `fail`, `info`) na ruo `findings` 256 e kpuchiri ihe nzuzo (`id`, `plugin`, `category`, `title`, `status`, `message`, `remediation`) |
+| `doctor-list-checks` | `category` (eriri, kachasị mkpụrụedemede 64), `plugin` (eriri, kachasị mkpụrụedemede 64) | Ruo `checks` 256 (`id`, `plugin`, `category`, `title`) nke na-ekpuchi nnyocha 45 niile e tinyere n'ime ya tinyere nnyocha plugins e nyere ike |
+
+Ikike abụọ ahụ bụ naanị maka ọgụgụ ma ha anaghị eme nrụzi ọ bụla. Na mgbakwunye na mpaghara ikike na njikwa ngosi ikike nke `plugin_mcp` n'onwe ya (ikike plugin na-ebido zoro ezo na MCP ruo mgbe onye nchịkwa gosipụtara ha), Doctor chọrọ ka onye nwe token nwee **Doctor Viewer** ma ọ bụ mpaghara ikike Doctor dị elu karịa. `doctor-run-checks` na-ejedebe `devices.health` na ngwaọrụ e nyere onye nwe token ikike, na-agụnye `logging.recent_errors` naanị mgbe onye ọrụ nwere mpaghara Cacti 18 ma ọ bụ 19, na-ahapụ `filesystem.rrd_files`, ma na-agụnye `filesystem.rrd_stale` nwere oke ngwaọrụ naanị maka **Doctor Operator** ma ọ bụ **Doctor Administrator**.
+
 ## Ihe ndị a chọrọ
 
 | Cacti | PHP | Ndetu |
@@ -263,20 +322,22 @@ E jikọtara ụbọchị nkwado na Doctor site na [usoro oge nkwado PHP](https:
 
 ## Mmepe
 
-Usoro ule otu na-eji Pest ma na-agba ọsọ na PHP 8.2 ma ọ bụ karịa:
+Usoro ule otu na-eji Pest na nyocha static na-eji PHPStan (ọkwa 6), ha abụọ na PHP 8.2 ma ọ bụ karịa:
 
 ```console
 composer install
+composer phpstan
 composer test
 ```
 
 Ule ndị ahụ na-eji obere ndị nnọchianya dị na `tests/CactiStubs.php` dochie ọrụ Cacti ndị Doctor na-akpọ, ya mere ha na-agba ọsọ n'enweghị nrụnye Cacti.
 
-GitHub Actions na-eme ụdị nyocha anọ na push na pull request ọ bụla:
+GitHub Actions na-eme ụdị nyocha ise na push na pull request ọ bụla:
 
-- `php -l` na faịlụ PHP ọ bụla n'okpuru PHP 5.4, 5.6, 7.0, 7.1, 7.4, na 8.0 ruo 8.4.
-- Usoro ule otu na PHP 8.2, 8.3, na 8.4.
+- Nnwale nkwekọrịta ngwugwu mwepụta (`tests/test_release.py`) na owuwu ebe nchekwa (`tools/build_release.py`).
 - `locales/build_gettext.sh --check`, nke na-ada ma ọ bụrụ na ndebiri ntụgharị asụsụ emeela ochie, katalọgụ ezughị ezu ma ọ bụ nke na-edochaghị anya, ma ọ bụ katalọgụ a chịkọtara dị iche na isi mmalite ya.
+- `php -l` na faịlụ PHP ọ bụla n'okpuru PHP 5.4, 5.6, 7.0, 7.1, 7.4, na 8.0 ruo 8.4.
+- `composer phpstan` (PHPStan ọkwa 6) na `composer test` (usoro ule otu Pest) na PHP 8.2, 8.3, na 8.4.
 - Ọrụ njikọta asaa ndị na-arụnye Cacti 1.2.20, alaka 1.2.x dị ugbu a, na `develop` megide MySQL na MariaDB, yana ma cmd.php ma Spine. Ọrụ ọ bụla na-arụnye ma na-agbanye plọgịn ahụ, na-agba mkpesa CLI zuru ezu, ma na-enyocha atụmatụ mkpesa, ngụkọta nchịkọta, ọnọdụ a tụrụ anya, na kpọmkwem usoro ọdịda. Ọ na-emebi ụzọ binary na akara oge poller, na-akwado na a kọrọ ha abụọ, na-eweghachi ha, na-anwale nrụzi na nkwenye ya, ma na-agba gbanyụọ, gbanye, wepụ, na rụnyeghachi. A na-echekwa mkpesa JSON dị ka artifact mgbe ọrụ dara.
 
 ## Ntinye aka

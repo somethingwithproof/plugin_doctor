@@ -1,4 +1,4 @@
-<!-- Source: README.md; SHA256: ee03c7ac68aca21c8155c29b5b43a1f206c2f0c379c8b07bb4113919c18aafde -->
+<!-- Source: README.md; SHA256: 490628bb7f70f4cf1a8c43b302246fd2e870725a6649c628762608b4a76db65b -->
 
 <!-- translations:start -->
 [English](../../../README.md) | [简体中文](../zh-CN/README.md) | [हिन्दी](../hi-IN/README.md) | [Español (España)](../es-ES/README.md) | [Español (Latinoamérica)](../es-419/README.md) | [العربية (السعودية)](../ar-SA/README.md) | [Afrikaans](../af-ZA/README.md) | [አማርኛ](../am-ET/README.md) | [العربية (مصر)](../ar-EG/README.md) | [العربية (المغرب)](../ar-MA/README.md) | [বাংলা](../bn-BD/README.md) | [Bosanski](../bs-BA/README.md) | [Deutsch](../de-DE/README.md) | [فارسی](../fa-IR/README.md) | [Filipino](../fil-PH/README.md) | [Français](../fr-FR/README.md) | [Français (Maroc)](../fr-MA/README.md) | [Français (Sénégal)](../fr-SN/README.md) | [Hausa](../ha-NG/README.md) | [עברית](../he-IL/README.md) | [Hrvatski](../hr-HR/README.md) | [Bahasa Indonesia](../id-ID/README.md) | [Igbo](../ig-NG/README.md) | [Italiano](../it-IT/README.md) | [日本語](../ja-JP/README.md) | [한국어](../ko-KR/README.md) | [Malagasy](../mg-MG/README.md) | [मराठी](../mr-IN/README.md) | [Bahasa Melayu](../ms-MY/README.md) | [Nederlands](../nl-NL/README.md) | [Polski](../pl-PL/README.md) | [Português (Brasil)](../pt-BR/README.md) | [Русский](../ru-RU/README.md) | [Kinyarwanda](../rw-RW/README.md) | [Soomaali](../so-SO/README.md) | [Српски](../sr-RS/README.md) | [Svenska](../sv-SE/README.md) | [Kiswahili](../sw-KE/README.md) | [தமிழ்](../ta-IN/README.md) | [తెలుగు](../te-IN/README.md) | [ไทย](../th-TH/README.md) | [Türkçe](../tr-TR/README.md) | [Українська](../uk-UA/README.md) | [اردو](../ur-PK/README.md) | [Tiếng Việt](../vi-VN/README.md) | [isiXhosa](README.md) | [Yorùbá](../yo-NG/README.md) | [繁體中文](../zh-TW/README.md) | [isiZulu](../zu-ZA/README.md)
@@ -53,13 +53,15 @@ Iingxaki zeCacti zihlala zivela njengeempawu: iigrafu ezingenanto, i-poller emis
 | Izixhobo | Izixhobo ezivuliweyo ezingasebenziyo okanye ezibuyayo, ezithathu ezingasebenziyo ixesha elide kunye nempazamo yazo yokugqibela, kunye nokusilela xa izixhobo ezininzi zingasebenzi ngexesha elinye |
 | I-Poller | Uhlobo lwe-poller kunye nexesha lokuqhawuka, ixesha ukusukela ekugqibeleni kwe-poller engundoqo, ixesha lokusebenza ngokuchasene nexesha lokuqhawuka, imveliso ye-poller engazange ifike kwifayile ye-RRD, ii-poller ezikude eziyekileyo ukunika ingxelo, i-Boost emileyo, kunye noqwalaselo lwe-Spine olukhomba kwisiseko sedatha esahlukileyo |
 
-Uhlolo ngalunye lune-ID ezinzileyo, njenge-`database.timezone` okanye i-`binary.rrdtool`, ukuze izikripthi zikwazi ukusebenzisa iziphumo ezizimeleyo.
+Uhlolo ngalunye lune-ID ezinzileyo, njenge-`database.timezone` okanye i-`binary.rrdtool`, ukuze izikripthi zikwazi ukusebenzisa iziphumo ezizimeleyo. Iiplagini ezivuliweyo zinokufaka uhlolo olongezelelweyo kunye nezihlomelo zepakheji yenkxaso ngokusebenzisa i-hook ye-`doctor_register_checks`, kwaye i-Doctor iveza iikakhono zokuxilonga ezifunda kuphela kwi-`plugin_mcp` nge-`abilities_register`.
 
 ## Imephu yekhowudi novavanyo
 
 | Indlela yokusebenza | Ukuphunyezwa | Ubungqina bovavanyo kule ndawo yokugcina |
 |---|---|---|
-| Ukuhlolwa koxilongo kunye nee-ID zengxelo ezinzileyo | [doctor_functions.php](../../../doctor_functions.php) | [DoctorFunctionsTest.php](../../../tests/DoctorFunctionsTest.php), [AssertDoctorReport.php](../../../tests/ci/AssertDoctorReport.php) |
+| Ukuhlolwa koxilongo kunye nee-ID zengxelo ezinzileyo | [doctor_functions.php](../../../doctor_functions.php) | [DoctorFunctionsTest.php](../../../tests/DoctorFunctionsTest.php), [DatabaseHealthTest.php](../../../tests/DatabaseHealthTest.php), [AssertDoctorReport.php](../../../tests/ci/AssertDoctorReport.php) |
+| I-hook yokuhlola iplagini (`doctor_register_checks`) | [doctor_plugins.php](../../../doctor_plugins.php) | [PluginHooksTest.php](../../../tests/PluginHooksTest.php) |
+| Iikakhono zoxilongo ze-MCP (`abilities_register`) | [doctor_abilities.php](../../../doctor_abilities.php) | [AbilitiesTest.php](../../../tests/AbilitiesTest.php) |
 | Ufikelelo olusekelwe kwindima kunye neengxelo zewebhu ezisuswe iinkcukacha | [doctor_access.php](../../../doctor_access.php), [doctor_web.php](../../../doctor_web.php) | [AccessTest.php](../../../tests/AccessTest.php), [WebAccessTest.php](../../../tests/WebAccessTest.php) |
 | Uphando lweempawu ezikhokelwayo | [doctor_diagnosis.php](../../../doctor_diagnosis.php) | [DiagnosisTest.php](../../../tests/DiagnosisTest.php) |
 | Ubuhle be-RRD kunye nokuphathwa kokubhala okulibazisekileyo | [doctor_rrd.php](../../../doctor_rrd.php) | [RrdFreshnessTest.php](../../../tests/RrdFreshnessTest.php) |
@@ -193,7 +195,7 @@ php plugins/doctor/cli/doctor.php --format=prometheus > /var/lib/node_exporter/t
 php plugins/doctor/cli/doctor.php --bundle=/tmp/cacti-doctor.txt
 ```
 
-Iphakheji yifayile enye yombhalo eneenguqulelo ze-Doctor, i-Cacti, i-PHP, i-OS, nedathabheyisi, amanani e-poller nawe-Boost, ingxelo epheleleyo, kunye nemigca yokugqibela engama-200 yelog ye-Cacti. Amaxabiso alandela amagama egama lokugqitha, imfihlo, ithokheni, uluntu, kunye nesitshixo ayafihlwa. U-Doctor udala ifayile ifundeka kuphela ngumnini wayo kwaye uyala ukubhala ngaphezulu kwefayile ekhoyo. Yijonge phambi kokuba uyithumele naphi na.
+Iphakheji yifayile enye yombhalo eneenguqulelo ze-Doctor, i-Cacti, i-PHP, i-OS, nedathabheyisi, amanani e-poller nawe-Boost, ingxelo epheleleyo, naziphi na izihlomelo zepakheji yenkxaso yeplagini phantsi kwe-`== Plugin attachments`, kunye nemigca yokugqibela engama-200 yelog ye-Cacti. Amaxabiso alandela amagama egama lokugqitha, imfihlo, ithokheni, uluntu, kunye nesitshixo ayafihlwa. U-Doctor udala ifayile ifundeka kuphela ngumnini wayo kwaye uyala ukubhala ngaphezulu kwefayile ekhoyo. Yijonge phambi kokuba uyithumele naphi na.
 
 ## Umgaqo-nkqubo wokulungisa
 
@@ -239,6 +241,63 @@ Izaziso zezilumkiso ezicwangcisiweyo ziyathintelwa ngelixa ukukhululwa kusebenza
 
 Uphuculo ludala i-`plugin_doctor_audit` kunye ne-`plugin_doctor_acceptance` ngaphandle kokutshintsha idatha yesicelo se-Cacti. Thumela ngaphandle nayiphi na imbali oyifunayo phambi kokukhupha ufakelo: ukukhupha ufakelo kususa zombini iitafile ze-plugin kunye nezicwangciso zayo. Ukubuyisela umva iifayile ze-plugin kushiya iitafile zifumaneka ukuze ziphandwe, kodwa iinguqulelo ezindala azikuhloniphi ukukhululwa kwezilumkiso.
 
+## Uhlolo lweeplagini (`doctor_register_checks`)
+
+Iiplagini ze-Cacti ezivuliweyo zinokufaka uhlolo loxilongo olufunda kuphela kunye nezihlomelo zepakheji yenkxaso ezinokukhethwa ngokubhalisa i-hook ye-`doctor_register_checks`:
+
+```php
+api_plugin_register_hook('sample', 'doctor_register_checks', 'sample_doctor_checks', 'setup.php');
+```
+
+I-Doctor ibiza iiplagini ezivuliweyo ezingadityaniswanga ezibhaliswe kwi-`doctor_register_checks` (eqa i-`doctor` ne-`cacti`), ikhangela ifayile ye-hook ngokungqongqo ngaphakathi kolawulo lweplagini ngokwayo. I-callback ifumana i-`['mode' => 'run' | 'list', 'plugin' => '<slug>']` kwaye ibuyisela uluhlu lweencazelo zohlolo okanye imvulophu ene-`checks` kunye ne-`attachments` enokukhethwa:
+
+```php
+function sample_doctor_checks($context) {
+	return [
+		'checks' => [
+			[
+				'id'          => 'sample.queue_depth',
+				'plugin'      => 'sample',
+				'category'    => 'Sample',
+				'title'       => 'Sample queue depth',
+				'status'      => 'ok',
+				'message'     => 'Queue is healthy.',
+				'details'     => ['pending' => 0],
+				'remediation' => ''
+			]
+		],
+		'attachments' => [
+			[
+				'title'   => 'Sample diagnostics',
+				'content' => "worker=ok\n"
+			]
+		]
+	];
+}
+```
+
+Inkcazelo nganye yohlolo lweplagini iyaqinisekiswa phambi kokufakwa:
+
+- Izitshixo ezifunekayo: `id`, `plugin`, `category`, `title`, `status`, `message`, `details`, kunye ne-`remediation`.
+- I-`plugin` kufuneka ihambelane ne-slug yeplagini ebhalisiweyo (`[a-z0-9_]{1,64}`). I-`id` kufuneka ihambelane ne-`[a-z0-9_.]{1,128}`, iqale nge-`<plugin>.`, kwaye ingangqubani ne-ID ekhoyo yohlolo olungundoqo okanye lweplagini.
+- I-`status` kufuneka ibe ngu-`ok`, `warn`, `fail`, okanye `info`. U-`ok` ulingana no-`pass` kwiingxelo ze-Doctor; u-`info` ngowokwazisa kuphela kwaye akavusi ukusilela kwi-CLI, i-Nagios, i-Prometheus, okanye izaziso ezicwangcisiweyo.
+- I-`category` (ukuya kuthi ga kwii-byte ezingama-64) kunye ne-`title` (ukuya kuthi ga kwii-byte ezingama-256) kufuneka ibe yimitya engenanto engquzulwanayo engenazimpawu zolawulo. I-`message` (engenanganto, ukuya kuthi ga kwii-byte ezingama-2048) kunye ne-`remediation` (ukuya kuthi ga kwii-byte ezingama-2048) kufuneka ibe yimitya.
+- I-`details` yamkela umtya (ukuya kuthi ga kwii-byte ezingama-8192) okanye uluhlu lwe-scalar/oludityanisiweyo (ubunzulu obuphezulu obu-4, okuguqulelwe kwi-JSON ukuya kuthi ga kwii-byte ezili-16384; izinto kunye nezixhobo ziyaliwa).
+- Izihlomelo zepakheji yenkxaso ezinokukhethwa zifuna i-`title` engenanto (ukuya kuthi ga kwii-byte ezili-128, akukho zimpawu zolawulo) kunye nomtya we-`content` ukuya kuthi ga kwii-byte ezingama-65536 (64 KiB).
+
+I-Doctor inyanzelisa imida yohlolo olungama-32 kunye nezihlomelo ezi-8 ngeplagini nganye (uhlolo lweeplagini olungama-64 kunye nezihlomelo ezingama-32 zizonke). I-hook nganye isebenza ngaphakathi komda wayo we-`try`/`catch` ukuze izinto ezingaqhelekanga okanye iidatha ezingezizo ezoluhlu zihlelwe kwaye zibhalwe kwilog ye-Cacti (isibonelelo se-`DOCTOR`) ngaphandle kokuchaphazela uhlolo olungundoqo okanye ezinye iiplagini. Iinkcazelo ezingalunganga ziyaliwa kwaye zibhalwe kwilog ngelixa ezisemthethweni ezivela kwakule plagini zisaqhuba ukusebenza. Uhlolo lweeplagini luhlala lufunda kuphela (`repairable: false`), kwaye amaxabiso omtya kunye nezitshixo ezinxulumeneyo ezibuthathaka ziyafihlwa phambi kokuboniswa, ukuthunyelwa ngaphandle, okanye ukuhlanganiswa kwipakheji. Uhlolo lweeplagini oluqinisekisiweyo luvela kwi-UI yewebhu, kwimveliso ye-CLI yombhalo/JSON/Nagios/Prometheus, ekulandelelweni kwemeko okucwangcisiweyo, nakwiipakheji zenkxaso.
+
+## Udibaniso lwe-MCP (`abilities_register`)
+
+I-Doctor ibhalisa i-hook ye-`abilities_register` (`doctor_abilities_register` kwi-`doctor_abilities.php`) ukuze i-`plugin_mcp` ifumane iikakhono zayo zoxilongo xa zombini iiplagini zivuliwe. I-Doctor ibhalisa udidi lwe-`diagnostics` (`Diagnostics`) kunye neekakhono ezimbini ezifunda kuphela, ezingatshabalalisiyo, nezingatshintshi ziphumo xa ziphindwa (idempotent):
+
+| I-ID yekakhono | Iingxoxo ezinokukhethwa | Imveliso |
+|---|---|---|
+| `doctor-run-checks` | `category` (umtya, ubuninzi beenkumbulo ezingama-64), `status` (`pass`, `ok`, `warn`, `fail`, `info`) | `summary` (`total`, `pass`, `warn`, `fail`, `info`) kunye ne-`findings` efihliweyo ukuya kuthi ga kuma-256 (`id`, `plugin`, `category`, `title`, `status`, `message`, `remediation`) |
+| `doctor-list-checks` | `category` (umtya, ubuninzi beenkumbulo ezingama-64), `plugin` (umtya, ubuninzi beenkumbulo ezingama-64) | Ukuya kuthi ga kuma-256 ee-`checks` (`id`, `plugin`, `category`, `title`) eziquka lonke uhlolo olwakhelwe ngaphakathi olungama-45 kunye nohlolo lweeplagini ezivuliweyo |
+
+Zombini iikakhono zifunda kuphela ngokungqongqo kwaye azize ziqhube ukulungisa. Ukongeza kulawulo lwe-`plugin_mcp` ngokwalo lwemimandla nokutyhilwa kweekakhono (iikakhono zeeplagini ziqala zifihliwe kwi-MCP de umlawuli azityhile), i-Doctor ifuna umnini wethokheni abe ne-**Doctor Viewer** okanye ummandla ophezulu we-Doctor. I-`doctor-run-checks` ilinganisela i-`devices.health` kwizixhobo ezivunyelweyo zomnini wethokheni, iquka i-`logging.recent_errors` kuphela xa umsebenzisi enommandla we-Cacti we-18 okanye we-19, ishiya ngaphandle i-`filesystem.rrd_files`, kwaye iquka i-`filesystem.rrd_stale` elinganiselwe kwizixhobo kuphela kwi-**Doctor Operator** okanye kwi-**Doctor Administrator**.
+
 ## Iimfuno
 
 | Cacti | PHP | Amanqaku |
@@ -256,20 +315,22 @@ Imihla yenkxaso ihlanganiswe kunye ne-Doctor ukusuka kwi-[shedyuli yenkxaso ye-P
 
 ## Uphuhliso
 
-Uthotho lweemvavanyo zeyunithi lusebenzisa i-Pest kwaye lusebenza kwi-PHP 8.2 okanye entsha:
+Uthotho lweemvavanyo zeyunithi lusebenzisa i-Pest kwaye uhlalutyo olungashukumiyo lusebenzisa i-PHPStan (inqanaba lesi-6), zombini zisebenza kwi-PHP 8.2 okanye entsha:
 
 ```console
 composer install
+composer phpstan
 composer test
 ```
 
 Iimvavanyo zibuyisela imisebenzi ye-Cacti ebizwa yi-Doctor ngezinto ezincinci ezimela yona kwi-`tests/CactiStubs.php`, ngoko ke zisebenza ngaphandle kofakelo lwe-Cacti.
 
-I-GitHub Actions iqhuba iindidi ezine zohlolo kulo lonke u-push kunye ne-pull request:
+I-GitHub Actions iqhuba iindidi ezintlanu zohlolo kulo lonke u-push kunye ne-pull request:
 
-- `php -l` kuyo yonke ifayile ye-PHP phantsi kwe-PHP 5.4, 5.6, 7.0, 7.1, 7.4, kunye ne-8.0 ukuya kuthi ga kwi-8.4.
-- Uthotho lweemvavanyo zeyunithi kwi-PHP 8.2, 8.3, kunye ne-8.4.
+- Iimvavanyo zesivumelwano sokupakisha ukukhutshwa (`tests/test_release.py`) kunye nokwakhiwa kwe-archive (`tools/build_release.py`).
 - `locales/build_gettext.sh --check`, esilela kwitempleyiti yoguqulelo endala, ikhathalogu engaphelelanga okanye engacacanga, okanye ikhathalogu eqokelelweyo eyahlukileyo kumthombo wayo.
+- `php -l` kuyo yonke ifayile ye-PHP phantsi kwe-PHP 5.4, 5.6, 7.0, 7.1, 7.4, kunye ne-8.0 ukuya kuthi ga kwi-8.4.
+- `composer phpstan` (PHPStan inqanaba lesi-6) kunye ne-`composer test` (uthotho lweemvavanyo zeyunithi lwe-Pest) kwi-PHP 8.2, 8.3, kunye ne-8.4.
 - Imisebenzi esixhenxe yokudibanisa efaka i-Cacti 1.2.20, isebe langoku le-1.2.x, kunye ne-`develop` ngokuchasene ne-MySQL kunye ne-MariaDB, zombini nge-cmd.php kunye ne-Spine. Umsebenzi ngamnye ufaka kwaye uvule i-plugin, uqhube ingxelo epheleleyo ye-CLI, kwaye uhlole iskimu sengxelo, amanani ewonke esishwankathelo, iimeko ezilindelekileyo, kunye neseti echanekileyo yokusilela. Emva koko waphula indlela ye-binary kunye nesitampu sexesha se-poller, uqinisekise ukuba zombini zixeliwe, uzibuyisele, usebenzise ukulungiswa kunye nesiqinisekiso sako, kwaye uqhube ukukhubaza, ukuvula, ukukhupha ufakelo, kunye nokufaka kwakhona. Ingxelo ye-JSON igcinwa njenge-artifact xa umsebenzi usilela.
 
 ## Ukufaka igalelo

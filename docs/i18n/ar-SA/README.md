@@ -1,4 +1,4 @@
-<!-- Source: README.md; SHA256: ee03c7ac68aca21c8155c29b5b43a1f206c2f0c379c8b07bb4113919c18aafde -->
+<!-- Source: README.md; SHA256: 490628bb7f70f4cf1a8c43b302246fd2e870725a6649c628762608b4a76db65b -->
 
 <!-- translations:start -->
 [English](../../../README.md) | [简体中文](../zh-CN/README.md) | [हिन्दी](../hi-IN/README.md) | [Español (España)](../es-ES/README.md) | [Español (Latinoamérica)](../es-419/README.md) | [العربية (السعودية)](README.md) | [Afrikaans](../af-ZA/README.md) | [አማርኛ](../am-ET/README.md) | [العربية (مصر)](../ar-EG/README.md) | [العربية (المغرب)](../ar-MA/README.md) | [বাংলা](../bn-BD/README.md) | [Bosanski](../bs-BA/README.md) | [Deutsch](../de-DE/README.md) | [فارسی](../fa-IR/README.md) | [Filipino](../fil-PH/README.md) | [Français](../fr-FR/README.md) | [Français (Maroc)](../fr-MA/README.md) | [Français (Sénégal)](../fr-SN/README.md) | [Hausa](../ha-NG/README.md) | [עברית](../he-IL/README.md) | [Hrvatski](../hr-HR/README.md) | [Bahasa Indonesia](../id-ID/README.md) | [Igbo](../ig-NG/README.md) | [Italiano](../it-IT/README.md) | [日本語](../ja-JP/README.md) | [한국어](../ko-KR/README.md) | [Malagasy](../mg-MG/README.md) | [मराठी](../mr-IN/README.md) | [Bahasa Melayu](../ms-MY/README.md) | [Nederlands](../nl-NL/README.md) | [Polski](../pl-PL/README.md) | [Português (Brasil)](../pt-BR/README.md) | [Русский](../ru-RU/README.md) | [Kinyarwanda](../rw-RW/README.md) | [Soomaali](../so-SO/README.md) | [Српски](../sr-RS/README.md) | [Svenska](../sv-SE/README.md) | [Kiswahili](../sw-KE/README.md) | [தமிழ்](../ta-IN/README.md) | [తెలుగు](../te-IN/README.md) | [ไทย](../th-TH/README.md) | [Türkçe](../tr-TR/README.md) | [Українська](../uk-UA/README.md) | [اردو](../ur-PK/README.md) | [Tiếng Việt](../vi-VN/README.md) | [isiXhosa](../xh-ZA/README.md) | [Yorùbá](../yo-NG/README.md) | [繁體中文](../zh-TW/README.md) | [isiZulu](../zu-ZA/README.md)
@@ -52,14 +52,16 @@ Cacti Doctor إضافة لـ Cacti تشخّص التثبيت في مرور وا�
 | الأجهزة | الأجهزة المفعّلة المتوقفة أو المتعافية، والأجهزة الثلاثة الأطول توقفًا مع آخر خطأ لها، والفشل عندما تتوقف غالبية الأجهزة معًا |
 | المستطلع | النوع والفاصل، الوقت منذ اكتمال المستطلع الرئيسي، مدة التشغيل مقارنة بالفاصل، إخراج لم يصل إلى RRD، مستطلعات بعيدة توقفت عن الإبلاغ، Boost متوقف، وإعداد Spine يشير إلى قاعدة بيانات مختلفة |
 
-لكل فحص معرّف ثابت مثل `database.timezone` أو `binary.rrdtool`، كي تستطيع البرامج النصية تمييز النتائج الفردية.
+لكل فحص معرّف ثابت مثل `database.timezone` أو `binary.rrdtool`، كي تستطيع البرامج النصية تمييز النتائج الفردية. ويمكن للإضافات المفعّلة الإسهام بفحوص إضافية ومرفقات لحزمة الدعم عبر خطاف `doctor_register_checks`، كما يتيح Doctor قدرات تشخيصية للقراءة فقط لإضافة `plugin_mcp` عبر `abilities_register`.
 
 <a id="code-and-test-map"></a>
 ## خريطة الكود والاختبارات
 
 | السلوك | التنفيذ | أدلة الاختبار في هذا المستودع |
 |---|---|---|
-| فحوص التشخيص ومعرّفات التقارير الثابتة | [doctor_functions.php](../../../doctor_functions.php) | [DoctorFunctionsTest.php](../../../tests/DoctorFunctionsTest.php), [AssertDoctorReport.php](../../../tests/ci/AssertDoctorReport.php) |
+| فحوص التشخيص ومعرّفات التقارير الثابتة | [doctor_functions.php](../../../doctor_functions.php) | [DoctorFunctionsTest.php](../../../tests/DoctorFunctionsTest.php), [DatabaseHealthTest.php](../../../tests/DatabaseHealthTest.php), [AssertDoctorReport.php](../../../tests/ci/AssertDoctorReport.php) |
+| خطاف فحوص الإضافات (`doctor_register_checks`) | [doctor_plugins.php](../../../doctor_plugins.php) | [PluginHooksTest.php](../../../tests/PluginHooksTest.php) |
+| قدرات التشخيص لـ MCP (`abilities_register`) | [doctor_abilities.php](../../../doctor_abilities.php) | [AbilitiesTest.php](../../../tests/AbilitiesTest.php) |
 | الوصول المحدد بالأدوار وتقارير الويب المحجوبة البيانات الحساسة | [doctor_access.php](../../../doctor_access.php), [doctor_web.php](../../../doctor_web.php) | [AccessTest.php](../../../tests/AccessTest.php), [WebAccessTest.php](../../../tests/WebAccessTest.php) |
 | استقصاءات موجّهة للأعراض | [doctor_diagnosis.php](../../../doctor_diagnosis.php) | [DiagnosisTest.php](../../../tests/DiagnosisTest.php) |
 | حداثة RRD ومعالجة الكتابة المؤجلة | [doctor_rrd.php](../../../doctor_rrd.php) | [RrdFreshnessTest.php](../../../tests/RrdFreshnessTest.php) |
@@ -201,7 +203,7 @@ php plugins/doctor/cli/doctor.php --format=prometheus > /var/lib/node_exporter/t
 php plugins/doctor/cli/doctor.php --bundle=/tmp/cacti-doctor.txt
 ```
 
-الحزمة ملف نصي واحد يتضمن إصدارات Doctor وCacti وPHP ونظام التشغيل وقاعدة البيانات، وإحصاءات المستطلع وBoost، والتقرير الكامل، وآخر 200 سطر من سجل Cacti. تُحجب القيم التي تلي أسماء password وsecret وtoken وcommunity وkey. ينشئ Doctor الملف بحيث يقرأه مالكه فقط، ويرفض الكتابة فوق ملف قائم. راجعه قبل نشره في أي مكان.
+الحزمة ملف نصي واحد يتضمن إصدارات Doctor وCacti وPHP ونظام التشغيل وقاعدة البيانات، وإحصاءات المستطلع وBoost، والتقرير الكامل، وأي مرفقات حزمة دعم من الإضافات تحت `== Plugin attachments`، وآخر 200 سطر من سجل Cacti. تُحجب القيم التي تلي أسماء password وsecret وtoken وcommunity وkey. ينشئ Doctor الملف بحيث يقرأه مالكه فقط، ويرفض الكتابة فوق ملف قائم. راجعه قبل نشره في أي مكان.
 
 <a id="repair-policy"></a>
 ## سياسة الإصلاح
@@ -252,6 +254,65 @@ php plugins/doctor/cli/doctor.php --bundle=/tmp/cacti-doctor.txt
 
 تنشئ الترقية `plugin_doctor_audit` و`plugin_doctor_acceptance` دون تغيير بيانات تطبيق Cacti. صدّر التاريخ المطلوب قبل إلغاء التثبيت: يزيل إلغاء التثبيت الجدولين وإعدادات الإضافة. يترك إرجاع ملفات الإضافة الجداول متاحة للتحقيق، لكن الإصدارات القديمة لا تحترم استثناءات التحذيرات.
 
+<a id="plugin-checks-doctor_register_checks"></a>
+## فحوص الإضافات (`doctor_register_checks`)
+
+يمكن لإضافات Cacti المفعّلة الإسهام بفحوص تشخيصية للقراءة فقط ومرفقات اختيارية لحزمة الدعم عبر تسجيل خطاف `doctor_register_checks`:
+
+```php
+api_plugin_register_hook('sample', 'doctor_register_checks', 'sample_doctor_checks', 'setup.php');
+```
+
+يستدعي Doctor الإضافات المفعّلة وغير المدمجة المسجّلة في `doctor_register_checks` (متخطيًا `doctor` و`cacti`)، ويحسم مسار ملف الخطاف بدقة داخل مجلد الإضافة نفسه. يتلقى رد النداء `['mode' => 'run' | 'list', 'plugin' => '<slug>']` ويعيد إما قائمة من واصفات الفحص أو غلافًا يحتوي على `checks` و`attachments` الاختيارية:
+
+```php
+function sample_doctor_checks($context) {
+	return [
+		'checks' => [
+			[
+				'id'          => 'sample.queue_depth',
+				'plugin'      => 'sample',
+				'category'    => 'Sample',
+				'title'       => 'Sample queue depth',
+				'status'      => 'ok',
+				'message'     => 'Queue is healthy.',
+				'details'     => ['pending' => 0],
+				'remediation' => ''
+			]
+		],
+		'attachments' => [
+			[
+				'title'   => 'Sample diagnostics',
+				'content' => "worker=ok\n"
+			]
+		]
+	];
+}
+```
+
+يُتحقّق من صحة كل واصف فحص للإضافة قبل تضمينه:
+
+- المفاتيح المطلوبة: `id` و`plugin` و`category` و`title` و`status` و`message` و`details` و`remediation`.
+- يجب أن يطابق `plugin` الاسم المختصر المسجّل للإضافة (`[a-z0-9_]{1,64}`). يجب أن يطابق `id` النمط `[a-z0-9_.]{1,128}`، ويبدأ بـ `<plugin>.`، وألا يتعارض مع معرّف فحص أساسي أو فحص إضافة قائم.
+- يجب أن تكون قيمة `status` هي `ok` أو `warn` أو `fail` أو `info`. يقابل `ok` الحالة `pass` في تقارير Doctor؛ أما `info` فإعلامي ولا يثير إخفاقات في CLI أو Nagios أو Prometheus أو التنبيهات المجدولة.
+- يجب أن تكون `category` (حتى 64 بايت) و`title` (حتى 256 بايت) سلسلتين نصيتين غير فارغتين بلا محارف تحكم. ويجب أن تكون `message` (غير فارغة، حتى 2048 بايت) و`remediation` (حتى 2048 بايت) سلسلتين نصيتين.
+- يقبل `details` سلسلة نصية (حتى 8192 بايت) أو مصفوفة قياسية/متداخلة (أقصى عمق 4، ومشفرة بـ JSON حتى 16384 بايت؛ تُرفض الكائنات والموارد).
+- تتطلب مرفقات حزمة الدعم الاختيارية قيمة `title` غير فارغة (حتى 128 بايت، بلا محارف تحكم) وسلسلة `content` حتى 65536 بايت (64 KiB).
+
+يفرض Doctor حدودًا قدرها 32 فحصًا و8 مرفقات لكل إضافة (64 فحص إضافة و32 مرفقًا إجمالًا). ينفّذ كل خطاف داخل حدود `try`/`catch` الخاصة به بحيث تُحجب الاستثناءات أو الحمولات غير المصفوفية وتُسجّل في سجل Cacti (فئة `DOCTOR`) دون التأثير في الفحوص الأساسية أو الإضافات الأخرى. تُرفض الواصفات غير الصالحة وتُسجّل بينما تواصل الواصفات الصالحة من الإضافة نفسها العمل. وتكون فحوص الإضافات للقراءة فقط دائمًا (`repairable: false`)، وتُحجب القيم النصية والمفاتيح الترابطية الحساسة قبل العرض أو التصدير أو التجميع. وتظهر فحوص الإضافات المعتمدة في واجهة الويب، ومخرجات CLI النصية وJSON وNagios وPrometheus، وتتبع الحالة المجدول، وحزم الدعم.
+
+<a id="mcp-integration-abilities_register"></a>
+## تكامل MCP (`abilities_register`)
+
+يسجل Doctor خطاف `abilities_register` (`doctor_abilities_register` في `doctor_abilities.php`) كي تكتشف `plugin_mcp` قدراته التشخيصية عند تفعيل الإضافتين معًا. يسجل Doctor فئة `diagnostics` (`Diagnostics`) وقدرتين للقراءة فقط وغير مدمرتين ومتماثلتين عند التكرار (idempotent):
+
+| معرّف القدرة | المعاملات الاختيارية | الإخراج |
+|---|---|---|
+| `doctor-run-checks` | `category` (سلسلة نصية، 64 حرفًا كحد أقصى)، `status` (`pass` أو `ok` أو `warn` أو `fail` أو `info`) | `summary` (`total` و`pass` و`warn` و`fail` و`info`) وما يصل إلى 256 من `findings` المنقّحة (`id` و`plugin` و`category` و`title` و`status` و`message` و`remediation`) |
+| `doctor-list-checks` | `category` (سلسلة نصية، 64 حرفًا كحد أقصى)، `plugin` (سلسلة نصية، 64 حرفًا كحد أقصى) | ما يصل إلى 256 من `checks` (`id` و`plugin` و`category` و`title`) تغطي جميع الفحوص المدمجة الـ 45 بالإضافة إلى فحوص الإضافات المفعّلة |
+
+كلتا القدرتين للقراءة فقط بصرامة ولا تنفّذان أي إصلاحات أبدًا. وبالإضافة إلى ضوابط النطاق وإتاحة القدرات الخاصة بـ `plugin_mcp` (تبدأ قدرات الإضافات مخفية في MCP حتى يكشفها مسؤول)، يشترط Doctor أن يحمل مالك الرمز نطاق **Doctor Viewer** أو نطاق Doctor أعلى. تقصر `doctor-run-checks` نطاق `devices.health` على الأجهزة المسموح بها لمالك الرمز، وتدرج `logging.recent_errors` فقط حين يحمل المستخدم نطاق Cacti رقم 18 أو 19، وتستبعد `filesystem.rrd_files`، وتدرج `filesystem.rrd_stale` المحددة بالأجهزة فقط لـ **Doctor Operator** أو **Doctor Administrator**.
+
 <a id="requirements"></a>
 ## المتطلبات
 
@@ -271,20 +332,22 @@ php plugins/doctor/cli/doctor.php --bundle=/tmp/cacti-doctor.txt
 <a id="development"></a>
 ## التطوير
 
-تستخدم مجموعة اختبارات الوحدات Pest وتعمل على PHP 8.2 أو أحدث:
+تستخدم مجموعة اختبارات الوحدات Pest ويستخدم التحليل الساكن PHPStan (المستوى 6)، وكلاهما على PHP 8.2 أو أحدث:
 
 ```console
 composer install
+composer phpstan
 composer test
 ```
 
 تستبدل الاختبارات دوال Cacti التي يستدعيها Doctor ببدائل صغيرة في `tests/CactiStubs.php`، فتعمل دون تثبيت Cacti.
 
-يشغّل GitHub Actions أربعة أنواع من الفحوص مع كل دفع وطلب سحب:
+يشغّل GitHub Actions خمسة أنواع من الفحوص مع كل دفع وطلب سحب:
 
-- `php -l` لكل ملف PHP على PHP 5.4 و5.6 و7.0 و7.1 و7.4 ومن 8.0 إلى 8.4.
-- مجموعة الوحدات على PHP 8.2 و8.3 و8.4.
+- اختبارات عقد حزم الإصدار (`tests/test_release.py`) وبناء الأرشيف (`tools/build_release.py`).
 - `locales/build_gettext.sh --check`، الذي يفشل عند تقادم قالب الترجمة، أو نقص كتالوج أو احتوائه على إدخالات غير مؤكدة، أو اختلاف الكتالوج المجمّع عن مصدره.
+- `php -l` لكل ملف PHP على PHP 5.4 و5.6 و7.0 و7.1 و7.4 ومن 8.0 إلى 8.4.
+- `composer phpstan` (PHPStan المستوى 6) و`composer test` (مجموعة اختبارات الوحدات Pest) على PHP 8.2 و8.3 و8.4.
 - سبع مهام تكامل تثبّت Cacti 1.2.20 وفرع 1.2.x الحالي و`develop` مع MySQL وMariaDB، باستخدام cmd.php وSpine معًا. تثبّت كل مهمة الإضافة وتفعّلها، وتشغّل تقرير CLI الكامل، وتتحقق من المخطط وإجماليات الملخص والحالات المتوقعة ومجموعة الإخفاقات الدقيقة. ثم تُفسد مسار ملف تنفيذي وطابع المستطلع الزمني، وتؤكد الإبلاغ عنهما، وتعيدهما، وتختبر الإصلاح وتأكيده، ثم التعطيل والتفعيل وإلغاء التثبيت وإعادة التثبيت. يُحفظ تقرير JSON كمنتج عندما تفشل مهمة.
 
 <a id="contributing"></a>

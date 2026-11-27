@@ -1,4 +1,4 @@
-<!-- Source: README.md; SHA256: ee03c7ac68aca21c8155c29b5b43a1f206c2f0c379c8b07bb4113919c18aafde -->
+<!-- Source: README.md; SHA256: 490628bb7f70f4cf1a8c43b302246fd2e870725a6649c628762608b4a76db65b -->
 
 <!-- translations:start -->
 [English](../../../README.md) | [简体中文](../zh-CN/README.md) | [हिन्दी](../hi-IN/README.md) | [Español (España)](../es-ES/README.md) | [Español (Latinoamérica)](../es-419/README.md) | [العربية (السعودية)](../ar-SA/README.md) | [Afrikaans](../af-ZA/README.md) | [አማርኛ](../am-ET/README.md) | [العربية (مصر)](../ar-EG/README.md) | [العربية (المغرب)](../ar-MA/README.md) | [বাংলা](../bn-BD/README.md) | [Bosanski](../bs-BA/README.md) | [Deutsch](../de-DE/README.md) | [فارسی](../fa-IR/README.md) | [Filipino](../fil-PH/README.md) | [Français](../fr-FR/README.md) | [Français (Maroc)](../fr-MA/README.md) | [Français (Sénégal)](../fr-SN/README.md) | [Hausa](../ha-NG/README.md) | [עברית](../he-IL/README.md) | [Hrvatski](../hr-HR/README.md) | [Bahasa Indonesia](../id-ID/README.md) | [Igbo](../ig-NG/README.md) | [Italiano](../it-IT/README.md) | [日本語](../ja-JP/README.md) | [한국어](../ko-KR/README.md) | [Malagasy](../mg-MG/README.md) | [मराठी](../mr-IN/README.md) | [Bahasa Melayu](../ms-MY/README.md) | [Nederlands](../nl-NL/README.md) | [Polski](../pl-PL/README.md) | [Português (Brasil)](../pt-BR/README.md) | [Русский](../ru-RU/README.md) | [Kinyarwanda](../rw-RW/README.md) | [Soomaali](../so-SO/README.md) | [Српски](../sr-RS/README.md) | [Svenska](../sv-SE/README.md) | [Kiswahili](../sw-KE/README.md) | [தமிழ்](../ta-IN/README.md) | [తెలుగు](README.md) | [ไทย](../th-TH/README.md) | [Türkçe](../tr-TR/README.md) | [Українська](../uk-UA/README.md) | [اردو](../ur-PK/README.md) | [Tiếng Việt](../vi-VN/README.md) | [isiXhosa](../xh-ZA/README.md) | [Yorùbá](../yo-NG/README.md) | [繁體中文](../zh-TW/README.md) | [isiZulu](../zu-ZA/README.md)
@@ -50,13 +50,15 @@ Cacti సమస్యలు సాధారణంగా లక్షణాలు
 | పరికరాలు | డౌన్‌లో ఉన్న లేదా కోలుకుంటున్న ఎనేబుల్ చేసిన పరికరాలు, వాటి చివరి లోపంతో పాటు ఎక్కువ కాలం డౌన్‌లో ఉన్న మూడు పరికరాలు మరియు ఒకేసారి చాలా పరికరాలు డౌన్ అయినప్పుడు వైఫల్యం |
 | పోలర్ | పోలర్ రకం మరియు వ్యవధి, ప్రధాన పోలర్ చివరిసారి పూర్తయినప్పటి నుండి సమయం, వ్యవధితో పోల్చితే రన్ సమయం, RRD ఫైల్‌కు ఎన్నడూ చేరని పోలర్ అవుట్‌పుట్, నివేదించడం ఆపివేసిన రిమోట్ పోలర్లు, నిలిచిపోయిన Boost మరియు వేరే డేటాబేస్‌ను సూచించే Spine కాన్ఫిగరేషన్ |
 
-ప్రతి తనిఖీకి `database.timezone` లేదా `binary.rrdtool` వంటి స్థిరమైన ID ఉంటుంది, కాబట్టి స్క్రిప్ట్‌లు వ్యక్తిగత ఫలితాలను ఆధారం చేసుకోవచ్చు.
+ప్రతి తనిఖీకి `database.timezone` లేదా `binary.rrdtool` వంటి స్థిరమైన ID ఉంటుంది, కాబట్టి స్క్రిప్ట్‌లు వ్యక్తిగత ఫలితాలను ఆధారం చేసుకోవచ్చు. ఎనేబుల్ చేసిన ప్లగిన్‌లు `doctor_register_checks` హుక్ ద్వారా అదనపు తనిఖీలను మరియు సపోర్ట్-బండిల్ అటాచ్‌మెంట్‌లను అందించగలవు, మరియు Doctor `abilities_register` ద్వారా `plugin_mcp` కు రీడ్-ఓన్లీ డయాగ్నోస్టిక్ సామర్థ్యాలను అందిస్తుంది.
 
 ## కోడ్ మరియు పరీక్ష మ్యాప్
 
 | ప్రవర్తన | అమలు | ఈ రిపోజిటరీలో పరీక్ష ఆధారం |
 |---|---|---|
-| నిర్ధారణ తనిఖీలు మరియు స్థిరమైన నివేదిక IDలు | [doctor_functions.php](../../../doctor_functions.php) | [DoctorFunctionsTest.php](../../../tests/DoctorFunctionsTest.php), [AssertDoctorReport.php](../../../tests/ci/AssertDoctorReport.php) |
+| నిర్ధారణ తనిఖీలు మరియు స్థిరమైన నివేదిక IDలు | [doctor_functions.php](../../../doctor_functions.php) | [DoctorFunctionsTest.php](../../../tests/DoctorFunctionsTest.php), [DatabaseHealthTest.php](../../../tests/DatabaseHealthTest.php), [AssertDoctorReport.php](../../../tests/ci/AssertDoctorReport.php) |
+| ప్లగిన్ తనిఖీ హుక్ (`doctor_register_checks`) | [doctor_plugins.php](../../../doctor_plugins.php) | [PluginHooksTest.php](../../../tests/PluginHooksTest.php) |
+| MCP నిర్ధారణ సామర్థ్యాలు (`abilities_register`) | [doctor_abilities.php](../../../doctor_abilities.php) | [AbilitiesTest.php](../../../tests/AbilitiesTest.php) |
 | రోల్-స్కోప్డ్ యాక్సెస్ మరియు సవరించిన వెబ్ నివేదికలు | [doctor_access.php](../../../doctor_access.php), [doctor_web.php](../../../doctor_web.php) | [AccessTest.php](../../../tests/AccessTest.php), [WebAccessTest.php](../../../tests/WebAccessTest.php) |
 | గైడెడ్ లక్షణ పరిశోధనలు | [doctor_diagnosis.php](../../../doctor_diagnosis.php) | [DiagnosisTest.php](../../../tests/DiagnosisTest.php) |
 | RRD తాజాదనం మరియు వాయిదా వేసిన-రైట్ నిర్వహణ | [doctor_rrd.php](../../../doctor_rrd.php) | [RrdFreshnessTest.php](../../../tests/RrdFreshnessTest.php) |
@@ -188,7 +190,7 @@ php plugins/doctor/cli/doctor.php --format=prometheus > /var/lib/node_exporter/t
 php plugins/doctor/cli/doctor.php --bundle=/tmp/cacti-doctor.txt
 ```
 
-ఈ బండిల్ Doctor, Cacti, PHP, OS, మరియు డేటాబేస్ వెర్షన్‌లు, పోలర్ మరియు Boost గణాంకాలు, పూర్తి నివేదిక, మరియు Cacti లాగ్ యొక్క చివరి 200 లైన్‌లతో కూడిన ఒకే టెక్స్ట్ ఫైల్. password, secret, token, community, మరియు key పేర్ల తర్వాత వచ్చే విలువలు మాస్క్ చేయబడతాయి. Doctor ఈ ఫైల్‌ను దాని యజమాని మాత్రమే చదవగలిగేలా సృష్టిస్తుంది మరియు ఇప్పటికే ఉన్న ఫైల్‌ను ఓవర్‌రైట్ చేయడానికి నిరాకరిస్తుంది. దానిని ఎక్కడైనా పోస్ట్ చేసే ముందు సమీక్షించండి.
+ఈ బండిల్ Doctor, Cacti, PHP, OS, మరియు డేటాబేస్ వెర్షన్‌లు, పోలర్ మరియు Boost గణాంకాలు, పూర్తి నివేదిక, `== Plugin attachments` క్రింద ఉన్న ఏవైనా ప్లగిన్ సపోర్ట్-బండిల్ అటాచ్‌మెంట్‌లు, మరియు Cacti లాగ్ యొక్క చివరి 200 లైన్‌లతో కూడిన ఒకే టెక్స్ట్ ఫైల్. password, secret, token, community, మరియు key పేర్ల తర్వాత వచ్చే విలువలు మాస్క్ చేయబడతాయి. Doctor ఈ ఫైల్‌ను దాని యజమాని మాత్రమే చదవగలిగేలా సృష్టిస్తుంది మరియు ఇప్పటికే ఉన్న ఫైల్‌ను ఓవర్‌రైట్ చేయడానికి నిరాకరిస్తుంది. దానిని ఎక్కడైనా పోస్ట్ చేసే ముందు సమీక్షించండి.
 
 ## మరమ్మత్తు విధానం
 
@@ -234,6 +236,63 @@ Cacti యొక్క Settings/System Utilities అనుమతి ఉన్న 
 
 అప్‌గ్రేడ్ Cacti అప్లికేషన్ డేటాను మార్చకుండా `plugin_doctor_audit` మరియు `plugin_doctor_acceptance` లను సృష్టిస్తుంది. అన్‌ఇన్‌స్టాల్ చేయడానికి ముందు మీకు అవసరమైన ఏదైనా చరిత్రను ఎగుమతి చేయండి: అన్‌ఇన్‌స్టాల్ చేయడం వలన రెండు ప్లగ్ఇన్ పట్టికలు మరియు దాని సెట్టింగ్‌లు తొలగించబడతాయి. ప్లగ్ఇన్ ఫైళ్లను వెనక్కి మార్చడం వలన పరిశోధన కోసం పట్టికలు అందుబాటులో ఉంటాయి, కానీ పాత వెర్షన్‌లు హెచ్చరిక మినహాయింపులను గౌరవించవు.
 
+## ప్లగిన్ తనిఖీలు (`doctor_register_checks`)
+
+ఎనేబుల్ చేసిన Cacti ప్లగిన్‌లు `doctor_register_checks` హుక్‌ను నమోదు చేయడం ద్వారా రీడ్-ఓన్లీ డయాగ్నోస్టిక్ తనిఖీలను మరియు ఐచ్ఛిక సపోర్ట్-బండిల్ అటాచ్‌మెంట్‌లను అందించగలవు:
+
+```php
+api_plugin_register_hook('sample', 'doctor_register_checks', 'sample_doctor_checks', 'setup.php');
+```
+
+Doctor `doctor_register_checks` లో నమోదైన ఎనేబుల్ చేయబడిన, సమీకృతం కాని ప్లగిన్‌లను (`doctor` మరియు `cacti` లను వదిలివేసి) పిలుస్తుంది, మరియు హుక్ ఫైల్‌ను ఖచ్చితంగా ప్లగిన్ యొక్క స్వంత డైరెక్టరీ లోపల మాత్రమే పరిష్కరిస్తుంది. కాల్‌బ్యాక్ `['mode' => 'run' | 'list', 'plugin' => '<slug>']` ను అందుకుంటుంది మరియు తనిఖీ డిస్క్రిప్టర్ల జాబితాను లేదా `checks` మరియు ఐచ్ఛిక `attachments` తో కూడిన ఎన్వలప్‌ను తిరిగి ఇస్తుంది:
+
+```php
+function sample_doctor_checks($context) {
+	return [
+		'checks' => [
+			[
+				'id'          => 'sample.queue_depth',
+				'plugin'      => 'sample',
+				'category'    => 'Sample',
+				'title'       => 'Sample queue depth',
+				'status'      => 'ok',
+				'message'     => 'Queue is healthy.',
+				'details'     => ['pending' => 0],
+				'remediation' => ''
+			]
+		],
+		'attachments' => [
+			[
+				'title'   => 'Sample diagnostics',
+				'content' => "worker=ok\n"
+			]
+		]
+	];
+}
+```
+
+ప్రతి ప్లగిన్ తనిఖీ డిస్క్రిప్టర్ చేర్చబడటానికి ముందు ధృవీకరించబడుతుంది:
+
+- అవసరమైన కీలు: `id`, `plugin`, `category`, `title`, `status`, `message`, `details`, మరియు `remediation`.
+- `plugin` నమోదు చేయబడిన ప్లగిన్ స్లగ్ (`[a-z0-9_]{1,64}`) తో సరిపోలాలి. `id` తప్పనిసరిగా `[a-z0-9_.]{1,128}` తో సరిపోలాలి, `<plugin>.` తో ప్రారంభం కావాలి, మరియు ఇప్పటికే ఉన్న కోర్ లేదా ప్లగిన్ తనిఖీ ID తో ఘర్షణ పడకూడదు.
+- `status` తప్పనిసరిగా `ok`, `warn`, `fail`, లేదా `info` అయి ఉండాలి. Doctor నివేదికలలో `ok` అనేది `pass` కు మ్యాప్ అవుతుంది; `info` సమాచారపరమైనది మరియు CLI, Nagios, Prometheus, లేదా షెడ్యూల్ చేసిన అలర్ట్‌లలో వైఫల్యాలను ట్రిగ్గర్ చేయదు.
+- `category` (గరిష్టంగా 64 బైట్లు) మరియు `title` (గరిష్టంగా 256 బైట్లు) నియంత్రణ అక్షరాలు లేని ఖాళీ కాని స్ట్రింగ్‌లై ఉండాలి. `message` (ఖాళీ కానిది, గరిష్టంగా 2048 బైట్లు) మరియు `remediation` (గరిష్టంగా 2048 బైట్లు) స్ట్రింగ్‌లై ఉండాలి.
+- `details` ఒక స్ట్రింగ్‌ను (గరిష్టంగా 8192 బైట్లు) లేదా స్కేలార్/నెస్టెడ్ శ్రేణిని (గరిష్ట లోతు 4, JSON-ఎన్‌కోడ్ చేసినది గరిష్టంగా 16384 బైట్లు; ఆబ్జెక్ట్‌లు మరియు వనరులు తిరస్కరించబడతాయి) అంగీకరిస్తుంది.
+- ఐచ్ఛిక సపోర్ట్-బండిల్ అటాచ్‌మెంట్‌లకు ఖాళీ కాని `title` (గరిష్టంగా 128 బైట్లు, నియంత్రణ అక్షరాలు లేకుండా) మరియు 65536 బైట్ల (64 KiB) వరకు ఉన్న `content` స్ట్రింగ్ అవసరం.
+
+Doctor ఒక ప్లగిన్‌కు 32 తనిఖీలు మరియు 8 అటాచ్‌మెంట్‌ల పరిమితులను (మొత్తం 64 ప్లగిన్ తనిఖీలు మరియు 32 అటాచ్‌మెంట్‌లు) అమలు చేస్తుంది. ప్రతి హుక్ దాని స్వంత `try`/`catch` సరిహద్దు లోపల అమలవుతుంది, తద్వారా మినహాయింపులు లేదా శ్రేణి కాని పేలోడ్‌లు కోర్ తనిఖీలను లేదా ఇతర ప్లగిన్‌లను ప్రభావితం చేయకుండా గోప్యత తొలగించబడి Cacti లాగ్ (`DOCTOR` సదుపాయం) లోకి లాగ్ చేయబడతాయి. తప్పుగా రూపొందించిన డిస్క్రిప్టర్లు తిరస్కరించబడి లాగ్ చేయబడతాయి, అయితే అదే ప్లగిన్ నుండి చెల్లుబాటు అయ్యేవి రన్ అవుతూనే ఉంటాయి. ప్లగిన్ తనిఖీలు ఎల్లప్పుడూ రీడ్-ఓన్లీగా ఉంటాయి (`repairable: false`), మరియు రెండరింగ్, ఎగుమతి లేదా బండ్లింగ్‌కు ముందు స్ట్రింగ్ విలువలు మరియు సున్నితమైన అసోసియేటివ్ కీలు గోప్యత తొలగించబడతాయి. ధృవీకరించబడిన ప్లగిన్ తనిఖీలు వెబ్ UI, CLI టెక్స్ట్/JSON/Nagios/Prometheus అవుట్‌పుట్, షెడ్యూల్ చేసిన స్థితి ట్రాకింగ్ మరియు సపోర్ట్ బండిల్‌లలో కనిపిస్తాయి.
+
+## MCP అనుసంధానం (`abilities_register`)
+
+రెండు ప్లగిన్‌లు ఎనేబుల్ చేయబడినప్పుడు `plugin_mcp` దాని నిర్ధారణ సామర్థ్యాలను కనుగొనేలా Doctor `abilities_register` హుక్‌ను (`doctor_abilities.php` లోని `doctor_abilities_register`) నమోదు చేస్తుంది. Doctor `diagnostics` వర్గాన్ని (`Diagnostics`) మరియు రెండు రీడ్-ఓన్లీ, నాన్-డిస్ట్రక్టివ్, ఐడెంపోటెంట్ సామర్థ్యాలను నమోదు చేస్తుంది:
+
+| సామర్థ్యం ID | ఐచ్ఛిక ఆర్గ్యుమెంట్లు | అవుట్‌పుట్ |
+|---|---|---|
+| `doctor-run-checks` | `category` (స్ట్రింగ్, గరిష్టంగా 64 అక్షరాలు), `status` (`pass`, `ok`, `warn`, `fail`, `info`) | `summary` (`total`, `pass`, `warn`, `fail`, `info`) మరియు 256 వరకు గోప్యత తొలగించబడిన `findings` (`id`, `plugin`, `category`, `title`, `status`, `message`, `remediation`) |
+| `doctor-list-checks` | `category` (స్ట్రింగ్, గరిష్టంగా 64 అక్షరాలు), `plugin` (స్ట్రింగ్, గరిష్టంగా 64 అక్షరాలు) | మొత్తం 45 అంతర్నిర్మిత తనిఖీలు మరియు ఎనేబుల్ చేసిన ప్లగిన్ తనిఖీలను కవర్ చేసే 256 వరకు `checks` (`id`, `plugin`, `category`, `title`) |
+
+రెండు సామర్థ్యాలు ఖచ్చితంగా రీడ్-ఓన్లీ మరియు ఎప్పుడూ మరమ్మతులను అమలు చేయవు. `plugin_mcp` యొక్క స్వంత పరిధి మరియు సామర్థ్య బహిర్గత నియంత్రణలతో పాటు (నిర్వాహకుడు బహిర్గతం చేసే వరకు MCP లో ప్లగిన్ సామర్థ్యాలు దాచబడి ప్రారంభమవుతాయి), టోకెన్ యజమాని **Doctor వ్యూయర్** లేదా అంతకంటే ఎక్కువ Doctor పరిధిని కలిగి ఉండాలని Doctor కోరుతుంది. `doctor-run-checks` అనేది `devices.health` ను టోకెన్ యజమాని అనుమతించబడిన పరికరాలకు పరిమితం చేస్తుంది, వినియోగదారు Cacti పరిధి 18 లేదా 19 కలిగి ఉన్నప్పుడు మాత్రమే `logging.recent_errors` ను చేర్చుతుంది, `filesystem.rrd_files` ను వదిలివేస్తుంది, మరియు **Doctor ఆపరేటర్** లేదా **Doctor అడ్మినిస్ట్రేటర్** కు మాత్రమే పరికర-పరిమిత `filesystem.rrd_stale` ను చేర్చుతుంది.
+
 ## అవసరాలు
 
 | Cacti | PHP | గమనికలు |
@@ -251,20 +310,22 @@ Cacti యొక్క Settings/System Utilities అనుమతి ఉన్న 
 
 ## అభివృద్ధి
 
-యూనిట్ సూట్ Pest ను ఉపయోగిస్తుంది మరియు PHP 8.2 లేదా అంతకంటే కొత్త వెర్షన్‌పై నడుస్తుంది:
+యూనిట్ సూట్ Pest ను ఉపయోగిస్తుంది మరియు స్టాటిక్ విశ్లేషణ PHPStan (స్థాయి 6) ను ఉపయోగిస్తుంది, రెండూ PHP 8.2 లేదా అంతకంటే కొత్త వెర్షన్‌పై నడుస్తాయి:
 
 ```console
 composer install
+composer phpstan
 composer test
 ```
 
 పరీక్షలు Doctor కాల్ చేసే Cacti ఫంక్షన్‌లను `tests/CactiStubs.php` లోని చిన్న ప్రత్యామ్నాయాలతో భర్తీ చేస్తాయి, కాబట్టి అవి Cacti ఇన్‌స్టాలేషన్ లేకుండానే నడుస్తాయి.
 
-GitHub Actions ప్రతి పుష్ మరియు పుల్ రిక్వెస్ట్‌పై నాలుగు రకాల తనిఖీలను అమలు చేస్తుంది:
+GitHub Actions ప్రతి పుష్ మరియు పుల్ రిక్వెస్ట్‌పై ఐదు రకాల తనిఖీలను అమలు చేస్తుంది:
 
-- PHP 5.4, 5.6, 7.0, 7.1, 7.4, మరియు 8.0 నుండి 8.4 వరకు ప్రతి PHP ఫైల్‌పై `php -l`.
-- PHP 8.2, 8.3, మరియు 8.4 పై యూనిట్ సూట్.
+- విడుదల ప్యాకేజింగ్ కాంట్రాక్ట్ పరీక్షలు (`tests/test_release.py`) మరియు ఆర్కైవ్ బిల్డ్ (`tools/build_release.py`).
 - `locales/build_gettext.sh --check`, ఇది పాతబడిన అనువాద టెంప్లేట్, అసంపూర్ణ లేదా అస్పష్టమైన కేటలాగ్, లేదా దాని మూలం నుండి భిన్నమైన కంపైల్ చేయబడిన కేటలాగ్ ఉన్నప్పుడు విఫలమవుతుంది.
+- PHP 5.4, 5.6, 7.0, 7.1, 7.4, మరియు 8.0 నుండి 8.4 వరకు ప్రతి PHP ఫైల్‌పై `php -l`.
+- PHP 8.2, 8.3, మరియు 8.4 పై `composer phpstan` (PHPStan స్థాయి 6) మరియు `composer test` (Pest యూనిట్ సూట్).
 - cmd.php మరియు Spine రెండింటితో MySQL మరియు MariaDB లకు వ్యతిరేకంగా Cacti 1.2.20, ప్రస్తుత 1.2.x శాఖ మరియు `develop` లను ఇన్‌స్టాల్ చేసే ఏడు ఇంటిగ్రేషన్ జాబ్‌లు. ప్రతి జాబ్ ప్లగ్ఇన్‌ను ఇన్‌స్టాల్ చేసి ప్రారంభిస్తుంది, పూర్తి CLI నివేదికను అమలు చేస్తుంది మరియు నివేదిక స్కీమా, సారాంశ మొత్తాలు, ఊహించిన స్థితులు మరియు ఖచ్చితమైన వైఫల్యాల సమితిని తనిఖీ చేస్తుంది. తర్వాత ఇది ఒక బైనరీ మార్గాన్ని మరియు పోలర్ టైమ్‌స్టాంప్‌ను విచ్ఛిన్నం చేస్తుంది, రెండూ నివేదించబడ్డాయని నిర్ధారిస్తుంది, వాటిని పునరుద్ధరిస్తుంది, మరమ్మత్తు మరియు దాని నిర్ధారణను పరీక్షిస్తుంది మరియు నిలిపివేత, ప్రారంభించడం, అన్‌ఇన్‌స్టాల్ మరియు మళ్లీ ఇన్‌స్టాల్ చేస్తుంది. జాబ్ విఫలమైనప్పుడు JSON నివేదిక ఆర్టిఫ్యాక్ట్‌గా ఉంచబడుతుంది.
 
 ## సహకారం

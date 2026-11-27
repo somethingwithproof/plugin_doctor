@@ -1,4 +1,4 @@
-<!-- Source: README.md; SHA256: ee03c7ac68aca21c8155c29b5b43a1f206c2f0c379c8b07bb4113919c18aafde -->
+<!-- Source: README.md; SHA256: 490628bb7f70f4cf1a8c43b302246fd2e870725a6649c628762608b4a76db65b -->
 
 <!-- translations:start -->
 [English](../../../README.md) | [简体中文](../zh-CN/README.md) | [हिन्दी](../hi-IN/README.md) | [Español (España)](../es-ES/README.md) | [Español (Latinoamérica)](../es-419/README.md) | [العربية (السعودية)](../ar-SA/README.md) | [Afrikaans](../af-ZA/README.md) | [አማርኛ](../am-ET/README.md) | [العربية (مصر)](../ar-EG/README.md) | [العربية (المغرب)](../ar-MA/README.md) | [বাংলা](../bn-BD/README.md) | [Bosanski](../bs-BA/README.md) | [Deutsch](../de-DE/README.md) | [فارسی](../fa-IR/README.md) | [Filipino](../fil-PH/README.md) | [Français](../fr-FR/README.md) | [Français (Maroc)](../fr-MA/README.md) | [Français (Sénégal)](../fr-SN/README.md) | [Hausa](../ha-NG/README.md) | [עברית](../he-IL/README.md) | [Hrvatski](../hr-HR/README.md) | [Bahasa Indonesia](../id-ID/README.md) | [Igbo](../ig-NG/README.md) | [Italiano](../it-IT/README.md) | [日本語](../ja-JP/README.md) | [한국어](../ko-KR/README.md) | [Malagasy](../mg-MG/README.md) | [मराठी](../mr-IN/README.md) | [Bahasa Melayu](../ms-MY/README.md) | [Nederlands](README.md) | [Polski](../pl-PL/README.md) | [Português (Brasil)](../pt-BR/README.md) | [Русский](../ru-RU/README.md) | [Kinyarwanda](../rw-RW/README.md) | [Soomaali](../so-SO/README.md) | [Српски](../sr-RS/README.md) | [Svenska](../sv-SE/README.md) | [Kiswahili](../sw-KE/README.md) | [தமிழ்](../ta-IN/README.md) | [తెలుగు](../te-IN/README.md) | [ไทย](../th-TH/README.md) | [Türkçe](../tr-TR/README.md) | [Українська](../uk-UA/README.md) | [اردو](../ur-PK/README.md) | [Tiếng Việt](../vi-VN/README.md) | [isiXhosa](../xh-ZA/README.md) | [Yorùbá](../yo-NG/README.md) | [繁體中文](../zh-TW/README.md) | [isiZulu](../zu-ZA/README.md)
@@ -53,13 +53,15 @@ Cacti-problemen uiten zich meestal als symptomen: lege grafieken, een gestopte p
 | Apparaten | Ingeschakelde apparaten die offline zijn of herstellen, de drie apparaten die het langst offline zijn met hun laatste foutmelding, en een foutmelding wanneer de meeste apparaten tegelijk offline zijn |
 | Poller | Pollertype en -interval, tijd sinds de hoofdpoller voor het laatst is voltooid, uitvoertijd ten opzichte van het interval, poller-uitvoer die nooit een RRD-bestand heeft bereikt, externe pollers die gestopt zijn met rapporteren, een vastgelopen Boost en een Spine-configuratie die naar een andere database verwijst |
 
-Elke controle heeft een stabiele ID, zoals `database.timezone` of `binary.rrdtool`, zodat scripts op afzonderlijke resultaten kunnen selecteren.
+Elke controle heeft een stabiele ID, zoals `database.timezone` of `binary.rrdtool`, zodat scripts op afzonderlijke resultaten kunnen selecteren. Ingeschakelde plug-ins kunnen aanvullende controles en bijlagen voor de ondersteuningsbundel leveren via de hook `doctor_register_checks`, en Doctor stelt alleen-lezen diagnostische mogelijkheden beschikbaar aan `plugin_mcp` via `abilities_register`.
 
 ## Code- en testoverzicht
 
 | Gedrag | Implementatie | Testbewijs in deze repository |
 |---|---|---|
-| Diagnostische controles en stabiele rapport-ID's | [doctor_functions.php](../../../doctor_functions.php) | [DoctorFunctionsTest.php](../../../tests/DoctorFunctionsTest.php), [AssertDoctorReport.php](../../../tests/ci/AssertDoctorReport.php) |
+| Diagnostische controles en stabiele rapport-ID's | [doctor_functions.php](../../../doctor_functions.php) | [DoctorFunctionsTest.php](../../../tests/DoctorFunctionsTest.php), [DatabaseHealthTest.php](../../../tests/DatabaseHealthTest.php), [AssertDoctorReport.php](../../../tests/ci/AssertDoctorReport.php) |
+| Plug-incontrolehook (`doctor_register_checks`) | [doctor_plugins.php](../../../doctor_plugins.php) | [PluginHooksTest.php](../../../tests/PluginHooksTest.php) |
+| MCP-diagnostische mogelijkheden (`abilities_register`) | [doctor_abilities.php](../../../doctor_abilities.php) | [AbilitiesTest.php](../../../tests/AbilitiesTest.php) |
 | Rolgebaseerde toegang en geschoonde webrapporten | [doctor_access.php](../../../doctor_access.php), [doctor_web.php](../../../doctor_web.php) | [AccessTest.php](../../../tests/AccessTest.php), [WebAccessTest.php](../../../tests/WebAccessTest.php) |
 | Begeleide symptoomonderzoeken | [doctor_diagnosis.php](../../../doctor_diagnosis.php) | [DiagnosisTest.php](../../../tests/DiagnosisTest.php) |
 | RRD-actualiteit en verwerking van uitgestelde schrijfbewerkingen | [doctor_rrd.php](../../../doctor_rrd.php) | [RrdFreshnessTest.php](../../../tests/RrdFreshnessTest.php) |
@@ -200,7 +202,7 @@ php plugins/doctor/cli/doctor.php --format=prometheus > /var/lib/node_exporter/t
 php plugins/doctor/cli/doctor.php --bundle=/tmp/cacti-doctor.txt
 ```
 
-De bundel is één tekstbestand met de versies van Doctor, Cacti, PHP, het besturingssysteem en de database, poller- en Boost-statistieken, het volledige rapport en de laatste 200 regels van het Cacti-logboek. Waarden die volgen op password-, secret-, token-, community- en key-namen worden gemaskeerd. Doctor maakt het bestand alleen leesbaar voor de eigenaar en weigert een bestaand bestand te overschrijven. Controleer het voordat u het ergens plaatst.
+De bundel is één tekstbestand met de versies van Doctor, Cacti, PHP, het besturingssysteem en de database, poller- en Boost-statistieken, het volledige rapport, eventuele bijlagen voor de ondersteuningsbundel van plug-ins onder `== Plugin attachments` en de laatste 200 regels van het Cacti-logboek. Waarden die volgen op password-, secret-, token-, community- en key-namen worden gemaskeerd. Doctor maakt het bestand alleen leesbaar voor de eigenaar en weigert een bestaand bestand te overschrijven. Controleer het voordat u het ergens plaatst.
 
 ## Herstelbeleid
 
@@ -246,6 +248,63 @@ Geplande waarschuwingsmeldingen worden onderdrukt zolang de uitzondering van toe
 
 Een upgrade maakt `plugin_doctor_audit` en `plugin_doctor_acceptance` aan zonder Cacti-applicatiegegevens te wijzigen. Exporteer eventuele benodigde geschiedenis voordat u de plugin verwijdert: bij het verwijderen worden beide plugintabellen en de instellingen ervan verwijderd. Als u teruggaat naar oudere pluginbestanden, blijven de tabellen beschikbaar voor onderzoek, maar oudere versies houden geen rekening met waarschuwingsuitzonderingen.
 
+## Plug-incontroles (`doctor_register_checks`)
+
+Ingeschakelde Cacti-plug-ins kunnen alleen-lezen diagnostische controles en optionele bijlagen voor de ondersteuningsbundel leveren door een `doctor_register_checks`-hook te registreren:
+
+```php
+api_plugin_register_hook('sample', 'doctor_register_checks', 'sample_doctor_checks', 'setup.php');
+```
+
+Doctor roept ingeschakelde, niet-geïntegreerde plug-ins aan die op `doctor_register_checks` zijn geregistreerd (`doctor` en `cacti` worden overgeslagen) en zoekt het hook-bestand strikt binnen de eigen map van de plug-in. De callback ontvangt `['mode' => 'run' | 'list', 'plugin' => '<slug>']` en retourneert ofwel een lijst met controlebeschrijvingen, ofwel een envelop met `checks` en optionele `attachments`:
+
+```php
+function sample_doctor_checks($context) {
+	return [
+		'checks' => [
+			[
+				'id'          => 'sample.queue_depth',
+				'plugin'      => 'sample',
+				'category'    => 'Sample',
+				'title'       => 'Sample queue depth',
+				'status'      => 'ok',
+				'message'     => 'Queue is healthy.',
+				'details'     => ['pending' => 0],
+				'remediation' => ''
+			]
+		],
+		'attachments' => [
+			[
+				'title'   => 'Sample diagnostics',
+				'content' => "worker=ok\n"
+			]
+		]
+	];
+}
+```
+
+Elke controlebeschrijving van een plug-in wordt vóór opname gevalideerd:
+
+- Vereiste sleutels: `id`, `plugin`, `category`, `title`, `status`, `message`, `details` en `remediation`.
+- `plugin` moet overeenkomen met de geregistreerde plug-in-slug (`[a-z0-9_]{1,64}`). `id` moet overeenkomen met `[a-z0-9_.]{1,128}`, beginnen met `<plugin>.` en mag niet botsen met een bestaande kern- of plug-incontrole-ID.
+- `status` moet `ok`, `warn`, `fail` of `info` zijn. `ok` wordt omgezet naar `pass` in Doctor-rapporten; `info` is informatief en veroorzaakt geen fouten in de CLI, Nagios, Prometheus of geplande meldingen.
+- `category` (maximaal 64 bytes) en `title` (maximaal 256 bytes) moeten niet-lege strings zijn zonder stuurtekens. `message` (niet leeg, maximaal 2048 bytes) en `remediation` (maximaal 2048 bytes) moeten strings zijn.
+- `details` accepteert een string (maximaal 8192 bytes) of een scalaire/geneste array (maximale diepte 4, als JSON gecodeerd maximaal 16384 bytes; objecten en resources worden geweigerd).
+- Optionele bijlagen voor de ondersteuningsbundel vereisen een niet-lege `title` (maximaal 128 bytes, geen stuurtekens) en een `content`-string tot 65536 bytes (64 KiB).
+
+Doctor hanteert limieten van 32 controles en 8 bijlagen per plug-in (in totaal 64 plug-incontroles en 32 bijlagen). Elke hook draait binnen zijn eigen `try`/`catch`-grens zodat uitzonderingen of niet-array-payloads worden geredigeerd en naar het Cacti-logboek (`DOCTOR`-faciliteit) worden geschreven zonder de kerncontroles of andere plug-ins te beïnvloeden. Ongeldige beschrijvingen worden geweigerd en gelogd terwijl geldige beschrijvingen van dezelfde plug-in gewoon worden uitgevoerd. Plug-incontroles zijn altijd alleen-lezen (`repairable: false`), en stringwaarden plus gevoelige associatieve sleutels worden geredigeerd vóór weergave, export of bundeling. Gevalideerde plug-incontroles verschijnen in de webinterface, de tekst-/JSON-/Nagios-/Prometheus-uitvoer van de CLI, de geplande statusregistratie en ondersteuningsbundels.
+
+## MCP-integratie (`abilities_register`)
+
+Doctor registreert de hook `abilities_register` (`doctor_abilities_register` in `doctor_abilities.php`) zodat `plugin_mcp` zijn diagnostische mogelijkheden ontdekt wanneer beide plug-ins zijn ingeschakeld. Doctor registreert de categorie `diagnostics` (`Diagnostics`) en twee alleen-lezen, niet-destructieve, idempotente mogelijkheden:
+
+| Mogelijkheid-ID | Optionele argumenten | Uitvoer |
+|---|---|---|
+| `doctor-run-checks` | `category` (string, max. 64 tekens), `status` (`pass`, `ok`, `warn`, `fail`, `info`) | `summary` (`total`, `pass`, `warn`, `fail`, `info`) en maximaal 256 geredigeerde `findings` (`id`, `plugin`, `category`, `title`, `status`, `message`, `remediation`) |
+| `doctor-list-checks` | `category` (string, max. 64 tekens), `plugin` (string, max. 64 tekens) | Maximaal 256 `checks` (`id`, `plugin`, `category`, `title`) voor alle 45 ingebouwde controles plus ingeschakelde plug-incontroles |
+
+Beide mogelijkheden zijn strikt alleen-lezen en voeren nooit reparaties uit. Naast de eigen realm- en blootstellingsregels van `plugin_mcp` (plug-inmogelijkheden beginnen verborgen in MCP totdat een beheerder ze zichtbaar maakt), vereist Doctor dat de tokeneigenaar **Doctor Viewer** of een hogere Doctor-realm heeft. `doctor-run-checks` beperkt `devices.health` tot de toegestane apparaten van de tokeneigenaar, neemt `logging.recent_errors` alleen op wanneer de gebruiker Cacti-realm 18 of 19 heeft, slaat `filesystem.rrd_files` over en neemt apparaat-gefilterde `filesystem.rrd_stale` alleen op voor **Doctor Operator** of **Doctor Administrator**.
+
 ## Vereisten
 
 | Cacti | PHP | Opmerkingen |
@@ -263,20 +322,22 @@ Ondersteuningsdatums zijn meegeleverd met Doctor op basis van het [PHP-ondersteu
 
 ## Ontwikkeling
 
-De unittestsuite maakt gebruik van Pest en draait op PHP 8.2 of nieuwer:
+De unittestsuite maakt gebruik van Pest en statische analyse gebruikt PHPStan (niveau 6), beide op PHP 8.2 of nieuwer:
 
 ```console
 composer install
+composer phpstan
 composer test
 ```
 
 De tests vervangen de Cacti-functies die Doctor aanroept door kleine stubs in `tests/CactiStubs.php`, zodat ze zonder een Cacti-installatie kunnen draaien.
 
-GitHub Actions voert bij elke push en pull request vier soorten controles uit:
+GitHub Actions voert bij elke push en pull request vijf soorten controles uit:
 
-- `php -l` op elk PHP-bestand onder PHP 5.4, 5.6, 7.0, 7.1, 7.4 en 8.0 tot en met 8.4.
-- De unittestsuite op PHP 8.2, 8.3 en 8.4.
+- Contracttests voor releasepakketten (`tests/test_release.py`) en het bouwen van een archief (`tools/build_release.py`).
 - `locales/build_gettext.sh --check`, wat mislukt bij een verouderde vertaalsjabloon, een onvolledige of fuzzy catalogus, of een gecompileerde catalogus die afwijkt van de bron.
+- `php -l` op elk PHP-bestand onder PHP 5.4, 5.6, 7.0, 7.1, 7.4 en 8.0 tot en met 8.4.
+- `composer phpstan` (PHPStan niveau 6) en `composer test` (Pest-unittestsuite) op PHP 8.2, 8.3 en 8.4.
 - Zeven integratietaken die Cacti 1.2.20, de huidige 1.2.x-branch en `develop` installeren met MySQL en MariaDB, met zowel cmd.php als Spine. Elke taak installeert en schakelt de plugin in, voert het volledige CLI-rapport uit en controleert het rapportschema, de samenvattingstotalen, de verwachte statussen en de exacte reeks fouten. Vervolgens maakt de taak een binair pad en de poller-tijdstempel ongeldig, bevestigt dat beide worden gemeld, herstelt ze, test de herstelactie en de bevestiging ervan, en voert uitschakelen, inschakelen, verwijderen en opnieuw installeren uit. Het JSON-rapport wordt als artefact bewaard wanneer een taak mislukt.
 
 ## Bijdragen

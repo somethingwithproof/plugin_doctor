@@ -1,4 +1,4 @@
-<!-- Source: README.md; SHA256: ee03c7ac68aca21c8155c29b5b43a1f206c2f0c379c8b07bb4113919c18aafde -->
+<!-- Source: README.md; SHA256: 490628bb7f70f4cf1a8c43b302246fd2e870725a6649c628762608b4a76db65b -->
 
 <!-- translations:start -->
 [English](../../../README.md) | [简体中文](../zh-CN/README.md) | [हिन्दी](README.md) | [Español (España)](../es-ES/README.md) | [Español (Latinoamérica)](../es-419/README.md) | [العربية (السعودية)](../ar-SA/README.md) | [Afrikaans](../af-ZA/README.md) | [አማርኛ](../am-ET/README.md) | [العربية (مصر)](../ar-EG/README.md) | [العربية (المغرب)](../ar-MA/README.md) | [বাংলা](../bn-BD/README.md) | [Bosanski](../bs-BA/README.md) | [Deutsch](../de-DE/README.md) | [فارسی](../fa-IR/README.md) | [Filipino](../fil-PH/README.md) | [Français](../fr-FR/README.md) | [Français (Maroc)](../fr-MA/README.md) | [Français (Sénégal)](../fr-SN/README.md) | [Hausa](../ha-NG/README.md) | [עברית](../he-IL/README.md) | [Hrvatski](../hr-HR/README.md) | [Bahasa Indonesia](../id-ID/README.md) | [Igbo](../ig-NG/README.md) | [Italiano](../it-IT/README.md) | [日本語](../ja-JP/README.md) | [한국어](../ko-KR/README.md) | [Malagasy](../mg-MG/README.md) | [मराठी](../mr-IN/README.md) | [Bahasa Melayu](../ms-MY/README.md) | [Nederlands](../nl-NL/README.md) | [Polski](../pl-PL/README.md) | [Português (Brasil)](../pt-BR/README.md) | [Русский](../ru-RU/README.md) | [Kinyarwanda](../rw-RW/README.md) | [Soomaali](../so-SO/README.md) | [Српски](../sr-RS/README.md) | [Svenska](../sv-SE/README.md) | [Kiswahili](../sw-KE/README.md) | [தமிழ்](../ta-IN/README.md) | [తెలుగు](../te-IN/README.md) | [ไทย](../th-TH/README.md) | [Türkçe](../tr-TR/README.md) | [Українська](../uk-UA/README.md) | [اردو](../ur-PK/README.md) | [Tiếng Việt](../vi-VN/README.md) | [isiXhosa](../xh-ZA/README.md) | [Yorùbá](../yo-NG/README.md) | [繁體中文](../zh-TW/README.md) | [isiZulu](../zu-ZA/README.md)
@@ -52,14 +52,16 @@ Cacti समस्याएँ सामान्यतः लक्षण क�
 | डिवाइस | बंद या बहाल होते सक्षम डिवाइस, सबसे लंबे समय से बंद तीन डिवाइस और उनका आखिरी त्रुटि संदेश, अधिकांश डिवाइस साथ बंद होने पर विफलता |
 | पोलर | प्रकार और अंतराल, मुख्य पोलर के पिछली बार पूरा होने से बीता समय, अंतराल की तुलना में अवधि, RRD तक न पहुँचा आउटपुट, रिपोर्ट देना बंद कर चुके रिमोट पोलर, रुका Boost और अलग डेटाबेस की ओर जाता Spine कॉन्फ़िगरेशन |
 
-हर जाँच का स्थिर ID है, जैसे `database.timezone` या `binary.rrdtool`, ताकि स्क्रिप्ट अलग-अलग परिणाम पहचान सकें।
+हर जाँच का स्थिर ID है, जैसे `database.timezone` या `binary.rrdtool`, ताकि स्क्रिप्ट अलग-अलग परिणाम पहचान सकें। सक्षम प्लगइन `doctor_register_checks` हुक के माध्यम से अतिरिक्त जाँचें और सहायता-बंडल संलग्नक जोड़ सकते हैं, तथा Doctor `abilities_register` के माध्यम से `plugin_mcp` को केवल-पठन निदान क्षमताएँ उपलब्ध कराता है।
 
 <a id="code-and-test-map"></a>
 ## कोड और परीक्षण का मानचित्र
 
 | व्यवहार | कार्यान्वयन | इस रिपॉज़िटरी में परीक्षण प्रमाण |
 |---|---|---|
-| निदान जाँच और स्थिर रिपोर्ट ID | [doctor_functions.php](../../../doctor_functions.php) | [DoctorFunctionsTest.php](../../../tests/DoctorFunctionsTest.php), [AssertDoctorReport.php](../../../tests/ci/AssertDoctorReport.php) |
+| निदान जाँच और स्थिर रिपोर्ट ID | [doctor_functions.php](../../../doctor_functions.php) | [DoctorFunctionsTest.php](../../../tests/DoctorFunctionsTest.php), [DatabaseHealthTest.php](../../../tests/DatabaseHealthTest.php), [AssertDoctorReport.php](../../../tests/ci/AssertDoctorReport.php) |
+| प्लगइन जाँच हुक (`doctor_register_checks`) | [doctor_plugins.php](../../../doctor_plugins.php) | [PluginHooksTest.php](../../../tests/PluginHooksTest.php) |
+| MCP निदान क्षमताएँ (`abilities_register`) | [doctor_abilities.php](../../../doctor_abilities.php) | [AbilitiesTest.php](../../../tests/AbilitiesTest.php) |
 | भूमिका के अनुसार पहुँच और संवेदनशील डेटा छिपाई गई वेब रिपोर्ट | [doctor_access.php](../../../doctor_access.php), [doctor_web.php](../../../doctor_web.php) | [AccessTest.php](../../../tests/AccessTest.php), [WebAccessTest.php](../../../tests/WebAccessTest.php) |
 | लक्षणों की निर्देशित जाँच | [doctor_diagnosis.php](../../../doctor_diagnosis.php) | [DiagnosisTest.php](../../../tests/DiagnosisTest.php) |
 | RRD ताज़गी और स्थगित लेखन का प्रबंधन | [doctor_rrd.php](../../../doctor_rrd.php) | [RrdFreshnessTest.php](../../../tests/RrdFreshnessTest.php) |
@@ -201,7 +203,7 @@ php plugins/doctor/cli/doctor.php --format=prometheus > /var/lib/node_exporter/t
 php plugins/doctor/cli/doctor.php --bundle=/tmp/cacti-doctor.txt
 ```
 
-बंडल एक पाठ फ़ाइल है जिसमें Doctor, Cacti, PHP, OS और डेटाबेस संस्करण, पोलर और Boost आँकड़े, पूरी रिपोर्ट और Cacti लॉग की पिछली 200 पंक्तियाँ हैं। password, secret, token, community और key नामों के बाद के मान छिपाए जाते हैं। Doctor फ़ाइल केवल स्वामी के पढ़ने योग्य बनाता है और मौजूदा फ़ाइल अधिलेखित करने से इनकार करता है। कहीं भी पोस्ट करने से पहले समीक्षा करें।
+बंडल एक पाठ फ़ाइल है जिसमें Doctor, Cacti, PHP, OS और डेटाबेस संस्करण, पोलर और Boost आँकड़े, पूरी रिपोर्ट, `== Plugin attachments` के अंतर्गत किसी भी प्लगइन सहायता-बंडल संलग्नक और Cacti लॉग की पिछली 200 पंक्तियाँ हैं। password, secret, token, community और key नामों के बाद के मान छिपाए जाते हैं। Doctor फ़ाइल केवल स्वामी के पढ़ने योग्य बनाता है और मौजूदा फ़ाइल अधिलेखित करने से इनकार करता है। कहीं भी पोस्ट करने से पहले समीक्षा करें।
 
 <a id="repair-policy"></a>
 ## मरम्मत नीति
@@ -252,6 +254,65 @@ Cacti Settings/System Utilities अनुमति वाले प्रशा�
 
 अपग्रेड Cacti अनुप्रयोग डेटा बदले बिना `plugin_doctor_audit` और `plugin_doctor_acceptance` बनाता है। अनइंस्टॉल से पहले आवश्यक इतिहास निर्यात करें: अनइंस्टॉल दोनों प्लगइन तालिकाएँ और सेटिंग्स हटाता है। फ़ाइलें वापस करने पर तालिकाएँ जाँच के लिए रहती हैं, लेकिन पुराने संस्करण चेतावनी अपवाद नहीं मानते।
 
+<a id="plugin-checks-doctor_register_checks"></a>
+## प्लगइन जाँचें (`doctor_register_checks`)
+
+सक्षम Cacti प्लगइन `doctor_register_checks` हुक पंजीकृत करके केवल-पठन निदान जाँचें और वैकल्पिक सहायता-बंडल संलग्नक प्रदान कर सकते हैं:
+
+```php
+api_plugin_register_hook('sample', 'doctor_register_checks', 'sample_doctor_checks', 'setup.php');
+```
+
+Doctor `doctor_register_checks` पर पंजीकृत सक्षम, गैर-एकीकृत प्लगइनों को चलाता है (`doctor` और `cacti` को छोड़कर), और हुक फ़ाइल को सख्ती से प्लगइन की अपनी डायरेक्टरी के भीतर ही हल करता है। कॉलबैक को `['mode' => 'run' | 'list', 'plugin' => '<slug>']` प्राप्त होता है और यह जाँच विवरणकों की सूची या `checks` तथा वैकल्पिक `attachments` वाला एनवेलप लौटाता है:
+
+```php
+function sample_doctor_checks($context) {
+	return [
+		'checks' => [
+			[
+				'id'          => 'sample.queue_depth',
+				'plugin'      => 'sample',
+				'category'    => 'Sample',
+				'title'       => 'Sample queue depth',
+				'status'      => 'ok',
+				'message'     => 'Queue is healthy.',
+				'details'     => ['pending' => 0],
+				'remediation' => ''
+			]
+		],
+		'attachments' => [
+			[
+				'title'   => 'Sample diagnostics',
+				'content' => "worker=ok\n"
+			]
+		]
+	];
+}
+```
+
+प्रत्येक प्लगइन जाँच विवरणक को शामिल करने से पहले सत्यापित किया जाता है:
+
+- आवश्यक कुंजियाँ: `id`, `plugin`, `category`, `title`, `status`, `message`, `details`, और `remediation`।
+- `plugin` पंजीकृत प्लगइन स्लग (`[a-z0-9_]{1,64}`) से मेल खाना चाहिए। `id` `[a-z0-9_.]{1,128}` से मेल खाना चाहिए, `<plugin>.` से शुरू होना चाहिए, और किसी मौजूदा कोर या प्लगइन जाँच ID से टकराना नहीं चाहिए।
+- `status` मान `ok`, `warn`, `fail`, या `info` होना चाहिए। `ok` Doctor रिपोर्ट में `pass` से जुड़ता है; `info` सूचनात्मक है और CLI, Nagios, Prometheus, या निर्धारित अलर्ट में विफलता उत्पन्न नहीं करता।
+- `category` (अधिकतम 64 बाइट) और `title` (अधिकतम 256 बाइट) बिना नियंत्रण वर्णों के गैर-रिक्त स्ट्रिंग होने चाहिए। `message` (गैर-रिक्त, अधिकतम 2048 बाइट) और `remediation` (अधिकतम 2048 बाइट) स्ट्रिंग होने चाहिए।
+- `details` एक स्ट्रिंग (अधिकतम 8192 बाइट) या अदिश/नेस्टेड ऐरे (अधिकतम गहराई 4, JSON-एन्कोडेड अधिकतम 16384 बाइट; ऑब्जेक्ट और रिसोर्स अस्वीकृत हैं) स्वीकार करता है।
+- वैकल्पिक सहायता-बंडल संलग्नकों के लिए एक गैर-रिक्त `title` (अधिकतम 128 बाइट, कोई नियंत्रण वर्ण नहीं) और अधिकतम 65536 बाइट (64 KiB) की `content` स्ट्रिंग आवश्यक है।
+
+Doctor प्रति प्लगइन 32 जाँचें और 8 संलग्नक (कुल 64 प्लगइन जाँचें और 32 संलग्नक) की सीमा लागू करता है। प्रत्येक हुक अपनी `try`/`catch` सीमा के भीतर चलता है ताकि अपवाद या गैर-ऐरे पेलोड गोपनीय जानकारी छिपाकर Cacti लॉग (`DOCTOR` श्रेणी) में दर्ज किए जाएँ और कोर जाँचों या अन्य प्लगइनों को प्रभावित न करें। विकृत विवरणक अस्वीकृत और लॉग किए जाते हैं जबकि उसी प्लगइन के वैध विवरणक चलते रहते हैं। प्लगइन जाँचें सदैव केवल-पठन होती हैं (`repairable: false`), और प्रदर्शन, निर्यात या बंडलिंग से पहले स्ट्रिंग मान तथा संवेदनशील सहयोगी कुंजियाँ छिपाई जाती हैं। सत्यापित प्लगइन जाँचें वेब UI, CLI पाठ/JSON/Nagios/Prometheus आउटपुट, निर्धारित स्थिति ट्रैकिंग और सहायता बंडलों में दिखाई देती हैं।
+
+<a id="mcp-integration-abilities_register"></a>
+## MCP एकीकरण (`abilities_register`)
+
+Doctor `abilities_register` हुक (`doctor_abilities.php` में `doctor_abilities_register`) पंजीकृत करता है ताकि दोनों प्लगइन सक्षम होने पर `plugin_mcp` इसकी निदान क्षमताओं को खोज सके। Doctor `diagnostics` श्रेणी (`Diagnostics`) और दो केवल-पठन, गैर-विनाशकारी, इडेम्पोटेंट क्षमताएँ पंजीकृत करता है:
+
+| क्षमता ID | वैकल्पिक तर्क | आउटपुट |
+|---|---|---|
+| `doctor-run-checks` | `category` (स्ट्रिंग, अधिकतम 64 वर्ण), `status` (`pass`, `ok`, `warn`, `fail`, `info`) | `summary` (`total`, `pass`, `warn`, `fail`, `info`) और अधिकतम 256 संवेदनशील-डेटा-मुक्त `findings` (`id`, `plugin`, `category`, `title`, `status`, `message`, `remediation`) |
+| `doctor-list-checks` | `category` (स्ट्रिंग, अधिकतम 64 वर्ण), `plugin` (स्ट्रिंग, अधिकतम 64 वर्ण) | सभी 45 अंतर्निहित जाँचों तथा सक्षम प्लगइन जाँचों को कवर करते हुए अधिकतम 256 `checks` (`id`, `plugin`, `category`, `title`) |
+
+दोनों क्षमताएँ सख्ती से केवल-पठन हैं और कभी भी मरम्मत नहीं चलातीं। `plugin_mcp` के अपने क्षेत्र और क्षमता-प्रदर्शन नियंत्रणों के अतिरिक्त (प्लगइन क्षमताएँ MCP में तब तक छिपी रहती हैं जब तक कोई प्रशासक उन्हें उजागर न करे), Doctor के लिए आवश्यक है कि टोकन स्वामी के पास **Doctor Viewer** या उससे उच्चतर Doctor क्षेत्र हो। `doctor-run-checks` `devices.health` को टोकन स्वामी के अनुमत डिवाइसों तक सीमित रखता है, `logging.recent_errors` को केवल तभी शामिल करता है जब उपयोगकर्ता के पास Cacti क्षेत्र 18 या 19 हो, `filesystem.rrd_files` को छोड़ देता है, और डिवाइस-सीमित `filesystem.rrd_stale` को केवल **Doctor Operator** या **Doctor Administrator** के लिए शामिल करता है।
+
 <a id="requirements"></a>
 ## आवश्यकताएँ
 
@@ -271,20 +332,22 @@ Cacti Settings/System Utilities अनुमति वाले प्रशा�
 <a id="development"></a>
 ## विकास
 
-यूनिट सूट Pest उपयोग करता है और PHP 8.2 या नए पर चलता है:
+यूनिट सूट Pest उपयोग करता है और स्थैतिक विश्लेषण PHPStan (स्तर 6) उपयोग करता है, दोनों PHP 8.2 या नए पर:
 
 ```console
 composer install
+composer phpstan
 composer test
 ```
 
 परीक्षण Doctor द्वारा बुलाए Cacti फ़ंक्शन को `tests/CactiStubs.php` के छोटे प्रतिस्थापनों से बदलते हैं, इसलिए वे Cacti इंस्टॉलेशन के बिना चलते हैं।
 
-हर पुश और पुल अनुरोध पर GitHub Actions चार तरह की जाँच करता है:
+हर पुश और पुल अनुरोध पर GitHub Actions पाँच तरह की जाँच करता है:
 
-- PHP 5.4, 5.6, 7.0, 7.1, 7.4 और 8.0 से 8.4 पर हर PHP फ़ाइल का `php -l`।
-- PHP 8.2, 8.3 और 8.4 पर यूनिट सूट।
+- रिलीज़ पैकेजिंग अनुबंध परीक्षण (`tests/test_release.py`) और आर्काइव निर्माण (`tools/build_release.py`)।
 - `locales/build_gettext.sh --check`, जो पुराने अनुवाद टेम्पलेट, अधूरे या fuzzy कैटलॉग, या स्रोत से अलग संकलित कैटलॉग पर विफल होता है।
+- PHP 5.4, 5.6, 7.0, 7.1, 7.4 और 8.0 से 8.4 पर हर PHP फ़ाइल का `php -l`।
+- PHP 8.2, 8.3 और 8.4 पर `composer phpstan` (PHPStan स्तर 6) और `composer test` (Pest यूनिट सूट)।
 - सात एकीकरण कार्य, जो MySQL और MariaDB के साथ Cacti 1.2.20, वर्तमान 1.2.x और `develop` इंस्टॉल करते हैं, cmd.php और Spine दोनों के साथ। हर कार्य प्लगइन इंस्टॉल और सक्षम करता है, पूरी CLI रिपोर्ट चलाता है, और रिपोर्ट स्कीमा, सारांश गिनती, अपेक्षित स्थितियाँ तथा सटीक विफलता समूह जाँचता है। फिर बाइनरी पथ और पोलर टाइमस्टैम्प बिगाड़ता है, दोनों की रिपोर्ट पुष्ट करता है, उन्हें ठीक करता है, मरम्मत और पुष्टि चलाता है, तथा अक्षम, सक्षम, अनइंस्टॉल और पुनः इंस्टॉल करता है। कार्य विफल हो तो JSON रिपोर्ट आर्टिफ़ैक्ट के रूप में रखी जाती है।
 
 <a id="contributing"></a>

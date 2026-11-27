@@ -1,4 +1,4 @@
-<!-- Source: README.md; SHA256: ee03c7ac68aca21c8155c29b5b43a1f206c2f0c379c8b07bb4113919c18aafde -->
+<!-- Source: README.md; SHA256: 490628bb7f70f4cf1a8c43b302246fd2e870725a6649c628762608b4a76db65b -->
 
 <!-- translations:start -->
 [English](../../../README.md) | [简体中文](../zh-CN/README.md) | [हिन्दी](../hi-IN/README.md) | [Español (España)](../es-ES/README.md) | [Español (Latinoamérica)](../es-419/README.md) | [العربية (السعودية)](../ar-SA/README.md) | [Afrikaans](../af-ZA/README.md) | [አማርኛ](../am-ET/README.md) | [العربية (مصر)](../ar-EG/README.md) | [العربية (المغرب)](../ar-MA/README.md) | [বাংলা](../bn-BD/README.md) | [Bosanski](../bs-BA/README.md) | [Deutsch](../de-DE/README.md) | [فارسی](../fa-IR/README.md) | [Filipino](../fil-PH/README.md) | [Français](../fr-FR/README.md) | [Français (Maroc)](../fr-MA/README.md) | [Français (Sénégal)](../fr-SN/README.md) | [Hausa](../ha-NG/README.md) | [עברית](../he-IL/README.md) | [Hrvatski](../hr-HR/README.md) | [Bahasa Indonesia](../id-ID/README.md) | [Igbo](../ig-NG/README.md) | [Italiano](../it-IT/README.md) | [日本語](../ja-JP/README.md) | [한국어](../ko-KR/README.md) | [Malagasy](../mg-MG/README.md) | [मराठी](../mr-IN/README.md) | [Bahasa Melayu](../ms-MY/README.md) | [Nederlands](../nl-NL/README.md) | [Polski](../pl-PL/README.md) | [Português (Brasil)](../pt-BR/README.md) | [Русский](../ru-RU/README.md) | [Kinyarwanda](../rw-RW/README.md) | [Soomaali](../so-SO/README.md) | [Српски](../sr-RS/README.md) | [Svenska](../sv-SE/README.md) | [Kiswahili](../sw-KE/README.md) | [தமிழ்](../ta-IN/README.md) | [తెలుగు](../te-IN/README.md) | [ไทย](README.md) | [Türkçe](../tr-TR/README.md) | [Українська](../uk-UA/README.md) | [اردو](../ur-PK/README.md) | [Tiếng Việt](../vi-VN/README.md) | [isiXhosa](../xh-ZA/README.md) | [Yorùbá](../yo-NG/README.md) | [繁體中文](../zh-TW/README.md) | [isiZulu](../zu-ZA/README.md)
@@ -50,13 +50,15 @@ Cacti Doctor เป็นปลั๊กอินสำหรับ Cacti ที
 | อุปกรณ์ | อุปกรณ์ที่เปิดใช้งานอยู่ซึ่งหยุดทำงานหรือกำลังกู้คืน สามอุปกรณ์ที่หยุดทำงานนานที่สุดพร้อมข้อผิดพลาดล่าสุด และสถานะล้มเหลวเมื่ออุปกรณ์ส่วนใหญ่หยุดทำงานพร้อมกัน |
 | โพลเลอร์ | ประเภทและช่วงเวลาของโพลเลอร์ ระยะเวลาตั้งแต่โพลเลอร์หลักทำงานเสร็จครั้งล่าสุด เวลาที่ใช้ทำงานเทียบกับช่วงเวลา ผลลัพธ์ของโพลเลอร์ที่ไม่เคยไปถึงไฟล์ RRD โพลเลอร์ระยะไกลที่หยุดรายงานผล Boost ที่ค้าง และคอนฟิกของ Spine ที่ชี้ไปยังฐานข้อมูลอื่น |
 
-การตรวจสอบทุกรายการมี ID ที่คงที่ เช่น `database.timezone` หรือ `binary.rrdtool` เพื่อให้สคริปต์สามารถอ้างอิงผลลัพธ์แต่ละรายการได้
+การตรวจสอบทุกรายการมี ID ที่คงที่ เช่น `database.timezone` หรือ `binary.rrdtool` เพื่อให้สคริปต์สามารถอ้างอิงผลลัพธ์แต่ละรายการได้ ปลั๊กอินที่เปิดใช้งานสามารถส่งรายการตรวจสอบเพิ่มเติมและไฟล์แนบของชุดข้อมูลสนับสนุนผ่านฮุก `doctor_register_checks` และ Doctor ยังเปิดความสามารถในการวินิจฉัยแบบอ่านอย่างเดียวให้แก่ `plugin_mcp` ผ่าน `abilities_register` ด้วย
 
 ## แผนผังโค้ดและการทดสอบ
 
 | พฤติกรรม | การอิมพลีเมนต์ | หลักฐานการทดสอบในรีโพสิทอรีนี้ |
 |---|---|---|
-| การตรวจสอบวินิจฉัยและ ID รายงานที่คงที่ | [doctor_functions.php](../../../doctor_functions.php) | [DoctorFunctionsTest.php](../../../tests/DoctorFunctionsTest.php), [AssertDoctorReport.php](../../../tests/ci/AssertDoctorReport.php) |
+| การตรวจสอบวินิจฉัยและ ID รายงานที่คงที่ | [doctor_functions.php](../../../doctor_functions.php) | [DoctorFunctionsTest.php](../../../tests/DoctorFunctionsTest.php), [DatabaseHealthTest.php](../../../tests/DatabaseHealthTest.php), [AssertDoctorReport.php](../../../tests/ci/AssertDoctorReport.php) |
+| ฮุกตรวจสอบปลั๊กอิน (`doctor_register_checks`) | [doctor_plugins.php](../../../doctor_plugins.php) | [PluginHooksTest.php](../../../tests/PluginHooksTest.php) |
+| ความสามารถการวินิจฉัย MCP (`abilities_register`) | [doctor_abilities.php](../../../doctor_abilities.php) | [AbilitiesTest.php](../../../tests/AbilitiesTest.php) |
 | การเข้าถึงตามขอบเขตบทบาทและรายงานบนเว็บที่ปกปิดข้อมูลอ่อนไหว | [doctor_access.php](../../../doctor_access.php), [doctor_web.php](../../../doctor_web.php) | [AccessTest.php](../../../tests/AccessTest.php), [WebAccessTest.php](../../../tests/WebAccessTest.php) |
 | การสืบค้นตามอาการแบบมีแนวทาง | [doctor_diagnosis.php](../../../doctor_diagnosis.php) | [DiagnosisTest.php](../../../tests/DiagnosisTest.php) |
 | การตรวจสอบความสดใหม่ของ RRD และการจัดการการเขียนแบบหน่วงเวลา | [doctor_rrd.php](../../../doctor_rrd.php) | [RrdFreshnessTest.php](../../../tests/RrdFreshnessTest.php) |
@@ -188,7 +190,7 @@ php plugins/doctor/cli/doctor.php --format=prometheus > /var/lib/node_exporter/t
 php plugins/doctor/cli/doctor.php --bundle=/tmp/cacti-doctor.txt
 ```
 
-ชุดข้อมูลนี้เป็นไฟล์ข้อความไฟล์เดียวที่ประกอบด้วยเวอร์ชันของ Doctor, Cacti, PHP, ระบบปฏิบัติการ และฐานข้อมูล สถิติของโพลเลอร์และ Boost รายงานฉบับเต็ม และล็อกของ Cacti 200 บรรทัดล่าสุด ค่าที่อยู่ถัดจากชื่อรหัสผ่าน, secret, token, community และ key จะถูกปิดบังไว้ Doctor จะสร้างไฟล์ให้อ่านได้เฉพาะเจ้าของไฟล์เท่านั้น และปฏิเสธที่จะเขียนทับไฟล์ที่มีอยู่เดิม โปรดตรวจสอบเนื้อหาก่อนนำไปเผยแพร่ที่ใดๆ
+ชุดข้อมูลนี้เป็นไฟล์ข้อความไฟล์เดียวที่ประกอบด้วยเวอร์ชันของ Doctor, Cacti, PHP, ระบบปฏิบัติการ และฐานข้อมูล สถิติของโพลเลอร์และ Boost รายงานฉบับเต็ม ไฟล์แนบของชุดข้อมูลสนับสนุนจากปลั๊กอินใต้หัวข้อ `== Plugin attachments` (ถ้ามี) และล็อกของ Cacti 200 บรรทัดล่าสุด ค่าที่อยู่ถัดจากชื่อรหัสผ่าน, secret, token, community และ key จะถูกปิดบังไว้ Doctor จะสร้างไฟล์ให้อ่านได้เฉพาะเจ้าของไฟล์เท่านั้น และปฏิเสธที่จะเขียนทับไฟล์ที่มีอยู่เดิม โปรดตรวจสอบเนื้อหาก่อนนำไปเผยแพร่ที่ใดๆ
 
 ## นโยบายการซ่อมแซม
 
@@ -234,6 +236,63 @@ Boost จะบวกค่าเผื่อการเขียนดิส�
 
 การอัปเกรดจะสร้าง `plugin_doctor_audit` และ `plugin_doctor_acceptance` โดยไม่เปลี่ยนแปลงข้อมูลแอปพลิเคชัน Cacti โปรดส่งออกประวัติใดๆ ที่คุณต้องการก่อนถอนการติดตั้ง เนื่องจากการถอนการติดตั้งจะลบทั้งสองตารางของปลั๊กอินและการตั้งค่าของปลั๊กอินออก การย้อนกลับไฟล์ปลั๊กอินจะยังคงเหลือตารางไว้สำหรับการตรวจสอบ แต่เวอร์ชันที่เก่ากว่าจะไม่รองรับข้อยกเว้นคำเตือน
 
+## การตรวจสอบของปลั๊กอิน (`doctor_register_checks`)
+
+ปลั๊กอิน Cacti ที่เปิดใช้งานสามารถเพิ่มการตรวจสอบวินิจฉัยแบบอ่านอย่างเดียวและไฟล์แนบสำหรับชุดข้อมูลสนับสนุนได้โดยลงทะเบียนฮุก `doctor_register_checks`:
+
+```php
+api_plugin_register_hook('sample', 'doctor_register_checks', 'sample_doctor_checks', 'setup.php');
+```
+
+Doctor จะเรียกปลั๊กอินที่เปิดใช้งานและไม่ได้เป็นส่วนรวมในระบบหลักซึ่งลงทะเบียนไว้บน `doctor_register_checks` (ยกเว้น `doctor` และ `cacti`) โดยอ้างอิงไฟล์ฮุกภายในไดเรกทอรีของปลั๊กอินนั้นอย่างเคร่งครัด ฟังก์ชันเรียกกลับจะได้รับ `['mode' => 'run' | 'list', 'plugin' => '<slug>']` และส่งคืนรายการตัวอธิบายการตรวจสอบ หรือโครงสร้างที่มี `checks` และ `attachments` ที่เลือกใส่ได้:
+
+```php
+function sample_doctor_checks($context) {
+	return [
+		'checks' => [
+			[
+				'id'          => 'sample.queue_depth',
+				'plugin'      => 'sample',
+				'category'    => 'Sample',
+				'title'       => 'Sample queue depth',
+				'status'      => 'ok',
+				'message'     => 'Queue is healthy.',
+				'details'     => ['pending' => 0],
+				'remediation' => ''
+			]
+		],
+		'attachments' => [
+			[
+				'title'   => 'Sample diagnostics',
+				'content' => "worker=ok\n"
+			]
+		]
+	];
+}
+```
+
+ตัวอธิบายการตรวจสอบของปลั๊กอินทุกตัวจะถูกตรวจสอบความถูกต้องก่อนนำมารวม:
+
+- คีย์ที่จำเป็น: `id`, `plugin`, `category`, `title`, `status`, `message`, `details` และ `remediation`
+- `plugin` ต้องตรงกับ slug ของปลั๊กอินที่ลงทะเบียนไว้ (`[a-z0-9_]{1,64}`) ส่วน `id` ต้องตรงกับ `[a-z0-9_.]{1,128}`, ขึ้นต้นด้วย `<plugin>.` และไม่ซ้ำกับ ID การตรวจสอบหลักหรือของปลั๊กอินอื่นที่มีอยู่แล้ว
+- `status` ต้องเป็น `ok`, `warn`, `fail` หรือ `info` โดย `ok` จะแปลงเป็น `pass` ในรายงานของ Doctor ส่วน `info` เป็นข้อมูลแจ้งเพื่อทราบเท่านั้น และไม่ทำให้เกิดความล้มเหลวใน CLI, Nagios, Prometheus หรือการแจ้งเตือนตามกำหนดเวลา
+- `category` (ไม่เกิน 64 ไบต์) และ `title` (ไม่เกิน 256 ไบต์) ต้องเป็นสตริงที่ไม่ว่างและไม่มีอักขระควบคุม ส่วน `message` (ไม่ว่าง ไม่เกิน 2048 ไบต์) และ `remediation` (ไม่เกิน 2048 ไบต์) ต้องเป็นสตริง
+- `details` รองรับสตริง (ไม่เกิน 8192 ไบต์) หรืออาร์เรย์แบบสเกลาร์/ซ้อนกัน (ความลึกสูงสุด 4 ระดับ, เมื่อเข้ารหัส JSON แล้วไม่เกิน 16384 ไบต์; ไม่อนุญาตออบเจ็กต์และรีซอร์ส)
+- ไฟล์แนบของชุดข้อมูลสนับสนุนที่เป็นทางเลือกต้องมี `title` ที่ไม่ว่าง (ไม่เกิน 128 ไบต์, ไม่มีอักขระควบคุม) และสตริง `content` ไม่เกิน 65536 ไบต์ (64 KiB)
+
+Doctor จำกัดจำนวนไว้ที่ 32 รายการตรวจสอบและ 8 ไฟล์แนบต่อปลั๊กอิน (รวมทั้งหมด 64 รายการตรวจสอบปลั๊กอินและ 32 ไฟล์แนบ) แต่ละฮุกจะทำงานภายในขอบเขต `try`/`catch` ของตนเอง ดังนั้นข้อยกเว้นหรือเพย์โหลดที่ไม่ใช่อาร์เรย์จะถูกปกปิดข้อมูลลับและบันทึกลงในล็อกของ Cacti (`DOCTOR` facility) โดยไม่กระทบต่อการตรวจสอบหลักหรือปลั๊กอินอื่น ตัวอธิบายที่ไม่ถูกต้องตามรูปแบบจะถูกปฏิเสธและบันทึกลงล็อก ขณะที่รายการที่ถูกต้องจากปลั๊กอินเดียวกันจะยังคงทำงานต่อไป การตรวจสอบของปลั๊กอินจะเป็นแบบอ่านอย่างเดียวเสมอ (`repairable: false`) และค่าสตริงรวมถึงคีย์แบบเชื่อมโยงที่ละเอียดอ่อนจะถูกปกปิดก่อนการแสดงผล การส่งออก หรือการรวมเป็นชุดข้อมูลสนับสนุน การตรวจสอบของปลั๊กอินที่ผ่านการตรวจสอบแล้วจะปรากฏในหน้าเว็บ เอาต์พุตข้อความ/JSON/Nagios/Prometheus ของ CLI การติดตามสถานะตามกำหนดเวลา และชุดข้อมูลสนับสนุน
+
+## การผสานรวมกับ MCP (`abilities_register`)
+
+Doctor ลงทะเบียนฮุก `abilities_register` (`doctor_abilities_register` ใน `doctor_abilities.php`) เพื่อให้ `plugin_mcp` ค้นพบความสามารถในการวินิจฉัยของ Doctor เมื่อเปิดใช้งานปลั๊กอินทั้งสองตัว Doctor ลงทะเบียนหมวดหมู่ `diagnostics` (`Diagnostics`) และความสามารถแบบอ่านอย่างเดียว ไม่ทำลายข้อมูล และ idempotent จำนวนสองรายการ:
+
+| Ability ID | อาร์กิวเมนต์ทางเลือก | เอาต์พุต |
+|---|---|---|
+| `doctor-run-checks` | `category` (สตริง, สูงสุด 64 ตัวอักษร), `status` (`pass`, `ok`, `warn`, `fail`, `info`) | `summary` (`total`, `pass`, `warn`, `fail`, `info`) และ `findings` ที่ปกปิดข้อมูลลับแล้วสูงสุด 256 รายการ (`id`, `plugin`, `category`, `title`, `status`, `message`, `remediation`) |
+| `doctor-list-checks` | `category` (สตริง, สูงสุด 64 ตัวอักษร), `plugin` (สตริง, สูงสุด 64 ตัวอักษร) | `checks` สูงสุด 256 รายการ (`id`, `plugin`, `category`, `title`) ครอบคลุมการตรวจสอบในตัวทั้งหมด 45 รายการรวมกับการตรวจสอบจากปลั๊กอินที่เปิดใช้งาน |
+
+ความสามารถทั้งสองเป็นแบบอ่านอย่างเดียวอย่างเคร่งครัดและไม่เคยเรียกใช้การซ่อมแซม นอกเหนือจากสิทธิ์และการควบคุมการเปิดเผยความสามารถของ `plugin_mcp` เอง (ความสามารถของปลั๊กอินจะเริ่มต้นแบบซ่อนอยู่ใน MCP จนกว่าผู้ดูแลระบบจะเปิดเผย) Doctor กำหนดให้เจ้าของโทเค็นต้องถือสิทธิ์ **Doctor Viewer** หรือสิทธิ์ Doctor ที่สูงกว่า โดย `doctor-run-checks` จะจำกัดขอบเขตของ `devices.health` ตามอุปกรณ์ที่เจ้าของโทเค็นได้รับอนุญาต, รวม `logging.recent_errors` เฉพาะเมื่อผู้ใช้มีสิทธิ์ Cacti realm 18 หรือ 19, ละเว้น `filesystem.rrd_files` และรวม `filesystem.rrd_stale` ที่จำกัดขอบเขตตามอุปกรณ์เฉพาะสำหรับ **Doctor Operator** หรือ **Doctor Administrator** เท่านั้น
+
 ## ข้อกำหนด
 
 | Cacti | PHP | หมายเหตุ |
@@ -251,20 +310,22 @@ Boost จะบวกค่าเผื่อการเขียนดิส�
 
 ## การพัฒนา
 
-ชุดการทดสอบย่อยใช้ Pest และทำงานบน PHP 8.2 หรือใหม่กว่า:
+ชุดการทดสอบย่อยใช้ Pest และการวิเคราะห์โค้ดแบบสถิตใช้ PHPStan (ระดับ 6) โดยทั้งคู่ทำงานบน PHP 8.2 หรือใหม่กว่า:
 
 ```console
 composer install
+composer phpstan
 composer test
 ```
 
 การทดสอบจะแทนที่ฟังก์ชันของ Cacti ที่ Doctor เรียกใช้ด้วยฟังก์ชันจำลองขนาดเล็กใน `tests/CactiStubs.php` จึงสามารถทำงานได้โดยไม่ต้องติดตั้ง Cacti
 
-GitHub Actions จะเรียกใช้การตรวจสอบสี่ประเภทในทุกการ push และ pull request:
+GitHub Actions จะเรียกใช้การตรวจสอบห้าประเภทในทุกการ push และ pull request:
 
-- `php -l` กับไฟล์ PHP ทุกไฟล์ภายใต้ PHP 5.4, 5.6, 7.0, 7.1, 7.4 และ 8.0 ถึง 8.4
-- ชุดการทดสอบย่อยบน PHP 8.2, 8.3 และ 8.4
+- การทดสอบสัญญาแพ็กเกจสำหรับเผยแพร่ (`tests/test_release.py`) และการสร้างไฟล์เก็บถาวร (`tools/build_release.py`)
 - `locales/build_gettext.sh --check` ซึ่งจะล้มเหลวหากแม่แบบการแปลล้าสมัย แค็ตตาล็อกไม่สมบูรณ์หรือคลุมเครือ หรือแค็ตตาล็อกที่คอมไพล์แล้วแตกต่างจากต้นฉบับ
+- `php -l` กับไฟล์ PHP ทุกไฟล์ภายใต้ PHP 5.4, 5.6, 7.0, 7.1, 7.4 และ 8.0 ถึง 8.4
+- `composer phpstan` (PHPStan ระดับ 6) และ `composer test` (ชุดการทดสอบย่อย Pest) บน PHP 8.2, 8.3 และ 8.4
 - งานทดสอบการรวมระบบเจ็ดงานที่ติดตั้ง Cacti 1.2.20 สาขา 1.2.x ปัจจุบัน และ `develop` ร่วมกับ MySQL และ MariaDB โดยใช้ทั้ง cmd.php และ Spine แต่ละงานจะติดตั้งและเปิดใช้งานปลั๊กอิน เรียกใช้รายงาน CLI ฉบับเต็ม และตรวจสอบสคีมาของรายงาน ยอดรวมสรุป สถานะที่คาดหวัง และชุดความล้มเหลวที่แน่นอน จากนั้นจะทำให้พาธของไบนารีและการประทับเวลาของตัวดึงข้อมูลเสียหาย ยืนยันว่าทั้งสองอย่างถูกรายงาน กู้คืนกลับ ทดสอบการซ่อมแซมและการยืนยัน และรันการปิดใช้งาน เปิดใช้งาน ถอนการติดตั้ง และติดตั้งใหม่ รายงาน JSON จะถูกเก็บไว้เป็นอาร์ติแฟกต์เมื่องานล้มเหลว
 
 ## การมีส่วนร่วม

@@ -1,4 +1,4 @@
-<!-- Source: README.md; SHA256: ee03c7ac68aca21c8155c29b5b43a1f206c2f0c379c8b07bb4113919c18aafde -->
+<!-- Source: README.md; SHA256: 490628bb7f70f4cf1a8c43b302246fd2e870725a6649c628762608b4a76db65b -->
 
 <!-- translations:start -->
 [English](../../../README.md) | [简体中文](../zh-CN/README.md) | [हिन्दी](../hi-IN/README.md) | [Español (España)](../es-ES/README.md) | [Español (Latinoamérica)](../es-419/README.md) | [العربية (السعودية)](../ar-SA/README.md) | [Afrikaans](../af-ZA/README.md) | [አማርኛ](../am-ET/README.md) | [العربية (مصر)](../ar-EG/README.md) | [العربية (المغرب)](../ar-MA/README.md) | [বাংলা](../bn-BD/README.md) | [Bosanski](../bs-BA/README.md) | [Deutsch](../de-DE/README.md) | [فارسی](../fa-IR/README.md) | [Filipino](../fil-PH/README.md) | [Français](../fr-FR/README.md) | [Français (Maroc)](../fr-MA/README.md) | [Français (Sénégal)](../fr-SN/README.md) | [Hausa](../ha-NG/README.md) | [עברית](../he-IL/README.md) | [Hrvatski](../hr-HR/README.md) | [Bahasa Indonesia](../id-ID/README.md) | [Igbo](../ig-NG/README.md) | [Italiano](../it-IT/README.md) | [日本語](README.md) | [한국어](../ko-KR/README.md) | [Malagasy](../mg-MG/README.md) | [मराठी](../mr-IN/README.md) | [Bahasa Melayu](../ms-MY/README.md) | [Nederlands](../nl-NL/README.md) | [Polski](../pl-PL/README.md) | [Português (Brasil)](../pt-BR/README.md) | [Русский](../ru-RU/README.md) | [Kinyarwanda](../rw-RW/README.md) | [Soomaali](../so-SO/README.md) | [Српски](../sr-RS/README.md) | [Svenska](../sv-SE/README.md) | [Kiswahili](../sw-KE/README.md) | [தமிழ்](../ta-IN/README.md) | [తెలుగు](../te-IN/README.md) | [ไทย](../th-TH/README.md) | [Türkçe](../tr-TR/README.md) | [Українська](../uk-UA/README.md) | [اردو](../ur-PK/README.md) | [Tiếng Việt](../vi-VN/README.md) | [isiXhosa](../xh-ZA/README.md) | [Yorùbá](../yo-NG/README.md) | [繁體中文](../zh-TW/README.md) | [isiZulu](../zu-ZA/README.md)
@@ -50,13 +50,15 @@ Cacti の問題は通常、空のグラフ、停止したポーラー、イン�
 | デバイス | ダウン中または復旧中の有効なデバイス、最も長くダウンしている上位 3 台とその最後のエラー、およびほとんどのデバイスが同時にダウンしている場合の失敗判定 |
 | ポーラー | ポーラーの種類と間隔、メインポーラーが最後に完了してからの経過時間、間隔に対する実行時間、RRD ファイルに到達しなかったポーラー出力、報告を停止したリモートポーラー、停止した Boost、および別のデータベースを指している Spine 設定 |
 
-すべてのチェックには `database.timezone` や `binary.rrdtool` のような安定した ID が割り当てられているため、スクリプトで個別の結果をキーとして参照できます。
+すべてのチェックには `database.timezone` や `binary.rrdtool` のような安定した ID が割り当てられているため、スクリプトで個別の結果をキーとして参照できます。有効化されたプラグインは `doctor_register_checks` フックを通じて追加のチェックおよびサポートバンドルの添付データを提供でき、Doctor は `abilities_register` を通じて `plugin_mcp` に読み取り専用の診断アビリティを公開します。
 
 ## コードとテストの対応表
 
 | 動作 | 実装 | このリポジトリ内のテストエビデンス |
 |---|---|---|
-| 診断チェックと安定したレポート ID | [doctor_functions.php](../../../doctor_functions.php) | [DoctorFunctionsTest.php](../../../tests/DoctorFunctionsTest.php)、[AssertDoctorReport.php](../../../tests/ci/AssertDoctorReport.php) |
+| 診断チェックと安定したレポート ID | [doctor_functions.php](../../../doctor_functions.php) | [DoctorFunctionsTest.php](../../../tests/DoctorFunctionsTest.php)、[DatabaseHealthTest.php](../../../tests/DatabaseHealthTest.php)、[AssertDoctorReport.php](../../../tests/ci/AssertDoctorReport.php) |
+| プラグインチェックフック (`doctor_register_checks`) | [doctor_plugins.php](../../../doctor_plugins.php) | [PluginHooksTest.php](../../../tests/PluginHooksTest.php) |
+| MCP 診断アビリティ (`abilities_register`) | [doctor_abilities.php](../../../doctor_abilities.php) | [AbilitiesTest.php](../../../tests/AbilitiesTest.php) |
 | ロールスコープのアクセス制御と墨消し済み Web レポート | [doctor_access.php](../../../doctor_access.php)、[doctor_web.php](../../../doctor_web.php) | [AccessTest.php](../../../tests/AccessTest.php)、[WebAccessTest.php](../../../tests/WebAccessTest.php) |
 | ガイド付き症状調査 | [doctor_diagnosis.php](../../../doctor_diagnosis.php) | [DiagnosisTest.php](../../../tests/DiagnosisTest.php) |
 | RRD 鮮度と遅延書き込みの処理 | [doctor_rrd.php](../../../doctor_rrd.php) | [RrdFreshnessTest.php](../../../tests/RrdFreshnessTest.php) |
@@ -193,7 +195,7 @@ php plugins/doctor/cli/doctor.php --format=prometheus > /var/lib/node_exporter/t
 php plugins/doctor/cli/doctor.php --bundle=/tmp/cacti-doctor.txt
 ```
 
-バンドルは 1 つのテキストファイルで、Doctor、Cacti、PHP、OS、およびデータベースのバージョン、ポーラーと Boost の統計情報、完全なレポート、Cacti ログの末尾 200 行が含まれます。password、secret、token、community、key の各名前に続く値はマスクされます。Doctor は所有者のみが読み取れる権限でファイルを作成し、既存のファイルへの上書きは拒否します。外部に投稿する前に内容を確認してください。
+バンドルは 1 つのテキストファイルで、Doctor、Cacti、PHP、OS、およびデータベースのバージョン、ポーラーと Boost の統計情報、完全なレポート、`== Plugin attachments` の下に含まれるプラグインからのサポートバンドル添付データ、Cacti ログの末尾 200 行が含まれます。password、secret、token、community、key の各名前に続く値はマスクされます。Doctor は所有者のみが読み取れる権限でファイルを作成し、既存のファイルへの上書きは拒否します。外部に投稿する前に内容を確認してください。
 
 ## 修復ポリシー
 
@@ -239,6 +241,63 @@ Cacti の Settings/System Utilities 権限を持つ管理者は、Doctor ペー�
 
 アップグレードでは、Cacti アプリケーションデータを変更することなく `plugin_doctor_audit` および `plugin_doctor_acceptance` が作成されます。アンインストールすると両方のプラグインテーブルとその設定が削除されるため、必要な履歴はアンインストール前にエクスポートしてください。プラグインファイルを元に戻すとテーブルは調査用に残りますが、古いバージョンでは警告の例外は適用されません。
 
+## プラグインチェック (`doctor_register_checks`)
+
+有効化された Cacti プラグインは、`doctor_register_checks` フックを登録することで、読み取り専用の診断チェックと任意のサポートバンドル添付データを提供できます：
+
+```php
+api_plugin_register_hook('sample', 'doctor_register_checks', 'sample_doctor_checks', 'setup.php');
+```
+
+Doctor は `doctor_register_checks` に登録された有効かつ非統合プラグインを呼び出し（`doctor` と `cacti` はスキップ）、フックファイルをプラグイン自身のディレクトリ内に限定して解決します。コールバックは `['mode' => 'run' | 'list', 'plugin' => '<slug>']` を受け取り、チェック記述子のリスト、または `checks` と任意の `attachments` を含むエンベロープを返します：
+
+```php
+function sample_doctor_checks($context) {
+	return [
+		'checks' => [
+			[
+				'id'          => 'sample.queue_depth',
+				'plugin'      => 'sample',
+				'category'    => 'Sample',
+				'title'       => 'Sample queue depth',
+				'status'      => 'ok',
+				'message'     => 'Queue is healthy.',
+				'details'     => ['pending' => 0],
+				'remediation' => ''
+			]
+		],
+		'attachments' => [
+			[
+				'title'   => 'Sample diagnostics',
+				'content' => "worker=ok\n"
+			]
+		]
+	];
+}
+```
+
+すべてのプラグインチェック記述子は、組み込まれる前に検証されます：
+
+- 必須キー: `id`、`plugin`、`category`、`title`、`status`、`message`、`details`、および `remediation`。
+- `plugin` は登録済みプラグインのスラッグ (`[a-z0-9_]{1,64}`) と一致する必要があります。`id` は `[a-z0-9_.]{1,128}` に一致し、`<plugin>.` で始まり、既存のコアチェック ID やプラグインチェック ID と衝突しない必要があります。
+- `status` は `ok`、`warn`、`fail`、または `info` のいずれかである必要があります。`ok` は Doctor レポートでは `pass` に対応し、`info` は情報提供用であり CLI、Nagios、Prometheus、またはスケジュールアラートで失敗をトリガーしません。
+- `category`（最大 64 バイト）および `title`（最大 256 バイト）は制御文字を含まない空でない文字列である必要があります。`message`（空でない、最大 2048 バイト）および `remediation`（最大 2048 バイト）は文字列である必要があります。
+- `details` は文字列（最大 8192 バイト）またはスカラー/ネスト配列（最大深度 4、JSON エンコード後最大 16384 バイト、オブジェクトおよびリソースは拒否）を受け付けます。
+- 任意のサポートバンドル添付データには、空でない `title`（最大 128 バイト、制御文字なし）および最大 65536 バイト（64 KiB）の `content` 文字列が必要です。
+
+Doctor はプラグインごとに最大 32 件のチェックと 8 件の添付データ（合計でプラグインチェック 64 件、添付データ 32 件）の上限を適用します。各フックは独自の `try`/`catch` 境界内で実行されるため、例外や配列以外のペイロードはコアチェックや他のプラグインに影響を与えることなくマスクされ、Cacti ログ（`DOCTOR` ファシリティ）に記録されます。形式が不正な記述子は拒否されてログに記録され、同じプラグインの有効な記述子は引き続き実行されます。プラグインチェックは常に読み取り専用（`repairable: false`）であり、文字列値と機密性の高い連想キーは表示、エクスポート、またはバンドル前にマスクされます。検証済みのプラグインチェックは、Web UI、CLI テキスト/JSON/Nagios/Prometheus 出力、スケジュール済みステータス追跡、およびサポートバンドルに表示されます。
+
+## MCP 連携 (`abilities_register`)
+
+Doctor は `abilities_register` フック（`doctor_abilities.php` 内の `doctor_abilities_register`）を登録しており、両方のプラグインが有効なときに `plugin_mcp` がその診断アビリティを検出できるようにします。Doctor は `diagnostics` カテゴリ（`Diagnostics`）と、読み取り専用、非破壊的、べき等な 2 つのアビリティを登録します：
+
+| アビリティ ID | オプション引数 | 出力 |
+|---|---|---|
+| `doctor-run-checks` | `category`（文字列、最大 64 文字）、`status`（`pass`、`ok`、`warn`、`fail`、`info`） | `summary`（`total`、`pass`、`warn`、`fail`、`info`）および最大 256 件のマスク済み `findings`（`id`、`plugin`、`category`、`title`、`status`、`message`、`remediation`） |
+| `doctor-list-checks` | `category`（文字列、最大 64 文字）、`plugin`（文字列、最大 64 文字） | 45 件の組み込みチェックすべてと有効化されたプラグインチェックを対象とする最大 256 件の `checks`（`id`、`plugin`、`category`、`title`） |
+
+どちらのアビリティも厳密に読み取り専用であり、修復を実行することはありません。`plugin_mcp` 独自のレルムおよびアビリティ公開制御（管理者が公開するまでプラグインのアビリティは MCP 上で非表示のまま開始します）に加え、Doctor はトークン所有者が **Doctor Viewer** またはそれ以上の Doctor レルムを保持していることを要求します。`doctor-run-checks` は `devices.health` のスコープをトークン所有者に許可されたデバイスに限定し、ユーザーが Cacti レルム 18 または 19 を保持している場合にのみ `logging.recent_errors` を含め、`filesystem.rrd_files` を省略し、デバイススコープ付きの `filesystem.rrd_stale` は **Doctor Operator** または **Doctor Administrator** の場合にのみ含めます。
+
 ## 要件
 
 | Cacti | PHP | 備考 |
@@ -256,20 +315,22 @@ Cacti の Settings/System Utilities 権限を持つ管理者は、Doctor ペー�
 
 ## 開発
 
-ユニットテストスイートは Pest を使用し、PHP 8.2 以降で実行されます：
+ユニットテストスイートは Pest を使用し、静的解析は PHPStan（レベル 6）を使用しており、どちらも PHP 8.2 以降で実行されます：
 
 ```console
 composer install
+composer phpstan
 composer test
 ```
 
 テストは、Doctor が呼び出す Cacti 関数を `tests/CactiStubs.php` 内の小さなスタブに置き換えるため、Cacti インストールなしで実行できます。
 
-GitHub Actions は、すべてのプッシュおよびプルリクエストで 4 種類のチェックを実行します：
+GitHub Actions は、すべてのプッシュおよびプルリクエストで 5 種類のチェックを実行します：
 
-- PHP 5.4、5.6、7.0、7.1、7.4、および 8.0 から 8.4 までの環境で、すべての PHP ファイルに対して `php -l` を実行します。
-- PHP 8.2、8.3、および 8.4 でユニットテストスイートを実行します。
+- リリースパッケージングの契約テスト（`tests/test_release.py`）およびアーカイブビルド（`tools/build_release.py`）。
 - `locales/build_gettext.sh --check` を実行し、古い翻訳テンプレート、不完全または fuzzy なカタログ、あるいはソースと異なるコンパイル済みカタログがある場合に失敗させます。
+- PHP 5.4、5.6、7.0、7.1、7.4、および 8.0 から 8.4 までの環境で、すべての PHP ファイルに対して `php -l` を実行します。
+- PHP 8.2、8.3、および 8.4 で `composer phpstan`（PHPStan レベル 6）および `composer test`（Pest ユニットテストスイート）を実行します。
 - MySQL および MariaDB に対して、cmd.php と Spine の両方で Cacti 1.2.20、現在の 1.2.x ブランチ、および `develop` をインストールする 7 つの統合ジョブを実行します。各ジョブはプラグインをインストールして有効化し、完全な CLI レポートを実行して、レポートスキーマ、サマリー合計、期待されるステータス、および正確な失敗セットをチェックします。その後、バイナリパスとポーラーのタイムスタンプを破損させ、両方が報告されることを確認して復元し、修復とその確認を実行し、さらに無効化、有効化、アンインストール、および再インストールを実行します。ジョブが失敗した場合、JSON レポートがアーティファクトとして保持されます。
 
 ## 貢献

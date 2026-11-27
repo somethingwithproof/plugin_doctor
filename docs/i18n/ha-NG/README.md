@@ -1,4 +1,4 @@
-<!-- Source: README.md; SHA256: ee03c7ac68aca21c8155c29b5b43a1f206c2f0c379c8b07bb4113919c18aafde -->
+<!-- Source: README.md; SHA256: 490628bb7f70f4cf1a8c43b302246fd2e870725a6649c628762608b4a76db65b -->
 
 <!-- translations:start -->
 [English](../../../README.md) | [简体中文](../zh-CN/README.md) | [हिन्दी](../hi-IN/README.md) | [Español (España)](../es-ES/README.md) | [Español (Latinoamérica)](../es-419/README.md) | [العربية (السعودية)](../ar-SA/README.md) | [Afrikaans](../af-ZA/README.md) | [አማርኛ](../am-ET/README.md) | [العربية (مصر)](../ar-EG/README.md) | [العربية (المغرب)](../ar-MA/README.md) | [বাংলা](../bn-BD/README.md) | [Bosanski](../bs-BA/README.md) | [Deutsch](../de-DE/README.md) | [فارسی](../fa-IR/README.md) | [Filipino](../fil-PH/README.md) | [Français](../fr-FR/README.md) | [Français (Maroc)](../fr-MA/README.md) | [Français (Sénégal)](../fr-SN/README.md) | [Hausa](README.md) | [עברית](../he-IL/README.md) | [Hrvatski](../hr-HR/README.md) | [Bahasa Indonesia](../id-ID/README.md) | [Igbo](../ig-NG/README.md) | [Italiano](../it-IT/README.md) | [日本語](../ja-JP/README.md) | [한국어](../ko-KR/README.md) | [Malagasy](../mg-MG/README.md) | [मराठी](../mr-IN/README.md) | [Bahasa Melayu](../ms-MY/README.md) | [Nederlands](../nl-NL/README.md) | [Polski](../pl-PL/README.md) | [Português (Brasil)](../pt-BR/README.md) | [Русский](../ru-RU/README.md) | [Kinyarwanda](../rw-RW/README.md) | [Soomaali](../so-SO/README.md) | [Српски](../sr-RS/README.md) | [Svenska](../sv-SE/README.md) | [Kiswahili](../sw-KE/README.md) | [தமிழ்](../ta-IN/README.md) | [తెలుగు](../te-IN/README.md) | [ไทย](../th-TH/README.md) | [Türkçe](../tr-TR/README.md) | [Українська](../uk-UA/README.md) | [اردو](../ur-PK/README.md) | [Tiếng Việt](../vi-VN/README.md) | [isiXhosa](../xh-ZA/README.md) | [Yorùbá](../yo-NG/README.md) | [繁體中文](../zh-TW/README.md) | [isiZulu](../zu-ZA/README.md)
@@ -50,13 +50,15 @@ Matsalolin Cacti galibi suna bayyana ne a matsayin alamomi: jadawalan hoto maras
 | Na'urori | Na'urorin da aka kunna waɗanda suka daina aiki ko suke farfaɗowa, ukun da suka fi daɗewa a kashe tare da kuskurensu na ƙarshe, da gazawa lokacin da yawancin na'urori suka daina aiki lokaci guda |
 | Poller | Nau'in poller da tazarar lokaci, lokacin da ya shuɗe tun lokacin da babban poller ya kammala aiki na ƙarshe, lokacin aiki idan aka kwatanta da tazarar, sakamakon poller da bai taɓa kai ga fayil ɗin RRD ba, poller na nesa da suka daina ba da rahoto, Boost da ya tsaya cak, da saitin Spine da ke nuna wani rumbun adana bayanai daban |
 
-Kowane bincike yana da tabbataccen ID, kamar `database.timezone` ko `binary.rrdtool`, domin rubutun umarni (scripts) su iya dogaro da sakamako ɗaiɗai.
+Kowane bincike yana da tabbataccen ID, kamar `database.timezone` ko `binary.rrdtool`, domin rubutun umarni (scripts) su iya dogaro da sakamako ɗaiɗai. Ƙarin (plugins) da aka kunna za su iya bayar da ƙarin gwaje-gwaje da haɗe-haɗen kunshin tallafi ta hanyar ƙugiyar `doctor_register_checks`, kuma Doctor yana bayyana damar bincike ta karatu-kawai ga `plugin_mcp` ta hanyar `abilities_register`.
 
 ## Taswirar lambar aiki da gwaji
 
 | Aiki | Aiwatarwa | Shaidar gwaji a cikin wannan ma'ajiya |
 |---|---|---|
-| Gwaje-gwajen gano matsala da tabbatattun ID na rahoto | [doctor_functions.php](../../../doctor_functions.php) | [DoctorFunctionsTest.php](../../../tests/DoctorFunctionsTest.php), [AssertDoctorReport.php](../../../tests/ci/AssertDoctorReport.php) |
+| Gwaje-gwajen gano matsala da tabbatattun ID na rahoto | [doctor_functions.php](../../../doctor_functions.php) | [DoctorFunctionsTest.php](../../../tests/DoctorFunctionsTest.php), [DatabaseHealthTest.php](../../../tests/DatabaseHealthTest.php), [AssertDoctorReport.php](../../../tests/ci/AssertDoctorReport.php) |
+| Ƙugiyar binciken plugin (`doctor_register_checks`) | [doctor_plugins.php](../../../doctor_plugins.php) | [PluginHooksTest.php](../../../tests/PluginHooksTest.php) |
+| Damar bincike ta MCP (`abilities_register`) | [doctor_abilities.php](../../../doctor_abilities.php) | [AbilitiesTest.php](../../../tests/AbilitiesTest.php) |
 | Damar shiga ta matsayi da rahotannin yanar gizo da aka rufe bayanai | [doctor_access.php](../../../doctor_access.php), [doctor_web.php](../../../doctor_web.php) | [AccessTest.php](../../../tests/AccessTest.php), [WebAccessTest.php](../../../tests/WebAccessTest.php) |
 | Binciken alamomin matsala da jagora | [doctor_diagnosis.php](../../../doctor_diagnosis.php) | [DiagnosisTest.php](../../../tests/DiagnosisTest.php) |
 | Sabuntar RRD da sarrafa jinkirin rubutu | [doctor_rrd.php](../../../doctor_rrd.php) | [RrdFreshnessTest.php](../../../tests/RrdFreshnessTest.php) |
@@ -195,7 +197,7 @@ php plugins/doctor/cli/doctor.php --format=prometheus > /var/lib/node_exporter/t
 php plugins/doctor/cli/doctor.php --bundle=/tmp/cacti-doctor.txt
 ```
 
-Kunshin fayil ɗin rubutu ne guda ɗaya mai ɗauke da sigogin Doctor, Cacti, PHP, OS, da rumbun bayanai, ƙididdigar poller da Boost, cikakken rahoto, da layuka 200 na ƙarshe na rajistar Cacti. Ana rufe ƙimomin da ke biye da sunayen password, secret, token, community, da key. Doctor yana ƙirƙirar fayil ɗin ya zama mai shi ne kaɗai zai iya karantawa kuma yana ƙin rubutawa a kan fayil ɗin da ke akwai. Duba shi kafin ka wallafa shi a ko'ina.
+Kunshin fayil ɗin rubutu ne guda ɗaya mai ɗauke da sigogin Doctor, Cacti, PHP, OS, da rumbun bayanai, ƙididdigar poller da Boost, cikakken rahoto, duk wani haɗin kunshin tallafi na plugin a ƙarƙashin `== Plugin attachments`, da layuka 200 na ƙarshe na rajistar Cacti. Ana rufe ƙimomin da ke biye da sunayen password, secret, token, community, da key. Doctor yana ƙirƙirar fayil ɗin ya zama mai shi ne kaɗai zai iya karantawa kuma yana ƙin rubutawa a kan fayil ɗin da ke akwai. Duba shi kafin ka wallafa shi a ko'ina.
 
 ## Manufar gyara
 
@@ -241,6 +243,63 @@ Ana dakatar da faɗakarwar gargaɗi da aka tsara yayin da keɓancewar ke aiki; �
 
 Haɓakawa yana ƙirƙirar `plugin_doctor_audit` da `plugin_doctor_acceptance` ba tare da canza bayanan manhajar Cacti ba. Fitar da duk wani tarihin da kuke buƙata kafin cirewa: cirewa yana share duka teburan plugin ɗin da saitunansa. Mayar da fayilolin plugin ɗin baya yana barin teburan don bincike, amma tsofaffin sigogi ba sa mutunta keɓancewar gargaɗi.
 
+## Binciken ƙarin plugins (`doctor_register_checks`)
+
+Ƙarin Cacti (plugins) da aka kunna za su iya ba da gwaje-gwajen bincike na karatu-kawai da haɗe-haɗen kunshin tallafi na zaɓi ta hanyar yin rajistar ƙugiyar `doctor_register_checks`:
+
+```php
+api_plugin_register_hook('sample', 'doctor_register_checks', 'sample_doctor_checks', 'setup.php');
+```
+
+Doctor yana kiran ƙarin da aka kunna waɗanda ba haɗaɗɗu ba da suka yi rajista a kan `doctor_register_checks` (yana tsallake `doctor` da `cacti`), yana warware fayil ɗin ƙugiya ne kawai a cikin babban fayil ɗin plugin ɗin kansa. Kiran baya (callback) yana karɓar `['mode' => 'run' | 'list', 'plugin' => '<slug>']` kuma yana mayar da ko dai jerin bayanan bincike ko ambulan mai ɗauke da `checks` da kuma `attachments` na zaɓi:
+
+```php
+function sample_doctor_checks($context) {
+	return [
+		'checks' => [
+			[
+				'id'          => 'sample.queue_depth',
+				'plugin'      => 'sample',
+				'category'    => 'Sample',
+				'title'       => 'Sample queue depth',
+				'status'      => 'ok',
+				'message'     => 'Queue is healthy.',
+				'details'     => ['pending' => 0],
+				'remediation' => ''
+			]
+		],
+		'attachments' => [
+			[
+				'title'   => 'Sample diagnostics',
+				'content' => "worker=ok\n"
+			]
+		]
+	];
+}
+```
+
+Ana tantance kowane bayanin binciken plugin kafin a haɗa shi:
+
+- Maɓallan da ake buƙata: `id`, `plugin`, `category`, `title`, `status`, `message`, `details`, da `remediation`.
+- Dole ne `plugin` ya dace da slug ɗin plugin da aka yi rajista (`[a-z0-9_]{1,64}`). Dole ne `id` ya dace da `[a-z0-9_.]{1,128}`, ya fara da `<plugin>.`, kuma kada ya yi karo da wani ID na binciken asali ko na wani plugin da ke akwai.
+- Dole ne `status` ya zama `ok`, `warn`, `fail`, ko `info`. `ok` yana daidaitawa zuwa `pass` a rahotannin Doctor; `info` na bayani ne kawai kuma ba ya haifar da gazawa a cikin CLI, Nagios, Prometheus, ko faɗakarwar da aka tsara lokaci.
+- Dole ne `category` (har zuwa bytes 64) da `title` (har zuwa bytes 256) su kasance zaren rubutu marasa komai ba tare da haruffan sarrafawa (control characters) ba. Dole ne `message` (ba fanko ba, har zuwa bytes 2048) da `remediation` (har zuwa bytes 2048) su kasance zaren rubutu.
+- `details` yana karɓar zaren rubutu (har zuwa bytes 8192) ko tsararren jerin bayanai (scalar/nested array, zurfin da bai wuce 4 ba, wanda aka haɗa zuwa JSON har zuwa bytes 16384; ana ƙin abubuwa na object da resource).
+- Haɗe-haɗen kunshin tallafi na zaɓi suna buƙatar `title` da ba fanko ba (har zuwa bytes 128, ba tare da haruffan sarrafawa ba) da zaren rubutu `content` har zuwa bytes 65536 (64 KiB).
+
+Doctor yana sanya iyakokin bincike 32 da haɗe-haɗe 8 ga kowane plugin (jimillar binciken plugins 64 da haɗe-haɗe 32). Kowane ƙugi yana gudana a cikin iyakar `try`/`catch` nasa domin a rufe sirri a cikin kuskure ko bayanan da ba tsararren jeri (array) ba kuma a rubuta su a rajistar Cacti (sashen `DOCTOR`) ba tare da shafar ainihin gwaje-gwaje ko sauran plugins ba. Ana ƙin bayanan bincike marasa kyau kuma a rubuta su a rajista yayin da masu inganci daga plugin ɗin guda ke ci gaba da gudana. Binciken plugins kullum na karatu-kawai ne (`repairable: false`), kuma ana rufe ƙimomin rubutu da maɓallan da ke ɗauke da bayanan sirri kafin nunawa, fitarwa, ko haɗawa cikin kunshin tallafi. Tabbattattun gwaje-gwajen plugins suna bayyana a shafin yanar gizo, fitowar CLI rubutu/JSON/Nagios/Prometheus, bin diddigin matsayin da aka tsara lokaci, da kunshin tallafi.
+
+## Haɗin MCP (`abilities_register`)
+
+Doctor yana yin rajistar ƙugiyar `abilities_register` (`doctor_abilities_register` a cikin `doctor_abilities.php`) domin `plugin_mcp` ya gano damar bincikensa lokacin da aka kunna duka plugins ɗin biyu. Doctor yana yin rajistar rukunin `diagnostics` (`Diagnostics`) da damammaki guda biyu na karatu-kawai, marasa lalatawa, kuma masu daidaiton sakamako (idempotent):
+
+| ID na Dama | Muhawara na zaɓi | Fitarwa |
+|---|---|---|
+| `doctor-run-checks` | `category` (rubutu, haruffa 64 a mafi yawa), `status` (`pass`, `ok`, `warn`, `fail`, `info`) | `summary` (`total`, `pass`, `warn`, `fail`, `info`) da har zuwa `findings` 256 da aka rufe bayanansu (`id`, `plugin`, `category`, `title`, `status`, `message`, `remediation`) |
+| `doctor-list-checks` | `category` (rubutu, haruffa 64 a mafi yawa), `plugin` (rubutu, haruffa 64 a mafi yawa) | Har zuwa `checks` 256 (`id`, `plugin`, `category`, `title`) da suka haɗa da duka gwaje-gwajen asali 45 tare da gwaje-gwajen plugins da aka kunna |
+
+Duka damammakin biyu na karatu-kawai ne sosai kuma ba sa taɓa yin gyare-gyare. Baya ga matakan yanki da kulawar bayyana dama na `plugin_mcp` da kansa (damammakin plugins suna farawa a ɓoye a cikin MCP har sai mai gudanarwa ya bayyana su), Doctor yana buƙatar mai alamar shiga (token owner) ya riƙe **Doctor Viewer** ko wani yankin Doctor mafi girma. `doctor-run-checks` yana iyakance `devices.health` zuwa na'urorin da aka ba wa mai alamar shiga izini, yana haɗa `logging.recent_errors` ne kawai lokacin da mai amfani ke riƙe da yankin Cacti 18 ko 19, yana tsallake `filesystem.rrd_files`, kuma yana haɗa `filesystem.rrd_stale` mai iyaka zuwa na'urori ne kawai ga **Doctor Operator** ko **Doctor Administrator**.
+
 ## Buƙatu
 
 | Cacti | PHP | Bayanan kula |
@@ -258,20 +317,22 @@ An haɗa kwanakin tallafi tare da Doctor daga [jadawalin tallafin PHP](https://w
 
 ## Haɓakawa
 
-Jerin gwajin raka'a yana amfani da Pest kuma yana gudana a kan PHP 8.2 ko sabo:
+Jerin gwajin raka'a yana amfani da Pest kuma nazarin tsaye (static analysis) yana amfani da PHPStan (mataki na 6), dukansu a kan PHP 8.2 ko sabo:
 
 ```console
 composer install
+composer phpstan
 composer test
 ```
 
 Gwaje-gwajen suna maye gurbin ayyukan Cacti da Doctor ke kira da ƙananan madadai a cikin `tests/CactiStubs.php`, don haka suna gudana ba tare da shigarwar Cacti ba.
 
-GitHub Actions yana gudanar da nau'ikan bincike huɗu a kan kowane push da pull request:
+GitHub Actions yana gudanar da nau'ikan bincike biyar a kan kowane push da pull request:
 
-- `php -l` a kan kowane fayil ɗin PHP a ƙarƙashin PHP 5.4, 5.6, 7.0, 7.1, 7.4, da 8.0 zuwa 8.4.
-- Jerin gwajin raka'a a kan PHP 8.2, 8.3, da 8.4.
+- Gwaje-gwajen yarjejeniyar kunshin fitarwa (`tests/test_release.py`) da ginin rumbun fayiloli (`tools/build_release.py`).
 - `locales/build_gettext.sh --check`, wanda ke gaza a kan tsohon samfurin fassara, kundin fassara mara cika ko mara tabbas (fuzzy), ko kundin fassara da aka haɗa wanda ya bambanta da tushensa.
+- `php -l` a kan kowane fayil ɗin PHP a ƙarƙashin PHP 5.4, 5.6, 7.0, 7.1, 7.4, da 8.0 zuwa 8.4.
+- `composer phpstan` (PHPStan mataki na 6) da `composer test` (jerin gwajin raka'a na Pest) a kan PHP 8.2, 8.3, da 8.4.
 - Ayyukan haɗin gwiwa bakwai waɗanda ke shigar da Cacti 1.2.20, reshen 1.2.x na yanzu, da `develop` akan MySQL da MariaDB, tare da duka cmd.php da Spine. Kowane aiki yana shigarwa da kunna plugin ɗin, yana gudanar da cikakken rahoton CLI, kuma yana duba tsarin rahoton, jimlar taƙaitawa, matsayin da ake tsammani, da ainihin jerin gazawa. Sannan yana karya hanyar binary da tambarin lokacin poller, yana tabbatar da cewa an ba da rahoton duka biyun, yana mayar da su, yana gwada gyaran da tabbatarwarsa, kuma yana gudanar da kashewa, kunnawa, cirewa, da sake shigarwa. Ana adana rahoton JSON a matsayin artifact lokacin da aiki ya gaza.
 
 ## Ba da Gudummawa

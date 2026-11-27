@@ -1,4 +1,4 @@
-<!-- Source: README.md; SHA256: ee03c7ac68aca21c8155c29b5b43a1f206c2f0c379c8b07bb4113919c18aafde -->
+<!-- Source: README.md; SHA256: 490628bb7f70f4cf1a8c43b302246fd2e870725a6649c628762608b4a76db65b -->
 
 <!-- translations:start -->
 [English](../../../README.md) | [简体中文](../zh-CN/README.md) | [हिन्दी](../hi-IN/README.md) | [Español (España)](../es-ES/README.md) | [Español (Latinoamérica)](../es-419/README.md) | [العربية (السعودية)](../ar-SA/README.md) | [Afrikaans](../af-ZA/README.md) | [አማርኛ](../am-ET/README.md) | [العربية (مصر)](../ar-EG/README.md) | [العربية (المغرب)](../ar-MA/README.md) | [বাংলা](../bn-BD/README.md) | [Bosanski](../bs-BA/README.md) | [Deutsch](../de-DE/README.md) | [فارسی](../fa-IR/README.md) | [Filipino](../fil-PH/README.md) | [Français](../fr-FR/README.md) | [Français (Maroc)](../fr-MA/README.md) | [Français (Sénégal)](../fr-SN/README.md) | [Hausa](../ha-NG/README.md) | [עברית](../he-IL/README.md) | [Hrvatski](../hr-HR/README.md) | [Bahasa Indonesia](../id-ID/README.md) | [Igbo](../ig-NG/README.md) | [Italiano](../it-IT/README.md) | [日本語](../ja-JP/README.md) | [한국어](../ko-KR/README.md) | [Malagasy](../mg-MG/README.md) | [मराठी](../mr-IN/README.md) | [Bahasa Melayu](../ms-MY/README.md) | [Nederlands](../nl-NL/README.md) | [Polski](../pl-PL/README.md) | [Português (Brasil)](../pt-BR/README.md) | [Русский](../ru-RU/README.md) | [Kinyarwanda](../rw-RW/README.md) | [Soomaali](../so-SO/README.md) | [Српски](../sr-RS/README.md) | [Svenska](README.md) | [Kiswahili](../sw-KE/README.md) | [தமிழ்](../ta-IN/README.md) | [తెలుగు](../te-IN/README.md) | [ไทย](../th-TH/README.md) | [Türkçe](../tr-TR/README.md) | [Українська](../uk-UA/README.md) | [اردو](../ur-PK/README.md) | [Tiếng Việt](../vi-VN/README.md) | [isiXhosa](../xh-ZA/README.md) | [Yorùbá](../yo-NG/README.md) | [繁體中文](../zh-TW/README.md) | [isiZulu](../zu-ZA/README.md)
@@ -50,13 +50,15 @@ Problem i Cacti visar sig ofta som symtom: tomma grafer, en poller som har stann
 | Enheter | Aktiverade enheter som är nere eller håller på att återhämta sig, de tre som varit nere längst med sitt senaste fel samt ett felutfall när de flesta enheterna är nere samtidigt |
 | Poller | Pollertyp och intervall, tid sedan huvudpollern senast slutfördes, körtid i förhållande till intervallet, pollerutdata som aldrig nådde en RRD-fil, fjärrpollers som slutat rapportera, en avstannad Boost samt en Spine-konfiguration som pekar på en annan databas |
 
-Varje kontroll har ett stabilt ID, såsom `database.timezone` eller `binary.rrdtool`, så att skript kan referera till enskilda resultat.
+Varje kontroll har ett stabilt ID, såsom `database.timezone` eller `binary.rrdtool`, så att skript kan referera till enskilda resultat. Aktiverade tillägg kan bidra med ytterligare kontroller och bilagor till supportpaketet via haken `doctor_register_checks`, och Doctor exponerar skrivskyddade diagnostikfunktioner för `plugin_mcp` via `abilities_register`.
 
 ## Kod- och testöversikt
 
 | Beteende | Implementering | Testbelägg i detta arkiv |
 |---|---|---|
-| Diagnostiska kontroller och stabila rapport-ID:n | [doctor_functions.php](../../../doctor_functions.php) | [DoctorFunctionsTest.php](../../../tests/DoctorFunctionsTest.php), [AssertDoctorReport.php](../../../tests/ci/AssertDoctorReport.php) |
+| Diagnostiska kontroller och stabila rapport-ID:n | [doctor_functions.php](../../../doctor_functions.php) | [DoctorFunctionsTest.php](../../../tests/DoctorFunctionsTest.php), [DatabaseHealthTest.php](../../../tests/DatabaseHealthTest.php), [AssertDoctorReport.php](../../../tests/ci/AssertDoctorReport.php) |
+| Hake för tilläggskontroller (`doctor_register_checks`) | [doctor_plugins.php](../../../doctor_plugins.php) | [PluginHooksTest.php](../../../tests/PluginHooksTest.php) |
+| Diagnostikfunktioner för MCP (`abilities_register`) | [doctor_abilities.php](../../../doctor_abilities.php) | [AbilitiesTest.php](../../../tests/AbilitiesTest.php) |
 | Rollbegränsad åtkomst och maskerade webbrapporter | [doctor_access.php](../../../doctor_access.php), [doctor_web.php](../../../doctor_web.php) | [AccessTest.php](../../../tests/AccessTest.php), [WebAccessTest.php](../../../tests/WebAccessTest.php) |
 | Guidade symtomutredningar | [doctor_diagnosis.php](../../../doctor_diagnosis.php) | [DiagnosisTest.php](../../../tests/DiagnosisTest.php) |
 | RRD-aktualitet och hantering av uppskjutna skrivningar | [doctor_rrd.php](../../../doctor_rrd.php) | [RrdFreshnessTest.php](../../../tests/RrdFreshnessTest.php) |
@@ -195,7 +197,7 @@ php plugins/doctor/cli/doctor.php --format=prometheus > /var/lib/node_exporter/t
 php plugins/doctor/cli/doctor.php --bundle=/tmp/cacti-doctor.txt
 ```
 
-Paketet är en enda textfil med versioner av Doctor, Cacti, PHP, OS och databas, poller- och Boost-statistik, den fullständiga rapporten samt de senaste 200 raderna i Cacti-loggen. Värden som följer efter namn på lösenord, hemlighet, token, community och nyckel maskeras. Doctor skapar filen läsbar endast för dess ägare och vägrar skriva över en befintlig fil. Granska den innan du publicerar den någonstans.
+Paketet är en enda textfil med versioner av Doctor, Cacti, PHP, OS och databas, poller- och Boost-statistik, den fullständiga rapporten, eventuella bilagor till supportpaketet från tillägg under `== Plugin attachments` samt de senaste 200 raderna i Cacti-loggen. Värden som följer efter namn på lösenord, hemlighet, token, community och nyckel maskeras. Doctor skapar filen läsbar endast för dess ägare och vägrar skriva över en befintlig fil. Granska den innan du publicerar den någonstans.
 
 ## Reparationspolicy
 
@@ -241,6 +243,63 @@ Schemalagda varningsaviseringar undertrycks medan undantaget gäller; när det l
 
 Uppgradering skapar `plugin_doctor_audit` och `plugin_doctor_acceptance` utan att ändra Cactis applikationsdata. Exportera den historik du behöver innan avinstallation: avinstallation tar bort båda tilläggstabellerna och dess inställningar. Att återställa tilläggsfilerna lämnar tabellerna tillgängliga för utredning, men äldre versioner respekterar inte varningsundantag.
 
+## Tilläggskontroller (`doctor_register_checks`)
+
+Aktiverade Cacti-tillägg kan bidra med skrivskyddade diagnostikkontroller och valfria bilagor till supportpaketet genom att registrera en `doctor_register_checks`-hake:
+
+```php
+api_plugin_register_hook('sample', 'doctor_register_checks', 'sample_doctor_checks', 'setup.php');
+```
+
+Doctor anropar aktiverade, icke-integrerade tillägg som registrerats på `doctor_register_checks` (och hoppar över `doctor` och `cacti`), där hakfilen löses strikt inom tilläggets egen katalog. Återanropsfunktionen tar emot `['mode' => 'run' | 'list', 'plugin' => '<slug>']` och returnerar antingen en lista med kontrollbeskrivningar eller en omslutande struktur med `checks` och valfria `attachments`:
+
+```php
+function sample_doctor_checks($context) {
+	return [
+		'checks' => [
+			[
+				'id'          => 'sample.queue_depth',
+				'plugin'      => 'sample',
+				'category'    => 'Sample',
+				'title'       => 'Sample queue depth',
+				'status'      => 'ok',
+				'message'     => 'Queue is healthy.',
+				'details'     => ['pending' => 0],
+				'remediation' => ''
+			]
+		],
+		'attachments' => [
+			[
+				'title'   => 'Sample diagnostics',
+				'content' => "worker=ok\n"
+			]
+		]
+	];
+}
+```
+
+Varje kontrollbeskrivning från ett tillägg valideras innan den tas med:
+
+- Obligatoriska nycklar: `id`, `plugin`, `category`, `title`, `status`, `message`, `details` och `remediation`.
+- `plugin` måste matcha tilläggets registrerade slug (`[a-z0-9_]{1,64}`). `id` måste matcha `[a-z0-9_.]{1,128}`, börja med `<plugin>.` och inte krocka med ett befintligt kärn- eller tilläggskontroll-ID.
+- `status` måste vara `ok`, `warn`, `fail` eller `info`. `ok` mappas till `pass` i Doctor-rapporter; `info` är informativ och utlöser inga fel i CLI, Nagios, Prometheus eller schemalagda larm.
+- `category` (upp till 64 byte) och `title` (upp till 256 byte) måste vara icke-tomma strängar utan styrtecken. `message` (icke-tom, upp till 2048 byte) och `remediation` (upp till 2048 byte) måste vara strängar.
+- `details` accepterar en sträng (upp till 8192 byte) eller en skalär/nästlad array (max djup 4, JSON-kodad upp till 16384 byte; objekt och resurser avvisas).
+- Valfria bilagor till supportpaketet kräver en icke-tom `title` (upp till 128 byte, inga styrtecken) och en `content`-sträng på upp till 65536 byte (64 KiB).
+
+Doctor tillämpar gränser på 32 kontroller och 8 bilagor per tillägg (totalt 64 tilläggskontroller och 32 bilagor). Varje hake körs inom sin egen `try`/`catch`-gräns så att undantag eller nyttolaster som inte är arrayer maskeras och loggas till Cacti-loggen (`DOCTOR`-faciliteten) utan att påverka kärnkontroller eller andra tillägg. Felformade beskrivningar avvisas och loggas medan giltiga beskrivningar från samma tillägg fortsätter att köras. Tilläggskontroller är alltid skrivskyddade (`repairable: false`), och strängvärden samt känsliga associativa nycklar maskeras före visning, export eller paketering. Validerade tilläggskontroller visas i webbgränssnittet, CLI-utdata i text/JSON/Nagios/Prometheus, schemalagd statusspårning och supportpaket.
+
+## MCP-integration (`abilities_register`)
+
+Doctor registrerar haken `abilities_register` (`doctor_abilities_register` i `doctor_abilities.php`) så att `plugin_mcp` upptäcker dess diagnostikfunktioner när båda tilläggen är aktiverade. Doctor registrerar kategorin `diagnostics` (`Diagnostics`) och två skrivskyddade, icke-destruktiva, idempotenta funktioner:
+
+| Funktions-ID | Valfria argument | Utdata |
+|---|---|---|
+| `doctor-run-checks` | `category` (sträng, max 64 tecken), `status` (`pass`, `ok`, `warn`, `fail`, `info`) | `summary` (`total`, `pass`, `warn`, `fail`, `info`) och upp till 256 maskerade `findings` (`id`, `plugin`, `category`, `title`, `status`, `message`, `remediation`) |
+| `doctor-list-checks` | `category` (sträng, max 64 tecken), `plugin` (sträng, max 64 tecken) | Upp till 256 `checks` (`id`, `plugin`, `category`, `title`) som täcker alla 45 inbyggda kontroller samt aktiverade tilläggskontroller |
+
+Båda funktionerna är strikt skrivskyddade och kör aldrig reparationer. Utöver `plugin_mcp`:s egna kontroller av behörighetsområden och funktionsexponering (tilläggsfunktioner är dolda i MCP tills en administratör exponerar dem) kräver Doctor att tokeninnehavaren har **Doctor Viewer** eller ett högre Doctor-behörighetsområde. `doctor-run-checks` begränsar `devices.health` till tokeninnehavarens tillåtna enheter, inkluderar `logging.recent_errors` endast när användaren har Cacti-behörighetsområde 18 eller 19, utelämnar `filesystem.rrd_files` och inkluderar enhetsbegränsad `filesystem.rrd_stale` endast för **Doctor Operator** eller **Doctor Administrator**.
+
 ## Krav
 
 | Cacti | PHP | Anteckningar |
@@ -258,20 +317,22 @@ Stöddatum levereras med Doctor från [PHP:s supportschema](https://www.php.net/
 
 ## Utveckling
 
-Enhetstestsviten använder Pest och körs på PHP 8.2 eller nyare:
+Enhetstestsviten använder Pest och statisk analys använder PHPStan (nivå 6), båda på PHP 8.2 eller nyare:
 
 ```console
 composer install
+composer phpstan
 composer test
 ```
 
 Testerna ersätter de Cacti-funktioner som Doctor anropar med små ersättningsfunktioner i `tests/CactiStubs.php`, så att de kan köras utan en Cacti-installation.
 
-GitHub Actions kör fyra typer av kontroller vid varje push och pull request:
+GitHub Actions kör fem typer av kontroller vid varje push och pull request:
 
-- `php -l` på varje PHP-fil under PHP 5.4, 5.6, 7.0, 7.1, 7.4 och 8.0 till 8.4.
-- Enhetstestsviten på PHP 8.2, 8.3 och 8.4.
+- Kontraktstester för releasepaketering (`tests/test_release.py`) och ett arkivbygge (`tools/build_release.py`).
 - `locales/build_gettext.sh --check`, som misslyckas vid en föråldrad översättningsmall, en ofullständig eller osäker (fuzzy) katalog eller en kompilerad katalog som skiljer sig från källan.
+- `php -l` på varje PHP-fil under PHP 5.4, 5.6, 7.0, 7.1, 7.4 och 8.0 till 8.4.
+- `composer phpstan` (PHPStan nivå 6) och `composer test` (Pest-enhetstestsvit) på PHP 8.2, 8.3 och 8.4.
 - Sju integrationsjobb som installerar Cacti 1.2.20, den aktuella 1.2.x-grenen och `develop` mot MySQL och MariaDB, med både cmd.php och Spine. Varje jobb installerar och aktiverar tillägget, kör den fullständiga CLI-rapporten och kontrollerar rapportschemat, sammanfattningssummor, förväntade statusar och den exakta uppsättningen fel. Därefter bryter det en binärsökväg och pollarens tidsstämpel, bekräftar att båda rapporteras, återställer dem, testar reparationen och dess bekräftelse samt kör inaktivering, aktivering, avinstallation och ominstallation. JSON-rapporten sparas som en artefakt när ett jobb misslyckas.
 
 ## Bidra

@@ -1,4 +1,4 @@
-<!-- Source: README.md; SHA256: ee03c7ac68aca21c8155c29b5b43a1f206c2f0c379c8b07bb4113919c18aafde -->
+<!-- Source: README.md; SHA256: 490628bb7f70f4cf1a8c43b302246fd2e870725a6649c628762608b4a76db65b -->
 
 <!-- translations:start -->
 [English](../../../README.md) | [简体中文](../zh-CN/README.md) | [हिन्दी](../hi-IN/README.md) | [Español (España)](../es-ES/README.md) | [Español (Latinoamérica)](../es-419/README.md) | [العربية (السعودية)](../ar-SA/README.md) | [Afrikaans](../af-ZA/README.md) | [አማርኛ](../am-ET/README.md) | [العربية (مصر)](../ar-EG/README.md) | [العربية (المغرب)](../ar-MA/README.md) | [বাংলা](../bn-BD/README.md) | [Bosanski](../bs-BA/README.md) | [Deutsch](../de-DE/README.md) | [فارسی](../fa-IR/README.md) | [Filipino](../fil-PH/README.md) | [Français](../fr-FR/README.md) | [Français (Maroc)](../fr-MA/README.md) | [Français (Sénégal)](../fr-SN/README.md) | [Hausa](../ha-NG/README.md) | [עברית](../he-IL/README.md) | [Hrvatski](../hr-HR/README.md) | [Bahasa Indonesia](../id-ID/README.md) | [Igbo](../ig-NG/README.md) | [Italiano](../it-IT/README.md) | [日本語](../ja-JP/README.md) | [한국어](../ko-KR/README.md) | [Malagasy](README.md) | [मराठी](../mr-IN/README.md) | [Bahasa Melayu](../ms-MY/README.md) | [Nederlands](../nl-NL/README.md) | [Polski](../pl-PL/README.md) | [Português (Brasil)](../pt-BR/README.md) | [Русский](../ru-RU/README.md) | [Kinyarwanda](../rw-RW/README.md) | [Soomaali](../so-SO/README.md) | [Српски](../sr-RS/README.md) | [Svenska](../sv-SE/README.md) | [Kiswahili](../sw-KE/README.md) | [தமிழ்](../ta-IN/README.md) | [తెలుగు](../te-IN/README.md) | [ไทย](../th-TH/README.md) | [Türkçe](../tr-TR/README.md) | [Українська](../uk-UA/README.md) | [اردو](../ur-PK/README.md) | [Tiếng Việt](../vi-VN/README.md) | [isiXhosa](../xh-ZA/README.md) | [Yorùbá](../yo-NG/README.md) | [繁體中文](../zh-TW/README.md) | [isiZulu](../zu-ZA/README.md)
@@ -50,13 +50,15 @@ Ny olan'ny Cacti dia matetika miseho amin'ny endrika soritr'aretina: tabilao foa
 | Fitaovana | Fitaovana mavitrika izay maty na eo an-dalam-piverenana, ireo telo maty ela indrindra miaraka amin'ny fahadisoana farany, ary tsy fahombiazana rehefa maty miaraka ny ankamaroan'ny fitaovana |
 | Poller | Karazana sy elanelam-potoan'ny poller, fotoana hatramin'ny nahavitan'ny poller fototra farany, faharetan'ny fampandehanana raha oharina amin'ny elanelam-potoana, vokatry ny poller tsy tonga tany amin'ny rakitra RRD, poller lavitra nijanona tsy nitatitra, Boost nijanona, ary fikirana Spine manondro angon-drakitra hafa |
 
-Ny fanamarinana tsirairay dia manana famantarana maharitra, toy ny `database.timezone` na `binary.rrdtool`, mba hahafahan'ny script mitady sy mampiasa ny vokatra tsirairay.
+Ny fanamarinana tsirairay dia manana famantarana maharitra, toy ny `database.timezone` na `binary.rrdtool`, mba hahafahan'ny script mitady sy mampiasa ny vokatra tsirairay. Ireo plugin alefa dia afaka manampy fanamarinana fanampiny sy tovana fonosan-drakitra ho an'ny fanohanana amin'ny alalan'ny hook `doctor_register_checks`, ary ny Doctor dia manolotra fahaiza-manao fitiliana famakiana ihany ho an'ny `plugin_mcp` amin'ny alalan'ny `abilities_register`.
 
 ## Sarintanin'ny kaody sy ny fitsapana
 
 | Fomba fiasa | Fanatanterahana | Porofon'ny fitsapana ato amin'ity tahiry ity |
 |---|---|---|
-| Fanamarinana fitiliana sy famantarana tatitra maharitra | [doctor_functions.php](../../../doctor_functions.php) | [DoctorFunctionsTest.php](../../../tests/DoctorFunctionsTest.php), [AssertDoctorReport.php](../../../tests/ci/AssertDoctorReport.php) |
+| Fanamarinana fitiliana sy famantarana tatitra maharitra | [doctor_functions.php](../../../doctor_functions.php) | [DoctorFunctionsTest.php](../../../tests/DoctorFunctionsTest.php), [DatabaseHealthTest.php](../../../tests/DatabaseHealthTest.php), [AssertDoctorReport.php](../../../tests/ci/AssertDoctorReport.php) |
+| Hook fanamarinana plugin (`doctor_register_checks`) | [doctor_plugins.php](../../../doctor_plugins.php) | [PluginHooksTest.php](../../../tests/PluginHooksTest.php) |
+| Fahaiza-manao fitiliana MCP (`abilities_register`) | [doctor_abilities.php](../../../doctor_abilities.php) | [AbilitiesTest.php](../../../tests/AbilitiesTest.php) |
 | Fidirana voafetra araka ny andraikitra sy tatitra web voafantina | [doctor_access.php](../../../doctor_access.php), [doctor_web.php](../../../doctor_web.php) | [AccessTest.php](../../../tests/AccessTest.php), [WebAccessTest.php](../../../tests/WebAccessTest.php) |
 | Fikarohana soritr'aretina misy tari-dalana | [doctor_diagnosis.php](../../../doctor_diagnosis.php) | [DiagnosisTest.php](../../../tests/DiagnosisTest.php) |
 | Havaozin'ny RRD sy fitantanana ny fanoratana nahemotra | [doctor_rrd.php](../../../doctor_rrd.php) | [RrdFreshnessTest.php](../../../tests/RrdFreshnessTest.php) |
@@ -192,7 +194,7 @@ Manonta andalana sata iray miaraka amin'ny angon-tsangan'ny fahombiazana ny `--f
 php plugins/doctor/cli/doctor.php --bundle=/tmp/cacti-doctor.txt
 ```
 
-Rakitra lahatsoratra tokana ilay fonosana izay ahitana ny kinovan'ny Doctor, Cacti, PHP, OS, ary ny angon-drakitra, ny antontan'isan'ny mpandrindra fanangonana sy ny Boost, ny tatitra feno, ary ireo andalana 200 farany ao amin'ny rakitry ny zava-mitranga an'ny Cacti. Saronana ireo sanda manaraka ny anaran'ny tenimiafina, tsiambaratelo, token, community, ary fanalahidy. Mamorona ilay rakitra ho tsy azon'ny hafa vakina afa-tsy ny tompony ny Doctor ary mandà ny hanoratra eo ambonin'ny rakitra efa misy. Hamarino izany alohan'ny hamoahana azy na aiza na aiza.
+Rakitra lahatsoratra tokana ilay fonosana izay ahitana ny kinovan'ny Doctor, Cacti, PHP, OS, ary ny angon-drakitra, ny antontan'isan'ny mpandrindra fanangonana sy ny Boost, ny tatitra feno, ireo tovana fonosan-drakitra ho an'ny fanohanana avy amin'ny plugin eo ambanin'ny `== Plugin attachments`, ary ireo andalana 200 farany ao amin'ny rakitry ny zava-mitranga an'ny Cacti. Saronana ireo sanda manaraka ny anaran'ny tenimiafina, tsiambaratelo, token, community, ary fanalahidy. Mamorona ilay rakitra ho tsy azon'ny hafa vakina afa-tsy ny tompony ny Doctor ary mandà ny hanoratra eo ambonin'ny rakitra efa misy. Hamarino izany alohan'ny hamoahana azy na aiza na aiza.
 
 ## Politikan'ny fanamboarana
 
@@ -238,6 +240,63 @@ Ny fampitandremana voalahatra dia ajanona mandritra ny fotoana iainan'ny fanavah
 
 Ny fanavaozana dia mamorona ny `plugin_doctor_audit` sy `plugin_doctor_acceptance` nefa tsy manova ny angon-drakitry ny rindranasa Cacti. Aondrano ny tantara rehetra ilainao alohan'ny hanesorana ny fametrahana: ny fanesorana dia mamafa ireo tabilao roa an'ny plugin sy ny fikirakirany. Ny famerenana ny rakitry ny plugin amin'ny teo aloha dia mamela ireo tabilao ho azo ampiasaina amin'ny fanadihadiana, saingy ireo kinova taloha dia tsy manaja ny fanavahana fampitandremana.
 
+## Fanamarinana avy amin'ny plugin (`doctor_register_checks`)
+
+Ireo plugin Cacti alefa dia afaka manampy fanamarinana fitiliana famakiana ihany sy tovana fonosan-drakitra ho an'ny fanohanana azo isafidianana amin'ny alalan'ny fisoratana anarana hook `doctor_register_checks`:
+
+```php
+api_plugin_register_hook('sample', 'doctor_register_checks', 'sample_doctor_checks', 'setup.php');
+```
+
+Miantso ireo plugin alefa sy tsy mitambatra ao anatiny izay nisoratra anarana tamin'ny `doctor_register_checks` ny Doctor (mandalo ny `doctor` sy ny `cacti`), ary mamaha ny rakitra hook ao anatin'ny lahatahirin'ilay plugin ihany. Mandray `['mode' => 'run' | 'list', 'plugin' => '<slug>']` ny fiasa antsoina ary mamerina lisitry ny mpamaritra fanamarinana na valopy misy `checks` sy `attachments` azo isafidianana:
+
+```php
+function sample_doctor_checks($context) {
+	return [
+		'checks' => [
+			[
+				'id'          => 'sample.queue_depth',
+				'plugin'      => 'sample',
+				'category'    => 'Sample',
+				'title'       => 'Sample queue depth',
+				'status'      => 'ok',
+				'message'     => 'Queue is healthy.',
+				'details'     => ['pending' => 0],
+				'remediation' => ''
+			]
+		],
+		'attachments' => [
+			[
+				'title'   => 'Sample diagnostics',
+				'content' => "worker=ok\n"
+			]
+		]
+	];
+}
+```
+
+Hamarinina alohan'ny fampidirana azy ny mpamaritra fanamarinana plugin tsirairay:
+
+- Fanalahidy ilaina: `id`, `plugin`, `category`, `title`, `status`, `message`, `details`, ary `remediation`.
+- Ny `plugin` dia tsy maintsy mifanaraka amin'ny slug-n'ny plugin voasoratra anarana (`[a-z0-9_]{1,64}`). Ny `id` dia tsy maintsy mifanaraka amin'ny `[a-z0-9_.]{1,128}`, manomboka amin'ny `<plugin>.`, ary tsy mifandona amin'ny ID fanamarinana fototra na plugin efa misy.
+- Ny `status` dia tsy maintsy `ok`, `warn`, `fail`, na `info`. Ny `ok` dia avadika ho `pass` ao amin'ny tatitra Doctor; ny `info` dia fampahafantarana fotsiny ary tsy miteraka tsy fahombiazana ao amin'ny CLI, Nagios, Prometheus, na fanairana voalahatra.
+- Ny `category` (hatramin'ny 64 oktety) sy ny `title` (hatramin'ny 256 oktety) dia tsy maintsy lahatsoratra tsy banga ary tsy misy tarehin-tsoratra fanaraha-maso. Ny `message` (tsy banga, hatramin'ny 2048 oktety) sy ny `remediation` (hatramin'ny 2048 oktety) dia tsy maintsy lahatsoratra.
+- Ny `details` dia manaiky lahatsoratra (hatramin'ny 8192 oktety) na tabilao scalar/mifampiditra (halalina farafahabetsany 4, voarakitra amin'ny JSON hatramin'ny 16384 oktety; lavina ny zavatra (objects) sy ny loharano (resources)).
+- Ny tovana fonosan-drakitra ho an'ny fanohanana azo isafidianana dia mitaky `title` tsy banga (hatramin'ny 128 oktety, tsy misy tarehin-tsoratra fanaraha-maso) ary lahatsoratra `content` hatramin'ny 65536 oktety (64 KiB).
+
+Mametraka fetra 32 fanamarinana sy 8 tovana isaky ny plugin ny Doctor (64 fanamarinana plugin sy 32 tovana raha atambatra). Ny hook tsirairay dia mandeha ao anatin'ny sisin-tany `try`/`catch` manokana mba hosaronana sy horaketina ao amin'ny tatitry ny Cacti (`DOCTOR` facility) ny exception na ny votoaty tsy tabilao nefa tsy manelingelina ny fanamarinana fototra na ny plugin hafa. Lavina sy raketina an-tsoratra ireo mpamaritra ratsy firafitra fa mbola mandeha ihany ireo manan-kery avy amin'ilay plugin ihany. Famakiana ihany foana ny fanamarinana plugin (`repairable: false`), ary saronana mialoha ny fanehoana, fanondranana, na famonosana ny sanda lahatsoratra sy ireo fanalahidy associative saro-pady. Miseho ao amin'ny sehatra tranonkala, ny vokatra lahatsoratra/JSON/Nagios/Prometheus an'ny CLI, ny fanaraha-maso ny sata voalahatra, ary ny fonosan-drakitra ho an'ny fanohanana ireo fanamarinana plugin voamarina.
+
+## Fampidirana MCP (`abilities_register`)
+
+Misoratra anarana amin'ny hook `abilities_register` (`doctor_abilities_register` ao amin'ny `doctor_abilities.php`) ny Doctor mba hahitan'ny `plugin_mcp` ny fahaiza-manao fitiliana ananany rehefa samy alefa ireo plugin roa. Misoratra anarana amin'ny sokajy `diagnostics` (`Diagnostics`) sy fahaiza-manao roa famakiana ihany, tsy manimba, ary idempotent ny Doctor:
+
+| ID fahaiza-manao | Parametre azo isafidianana | Vokatra |
+|---|---|---|
+| `doctor-run-checks` | `category` (lahatsoratra, max 64 tarehin-tsoratra), `status` (`pass`, `ok`, `warn`, `fail`, `info`) | `summary` (`total`, `pass`, `warn`, `fail`, `info`) ary `findings` voasivana hatramin'ny 256 (`id`, `plugin`, `category`, `title`, `status`, `message`, `remediation`) |
+| `doctor-list-checks` | `category` (lahatsoratra, max 64 tarehin-tsoratra), `plugin` (lahatsoratra, max 64 tarehin-tsoratra) | `checks` hatramin'ny 256 (`id`, `plugin`, `category`, `title`) mahafaoka ireo fanamarinana fototra 45 rehetra miampy ireo fanamarinana plugin alefa |
+
+Famakiana ihany tanteraka ireo fahaiza-manao roa ireo ary tsy manao fanamboarana mihitsy. Ho fanampin'ny fanaraha-maso ny sahan'andraikitra sy ny fampisehoana fahaiza-manao an'ny `plugin_mcp` (miafina aloha ao amin'ny MCP ny fahaiza-manao plugin mandra-panehoan'ny mpitantana azy ireo), ny Doctor dia mitaky ny tompon'ny token hanana **Mpanjery Doctor** na sahan'andraikitra Doctor ambony kokoa. Ny `doctor-run-checks` dia mametra ny `devices.health` amin'ny fitaovana nahazoan'ny tompon'ny token alalana, tsy mampiditra ny `logging.recent_errors` raha tsy manana sahan'andraikitra Cacti 18 na 19 ilay mpampiasa, manaisotra ny `filesystem.rrd_files`, ary tsy mampiditra ny `filesystem.rrd_stale` voafetra araka ny fitaovana afa-tsy ho an'ny **Mpandraharaha Doctor** na **Mpitantana Doctor**.
+
 ## Fepetra takiana
 
 | Cacti | PHP | Fanamarihana |
@@ -255,20 +314,22 @@ Ny daty fanohanana dia tafiditra ao amin'ny Doctor avy amin'ny [fandaharam-potoa
 
 ## Fampandrosoana
 
-Ny andiana fitsapana tsirairay dia mampiasa Pest ary mandeha amin'ny PHP 8.2 na vaovao kokoa:
+Ny andiana fitsapana isan-tsokajiny dia mampiasa Pest ary ny fanadihadiana raikitra dia mampiasa PHPStan (ambaratonga faha-6), samy mandeha amin'ny PHP 8.2 na vaovao kokoa:
 
 ```console
 composer install
+composer phpstan
 composer test
 ```
 
 Ireo fitsapana ireo dia manolo ny fiasa Cacti antsoin'ny Doctor amin'ny solontena kely ao amin'ny `tests/CactiStubs.php`, ka afaka mandeha tsy misy fametrahana Cacti izy ireo.
 
-Ny GitHub Actions dia mandefa karazana fanamarinana efatra isaky ny push sy pull request:
+Ny GitHub Actions dia mandefa karazana fanamarinana dimy isaky ny push sy pull request:
 
-- `php -l` amin'ny rakitra PHP rehetra eo ambanin'ny PHP 5.4, 5.6, 7.0, 7.1, 7.4, ary 8.0 hatramin'ny 8.4.
-- Ny andiana fitsapana tsirairay amin'ny PHP 8.2, 8.3, ary 8.4.
+- Fitsapana fifanarahana famonosana famoahana (`tests/test_release.py`) sy fananganana tahiry (`tools/build_release.py`).
 - `locales/build_gettext.sh --check`, izay tsy mahomby raha lany daty ny môdely fandikana, tsy feno na manjavozavo ny katalogy, na tsy mitovy amin'ny loharanony ny katalogy voaangona.
+- `php -l` amin'ny rakitra PHP rehetra eo ambanin'ny PHP 5.4, 5.6, 7.0, 7.1, 7.4, ary 8.0 hatramin'ny 8.4.
+- `composer phpstan` (PHPStan ambaratonga faha-6) sy `composer test` (andiana fitsapana Pest isan-tsokajiny) amin'ny PHP 8.2, 8.3, ary 8.4.
 - Asa fampidirana (integration jobs) fito izay mametraka ny Cacti 1.2.20, ny sampana 1.2.x ankehitriny, ary ny `develop` amin'ny MySQL sy MariaDB, miaraka amin'ny cmd.php sy Spine. Ny asa tsirairay dia mametraka sy mampavitrika ny plugin, mandefa ny tatitra CLI feno, ary manamarina ny drafitry ny tatitra, ny fitambaran'ny famintinana, ny sata andrasana, ary ny andiana tsy fahombiazana marina. Avy eo izy dia manimba lalana binary iray sy ny marik'oran'ny poller, manamarina fa samy voalaza izy roa, mamerina azy ireo amin'ny laoniny, manandrana ny fanamboarana sy ny fanamafisany, ary manatanteraka ny fanajanona, fampavitrihana, fanesorana fametrahana, ary fametrahana indray. Tehirizina ho artifact ny tatitra JSON rehefa tsy mahomby ny asa iray.
 
 ## Fandraisana anjara

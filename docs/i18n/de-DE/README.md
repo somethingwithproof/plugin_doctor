@@ -1,4 +1,4 @@
-<!-- Source: README.md; SHA256: ee03c7ac68aca21c8155c29b5b43a1f206c2f0c379c8b07bb4113919c18aafde -->
+<!-- Source: README.md; SHA256: 490628bb7f70f4cf1a8c43b302246fd2e870725a6649c628762608b4a76db65b -->
 
 <!-- translations:start -->
 [English](../../../README.md) | [简体中文](../zh-CN/README.md) | [हिन्दी](../hi-IN/README.md) | [Español (España)](../es-ES/README.md) | [Español (Latinoamérica)](../es-419/README.md) | [العربية (السعودية)](../ar-SA/README.md) | [Afrikaans](../af-ZA/README.md) | [አማርኛ](../am-ET/README.md) | [العربية (مصر)](../ar-EG/README.md) | [العربية (المغرب)](../ar-MA/README.md) | [বাংলা](../bn-BD/README.md) | [Bosanski](../bs-BA/README.md) | [Deutsch](README.md) | [فارسی](../fa-IR/README.md) | [Filipino](../fil-PH/README.md) | [Français](../fr-FR/README.md) | [Français (Maroc)](../fr-MA/README.md) | [Français (Sénégal)](../fr-SN/README.md) | [Hausa](../ha-NG/README.md) | [עברית](../he-IL/README.md) | [Hrvatski](../hr-HR/README.md) | [Bahasa Indonesia](../id-ID/README.md) | [Igbo](../ig-NG/README.md) | [Italiano](../it-IT/README.md) | [日本語](../ja-JP/README.md) | [한국어](../ko-KR/README.md) | [Malagasy](../mg-MG/README.md) | [मराठी](../mr-IN/README.md) | [Bahasa Melayu](../ms-MY/README.md) | [Nederlands](../nl-NL/README.md) | [Polski](../pl-PL/README.md) | [Português (Brasil)](../pt-BR/README.md) | [Русский](../ru-RU/README.md) | [Kinyarwanda](../rw-RW/README.md) | [Soomaali](../so-SO/README.md) | [Српски](../sr-RS/README.md) | [Svenska](../sv-SE/README.md) | [Kiswahili](../sw-KE/README.md) | [தமிழ்](../ta-IN/README.md) | [తెలుగు](../te-IN/README.md) | [ไทย](../th-TH/README.md) | [Türkçe](../tr-TR/README.md) | [Українська](../uk-UA/README.md) | [اردو](../ur-PK/README.md) | [Tiếng Việt](../vi-VN/README.md) | [isiXhosa](../xh-ZA/README.md) | [Yorùbá](../yo-NG/README.md) | [繁體中文](../zh-TW/README.md) | [isiZulu](../zu-ZA/README.md)
@@ -50,13 +50,15 @@ Probleme mit Cacti zeigen sich meist als Symptome: leere Graphen, ein gestoppter
 | Geräte | Aktivierte Geräte, die ausgefallen sind oder sich erholen, die drei am längsten ausgefallenen Geräte mit ihrer letzten Fehlermeldung sowie ein Fehlerstatus, wenn die meisten Geräte gleichzeitig ausgefallen sind |
 | Poller | Poller-Typ und -Intervall, Zeit seit dem letzten Abschluss des Haupt-Pollers, Laufzeit im Verhältnis zum Intervall, Poller-Ausgaben, die nie eine RRD-Datei erreicht haben, Remote-Poller, die keine Meldungen mehr senden, ein hängender Boost-Prozess und eine Spine-Konfiguration, die auf eine andere Datenbank verweist |
 
-Jede Prüfung besitzt eine stabile ID wie `database.timezone` oder `binary.rrdtool`, sodass Skripte gezielt auf einzelne Ergebnisse zugreifen können.
+Jede Prüfung besitzt eine stabile ID wie `database.timezone` oder `binary.rrdtool`, sodass Skripte gezielt auf einzelne Ergebnisse zugreifen können. Aktivierte Plugins können über den Hook `doctor_register_checks` zusätzliche Prüfungen und Support-Paket-Anhänge beisteuern, und Doctor stellt `plugin_mcp` über `abilities_register` schreibgeschützte Diagnosefähigkeiten bereit.
 
 ## Code- und Testübersicht
 
 | Verhalten | Implementierung | Testabdeckung in diesem Repository |
 |---|---|---|
-| Diagnoseprüfungen und stabile Berichts-IDs | [doctor_functions.php](../../../doctor_functions.php) | [DoctorFunctionsTest.php](../../../tests/DoctorFunctionsTest.php), [AssertDoctorReport.php](../../../tests/ci/AssertDoctorReport.php) |
+| Diagnoseprüfungen und stabile Berichts-IDs | [doctor_functions.php](../../../doctor_functions.php) | [DoctorFunctionsTest.php](../../../tests/DoctorFunctionsTest.php), [DatabaseHealthTest.php](../../../tests/DatabaseHealthTest.php), [AssertDoctorReport.php](../../../tests/ci/AssertDoctorReport.php) |
+| Plugin-Prüfungs-Hook (`doctor_register_checks`) | [doctor_plugins.php](../../../doctor_plugins.php) | [PluginHooksTest.php](../../../tests/PluginHooksTest.php) |
+| MCP-Diagnosefähigkeiten (`abilities_register`) | [doctor_abilities.php](../../../doctor_abilities.php) | [AbilitiesTest.php](../../../tests/AbilitiesTest.php) |
 | Rollenbezogener Zugriff und geschwärzte Webberichte | [doctor_access.php](../../../doctor_access.php), [doctor_web.php](../../../doctor_web.php) | [AccessTest.php](../../../tests/AccessTest.php), [WebAccessTest.php](../../../tests/WebAccessTest.php) |
 | Geführte Symptomuntersuchungen | [doctor_diagnosis.php](../../../doctor_diagnosis.php) | [DiagnosisTest.php](../../../tests/DiagnosisTest.php) |
 | RRD-Aktualität und Behandlung verzögerter Schreibvorgänge | [doctor_rrd.php](../../../doctor_rrd.php) | [RrdFreshnessTest.php](../../../tests/RrdFreshnessTest.php) |
@@ -191,7 +193,7 @@ php plugins/doctor/cli/doctor.php --format=prometheus > /var/lib/node_exporter/t
 php plugins/doctor/cli/doctor.php --bundle=/tmp/cacti-doctor.txt
 ```
 
-Das Paket ist eine einzelne Textdatei mit den Versionen von Doctor, Cacti, PHP, Betriebssystem und Datenbank, Poller- und Boost-Statistiken, dem vollständigen Bericht sowie den letzten 200 Zeilen des Cacti-Protokolls. Werte, die auf Namen wie Passwort, Secret, Token, Community und Key folgen, werden maskiert. Doctor erstellt die Datei so, dass sie nur vom Eigentümer gelesen werden kann, und verweigert das Überschreiben einer bereits vorhandenen Datei. Prüfen Sie die Datei, bevor Sie sie irgendwo veröffentlichen.
+Das Paket ist eine einzelne Textdatei mit den Versionen von Doctor, Cacti, PHP, Betriebssystem und Datenbank, Poller- und Boost-Statistiken, dem vollständigen Bericht, etwaigen Plugin-Support-Paket-Anhängen unter `== Plugin attachments` sowie den letzten 200 Zeilen des Cacti-Protokolls. Werte, die auf Namen wie Passwort, Secret, Token, Community und Key folgen, werden maskiert. Doctor erstellt die Datei so, dass sie nur vom Eigentümer gelesen werden kann, und verweigert das Überschreiben einer bereits vorhandenen Datei. Prüfen Sie die Datei, bevor Sie sie irgendwo veröffentlichen.
 
 ## Reparaturrichtlinie
 
@@ -237,6 +239,63 @@ Geplante Warnungsbenachrichtigungen werden unterdrückt, solange die Ausnahme gi
 
 Beim Upgrade werden `plugin_doctor_audit` und `plugin_doctor_acceptance` erstellt, ohne Cacti-Anwendungsdaten zu verändern. Exportieren Sie vor der Deinstallation alle benötigten Verlaufsdaten: Bei der Deinstallation werden beide Plugin-Tabellen und die zugehörigen Einstellungen entfernt. Beim Zurücksetzen der Plugin-Dateien bleiben die Tabellen für Untersuchungen erhalten, ältere Versionen berücksichtigen jedoch keine Warnausnahmen.
 
+## Plugin-Prüfungen (`doctor_register_checks`)
+
+Aktivierte Cacti-Plugins können schreibgeschützte Diagnoseprüfungen und optionale Support-Paket-Anhänge beisteuern, indem sie einen `doctor_register_checks`-Hook registrieren:
+
+```php
+api_plugin_register_hook('sample', 'doctor_register_checks', 'sample_doctor_checks', 'setup.php');
+```
+
+Doctor ruft aktivierte, nicht integrierte Plugins auf, die für `doctor_register_checks` registriert sind (`doctor` und `cacti` werden übersprungen), und löst die Hook-Datei strikt innerhalb des eigenen Plugin-Verzeichnisses auf. Der Callback erhält `['mode' => 'run' | 'list', 'plugin' => '<slug>']` und gibt entweder eine Liste von Prüfungsdeskriptoren oder einen Umschlag mit `checks` und optionalen `attachments` zurück:
+
+```php
+function sample_doctor_checks($context) {
+	return [
+		'checks' => [
+			[
+				'id'          => 'sample.queue_depth',
+				'plugin'      => 'sample',
+				'category'    => 'Sample',
+				'title'       => 'Sample queue depth',
+				'status'      => 'ok',
+				'message'     => 'Queue is healthy.',
+				'details'     => ['pending' => 0],
+				'remediation' => ''
+			]
+		],
+		'attachments' => [
+			[
+				'title'   => 'Sample diagnostics',
+				'content' => "worker=ok\n"
+			]
+		]
+	];
+}
+```
+
+Jeder Plugin-Prüfungsdeskriptor wird vor der Aufnahme validiert:
+
+- Erforderliche Schlüssel: `id`, `plugin`, `category`, `title`, `status`, `message`, `details` und `remediation`.
+- `plugin` muss dem registrierten Plugin-Slug entsprechen (`[a-z0-9_]{1,64}`). `id` muss `[a-z0-9_.]{1,128}` entsprechen, mit `<plugin>.` beginnen und darf nicht mit einer bestehenden Kern- oder Plugin-Prüfungs-ID kollidieren.
+- `status` muss `ok`, `warn`, `fail` oder `info` sein. `ok` wird in Doctor-Berichten auf `pass` abgebildet; `info` dient nur zur Information und löst keine Fehler in CLI, Nagios, Prometheus oder zeitgesteuerten Benachrichtigungen aus.
+- `category` (bis zu 64 Bytes) und `title` (bis zu 256 Bytes) müssen nicht-leere Zeichenketten ohne Steuerzeichen sein. `message` (nicht leer, bis zu 2048 Bytes) und `remediation` (bis zu 2048 Bytes) müssen Zeichenketten sein.
+- `details` akzeptiert eine Zeichenkette (bis zu 8192 Bytes) oder ein skalares bzw. verschachteltes Array (maximale Tiefe 4, JSON-kodiert bis zu 16384 Bytes; Objekte und Ressourcen werden abgelehnt).
+- Optionale Support-Paket-Anhänge erfordern einen nicht-leeren `title` (bis zu 128 Bytes, keine Steuerzeichen) und eine `content`-Zeichenkette mit bis zu 65536 Bytes (64 KiB).
+
+Doctor erzwingt Limits von 32 Prüfungen und 8 Anhängen pro Plugin (insgesamt 64 Plugin-Prüfungen und 32 Anhänge). Jeder Hook wird innerhalb seiner eigenen `try`/`catch`-Grenze ausgeführt, sodass Ausnahmen oder Nicht-Array-Nutzdaten geschwärzt und in das Cacti-Protokoll (`DOCTOR`-Facility) geschrieben werden, ohne Kernprüfungen oder andere Plugins zu beeinträchtigen. Fehlerhafte Deskriptoren werden abgelehnt und protokolliert, während gültige Deskriptoren desselben Plugins weiterhin ausgeführt werden. Plugin-Prüfungen sind immer schreibgeschützt (`repairable: false`), und Zeichenkettenwerte sowie sensible assoziative Schlüssel werden vor der Darstellung, dem Export oder dem Bündeln geschwärzt. Validierte Plugin-Prüfungen erscheinen in der Weboberfläche, in CLI-Text-/JSON-/Nagios-/Prometheus-Ausgaben, in der zeitgesteuerten Statusverfolgung und in Support-Paketen.
+
+## MCP-Integration (`abilities_register`)
+
+Doctor registriert den `abilities_register`-Hook (`doctor_abilities_register` in `doctor_abilities.php`), sodass `plugin_mcp` dessen Diagnosefähigkeiten erkennt, wenn beide Plugins aktiviert sind. Doctor registriert die Kategorie `diagnostics` (`Diagnostics`) sowie zwei schreibgeschützte, nicht-destruktive, idempotente Fähigkeiten:
+
+| Fähigkeits-ID | Optionale Argumente | Ausgabe |
+|---|---|---|
+| `doctor-run-checks` | `category` (Zeichenkette, max. 64 Zeichen), `status` (`pass`, `ok`, `warn`, `fail`, `info`) | `summary` (`total`, `pass`, `warn`, `fail`, `info`) und bis zu 256 geschwärzte `findings` (`id`, `plugin`, `category`, `title`, `status`, `message`, `remediation`) |
+| `doctor-list-checks` | `category` (Zeichenkette, max. 64 Zeichen), `plugin` (Zeichenkette, max. 64 Zeichen) | Bis zu 256 `checks` (`id`, `plugin`, `category`, `title`), die alle 45 integrierten Prüfungen sowie aktivierte Plugin-Prüfungen abdecken |
+
+Beide Fähigkeiten sind strikt schreibgeschützt und führen niemals Reparaturen aus. Zusätzlich zu den eigenen Bereichs- und Fähigkeits-Freigabekontrollen von `plugin_mcp` (Plugin-Fähigkeiten sind in MCP zunächst ausgeblendet, bis ein Administrator sie freigibt) verlangt Doctor, dass der Token-Inhaber über **Doctor Viewer** oder einen höheren Doctor-Bereich verfügt. `doctor-run-checks` beschränkt `devices.health` auf die dem Token-Inhaber erlaubten Geräte, bindet `logging.recent_errors` nur ein, wenn der Benutzer den Cacti-Bereich 18 oder 19 besitzt, lässt `filesystem.rrd_files` weg und bindet gerätegefiltertes `filesystem.rrd_stale` nur für **Doctor Operator** oder **Doctor Administrator** ein.
+
 ## Anforderungen
 
 | Cacti | PHP | Hinweise |
@@ -254,20 +313,22 @@ Die Support-Daten sind aus dem [PHP-Support-Zeitplan](https://www.php.net/suppor
 
 ## Entwicklung
 
-Die Unit-Testsuite verwendet Pest und läuft unter PHP 8.2 oder neuer:
+Die Unit-Testsuite verwendet Pest und die statische Analyse verwendet PHPStan (Level 6), beides unter PHP 8.2 oder neuer:
 
 ```console
 composer install
+composer phpstan
 composer test
 ```
 
 Die Tests ersetzen die von Doctor aufgerufenen Cacti-Funktionen durch kleine Platzhalter in `tests/CactiStubs.php`, sodass sie ohne eine Cacti-Installation laufen.
 
-GitHub Actions führt bei jedem Push und Pull Request vier Arten von Prüfungen aus:
+GitHub Actions führt bei jedem Push und Pull Request fünf Arten von Prüfungen aus:
 
-- `php -l` für jede PHP-Datei unter PHP 5.4, 5.6, 7.0, 7.1, 7.4 sowie 8.0 bis 8.4.
-- Die Unit-Testsuite unter PHP 8.2, 8.3 und 8.4.
+- Release-Paketierungs-Vertragstests (`tests/test_release.py`) und ein Archiv-Build (`tools/build_release.py`).
 - `locales/build_gettext.sh --check`, das bei einer veralteten Übersetzungsvorlage, einem unvollständigen oder als „fuzzy“ markierten Katalog oder einem kompilierten Katalog fehlschlägt, der von seiner Quelle abweicht.
+- `php -l` für jede PHP-Datei unter PHP 5.4, 5.6, 7.0, 7.1, 7.4 sowie 8.0 bis 8.4.
+- `composer phpstan` (PHPStan Level 6) und `composer test` (Pest-Unit-Testsuite) unter PHP 8.2, 8.3 und 8.4.
 - Sieben Integrationsjobs, die Cacti 1.2.20, den aktuellen 1.2.x-Zweig und `develop` gegen MySQL und MariaDB sowohl mit cmd.php als auch mit Spine installieren. Jeder Job installiert und aktiviert das Plugin, führt den vollständigen CLI-Bericht aus und prüft das Berichtsschema, die Gesamtsummen, die erwarteten Status sowie den genauen Satz an Fehlern. Anschließend beschädigt er einen Binärpfad und den Poller-Zeitstempel, bestätigt die Meldung beider Fehler, stellt sie wieder her, testet die Reparatur samt Bestätigung und führt Deaktivierung, Aktivierung, Deinstallation sowie Neuinstallation aus. Der JSON-Bericht wird bei Fehlschlag eines Jobs als Artefakt aufbewahrt.
 
 ## Mitwirken

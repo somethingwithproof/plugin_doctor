@@ -1,4 +1,4 @@
-<!-- Source: README.md; SHA256: ee03c7ac68aca21c8155c29b5b43a1f206c2f0c379c8b07bb4113919c18aafde -->
+<!-- Source: README.md; SHA256: 490628bb7f70f4cf1a8c43b302246fd2e870725a6649c628762608b4a76db65b -->
 
 <!-- translations:start -->
 [English](../../../README.md) | [简体中文](../zh-CN/README.md) | [हिन्दी](../hi-IN/README.md) | [Español (España)](../es-ES/README.md) | [Español (Latinoamérica)](../es-419/README.md) | [العربية (السعودية)](../ar-SA/README.md) | [Afrikaans](../af-ZA/README.md) | [አማርኛ](README.md) | [العربية (مصر)](../ar-EG/README.md) | [العربية (المغرب)](../ar-MA/README.md) | [বাংলা](../bn-BD/README.md) | [Bosanski](../bs-BA/README.md) | [Deutsch](../de-DE/README.md) | [فارسی](../fa-IR/README.md) | [Filipino](../fil-PH/README.md) | [Français](../fr-FR/README.md) | [Français (Maroc)](../fr-MA/README.md) | [Français (Sénégal)](../fr-SN/README.md) | [Hausa](../ha-NG/README.md) | [עברית](../he-IL/README.md) | [Hrvatski](../hr-HR/README.md) | [Bahasa Indonesia](../id-ID/README.md) | [Igbo](../ig-NG/README.md) | [Italiano](../it-IT/README.md) | [日本語](../ja-JP/README.md) | [한국어](../ko-KR/README.md) | [Malagasy](../mg-MG/README.md) | [मराठी](../mr-IN/README.md) | [Bahasa Melayu](../ms-MY/README.md) | [Nederlands](../nl-NL/README.md) | [Polski](../pl-PL/README.md) | [Português (Brasil)](../pt-BR/README.md) | [Русский](../ru-RU/README.md) | [Kinyarwanda](../rw-RW/README.md) | [Soomaali](../so-SO/README.md) | [Српски](../sr-RS/README.md) | [Svenska](../sv-SE/README.md) | [Kiswahili](../sw-KE/README.md) | [தமிழ்](../ta-IN/README.md) | [తెలుగు](../te-IN/README.md) | [ไทย](../th-TH/README.md) | [Türkçe](../tr-TR/README.md) | [Українська](../uk-UA/README.md) | [اردو](../ur-PK/README.md) | [Tiếng Việt](../vi-VN/README.md) | [isiXhosa](../xh-ZA/README.md) | [Yorùbá](../yo-NG/README.md) | [繁體中文](../zh-TW/README.md) | [isiZulu](../zu-ZA/README.md)
@@ -53,13 +53,15 @@ PHP 8.3.36 በሚያስኬድ ገለልተኛ የCacti 1.2.31 ማሳያ መጫ�
 | መሳሪያዎች | የወረዱ ወይም እያገገሙ ያሉ የነቁ መሳሪያዎች፣ ለረጅም ጊዜ የወረዱት ሶስቱ መሳሪያዎች ከመጨረሻ ስህተታቸው ጋር፣ እና አብዛኞቹ መሳሪያዎች በአንድ ጊዜ ሲወርዱ የሚከሰት ውድቀት |
 | Poller | የPoller ዓይነት እና ክፍተት፣ ዋናው poller ለመጨረሻ ጊዜ ካጠናቀቀ በኋላ ያለፈው ጊዜ፣ ከክፍተቱ አንጻር የሩጫ ጊዜ፣ ወደ RRD ፋይል ያልደረሰ የpoller ውጤት፣ ሪፖርት ማድረግ ያቆሙ የርቀት pollerዎች፣ የቆመ Boost እና ወደ ሌላ ዳታቤዝ የሚጠቁም የSpine ውቅር |
 
-ስክሪፕቶች በነጠላ ውጤቶች ላይ እንዲመሰረቱ እያንዳንዱ ፍተሻ እንደ `database.timezone` ወይም `binary.rrdtool` ያለ ቋሚ መለያ (ID) አለው።
+ስክሪፕቶች በነጠላ ውጤቶች ላይ እንዲመሰረቱ እያንዳንዱ ፍተሻ እንደ `database.timezone` ወይም `binary.rrdtool` ያለ ቋሚ መለያ (ID) አለው። የነቁ ተሰኪዎች በ`doctor_register_checks` መንጠቆ (hook) በኩል ተጨማሪ ፍተሻዎችን እና የድጋፍ ጥቅል አባሪዎችን ማበርከት ይችላሉ፣ እንዲሁም Doctor በ`abilities_register` በኩል ለንባብ-ብቻ የምርመራ ችሎታዎችን ለ`plugin_mcp` ያጋልጣል።
 
 ## የኮድ እና የሙከራ ካርታ
 
 | ባህሪ | አተገባበር | በዚህ ማከማቻ ውስጥ ያለ የሙከራ ማስረጃ |
 |---|---|---|
-| የምርመራ ፍተሻዎች እና ቋሚ የሪፖርት መለያዎች | [doctor_functions.php](../../../doctor_functions.php) | [DoctorFunctionsTest.php](../../../tests/DoctorFunctionsTest.php), [AssertDoctorReport.php](../../../tests/ci/AssertDoctorReport.php) |
+| የምርመራ ፍተሻዎች እና ቋሚ የሪፖርት መለያዎች | [doctor_functions.php](../../../doctor_functions.php) | [DoctorFunctionsTest.php](../../../tests/DoctorFunctionsTest.php), [DatabaseHealthTest.php](../../../tests/DatabaseHealthTest.php), [AssertDoctorReport.php](../../../tests/ci/AssertDoctorReport.php) |
+| የተሰኪ ፍተሻ መንጠቆ (`doctor_register_checks`) | [doctor_plugins.php](../../../doctor_plugins.php) | [PluginHooksTest.php](../../../tests/PluginHooksTest.php) |
+| የMCP የምርመራ ችሎታዎች (`abilities_register`) | [doctor_abilities.php](../../../doctor_abilities.php) | [AbilitiesTest.php](../../../tests/AbilitiesTest.php) |
 | በሚና የተገደበ መዳረሻ እና የተከለሉ የድር ሪፖርቶች | [doctor_access.php](../../../doctor_access.php), [doctor_web.php](../../../doctor_web.php) | [AccessTest.php](../../../tests/AccessTest.php), [WebAccessTest.php](../../../tests/WebAccessTest.php) |
 | በመመሪያ የተደገፉ የምልክት ምርመራዎች | [doctor_diagnosis.php](../../../doctor_diagnosis.php) | [DiagnosisTest.php](../../../tests/DiagnosisTest.php) |
 | የRRD ወቅታዊነት እና የዘገየ-ጽሑፍ አያያዝ | [doctor_rrd.php](../../../doctor_rrd.php) | [RrdFreshnessTest.php](../../../tests/RrdFreshnessTest.php) |
@@ -194,7 +196,7 @@ php plugins/doctor/cli/doctor.php --format=prometheus > /var/lib/node_exporter/t
 php plugins/doctor/cli/doctor.php --bundle=/tmp/cacti-doctor.txt
 ```
 
-ጥቅሉ የDoctor፣ Cacti፣ PHP፣ OS እና የውሂብ ጎታ ስሪቶችን፣ የፖለር እና የBoost ስታቲስቲክስን፣ ሙሉ ሪፖርቱን እና የCacti መዝገብ የመጨረሻዎቹን 200 መስመሮች የያዘ አንድ የጽሑፍ ፋይል ነው። የይለፍ ቃል፣ ሚስጥር፣ ማስመሰያ፣ ማህበረሰብ እና የቁልፍ ስሞችን የሚከተሉ እሴቶች ይሸፈናሉ። Doctor ፋይሉን በባለቤቱ ብቻ እንዲነበብ አድርጎ ይፈጥረዋል እና ነባር ፋይል ላይ መደረብን አይፈቅድም። የትም ቦታ ከመለጠፍዎ በፊት ይገምግሙት።
+ጥቅሉ የDoctor፣ Cacti፣ PHP፣ OS እና የውሂብ ጎታ ስሪቶችን፣ የፖለር እና የBoost ስታቲስቲክስን፣ ሙሉ ሪፖርቱን፣ በ`== Plugin attachments` ስር ያሉ ማናቸውንም የተሰኪ የድጋፍ ጥቅል አባሪዎችን እና የCacti መዝገብ የመጨረሻዎቹን 200 መስመሮች የያዘ አንድ የጽሑፍ ፋይል ነው። የይለፍ ቃል፣ ሚስጥር፣ ማስመሰያ፣ ማህበረሰብ እና የቁልፍ ስሞችን የሚከተሉ እሴቶች ይሸፈናሉ። Doctor ፋይሉን በባለቤቱ ብቻ እንዲነበብ አድርጎ ይፈጥረዋል እና ነባር ፋይል ላይ መደረብን አይፈቅድም። የትም ቦታ ከመለጠፍዎ በፊት ይገምግሙት።
 
 ## የጥገና ፖሊሲ
 
@@ -240,6 +242,63 @@ Boost የተዋቀረውን የflush ክፍተት እጥፍ እንደ የዲስ�
 
 ማሻሻል የCacti መተግበሪያ ውሂብን ሳይለውጥ `plugin_doctor_audit` እና `plugin_doctor_acceptance`ን ይፈጥራል። ከማራገፍዎ በፊት የሚፈልጉትን ማንኛውንም ታሪክ ወደ ውጭ ይላኩ፦ ማራገፍ ሁለቱንም የተሰኪ ሰንጠረዦች እና ቅንብሮቹን ያስወግዳል። የተሰኪ ፋይሎችን ወደ ቀድሞው መመለስ ሰንጠረዦቹን ለምርመራ እንዲገኙ ያደርጋል፣ ነገር ግን የቆዩ እትሞች የማስጠንቀቂያ ልዩ ሁኔታዎችን አያከብሩም።
 
+## የተሰኪ ፍተሻዎች (`doctor_register_checks`)
+
+የነቁ የCacti ተሰኪዎች `doctor_register_checks` መንጠቆን በመመዝገብ ለንባብ-ብቻ የሆኑ የምርመራ ፍተሻዎችን እና አማራጭ የድጋፍ ጥቅል አባሪዎችን ማበርከት ይችላሉ፦
+
+```php
+api_plugin_register_hook('sample', 'doctor_register_checks', 'sample_doctor_checks', 'setup.php');
+```
+
+Doctor በ`doctor_register_checks` ላይ የተመዘገቡ የነቁ፣ ያልተዋሃዱ ተሰኪዎችን (`doctor` እና `cacti`ን በመዝለል) ይጠራል፣ የመንጠቆ ፋይሉን በጥብቅ በተሰኪው የራሱ ማውጫ ውስጥ በመፍታት። መልሶ መጥሪያው (callback) `['mode' => 'run' | 'list', 'plugin' => '<slug>']`ን ይቀበላል እና የፍተሻ ገላጮች ዝርዝር ወይም `checks` እና አማራጭ `attachments` ያለው ፖስታ ይመልሳል፦
+
+```php
+function sample_doctor_checks($context) {
+	return [
+		'checks' => [
+			[
+				'id'          => 'sample.queue_depth',
+				'plugin'      => 'sample',
+				'category'    => 'Sample',
+				'title'       => 'Sample queue depth',
+				'status'      => 'ok',
+				'message'     => 'Queue is healthy.',
+				'details'     => ['pending' => 0],
+				'remediation' => ''
+			]
+		],
+		'attachments' => [
+			[
+				'title'   => 'Sample diagnostics',
+				'content' => "worker=ok\n"
+			]
+		]
+	];
+}
+```
+
+እያንዳንዱ የተሰኪ ፍተሻ ገላጭ ከመካተቱ በፊት ይረጋገጣል፦
+
+- አስፈላጊ ቁልፎች፦ `id`፣ `plugin`፣ `category`፣ `title`፣ `status`፣ `message`፣ `details` እና `remediation`።
+- `plugin` ከተመዘገበው የተሰኪ slug (`[a-z0-9_]{1,64}`) ጋር መዛመድ አለበት። `id` ከ`[a-z0-9_.]{1,128}` ጋር መዛመድ፣ በ`<plugin>.` መጀመር እና ከነባር ዋና ወይም የተሰኪ ፍተሻ መታወቂያ ጋር አለመጋጨት አለበት።
+- `status` `ok`፣ `warn`፣ `fail` ወይም `info` መሆን አለበት። `ok` በDoctor ሪፖርቶች ውስጥ ወደ `pass` ይቀየራል፤ `info` መረጃ ሰጪ ነው እና በCLI፣ Nagios፣ Prometheus ወይም በመርሐግብር በተያዙ ማንቂያዎች ውስጥ ውድቀቶችን አያስነሳም።
+- `category` (እስከ 64 ባይት) እና `title` (እስከ 256 ባይት) የመቆጣጠሪያ ቁምፊዎች የሌሏቸው ባዶ ያልሆኑ ሕብረቁምፊዎች መሆን አለባቸው። `message` (ባዶ ያልሆነ፣ እስከ 2048 ባይት) እና `remediation` (እስከ 2048 ባይት) ሕብረቁምፊዎች መሆን አለባቸው።
+- `details` ሕብረቁምፊ (እስከ 8192 ባይት) ወይም ስካላር/የተከተተ ድርድር (ከፍተኛ ጥልቀት 4፣ በJSON የተቀመጠ እስከ 16384 ባይት፤ ነገሮች እና ሀብቶች ውድቅ ይደረጋሉ) ይቀበላል።
+- አማራጭ የድጋፍ ጥቅል አባሪዎች ባዶ ያልሆነ `title` (እስከ 128 ባይት፣ የመቆጣጠሪያ ቁምፊዎች የሌሉት) እና እስከ 65536 ባይት (64 KiB) የሆነ የ`content` ሕብረቁምፊ ይፈልጋሉ።
+
+Doctor በአንድ ተሰኪ 32 ፍተሻዎች እና 8 አባሪዎች ገደብ (በአጠቃላይ 64 የተሰኪ ፍተሻዎች እና 32 አባሪዎች) ያስፈጽማል። እያንዳንዱ መንጠቆ በራሱ `try`/`catch` ወሰን ውስጥ ይሰራል ስለዚህ ልዩ ሁኔታዎች ወይም ድርድር ያልሆኑ ጭነቶች ዋና ፍተሻዎችን ወይም ሌሎች ተሰኪዎችን ሳይነኩ ተሸፍነው በCacti መዝገብ (`DOCTOR` ተቋም) ውስጥ ይመዘገባሉ። የተበላሹ ገላጮች ውድቅ ተደርገው ይመዘገባሉ ከተመሳሳይ ተሰኪ ትክክለኛ የሆኑት ግን መስራታቸውን ይቀጥላሉ። የተሰኪ ፍተሻዎች ሁልጊዜ ለንባብ-ብቻ ናቸው (`repairable: false`)፣ እና ከመታየታቸው፣ ከመላካቸው ወይም ከመጠቅለላቸው በፊት የሕብረቁምፊ እሴቶች እና ሚስጥራዊ ተያያዥ ቁልፎች ይሸፈናሉ። የተረጋገጡ የተሰኪ ፍተሻዎች በድር UI፣ በCLI ጽሑፍ/JSON/Nagios/Prometheus ውጤት፣ በመርሐግብር በተያዘ የሁኔታ ክትትል እና በድጋፍ ጥቅሎች ውስጥ ይታያሉ።
+
+## የMCP ውህደት (`abilities_register`)
+
+ሁለቱም ተሰኪዎች ሲነቁ `plugin_mcp` የምርመራ ችሎታዎቹን እንዲያገኝ Doctor የ`abilities_register` መንጠቆን (`doctor_abilities_register` በ`doctor_abilities.php` ውስጥ) ይመዘግባል። Doctor የ`diagnostics` ምድብን (`Diagnostics`) እና ሁለት ለንባብ-ብቻ፣ አጥፊ ያልሆኑ፣ idempotent ችሎታዎችን ይመዘግባል፦
+
+| የችሎታ መታወቂያ | አማራጭ ነጋሪ እሴቶች | ውጤት |
+|---|---|---|
+| `doctor-run-checks` | `category` (ሕብረቁምፊ፣ ከፍተኛ 64 ቁምፊዎች)፣ `status` (`pass`፣ `ok`፣ `warn`፣ `fail`፣ `info`) | `summary` (`total`፣ `pass`፣ `warn`፣ `fail`፣ `info`) እና እስከ 256 የተሸፈኑ `findings` (`id`፣ `plugin`፣ `category`፣ `title`፣ `status`፣ `message`፣ `remediation`) |
+| `doctor-list-checks` | `category` (ሕብረቁምፊ፣ ከፍተኛ 64 ቁምፊዎች)፣ `plugin` (ሕብረቁምፊ፣ ከፍተኛ 64 ቁምፊዎች) | ሁሉንም 45 አብሮገነብ ፍተሻዎችን እና የነቁ የተሰኪ ፍተሻዎችን የሚሸፍኑ እስከ 256 `checks` (`id`፣ `plugin`፣ `category`፣ `title`) |
+
+ሁለቱም ችሎታዎች በጥብቅ ለንባብ-ብቻ ናቸው እና ጥገናዎችን በፍጹም አያካሂዱም። ከ`plugin_mcp` የራሱ የክልል እና የችሎታ መጋለጥ መቆጣጠሪያዎች በተጨማሪ (አንድ አስተዳዳሪ እስኪያጋልጣቸው ድረስ የተሰኪ ችሎታዎች በMCP ውስጥ ተደብቀው ይጀምራሉ)፣ Doctor የማስመሰያው ባለቤት **Doctor ተመልካች** ወይም ከዚያ በላይ የሆነ የDoctor ክልል እንዲኖረው ይጠይቃል። `doctor-run-checks` `devices.health`ን ለማስመሰያው ባለቤት በተፈቀዱ መሳሪያዎች ይገድባል፣ `logging.recent_errors`ን የሚያካትተው ተጠቃሚው የCacti ክልል 18 ወይም 19 ሲኖረው ብቻ ነው፣ `filesystem.rrd_files`ን ይተዋል፣ እና በመሳሪያ የተገደበ `filesystem.rrd_stale`ን የሚያካትተው ለ**Doctor ኦፕሬተር** ወይም **Doctor አስተዳዳሪ** ብቻ ነው።
+
 ## መስፈርቶች
 
 | Cacti | PHP | ማስታወሻዎች |
@@ -257,20 +316,22 @@ Boost የተዋቀረውን የflush ክፍተት እጥፍ እንደ የዲስ�
 
 ## ልማት
 
-የዩኒት ሙከራ ስብስቡ Pestን ይጠቀማል እና በPHP 8.2 ወይም ከዚያ በላይ ላይ ይሰራል፦
+የዩኒት ሙከራ ስብስቡ Pestን ይጠቀማል እና ስታቲክ ትንተና PHPStan (ደረጃ 6)ን ይጠቀማል፣ ሁለቱም በPHP 8.2 ወይም ከዚያ በላይ ላይ፦
 
 ```console
 composer install
+composer phpstan
 composer test
 ```
 
 ሙከራዎቹ Doctor የሚጠራቸውን የCacti ተግባራት በ`tests/CactiStubs.php` ውስጥ ባሉ ትናንሽ ተተኪዎች ይተካሉ፣ ስለዚህ ያለ Cacti መጫኛ ይሰራሉ።
 
-GitHub Actions በእያንዳንዱ push እና pull request ላይ አራት ዓይነት ፍተሻዎችን ያካሂዳል፦
+GitHub Actions በእያንዳንዱ push እና pull request ላይ አምስት ዓይነት ፍተሻዎችን ያካሂዳል፦
 
-- `php -l` በPHP 5.4፣ 5.6፣ 7.0፣ 7.1፣ 7.4 እና ከ8.0 እስከ 8.4 ስር ባለው እያንዳንዱ የPHP ፋይል ላይ።
-- የዩኒት ሙከራ ስብስቡ በPHP 8.2፣ 8.3 እና 8.4 ላይ።
+- የልቀት ማሸጊያ ውል ሙከራዎች (`tests/test_release.py`) እና የማህደር ግንባታ (`tools/build_release.py`)።
 - `locales/build_gettext.sh --check`፣ ይህም ባረጀ የትርጉም ቅጽ፣ ባልተሟላ ወይም ግልጽ ባልሆነ ካታሎግ፣ ወይም ከምንጩ በሚለይ የተጠናቀረ ካታሎግ ላይ ይወድቃል።
+- `php -l` በPHP 5.4፣ 5.6፣ 7.0፣ 7.1፣ 7.4 እና ከ8.0 እስከ 8.4 ስር ባለው እያንዳንዱ የPHP ፋይል ላይ።
+- `composer phpstan` (PHPStan ደረጃ 6) እና `composer test` (የPest ዩኒት ሙከራ ስብስብ) በPHP 8.2፣ 8.3 እና 8.4 ላይ።
 - Cacti 1.2.20ን፣ አሁን ያለውን 1.2.x ቅርንጫፍ እና `develop`ን ከMySQL እና MariaDB ጋር፣ በሁለቱም cmd.php እና Spine የሚጭኑ ሰባት የውህደት ስራዎች። እያንዳንዱ ስራ ተሰኪውን ይጭናል እና ያነቃል፣ ሙሉውን የCLI ሪፖርት ያስፈጽማል፣ እና የሪፖርቱን እቅድ፣ የማጠቃለያ ድምሮችን፣ የሚጠበቁ ሁኔታዎችን እና ትክክለኛውን የውድቀቶች ስብስብ ይፈትሻል። ከዚያም የባይናሪ ዱካን እና የpoller የጊዜ ማህተምን ያበላሻል፣ ሁለቱም ሪፖርት መደረጋቸውን ያረጋግጣል፣ መልሶ ያስተካክላቸዋል፣ ጥገናውን እና ማረጋገጫውን ይለማመዳል፣ እና ማሰናከልን፣ ማንቃትን፣ ማራገፍን እና እንደገና መጫንን ያከናውናል። አንድ ስራ ሲወድቅ የJSON ሪፖርቱ እንደ አርቲፋክት ይቀመጣል።
 
 ## አስተዋጽኦ ማድረግ

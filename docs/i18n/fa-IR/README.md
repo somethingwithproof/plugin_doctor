@@ -1,4 +1,4 @@
-<!-- Source: README.md; SHA256: ee03c7ac68aca21c8155c29b5b43a1f206c2f0c379c8b07bb4113919c18aafde -->
+<!-- Source: README.md; SHA256: 490628bb7f70f4cf1a8c43b302246fd2e870725a6649c628762608b4a76db65b -->
 
 <!-- translations:start -->
 [English](../../../README.md) | [简体中文](../zh-CN/README.md) | [हिन्दी](../hi-IN/README.md) | [Español (España)](../es-ES/README.md) | [Español (Latinoamérica)](../es-419/README.md) | [العربية (السعودية)](../ar-SA/README.md) | [Afrikaans](../af-ZA/README.md) | [አማርኛ](../am-ET/README.md) | [العربية (مصر)](../ar-EG/README.md) | [العربية (المغرب)](../ar-MA/README.md) | [বাংলা](../bn-BD/README.md) | [Bosanski](../bs-BA/README.md) | [Deutsch](../de-DE/README.md) | [فارسی](README.md) | [Filipino](../fil-PH/README.md) | [Français](../fr-FR/README.md) | [Français (Maroc)](../fr-MA/README.md) | [Français (Sénégal)](../fr-SN/README.md) | [Hausa](../ha-NG/README.md) | [עברית](../he-IL/README.md) | [Hrvatski](../hr-HR/README.md) | [Bahasa Indonesia](../id-ID/README.md) | [Igbo](../ig-NG/README.md) | [Italiano](../it-IT/README.md) | [日本語](../ja-JP/README.md) | [한국어](../ko-KR/README.md) | [Malagasy](../mg-MG/README.md) | [मराठी](../mr-IN/README.md) | [Bahasa Melayu](../ms-MY/README.md) | [Nederlands](../nl-NL/README.md) | [Polski](../pl-PL/README.md) | [Português (Brasil)](../pt-BR/README.md) | [Русский](../ru-RU/README.md) | [Kinyarwanda](../rw-RW/README.md) | [Soomaali](../so-SO/README.md) | [Српски](../sr-RS/README.md) | [Svenska](../sv-SE/README.md) | [Kiswahili](../sw-KE/README.md) | [தமிழ்](../ta-IN/README.md) | [తెలుగు](../te-IN/README.md) | [ไทย](../th-TH/README.md) | [Türkçe](../tr-TR/README.md) | [Українська](../uk-UA/README.md) | [اردو](../ur-PK/README.md) | [Tiếng Việt](../vi-VN/README.md) | [isiXhosa](../xh-ZA/README.md) | [Yorùbá](../yo-NG/README.md) | [繁體中文](../zh-TW/README.md) | [isiZulu](../zu-ZA/README.md)
@@ -50,13 +50,15 @@ Cacti Doctor یک افزونه برای Cacti است که نصب سیستم را
 | دستگاه‌ها | دستگاه‌های فعال‌شده‌ای که از دسترس خارج هستند یا در حال بازیابی‌اند، سه دستگاهی که بیشترین مدت از دسترس خارج بوده‌اند همراه با آخرین خطای آن‌ها، و یک خطا هنگامی که بیشتر دستگاه‌ها به‌طور هم‌زمان از دسترس خارج باشند |
 | Poller | نوع و بازه زمانی poller، مدت زمان سپری‌شده از آخرین تکمیل poller اصلی، زمان اجرا در برابر بازه زمانی، خروجی poller که هرگز به فایل RRD نرسیده، pollerهای راه‌دور که گزارش‌دهی را متوقف کرده‌اند، Boost متوقف‌شده، و پیکربندی Spine که به پایگاه‌داده دیگری اشاره می‌کند |
 
-هر بررسی دارای یک شناسه پایدار است، مانند `database.timezone` یا `binary.rrdtool`، تا اسکریپت‌ها بتوانند بر اساس نتایج تکی کلیدگذاری کنند.
+هر بررسی دارای یک شناسه پایدار است، مانند `database.timezone` یا `binary.rrdtool`، تا اسکریپت‌ها بتوانند بر اساس نتایج تکی کلیدگذاری کنند. افزونه‌های فعال‌شده می‌توانند از طریق قلاب `doctor_register_checks` بررسی‌های اضافی و پیوست‌های بسته پشتیبانی ارائه دهند، و Doctor قابلیت‌های عیب‌یابی فقط‌خواندنی را از طریق `abilities_register` در اختیار `plugin_mcp` قرار می‌دهد.
 
 ## نقشه کد و آزمون‌ها
 
 | رفتار | پیاده‌سازی | شواهد آزمون در این مخزن |
 |---|---|---|
-| بررسی‌های عیب‌یابی و شناسه‌های پایدار گزارش | [doctor_functions.php](../../../doctor_functions.php) | [DoctorFunctionsTest.php](../../../tests/DoctorFunctionsTest.php)، [AssertDoctorReport.php](../../../tests/ci/AssertDoctorReport.php) |
+| بررسی‌های عیب‌یابی و شناسه‌های پایدار گزارش | [doctor_functions.php](../../../doctor_functions.php) | [DoctorFunctionsTest.php](../../../tests/DoctorFunctionsTest.php)، [DatabaseHealthTest.php](../../../tests/DatabaseHealthTest.php)، [AssertDoctorReport.php](../../../tests/ci/AssertDoctorReport.php) |
+| قلاب بررسی‌های افزونه (`doctor_register_checks`) | [doctor_plugins.php](../../../doctor_plugins.php) | [PluginHooksTest.php](../../../tests/PluginHooksTest.php) |
+| قابلیت‌های عیب‌یابی MCP (`abilities_register`) | [doctor_abilities.php](../../../doctor_abilities.php) | [AbilitiesTest.php](../../../tests/AbilitiesTest.php) |
 | دسترسی محدود به نقش و گزارش‌های وب پالایش‌شده | [doctor_access.php](../../../doctor_access.php)، [doctor_web.php](../../../doctor_web.php) | [AccessTest.php](../../../tests/AccessTest.php)، [WebAccessTest.php](../../../tests/WebAccessTest.php) |
 | بررسی‌های هدایت‌شده نشانه‌ها | [doctor_diagnosis.php](../../../doctor_diagnosis.php) | [DiagnosisTest.php](../../../tests/DiagnosisTest.php) |
 | تازگی RRD و مدیریت نوشتن‌های معوق | [doctor_rrd.php](../../../doctor_rrd.php) | [RrdFreshnessTest.php](../../../tests/RrdFreshnessTest.php) |
@@ -188,7 +190,7 @@ php plugins/doctor/cli/doctor.php --format=prometheus > /var/lib/node_exporter/t
 php plugins/doctor/cli/doctor.php --bundle=/tmp/cacti-doctor.txt
 ```
 
-این بسته یک فایل متنی واحد شامل نسخه‌های Doctor، Cacti، PHP، سیستم‌عامل و پایگاه داده، آمار poller و Boost، گزارش کامل و ۲۰۰ خط آخر گزارش رویداد Cacti است. مقادیری که پس از نام‌های password، secret، token، community و key می‌آیند، پوشانده می‌شوند. Doctor فایل را به‌گونه‌ای ایجاد می‌کند که فقط توسط مالک آن قابل خواندن باشد و از بازنویسی فایل موجود خودداری می‌کند. پیش از انتشار آن در هر جایی، محتوای آن را بازبینی کنید.
+این بسته یک فایل متنی واحد شامل نسخه‌های Doctor، Cacti، PHP، سیستم‌عامل و پایگاه داده، آمار poller و Boost، گزارش کامل، هرگونه پیوست بسته پشتیبانی افزونه‌ها زیر بخش `== Plugin attachments` و ۲۰۰ خط آخر گزارش رویداد Cacti است. مقادیری که پس از نام‌های password، secret، token، community و key می‌آیند، پوشانده می‌شوند. Doctor فایل را به‌گونه‌ای ایجاد می‌کند که فقط توسط مالک آن قابل خواندن باشد و از بازنویسی فایل موجود خودداری می‌کند. پیش از انتشار آن در هر جایی، محتوای آن را بازبینی کنید.
 
 ## سیاست تعمیر
 
@@ -234,6 +236,63 @@ php plugins/doctor/cli/doctor.php --bundle=/tmp/cacti-doctor.txt
 
 ارتقا جدول‌های `plugin_doctor_audit` و `plugin_doctor_acceptance` را بدون تغییر داده‌های برنامهٔ Cacti ایجاد می‌کند. پیش از حذف نصب، از هر تاریخچه‌ای که نیاز دارید خروجی بگیرید: حذف نصب هر دو جدول پلاگین و تنظیمات آن را پاک می‌کند. بازگرداندن فایل‌های پلاگین جدول‌ها را برای بررسی در دسترس نگه می‌دارد، اما نسخه‌های قدیمی‌تر استثناهای هشدار را رعایت نمی‌کنند.
 
+## بررسی‌های افزونه (`doctor_register_checks`)
+
+افزونه‌های فعال‌شدهٔ Cacti می‌توانند با ثبت یک قلاب `doctor_register_checks`، بررسی‌های عیب‌یابی فقط‌خواندنی و پیوست‌های اختیاری بستهٔ پشتیبانی را ارائه دهند:
+
+```php
+api_plugin_register_hook('sample', 'doctor_register_checks', 'sample_doctor_checks', 'setup.php');
+```
+
+Doctor افزونه‌های فعال‌شدهٔ غیر یکپارچهٔ ثبت‌شده روی `doctor_register_checks` را فراخوانی می‌کند (با نادیده گرفتن `doctor` و `cacti`) و فایل قلاب را دقیقاً درون دایرکتوری خود افزونه حل‌وفصل می‌نماید. تابع بازخوانی `['mode' => 'run' | 'list', 'plugin' => '<slug>']` را دریافت می‌کند و فهرستی از توصیف‌گرهای بررسی یا پوشه‌ای شامل `checks` و فیلد اختیاری `attachments` بازمی‌گرداند:
+
+```php
+function sample_doctor_checks($context) {
+	return [
+		'checks' => [
+			[
+				'id'          => 'sample.queue_depth',
+				'plugin'      => 'sample',
+				'category'    => 'Sample',
+				'title'       => 'Sample queue depth',
+				'status'      => 'ok',
+				'message'     => 'Queue is healthy.',
+				'details'     => ['pending' => 0],
+				'remediation' => ''
+			]
+		],
+		'attachments' => [
+			[
+				'title'   => 'Sample diagnostics',
+				'content' => "worker=ok\n"
+			]
+		]
+	];
+}
+```
+
+هر توصیف‌گر بررسی افزونه پیش از گنجاندن اعتبارسنجی می‌شود:
+
+- کلیدهای الزامی: `id`، `plugin`، `category`، `title`، `status`، `message`، `details` و `remediation`.
+- مقدار `plugin` باید با نام کوتاه ثبت‌شدهٔ افزونه (`[a-z0-9_]{1,64}`) مطابقت داشته باشد. مقدار `id` باید با `[a-z0-9_.]{1,128}` مطابقت داشته باشد، با `<plugin>.` آغاز شود و با شناسهٔ بررسی هسته یا افزونهٔ موجود تداخل نداشته باشد.
+- مقدار `status` باید `ok`، `warn`، `fail` یا `info` باشد. مقدار `ok` در گزارش‌های Doctor به `pass` نگاشت می‌شود؛ `info` جنبهٔ اطلاع‌رسانی دارد و در CLI، Nagios، Prometheus یا هشدارهای زمان‌بندی‌شده خطا ایجاد نمی‌کند.
+- `category` (تا ۶۴ بایت) و `title` (تا ۲۵۶ بایت) باید رشته‌های غیرخالی و بدون کاراکترهای کنترلی باشند. `message` (غیرخالی، تا ۲۰۴۸ بایت) و `remediation` (تا ۲۰۴۸ بایت) باید رشته باشند.
+- `details` یک رشته (تا ۸۱۹۲ بایت) یا یک آرایهٔ اسکالر/تودرتو (حداکثر عمق ۴، کدگذاری‌شده به JSON تا ۱۶۳۸۴ بایت؛ اشیا و منابع رد می‌شوند) را می‌پذیرد.
+- پیوست‌های اختیاری بستهٔ پشتیبانی نیازمند `title` غیرخالی (تا ۱۲۸ بایت، بدون کاراکتر کنترلی) و رشتهٔ `content` تا ۶۵۵۳۶ بایت (64 KiB) هستند.
+
+Doctor محدودیت ۳۲ بررسی و ۸ پیوست به ازای هر افزونه (در مجموع ۶۴ بررسی افزونه و ۳۲ پیوست) را اعمال می‌کند. هر قلاب درون مرز `try`/`catch` اختصاصی خود اجرا می‌شود تا استثناها یا داده‌های غیرآرایه‌ای سانسور شده و بدون تأثیر بر بررسی‌های هسته یا سایر افزونه‌ها در گزارش رویداد Cacti (بخش `DOCTOR`) ثبت شوند. توصیف‌گرهای نادرست رد و ثبت می‌شوند، در حالی که توصیف‌گرهای معتبر همان افزونه همچنان اجرا می‌گردند. بررسی‌های افزونه همواره فقط‌خواندنی هستند (`repairable: false`) و مقادیر رشته‌ای به همراه کلیدهای انجمنی حساس پیش از نمایش، خروجی گرفتن یا بسته‌بندی سانسور می‌شوند. بررسی‌های تأییدشدهٔ افزونه در رابط وب، خروجی‌های متنی/JSON/Nagios/Prometheus در CLI، ردیابی وضعیت زمان‌بندی‌شده و بسته‌های پشتیبانی ظاهر می‌شوند.
+
+## یکپارچه‌سازی با MCP (`abilities_register`)
+
+Doctor قلاب `abilities_register` (`doctor_abilities_register` در `doctor_abilities.php`) را ثبت می‌کند تا هنگام فعال بودن هر دو پلاگین، `plugin_mcp` قابلیت‌های عیب‌یابی آن را کشف کند. Doctor دستهٔ `diagnostics` (`Diagnostics`) و دو قابلیت فقط‌خواندنی، غیرمخرب و تکرارپذیر بدون اثر جانبی (idempotent) را ثبت می‌کند:
+
+| شناسهٔ قابلیت | آرگومان‌های اختیاری | خروجی |
+|---|---|---|
+| `doctor-run-checks` | `category` (رشته، حداکثر ۶۴ نویسه)، `status` (`pass`، `ok`، `warn`، `fail`، `info`) | `summary` (`total`، `pass`، `warn`، `fail`، `info`) و حداکثر ۲۵۶ مورد `findings` سانسورشده (`id`، `plugin`، `category`، `title`، `status`، `message`، `remediation`) |
+| `doctor-list-checks` | `category` (رشته، حداکثر ۶۴ نویسه)، `plugin` (رشته، حداکثر ۶۴ نویسه) | حداکثر ۲۵۶ مورد `checks` (`id`، `plugin`، `category`، `title`) شامل تمام ۴۵ بررسی توکار به علاوهٔ بررسی‌های افزونه‌های فعال‌شده |
+
+هر دو قابلیت اکیداً فقط‌خواندنی هستند و هرگز تعمیری اجرا نمی‌کنند. افزون بر کنترل‌های قلمرو و نمایش قابلیت‌ها در خود `plugin_mcp` (قابلیت‌های افزونه‌ها تا زمانی که مدیری آن‌ها را آشکار نکند در MCP پنهان می‌مانند)، Doctor از دارندهٔ توکن می‌خواهد که قلمرو **Doctor Viewer** یا یک قلمرو بالاتر Doctor را داشته باشد. `doctor-run-checks` بررسی `devices.health` را به دستگاه‌های مجاز دارندهٔ توکن محدود می‌کند، `logging.recent_errors` را تنها زمانی می‌گنجاند که کاربر قلمرو ۱۸ یا ۱۹ در Cacti را داشته باشد، `filesystem.rrd_files` را حذف می‌کند، و `filesystem.rrd_stale` محدودشده به دستگاه‌ها را تنها برای **Doctor Operator** یا **Doctor Administrator** درج می‌نماید.
+
 ## پیش‌نیازها
 
 | Cacti | PHP | یادداشت‌ها |
@@ -251,20 +310,22 @@ php plugins/doctor/cli/doctor.php --bundle=/tmp/cacti-doctor.txt
 
 ## توسعه
 
-مجموعهٔ آزمون‌های واحد از Pest استفاده می‌کند و روی PHP 8.2 یا جدیدتر اجرا می‌شود:
+مجموعهٔ آزمون‌های واحد از Pest و تحلیل ایستا از PHPStan (سطح ۶) استفاده می‌کند و هر دو روی PHP 8.2 یا جدیدتر اجرا می‌شوند:
 
 ```console
 composer install
+composer phpstan
 composer test
 ```
 
 آزمون‌ها توابع Cacti را که Doctor فراخوانی می‌کند با جایگزین‌های کوچکی در `tests/CactiStubs.php` عوض می‌کنند، بنابراین بدون نیاز به نصب Cacti اجرا می‌شوند.
 
-سرویس GitHub Actions در هر push و pull request چهار نوع بررسی اجرا می‌کند:
+سرویس GitHub Actions در هر push و pull request پنج نوع بررسی اجرا می‌کند:
 
-- اجرای `php -l` روی هر فایل PHP تحت PHP 5.4، 5.6، 7.0، 7.1، 7.4 و 8.0 تا 8.4.
-- اجرای مجموعهٔ آزمون‌های واحد روی PHP 8.2، 8.3 و 8.4.
+- آزمون‌های قرارداد بسته‌بندی انتشار (`tests/test_release.py`) و ساخت بایگانی (`tools/build_release.py`).
 - اجرای `locales/build_gettext.sh --check` که در صورت کهنه بودن الگوی ترجمه، ناقص یا مبهم بودن کاتالوگ، یا تفاوت کاتالوگ کامپایل‌شده با منبع خود با خطا مواجه می‌شود.
+- اجرای `php -l` روی هر فایل PHP تحت PHP 5.4، 5.6، 7.0، 7.1، 7.4 و 8.0 تا 8.4.
+- اجرای `composer phpstan` (PHPStan سطح ۶) و `composer test` (مجموعهٔ آزمون‌های واحد Pest) روی PHP 8.2، 8.3 و 8.4.
 - هفت کار یکپارچه‌سازی که Cacti 1.2.20، شاخهٔ فعلی 1.2.x و `develop` را همراه با MySQL و MariaDB و هر دو گزینهٔ cmd.php و Spine نصب می‌کنند. هر کار پلاگین را نصب و فعال می‌کند، گزارش کامل CLI را اجرا می‌کند و طرحوارهٔ گزارش، جمع‌های خلاصه، وضعیت‌های مورد انتظار و مجموعهٔ دقیق خطاها را بررسی می‌کند. سپس یک مسیر باینری و برچسب زمانی poller را خراب می‌کند، گزارش شدن هر دو را تأیید می‌کند، آن‌ها را بازیابی می‌کند، تعمیر و تأیید آن را آزمایش می‌کند و عملیات غیرفعال‌سازی، فعال‌سازی، حذف نصب و نصب مجدد را اجرا می‌نماید. هنگام شکست یک کار، گزارش JSON به‌عنوان آرتیفکت نگهداری می‌شود.
 
 ## مشارکت

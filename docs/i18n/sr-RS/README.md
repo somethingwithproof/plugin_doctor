@@ -1,4 +1,4 @@
-<!-- Source: README.md; SHA256: ee03c7ac68aca21c8155c29b5b43a1f206c2f0c379c8b07bb4113919c18aafde -->
+<!-- Source: README.md; SHA256: 490628bb7f70f4cf1a8c43b302246fd2e870725a6649c628762608b4a76db65b -->
 
 <!-- translations:start -->
 [English](../../../README.md) | [简体中文](../zh-CN/README.md) | [हिन्दी](../hi-IN/README.md) | [Español (España)](../es-ES/README.md) | [Español (Latinoamérica)](../es-419/README.md) | [العربية (السعودية)](../ar-SA/README.md) | [Afrikaans](../af-ZA/README.md) | [አማርኛ](../am-ET/README.md) | [العربية (مصر)](../ar-EG/README.md) | [العربية (المغرب)](../ar-MA/README.md) | [বাংলা](../bn-BD/README.md) | [Bosanski](../bs-BA/README.md) | [Deutsch](../de-DE/README.md) | [فارسی](../fa-IR/README.md) | [Filipino](../fil-PH/README.md) | [Français](../fr-FR/README.md) | [Français (Maroc)](../fr-MA/README.md) | [Français (Sénégal)](../fr-SN/README.md) | [Hausa](../ha-NG/README.md) | [עברית](../he-IL/README.md) | [Hrvatski](../hr-HR/README.md) | [Bahasa Indonesia](../id-ID/README.md) | [Igbo](../ig-NG/README.md) | [Italiano](../it-IT/README.md) | [日本語](../ja-JP/README.md) | [한국어](../ko-KR/README.md) | [Malagasy](../mg-MG/README.md) | [मराठी](../mr-IN/README.md) | [Bahasa Melayu](../ms-MY/README.md) | [Nederlands](../nl-NL/README.md) | [Polski](../pl-PL/README.md) | [Português (Brasil)](../pt-BR/README.md) | [Русский](../ru-RU/README.md) | [Kinyarwanda](../rw-RW/README.md) | [Soomaali](../so-SO/README.md) | [Српски](README.md) | [Svenska](../sv-SE/README.md) | [Kiswahili](../sw-KE/README.md) | [தமிழ்](../ta-IN/README.md) | [తెలుగు](../te-IN/README.md) | [ไทย](../th-TH/README.md) | [Türkçe](../tr-TR/README.md) | [Українська](../uk-UA/README.md) | [اردو](../ur-PK/README.md) | [Tiếng Việt](../vi-VN/README.md) | [isiXhosa](../xh-ZA/README.md) | [Yorùbá](../yo-NG/README.md) | [繁體中文](../zh-TW/README.md) | [isiZulu](../zu-ZA/README.md)
@@ -50,13 +50,15 @@ Cacti Doctor је додатак за Cacti који у једном прола�
 | Уређаји | Омогућени уређаји који не раде или се опорављају, три уређаја која најдуже не раде са њиховом последњом грешком и грешка када већина уређаја истовремено не ради |
 | Poller | Тип и интервал poller-а, време од последњег завршеног циклуса главног poller-а, трајање рада у односу на интервал, излаз poller-а који никада није стигао до RRD датотеке, удаљени poller-и који су престали да шаљу извештаје, застој Boost-а и конфигурација Spine-а која показује на другу базу података |
 
-Свака провера има стабилан ID, као што је `database.timezone` или `binary.rrdtool`, тако да скрипте могу циљати појединачне резултате.
+Свака провера има стабилан ID, као што је `database.timezone` или `binary.rrdtool`, тако да скрипте могу циљати појединачне резултате. Омогућени додаци могу да приложе додатне провере и прилоге за пакет за подршку преко куке `doctor_register_checks`, а Doctor излаже дијагностичке способности само за читање додатку `plugin_mcp` преко `abilities_register`.
 
 ## Мапа кода и тестова
 
 | Понашање | Имплементација | Тестни докази у овом репозиторијуму |
 |---|---|---|
-| Дијагностичке провере и стабилни ID-ови извештаја | [doctor_functions.php](../../../doctor_functions.php) | [DoctorFunctionsTest.php](../../../tests/DoctorFunctionsTest.php), [AssertDoctorReport.php](../../../tests/ci/AssertDoctorReport.php) |
+| Дијагностичке провере и стабилни ID-ови извештаја | [doctor_functions.php](../../../doctor_functions.php) | [DoctorFunctionsTest.php](../../../tests/DoctorFunctionsTest.php), [DatabaseHealthTest.php](../../../tests/DatabaseHealthTest.php), [AssertDoctorReport.php](../../../tests/ci/AssertDoctorReport.php) |
+| Кука за провере додатака (`doctor_register_checks`) | [doctor_plugins.php](../../../doctor_plugins.php) | [PluginHooksTest.php](../../../tests/PluginHooksTest.php) |
+| MCP дијагностичке способности (`abilities_register`) | [doctor_abilities.php](../../../doctor_abilities.php) | [AbilitiesTest.php](../../../tests/AbilitiesTest.php) |
 | Приступ ограничен улогама и редиговани веб извештаји | [doctor_access.php](../../../doctor_access.php), [doctor_web.php](../../../doctor_web.php) | [AccessTest.php](../../../tests/AccessTest.php), [WebAccessTest.php](../../../tests/WebAccessTest.php) |
 | Вођена испитивања симптома | [doctor_diagnosis.php](../../../doctor_diagnosis.php) | [DiagnosisTest.php](../../../tests/DiagnosisTest.php) |
 | Свежина RRD датотека и руковање одложеним записима | [doctor_rrd.php](../../../doctor_rrd.php) | [RrdFreshnessTest.php](../../../tests/RrdFreshnessTest.php) |
@@ -188,7 +190,7 @@ php plugins/doctor/cli/doctor.php --format=prometheus > /var/lib/node_exporter/t
 php plugins/doctor/cli/doctor.php --bundle=/tmp/cacti-doctor.txt
 ```
 
-Пакет је једна текстуална датотека са верзијама додатка Doctor, Cacti-ја, PHP-а, оперативног система и базе података, статистикама poller-а и Boost-а, потпуним извештајем и последњих 200 редова Cacti дневника. Вредности иза назива за лозинку, тајну, токен, community и кључ су маскиране. Doctor креира датотеку читљиву само њеном власнику и одбија да препише постојећу датотеку. Прегледајте је пре него што је било где објавите.
+Пакет је једна текстуална датотека са верзијама додатка Doctor, Cacti-ја, PHP-а, оперативног система и базе података, статистикама poller-а и Boost-а, потпуним извештајем, свим прилозима пакета за подршку из додатака под `== Plugin attachments` и последњих 200 редова Cacti дневника. Вредности иза назива за лозинку, тајну, токен, community и кључ су маскиране. Doctor креира датотеку читљиву само њеном власнику и одбија да препише постојећу датотеку. Прегледајте је пре него што је било где објавите.
 
 ## Политика поправки
 
@@ -234,6 +236,63 @@ Boost додаје двоструку вредност свог конфигур
 
 Надоградња креира табеле `plugin_doctor_audit` и `plugin_doctor_acceptance` без измене апликационих података Cacti-ја. Извезите историју која вам је потребна пре деинсталације: деинсталација уклања обе табеле додатка и његова подешавања. Враћање датотека додатка оставља табеле доступним за истрагу, али старије верзије не уважавају изузетке упозорења.
 
+## Провере додатака (`doctor_register_checks`)
+
+Омогућени Cacti додаци могу приложити дијагностичке провере само за читање и опционе прилоге за пакет за подршку регистровањем куке `doctor_register_checks`:
+
+```php
+api_plugin_register_hook('sample', 'doctor_register_checks', 'sample_doctor_checks', 'setup.php');
+```
+
+Doctor позива омогућене, неинтегрисане додатке регистроване на `doctor_register_checks` (прескачући `doctor` и `cacti`), разрешавајући датотеку куке искључиво унутар сопственог директоријума додатка. Повратни позив прима `['mode' => 'run' | 'list', 'plugin' => '<slug>']` и враћа или листу дескриптора провера или омотницу са `checks` и опционим `attachments`:
+
+```php
+function sample_doctor_checks($context) {
+	return [
+		'checks' => [
+			[
+				'id'          => 'sample.queue_depth',
+				'plugin'      => 'sample',
+				'category'    => 'Sample',
+				'title'       => 'Sample queue depth',
+				'status'      => 'ok',
+				'message'     => 'Queue is healthy.',
+				'details'     => ['pending' => 0],
+				'remediation' => ''
+			]
+		],
+		'attachments' => [
+			[
+				'title'   => 'Sample diagnostics',
+				'content' => "worker=ok\n"
+			]
+		]
+	];
+}
+```
+
+Сваки дескриптор провере додатка валидира се пре укључивања:
+
+- Обавезни кључеви: `id`, `plugin`, `category`, `title`, `status`, `message`, `details` и `remediation`.
+- `plugin` мора одговарати регистрованој краткој ознаци (slug) додатка (`[a-z0-9_]{1,64}`). `id` мора одговарати обрасцу `[a-z0-9_.]{1,128}`, почињати са `<plugin>.` и не сме се сударати са постојећим ID-ом основне провере или провере додатка.
+- `status` мора бити `ok`, `warn`, `fail` или `info`. `ok` се мапира у `pass` у извештајима додатка Doctor; `info` је информативан и не изазива неуспехе у CLI, Nagios, Prometheus нити у заказаним обавештењима.
+- `category` (до 64 бајта) и `title` (до 256 бајтова) морају бити непразне ниске без контролних знакова. `message` (непразна, до 2048 бајтова) и `remediation` (до 2048 бајтова) морају бити ниске.
+- `details` прихвата ниску (до 8192 бајта) или скаларни/угнежђени низ (максимална дубина 4, JSON-кодиран до 16384 бајта; објекти и ресурси се одбијају).
+- Опциони прилози пакета за подршку захтевају непразан `title` (до 128 бајтова, без контролних знакова) и ниску `content` до 65536 бајтова (64 KiB).
+
+Doctor примењује ограничења од 32 провере и 8 прилога по додатку (укупно 64 провере додатака и 32 прилога). Свака кука извршава се унутар сопствене границе `try`/`catch` тако да се изузеци или подаци који нису низ редигују и уписују у Cacti дневник (`DOCTOR` категорија) без утицаја на основне провере или друге додатке. Неисправно обликовани дескриптори се одбијају и бележе док исправни дескриптори из истог додатка настављају да раде. Провере додатака увек су само за читање (`repairable: false`), а вредности ниски и осетљиви асоцијативни кључеви се редигују пре приказивања, извоза или паковања. Валидиране провере додатака појављују се у веб интерфејсу, CLI текстуалном/JSON/Nagios/Prometheus излазу, праћењу заказаног статуса и пакетима за подршку.
+
+## MCP интеграција (`abilities_register`)
+
+Doctor региструје куку `abilities_register` (`doctor_abilities_register` у `doctor_abilities.php`) тако да `plugin_mcp` открива његове дијагностичке способности када су оба додатка омогућена. Doctor региструје категорију `diagnostics` (`Diagnostics`) и две недеструктивне, идемпотентне способности само за читање:
+
+| ID способности | Опциони аргументи | Излаз |
+|---|---|---|
+| `doctor-run-checks` | `category` (ниска, макс. 64 знака), `status` (`pass`, `ok`, `warn`, `fail`, `info`) | `summary` (`total`, `pass`, `warn`, `fail`, `info`) и до 256 редигованих налаза `findings` (`id`, `plugin`, `category`, `title`, `status`, `message`, `remediation`) |
+| `doctor-list-checks` | `category` (ниска, макс. 64 знака), `plugin` (ниска, макс. 64 знака) | До 256 уноса `checks` (`id`, `plugin`, `category`, `title`) који обухватају свих 45 уграђених провера и провере омогућених додатака |
+
+Обе способности су строго само за читање и никада не извршавају поправке. Поред сопствених контрола области и излагања способности у `plugin_mcp` (способности додатака почињу скривене у MCP-у док их администратор не изложи), Doctor захтева да власник токена поседује **Doctor Прегледач** или вишу Doctor област. `doctor-run-checks` ограничава `devices.health` на уређаје дозвољене власнику токена, укључује `logging.recent_errors` само када корисник има Cacti област 18 или 19, изоставља `filesystem.rrd_files` и укључује `filesystem.rrd_stale` ограничену на уређаје само за **Doctor Оператер** или **Doctor Администратор**.
+
 ## Захтеви
 
 | Cacti | PHP | Напомене |
@@ -251,20 +310,22 @@ Boost додаје двоструку вредност свог конфигур
 
 ## Развој
 
-Скуп јединичних тестова користи Pest и ради на PHP 8.2 или новијем:
+Скуп јединичних тестова користи Pest, а статичка анализа користи PHPStan (ниво 6), оба на PHP 8.2 или новијем:
 
 ```console
 composer install
+composer phpstan
 composer test
 ```
 
 Тестови замењују Cacti функције које Doctor позива малим заменама у `tests/CactiStubs.php`, тако да раде без Cacti инсталације.
 
-GitHub Actions покреће четири врсте провера при сваком слању измена и захтеву за повлачење:
+GitHub Actions покреће пет врста провера при сваком слању измена и захтеву за повлачење:
 
-- `php -l` на свакој PHP датотеци под верзијама PHP 5.4, 5.6, 7.0, 7.1, 7.4 и од 8.0 до 8.4.
-- Скуп јединичних тестова на PHP 8.2, 8.3 и 8.4.
+- Тестови уговора паковања издања (`tests/test_release.py`) и изградња архиве (`tools/build_release.py`).
 - `locales/build_gettext.sh --check`, који пада када је шаблон превода застарео, када је каталог непотпун или садржи нејасне (fuzzy) уносе, или када се компајлирани каталог разликује од свог извора.
+- `php -l` на свакој PHP датотеци под верзијама PHP 5.4, 5.6, 7.0, 7.1, 7.4 и од 8.0 до 8.4.
+- `composer phpstan` (PHPStan ниво 6) и `composer test` (Pest скуп јединичних тестова) на PHP 8.2, 8.3 и 8.4.
 - Седам интеграционих задатака који инсталирају Cacti 1.2.20, тренутну грану 1.2.x и `develop` са MySQL и MariaDB базама, и са cmd.php и са Spine poller-ом. Сваки задатак инсталира и омогућава додатак, покреће потпуни CLI извештај и проверава шему извештаја, збирне вредности, очекиване статусе и тачан скуп грешака. Затим квари путању извршне датотеке и временску ознаку poller-а, потврђује да су оба проблема пријављена, враћа их у исправно стање, проверава поправку и њену потврду и извршава онемогућавање, омогућавање, деинсталацију и поновну инсталацију. JSON извештај чува се као артефакт када задатак падне.
 
 ## Допринос

@@ -1,4 +1,4 @@
-<!-- Source: README.md; SHA256: ee03c7ac68aca21c8155c29b5b43a1f206c2f0c379c8b07bb4113919c18aafde -->
+<!-- Source: README.md; SHA256: 490628bb7f70f4cf1a8c43b302246fd2e870725a6649c628762608b4a76db65b -->
 
 <!-- translations:start -->
 [English](../../../README.md) | [简体中文](../zh-CN/README.md) | [हिन्दी](../hi-IN/README.md) | [Español (España)](../es-ES/README.md) | [Español (Latinoamérica)](../es-419/README.md) | [العربية (السعودية)](../ar-SA/README.md) | [Afrikaans](../af-ZA/README.md) | [አማርኛ](../am-ET/README.md) | [العربية (مصر)](../ar-EG/README.md) | [العربية (المغرب)](../ar-MA/README.md) | [বাংলা](../bn-BD/README.md) | [Bosanski](../bs-BA/README.md) | [Deutsch](../de-DE/README.md) | [فارسی](../fa-IR/README.md) | [Filipino](../fil-PH/README.md) | [Français](../fr-FR/README.md) | [Français (Maroc)](../fr-MA/README.md) | [Français (Sénégal)](../fr-SN/README.md) | [Hausa](../ha-NG/README.md) | [עברית](../he-IL/README.md) | [Hrvatski](../hr-HR/README.md) | [Bahasa Indonesia](README.md) | [Igbo](../ig-NG/README.md) | [Italiano](../it-IT/README.md) | [日本語](../ja-JP/README.md) | [한국어](../ko-KR/README.md) | [Malagasy](../mg-MG/README.md) | [मराठी](../mr-IN/README.md) | [Bahasa Melayu](../ms-MY/README.md) | [Nederlands](../nl-NL/README.md) | [Polski](../pl-PL/README.md) | [Português (Brasil)](../pt-BR/README.md) | [Русский](../ru-RU/README.md) | [Kinyarwanda](../rw-RW/README.md) | [Soomaali](../so-SO/README.md) | [Српски](../sr-RS/README.md) | [Svenska](../sv-SE/README.md) | [Kiswahili](../sw-KE/README.md) | [தமிழ்](../ta-IN/README.md) | [తెలుగు](../te-IN/README.md) | [ไทย](../th-TH/README.md) | [Türkçe](../tr-TR/README.md) | [Українська](../uk-UA/README.md) | [اردو](../ur-PK/README.md) | [Tiếng Việt](../vi-VN/README.md) | [isiXhosa](../xh-ZA/README.md) | [Yorùbá](../yo-NG/README.md) | [繁體中文](../zh-TW/README.md) | [isiZulu](../zu-ZA/README.md)
@@ -53,13 +53,15 @@ Masalah Cacti biasanya muncul sebagai gejala: grafik kosong, poller yang berhent
 | Perangkat | Perangkat aktif yang sedang mati atau dalam pemulihan, tiga perangkat yang paling lama mati beserta kesalahan terakhirnya, serta kegagalan apabila sebagian besar perangkat mati secara bersamaan |
 | Poller | Jenis dan interval poller, waktu sejak poller utama terakhir selesai, durasi eksekusi terhadap interval, keluaran poller yang tidak pernah mencapai berkas RRD, poller jarak jauh yang berhenti melapor, Boost yang macet, dan konfigurasi Spine yang mengarah ke basis data yang berbeda |
 
-Setiap pemeriksaan memiliki ID yang stabil, seperti `database.timezone` atau `binary.rrdtool`, sehingga skrip dapat merujuk pada masing-masing hasil secara spesifik.
+Setiap pemeriksaan memiliki ID yang stabil, seperti `database.timezone` atau `binary.rrdtool`, sehingga skrip dapat merujuk pada masing-masing hasil secara spesifik. Plugin yang diaktifkan dapat menyumbangkan pemeriksaan tambahan dan lampiran bundel dukungan melalui hook `doctor_register_checks`, dan Doctor mengekspos kemampuan diagnostik hanya-baca kepada `plugin_mcp` melalui `abilities_register`.
 
 ## Peta kode dan pengujian
 
 | Perilaku | Implementasi | Bukti pengujian dalam repositori ini |
 |---|---|---|
-| Pemeriksaan diagnostik dan ID laporan yang stabil | [doctor_functions.php](../../../doctor_functions.php) | [DoctorFunctionsTest.php](../../../tests/DoctorFunctionsTest.php), [AssertDoctorReport.php](../../../tests/ci/AssertDoctorReport.php) |
+| Pemeriksaan diagnostik dan ID laporan yang stabil | [doctor_functions.php](../../../doctor_functions.php) | [DoctorFunctionsTest.php](../../../tests/DoctorFunctionsTest.php), [DatabaseHealthTest.php](../../../tests/DatabaseHealthTest.php), [AssertDoctorReport.php](../../../tests/ci/AssertDoctorReport.php) |
+| Hook pemeriksaan plugin (`doctor_register_checks`) | [doctor_plugins.php](../../../doctor_plugins.php) | [PluginHooksTest.php](../../../tests/PluginHooksTest.php) |
+| Kemampuan diagnostik MCP (`abilities_register`) | [doctor_abilities.php](../../../doctor_abilities.php) | [AbilitiesTest.php](../../../tests/AbilitiesTest.php) |
 | Akses berbasis peran dan laporan web yang disunting | [doctor_access.php](../../../doctor_access.php), [doctor_web.php](../../../doctor_web.php) | [AccessTest.php](../../../tests/AccessTest.php), [WebAccessTest.php](../../../tests/WebAccessTest.php) |
 | Investigasi gejala terpandu | [doctor_diagnosis.php](../../../doctor_diagnosis.php) | [DiagnosisTest.php](../../../tests/DiagnosisTest.php) |
 | Kesegaran RRD dan penanganan penulisan tertunda | [doctor_rrd.php](../../../doctor_rrd.php) | [RrdFreshnessTest.php](../../../tests/RrdFreshnessTest.php) |
@@ -200,7 +202,7 @@ php plugins/doctor/cli/doctor.php --format=prometheus > /var/lib/node_exporter/t
 php plugins/doctor/cli/doctor.php --bundle=/tmp/cacti-doctor.txt
 ```
 
-Bundel ini berupa satu berkas teks yang berisi versi Doctor, Cacti, PHP, OS, dan basis data, statistik poller dan Boost, laporan lengkap, serta 200 baris terakhir log Cacti. Nilai yang mengikuti nama kata sandi, rahasia, token, komunitas, dan kunci disamarkan. Doctor membuat berkas yang hanya dapat dibaca oleh pemiliknya dan menolak menimpa berkas yang sudah ada. Tinjau kembali berkas ini sebelum memublikasikannya di mana pun.
+Bundel ini berupa satu berkas teks yang berisi versi Doctor, Cacti, PHP, OS, dan basis data, statistik poller dan Boost, laporan lengkap, setiap lampiran bundel dukungan dari plugin di bawah `== Plugin attachments`, serta 200 baris terakhir log Cacti. Nilai yang mengikuti nama kata sandi, rahasia, token, komunitas, dan kunci disamarkan. Doctor membuat berkas yang hanya dapat dibaca oleh pemiliknya dan menolak menimpa berkas yang sudah ada. Tinjau kembali berkas ini sebelum memublikasikannya di mana pun.
 
 ## Kebijakan perbaikan
 
@@ -246,6 +248,63 @@ Peringatan terjadwal untuk status warning diredam selama pengecualian berlaku; k
 
 Pembaruan versi membuat `plugin_doctor_audit` dan `plugin_doctor_acceptance` tanpa mengubah data aplikasi Cacti. Ekspor riwayat apa pun yang Anda perlukan sebelum mencopot pemasangan: pencopotan pemasangan menghapus kedua tabel pengaya beserta pengaturannya. Mengembalikan berkas pengaya ke versi lama tetap membiarkan tabel tersedia untuk penyelidikan, tetapi versi yang lebih lama tidak menghormati pengecualian peringatan.
 
+## Pemeriksaan plugin (`doctor_register_checks`)
+
+Plugin Cacti yang diaktifkan dapat menyumbangkan pemeriksaan diagnostik hanya-baca dan lampiran bundel dukungan opsional dengan mendaftarkan hook `doctor_register_checks`:
+
+```php
+api_plugin_register_hook('sample', 'doctor_register_checks', 'sample_doctor_checks', 'setup.php');
+```
+
+Doctor memanggil plugin yang diaktifkan dan bukan bagian terintegrasi yang terdaftar pada `doctor_register_checks` (melewati `doctor` dan `cacti`), serta menyelesaikan berkas hook secara ketat di dalam direktori milik plugin itu sendiri. Callback menerima `['mode' => 'run' | 'list', 'plugin' => '<slug>']` dan mengembalikan daftar deskriptor pemeriksaan atau sebuah amplop berisi `checks` dan `attachments` opsional:
+
+```php
+function sample_doctor_checks($context) {
+	return [
+		'checks' => [
+			[
+				'id'          => 'sample.queue_depth',
+				'plugin'      => 'sample',
+				'category'    => 'Sample',
+				'title'       => 'Sample queue depth',
+				'status'      => 'ok',
+				'message'     => 'Queue is healthy.',
+				'details'     => ['pending' => 0],
+				'remediation' => ''
+			]
+		],
+		'attachments' => [
+			[
+				'title'   => 'Sample diagnostics',
+				'content' => "worker=ok\n"
+			]
+		]
+	];
+}
+```
+
+Setiap deskriptor pemeriksaan plugin divalidasi sebelum disertakan:
+
+- Kunci wajib: `id`, `plugin`, `category`, `title`, `status`, `message`, `details`, dan `remediation`.
+- `plugin` harus sesuai dengan slug plugin yang terdaftar (`[a-z0-9_]{1,64}`). `id` harus sesuai dengan `[a-z0-9_.]{1,128}`, diawali dengan `<plugin>.`, dan tidak berbenturan dengan ID pemeriksaan inti atau plugin lain yang sudah ada.
+- `status` harus bernilai `ok`, `warn`, `fail`, atau `info`. `ok` dipetakan ke `pass` di laporan Doctor; `info` bersifat informasional dan tidak memicu kegagalan di CLI, Nagios, Prometheus, atau peringatan terjadwal.
+- `category` (maksimal 64 byte) dan `title` (maksimal 256 byte) harus berupa string tidak kosong tanpa karakter kontrol. `message` (tidak kosong, maksimal 2048 byte) dan `remediation` (maksimal 2048 byte) harus berupa string.
+- `details` menerima string (maksimal 8192 byte) atau array skalar/bersarang (kedalaman maksimal 4, hasil enkode JSON maksimal 16384 byte; objek dan resource ditolak).
+- Lampiran bundel dukungan opsional memerlukan `title` tidak kosong (maksimal 128 byte, tanpa karakter kontrol) dan string `content` hingga 65536 byte (64 KiB).
+
+Doctor memberlakukan batas 32 pemeriksaan dan 8 lampiran per plugin (total 64 pemeriksaan plugin dan 32 lampiran). Setiap hook dijalankan di dalam batas `try`/`catch` masing-masing sehingga pengecualian atau payload non-array disamarkan dan dicatat ke log Cacti (fasilitas `DOCTOR`) tanpa memengaruhi pemeriksaan inti maupun plugin lainnya. Deskriptor yang cacat format ditolak dan dicatat ke log sementara deskriptor yang valid dari plugin yang sama tetap dijalankan. Pemeriksaan plugin selalu bersifat hanya-baca (`repairable: false`), dan nilai string serta kunci asosiatif yang sensitif disamarkan sebelum ditampilkan, diekspor, atau dibundel. Pemeriksaan plugin yang tervalidasi tampil di antarmuka web, keluaran CLI teks/JSON/Nagios/Prometheus, pelacakan status terjadwal, dan bundel dukungan.
+
+## Integrasi MCP (`abilities_register`)
+
+Doctor mendaftarkan hook `abilities_register` (`doctor_abilities_register` di `doctor_abilities.php`) agar `plugin_mcp` menemukan kemampuan diagnostiknya ketika kedua plugin diaktifkan. Doctor mendaftarkan kategori `diagnostics` (`Diagnostics`) serta dua kemampuan hanya-baca, non-destruktif, dan idempoten:
+
+| ID Kemampuan | Argumen opsional | Keluaran |
+|---|---|---|
+| `doctor-run-checks` | `category` (string, maks 64 karakter), `status` (`pass`, `ok`, `warn`, `fail`, `info`) | `summary` (`total`, `pass`, `warn`, `fail`, `info`) dan hingga 256 `findings` yang telah disamarkan (`id`, `plugin`, `category`, `title`, `status`, `message`, `remediation`) |
+| `doctor-list-checks` | `category` (string, maks 64 karakter), `plugin` (string, maks 64 karakter) | Hingga 256 `checks` (`id`, `plugin`, `category`, `title`) yang mencakup seluruh 45 pemeriksaan bawaan ditambah pemeriksaan plugin yang diaktifkan |
+
+Kedua kemampuan bersifat hanya-baca secara ketat dan tidak pernah menjalankan perbaikan. Selain kontrol ranah dan paparan kemampuan milik `plugin_mcp` sendiri (kemampuan plugin awalnya tersembunyi di MCP hingga administrator membukanya), Doctor mensyaratkan pemilik token memiliki ranah **Doctor Viewer** atau ranah Doctor yang lebih tinggi. `doctor-run-checks` membatasi `devices.health` pada perangkat yang diizinkan bagi pemilik token, menyertakan `logging.recent_errors` hanya jika pengguna memiliki ranah Cacti 18 atau 19, mengabaikan `filesystem.rrd_files`, serta menyertakan `filesystem.rrd_stale` yang dibatasi per perangkat hanya bagi **Doctor Operator** atau **Doctor Administrator**.
+
 ## Persyaratan
 
 | Cacti | PHP | Catatan |
@@ -263,20 +322,22 @@ Tanggal dukungan dibundel bersama Doctor dari [jadwal dukungan PHP](https://www.
 
 ## Pengembangan
 
-Rangkaian pengujian unit menggunakan Pest dan berjalan pada PHP 8.2 atau lebih baru:
+Rangkaian pengujian unit menggunakan Pest dan analisis statis menggunakan PHPStan (level 6), keduanya pada PHP 8.2 atau lebih baru:
 
 ```console
 composer install
+composer phpstan
 composer test
 ```
 
 Pengujian mengganti fungsi Cacti yang dipanggil Doctor dengan tiruan kecil di `tests/CactiStubs.php`, sehingga dapat berjalan tanpa instalasi Cacti.
 
-GitHub Actions menjalankan empat jenis pemeriksaan pada setiap push dan pull request:
+GitHub Actions menjalankan lima jenis pemeriksaan pada setiap push dan pull request:
 
-- `php -l` pada setiap berkas PHP di bawah PHP 5.4, 5.6, 7.0, 7.1, 7.4, serta 8.0 hingga 8.4.
-- Rangkaian pengujian unit pada PHP 8.2, 8.3, dan 8.4.
+- Pengujian kontrak pengemasan rilis (`tests/test_release.py`) dan pembangunan arsip (`tools/build_release.py`).
 - `locales/build_gettext.sh --check`, yang akan gagal apabila templat terjemahan kedaluwarsa, katalog tidak lengkap atau *fuzzy*, atau katalog terkompilasi berbeda dari sumbernya.
+- `php -l` pada setiap berkas PHP di bawah PHP 5.4, 5.6, 7.0, 7.1, 7.4, serta 8.0 hingga 8.4.
+- `composer phpstan` (PHPStan level 6) dan `composer test` (rangkaian pengujian unit Pest) pada PHP 8.2, 8.3, dan 8.4.
 - Tujuh pekerjaan integrasi yang memasang Cacti 1.2.20, cabang 1.2.x saat ini, dan `develop` terhadap MySQL dan MariaDB, baik dengan cmd.php maupun Spine. Setiap pekerjaan memasang dan mengaktifkan pengaya, menjalankan laporan CLI lengkap, serta memeriksa skema laporan, total ringkasan, status yang diharapkan, dan himpunan kegagalan yang tepat. Setelah itu, pekerjaan tersebut merusak jalur biner dan stempel waktu poller, memastikan keduanya dilaporkan, memulihkannya, menguji perbaikan beserta konfirmasinya, lalu menjalankan penonaktifan, pengaktifan kembali, pencopotan pemasangan, dan pemasangan ulang. Laporan JSON disimpan sebagai artefak ketika suatu pekerjaan gagal.
 
 ## Kontribusi
