@@ -2079,8 +2079,8 @@ function doctor_redact($text) {
 
 /**
  * Apply the six redaction regex passes to a single line or multiline YAML chunk,
- * short-circuiting passes whose required literal tokens are absent and failing
- * closed on any PCRE error.
+ * optionally short-circuiting passes whose required literal tokens are absent,
+ * and failing closed on any PCRE error.
  *
  * @param string $text
  * @param string $keyPresencePattern
@@ -2088,25 +2088,30 @@ function doctor_redact($text) {
  * @param string $quotedPattern
  * @param string $unquotedSepPattern
  * @param string $spaceSepPattern
+ * @param bool $allowPrecheck
  * @return string|null null when any pattern failed
  */
-function doctor_redact_chunk($text, $keyPresencePattern, $yamlPattern, $quotedPattern, $unquotedSepPattern, $spaceSepPattern) {
-	if (stripos($text, 'bearer') !== false || stripos($text, 'basic') !== false) {
+function doctor_redact_chunk($text, $keyPresencePattern, $yamlPattern, $quotedPattern, $unquotedSepPattern, $spaceSepPattern, $allowPrecheck = true) {
+	if (!$allowPrecheck || stripos($text, 'bearer') !== false || stripos($text, 'basic') !== false) {
 		$text = preg_replace('/(\b(?:Bearer|Basic)[ \t]+)(?:\\\\[^\r\n]|[^\s;,"\'\\\\\r\n])+/i', '$1[redacted]', $text);
 		if ($text === null) {
 			return null;
 		}
 	}
 
-	$hasKeyword = preg_match($keyPresencePattern, $text);
-	if ($hasKeyword === false) {
-		return null;
+	if ($allowPrecheck) {
+		$hasKeyword = preg_match($keyPresencePattern, $text);
+		if ($hasKeyword === false) {
+			return null;
+		}
+	} else {
+		$hasKeyword = 1;
 	}
 
 	if ($hasKeyword === 1) {
-		$hasColon = strpos($text, ':') !== false;
-		$hasEqual = strpos($text, '=') !== false;
-		$hasQuote = strpos($text, '"') !== false || strpos($text, "'") !== false;
+		$hasColon = !$allowPrecheck || strpos($text, ':') !== false;
+		$hasEqual = !$allowPrecheck || strpos($text, '=') !== false;
+		$hasQuote = !$allowPrecheck || strpos($text, '"') !== false || strpos($text, "'") !== false;
 
 		if ($hasColon && $hasQuote) {
 			$text = preg_replace_callback($yamlPattern, function ($matches) {
@@ -2139,7 +2144,7 @@ function doctor_redact_chunk($text, $keyPresencePattern, $yamlPattern, $quotedPa
 		}
 	}
 
-	if (strpos($text, '://') !== false) {
+	if (!$allowPrecheck || strpos($text, '://') !== false) {
 		$text = preg_replace('/(\b[a-z][a-z0-9+.\-]*:\/\/[^:\/@?#\s]+:)[^\/\s?#]+(@)/i', '$1[redacted]$2', $text);
 		if ($text === null) {
 			return null;
@@ -2192,8 +2197,13 @@ function doctor_redact_patterns($text) {
 		return '';
 	}
 
-	if (strpos($text, "\n") === false) {
-		return doctor_redact_chunk($text, $keyPresencePattern, $yamlPattern, $quotedPattern, $unquotedSepPattern, $spaceSepPattern);
+	// Under artificially tiny PCRE backtrack limits, run all patterns directly
+	// so PCRE itself evaluates and fails closed rather than short-circuiting.
+	$backtrackLimit = ini_get('pcre.backtrack_limit');
+	$allowPrecheck  = $backtrackLimit === false || (int) $backtrackLimit <= 0 || (int) $backtrackLimit >= 100;
+
+	if (!$allowPrecheck || strpos($text, "\n") === false) {
+		return doctor_redact_chunk($text, $keyPresencePattern, $yamlPattern, $quotedPattern, $unquotedSepPattern, $spaceSepPattern, $allowPrecheck);
 	}
 
 	$lines     = explode("\n", $text);
