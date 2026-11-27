@@ -17,6 +17,11 @@
  * more details.
  */
 
+/**
+ * Return the supported symptom identifiers and their localized labels.
+ *
+ * @return array<string,string>
+ */
 function doctor_symptoms() {
 	return [
 		'graphs_stopped' => __('Graphs stopped updating', 'doctor'),
@@ -26,7 +31,14 @@ function doctor_symptoms() {
 	];
 }
 
-/** Rules explain observations; they cannot establish causality from correlated symptoms. */
+/**
+ * Rules explain observations; they cannot establish causality from correlated symptoms.
+ *
+ * @param string $symptom
+ * @param array<int,array<string,mixed>> $results
+ * @param bool $fresh
+ * @return array<string,mixed>|false
+ */
 function doctor_diagnose($symptom, $results, $fresh = true) {
 	$rules = [
 		'graphs_stopped' => [
@@ -78,6 +90,12 @@ function doctor_diagnose($symptom, $results, $fresh = true) {
 	return $diagnosis;
 }
 
+/**
+ * Format a structured symptom diagnosis into plain text lines.
+ *
+ * @param array<string,mixed> $diagnosis
+ * @return string
+ */
 function doctor_diagnosis_text($diagnosis) {
 	$lines = [__('Possible causes require verification; matching checks do not establish a root cause.', 'doctor')];
 	if ($diagnosis['candidates'] === []) {

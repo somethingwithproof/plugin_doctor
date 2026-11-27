@@ -197,6 +197,9 @@ function db_execute($sql, $log = true, $db_conn = false) {
 	if (!isset($GLOBALS['doctor_test_pdo'])) {
 		return false;
 	}
+	if (strpos($sql, 'CREATE TABLE IF NOT EXISTS plugin_doctor_') === 0) {
+		return true;
+	}
 	return $GLOBALS['doctor_test_pdo']->exec($sql === 'START TRANSACTION' ? 'BEGIN' : $sql) !== false;
 }
 

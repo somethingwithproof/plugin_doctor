@@ -265,3 +265,189 @@ test('array details are recursively redacted and info transitions do not break s
 	expect(doctor_alert_pending()['events'])->toHaveKey('sample.array_secret');
 	expect(doctor_state_changes(['cacti.version' => 'pass'], [$validated], true))->toBe([]);
 });
+
+if (!function_exists('doctor_test_debug_valid_plugin')) {
+	function doctor_test_debug_valid_plugin($context) {
+		return [
+			'sections' => [
+				[
+					'id'          => 'sample.runtime',
+					'plugin'      => 'sample',
+					'label'       => 'Sample Runtime',
+					'description' => 'Active runtime settings for password=inlineleak.',
+					'private'     => false,
+					'fields'      => [
+						'version' => [
+							'label' => 'Plugin version',
+							'value' => '1.2.3',
+							'debug' => '1.2.3-build4'
+						],
+						'api_key' => [
+							'label' => 'API key',
+							'value' => 'secret-api-value',
+							'debug' => 'secret-debug-value'
+						],
+						'auth_note' => [
+							'label' => 'Auth header note',
+							'value' => 'Authorization: Bearer bearerleak123'
+						],
+						'internal_host' => [
+							'label'   => 'Internal endpoint',
+							'value'   => '10.10.10.50:8443',
+							'private' => true
+						],
+						'workers' => [
+							'label' => 'Workers',
+							'value' => 4
+						]
+					]
+				],
+				[
+					'id'      => 'sample.private_section',
+					'plugin'  => 'sample',
+					'label'   => 'Sample Private Details',
+					'private' => true,
+					'fields'  => [
+						'tenant' => [
+							'label' => 'Tenant identifier',
+							'value' => 'acme-internal-01'
+						]
+					]
+				]
+			]
+		];
+	}
+}
+
+if (!function_exists('doctor_test_debug_malformed_plugin')) {
+	function doctor_test_debug_malformed_plugin($context) {
+		return [
+			// Spoofed plugin name
+			[
+				'id'     => 'other.spoof',
+				'plugin' => 'other',
+				'label'  => 'Spoofed',
+				'fields' => []
+			],
+			// Missing plugin prefix in section ID
+			[
+				'id'     => 'core.collision',
+				'plugin' => 'badplug',
+				'label'  => 'Collision',
+				'fields' => []
+			],
+			// Control character in label
+			[
+				'id'     => 'badplug.ctrl',
+				'plugin' => 'badplug',
+				'label'  => "Bad\nLabel",
+				'fields' => []
+			],
+			// Valid section with oversized value and object field that must be dropped
+			[
+				'id'     => 'badplug.ok',
+				'plugin' => 'badplug',
+				'label'  => 'Bounded section',
+				'fields' => [
+					'oversized' => ['label' => 'Too big', 'value' => str_repeat('x', DOCTOR_PLUGIN_MAX_DEBUG_VALUE_BYTES + 1)],
+					'badobj'    => ['label' => 'Object', 'value' => new stdClass()],
+					'good'      => ['label' => 'Good', 'value' => 'ok']
+				]
+			]
+		];
+	}
+}
+
+if (!function_exists('doctor_test_debug_capped_plugin')) {
+	function doctor_test_debug_capped_plugin($context) {
+		$sections = [];
+		for ($i = 0; $i < DOCTOR_PLUGIN_MAX_DEBUG_SECTIONS_PER_PLUGIN + 4; $i++) {
+			$fields = [];
+			for ($f = 0; $f < DOCTOR_PLUGIN_MAX_DEBUG_FIELDS_PER_SECTION + 5; $f++) {
+				$fields['field_' . $f] = ['label' => 'Field ' . $f, 'value' => $f];
+			}
+			$sections[] = [
+				'id'     => 'capped.sec_' . $i,
+				'plugin' => 'capped',
+				'label'  => 'Section ' . $i,
+				'fields' => $fields
+			];
+		}
+		return $sections;
+	}
+}
+
+if (!function_exists('doctor_test_debug_throwing_plugin')) {
+	function doctor_test_debug_throwing_plugin($context) {
+		throw new RuntimeException('debug hook crashed with secret=topsecret999');
+	}
+}
+
+if (!function_exists('doctor_test_debug_disabled_plugin')) {
+	function doctor_test_debug_disabled_plugin($context) {
+		throw new LogicException('disabled or traversal debug hook must never execute');
+	}
+}
+
+test('doctor_register_debug_info collects valid sections, redacts secrets, masks private fields, and renders in support bundles', function () {
+	$GLOBALS['doctor_test_plugin_hooks']['doctor_register_debug_info'] = [
+		['name' => 'sample', 'file' => 'setup.php', 'function' => 'doctor_test_debug_valid_plugin']
+	];
+
+	$sections = doctor_collect_plugin_debug_info();
+	expect($sections)->toHaveCount(2)
+		->and($sections[0]['id'])->toBe('sample.runtime')
+		->and($sections[0]['description'])->not->toContain('inlineleak')
+		->and($sections[0]['fields']['version']['value'])->toBe('1.2.3')
+		->and($sections[0]['fields']['api_key']['value'])->toBe('[redacted]')
+		->and($sections[0]['fields']['api_key']['debug'])->toBe('[redacted]')
+		->and($sections[0]['fields']['auth_note']['value'])->not->toContain('bearerleak123')
+		->and($sections[0]['fields']['auth_note']['value'])->toContain('[redacted]')
+		->and($sections[0]['fields']['workers']['value'])->toBe(4)
+		->and($sections[0]['fields']['internal_host']['private'])->toBeTrue()
+		->and($sections[1]['private'])->toBeTrue();
+
+	$redacted = doctor_redact_debug_info($sections);
+	expect($redacted[0]['fields']['internal_host']['value'])->toBe('[private]')
+		->and($redacted[1]['fields']['tenant']['value'])->toBe('[private]');
+
+	$bundle = doctor_build_bundle([], ['Doctor' => '0.6.1'], ['2026-11-26 - INFO ok'], [], $sections);
+	expect($bundle)->toContain('== Plugin debug info')
+		->and($bundle)->toContain('--- [sample] Sample Runtime (sample.runtime)')
+		->and($bundle)->toContain('Plugin version (version): 1.2.3')
+		->and($bundle)->toContain('API key (api_key): [redacted]')
+		->and($bundle)->toContain('Internal endpoint (internal_host): [private]')
+		->and($bundle)->toContain('Tenant identifier (tenant): [private]')
+		->and($bundle)->not->toContain('secret-api-value')
+		->and($bundle)->not->toContain('bearerleak123')
+		->and($bundle)->not->toContain('10.10.10.50')
+		->and($bundle)->not->toContain('acme-internal-01')
+		->and($bundle)->not->toContain('inlineleak');
+});
+
+test('doctor_register_debug_info isolates faults, rejects traversal/spoofing/disabled plugins, and enforces section and field caps', function () {
+	$GLOBALS['doctor_test_enabled_plugins'] = ['badplug', 'broken', 'nonarray', 'capped'];
+	$GLOBALS['doctor_test_plugin_hooks']['doctor_register_debug_info'] = [
+		['name' => 'doctor', 'file' => 'setup.php', 'function' => 'doctor_test_debug_disabled_plugin'],
+		['name' => 'cacti', 'file' => 'setup.php', 'function' => 'doctor_test_debug_disabled_plugin'],
+		['name' => 'disabled', 'file' => 'setup.php', 'function' => 'doctor_test_debug_disabled_plugin'],
+		['name' => 'badplug', 'file' => '../escape/setup.php', 'function' => 'doctor_test_debug_disabled_plugin'],
+		['name' => 'broken', 'file' => 'setup.php', 'function' => 'doctor_test_debug_throwing_plugin'],
+		['name' => 'nonarray', 'file' => 'setup.php', 'function' => 'doctor_test_hook_non_array_plugin'],
+		['name' => 'badplug', 'file' => 'setup.php', 'function' => 'doctor_test_debug_malformed_plugin'],
+		['name' => 'capped', 'file' => 'setup.php', 'function' => 'doctor_test_debug_capped_plugin']
+	];
+
+	$sections = doctor_collect_plugin_debug_info();
+	expect($sections)->toHaveCount(1 + DOCTOR_PLUGIN_MAX_DEBUG_SECTIONS_PER_PLUGIN)
+		->and($sections[0]['id'])->toBe('badplug.ok')
+		->and(array_keys($sections[0]['fields']))->toBe(['good'])
+		->and($sections[1]['id'])->toBe('capped.sec_0')
+		->and($sections[1]['fields'])->toHaveCount(DOCTOR_PLUGIN_MAX_DEBUG_FIELDS_PER_SECTION);
+
+	$logText = implode("\n", $GLOBALS['doctor_test_log']);
+	expect($logText)->toContain('Doctor plugin debug info hook failed for broken')
+		->and($logText)->not->toContain('topsecret999')
+		->and($logText)->toContain('Doctor plugin debug info hook failed for nonarray')
+		->and($logText)->toContain('Doctor rejected 3 invalid plugin debug info section(s) from badplug');
+});

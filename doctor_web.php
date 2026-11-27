@@ -116,7 +116,15 @@ if ($access === 1) {
 	$fresh = $view['fresh'];
 }
 
-/** Cacti's form helper supplies the CSRF token, including confirmation forms. */
+/**
+ * Cacti's form helper supplies the CSRF token, including confirmation forms.
+ *
+ * @param string $page
+ * @param string $action
+ * @param array<string,string> $values
+ * @param string $label
+ * @return void
+ */
 function doctor_action_form($page, $action, $values, $label) {
 	form_start($page);
 	print "<input type='hidden' name='action' value='" . doctor_html_escape_attr($action) . "'>";

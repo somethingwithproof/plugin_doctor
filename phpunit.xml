@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  SPDX-FileCopyrightText: 2026 Thomas Vincent <thomasvincent@gmail.com>
+  SPDX-License-Identifier: GPL-2.0-or-later
+
+  This file is part of plugin_doctor, a plugin for Cacti.
+  https://github.com/somethingwithproof/plugin_doctor
+-->
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
+         colors="true"
+         displayDetailsOnTestsThatTriggerWarnings="true">
+    <testsuites>
+        <testsuite name="Doctor">
+            <directory>tests</directory>
+        </testsuite>
+    </testsuites>
+    <source>
+        <include>
+            <file>setup.php</file>
+            <file>doctor_abilities.php</file>
+            <file>doctor_access.php</file>
+            <file>doctor_dependencies.php</file>
+            <file>doctor_diagnosis.php</file>
+            <file>doctor_functions.php</file>
+            <file>doctor_plugins.php</file>
+            <file>doctor_rrd.php</file>
+            <file>doctor_scheduling.php</file>
+            <file>doctor_workflows.php</file>
+        </include>
+    </source>
+</phpunit>

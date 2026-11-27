@@ -17,7 +17,12 @@
  * more details.
  */
 
-/** Resolve an explicit user ID's Doctor access level for non-session callers such as MCP. */
+/**
+ * Resolve an explicit user ID's Doctor access level for non-session callers such as MCP.
+ *
+ * @param int $userId
+ * @return int
+ */
 function doctor_user_access_level($userId) {
 	if ((int) $userId <= 0 || !function_exists('is_realm_allowed')) {
 		return 0;
@@ -31,7 +36,11 @@ function doctor_user_access_level($userId) {
 	return 0;
 }
 
-/** Higher levels include lower capabilities; Cacti resolves user and group grants. */
+/**
+ * Higher levels include lower capabilities; Cacti resolves user and group grants.
+ *
+ * @return int
+ */
 function doctor_access_level() {
 	if (empty($_SESSION['sess_user_id']) || !function_exists('is_realm_allowed')) {
 		return 0;
@@ -45,11 +54,23 @@ function doctor_access_level() {
 	return 0;
 }
 
+/**
+ * Determine whether the active session can configure Doctor settings and run repairs.
+ *
+ * @return bool
+ */
 function doctor_can_configure() {
 	return doctor_access_level() === 3 && is_realm_allowed(15);
 }
 
-/** Every state-changing request passes this guard before work or output. */
+/**
+ * Every state-changing request passes this guard before work or output.
+ *
+ * @param string $action
+ * @param string $method
+ * @param bool $csrf
+ * @return int
+ */
 function doctor_action_status($action, $method, $csrf) {
 	$level = doctor_access_level();
 	if (!in_array($action, ['run', 'acknowledge', 'repair', 'accept', 'unaccept'], true)) {
@@ -64,7 +85,11 @@ function doctor_action_status($action, $method, $csrf) {
 	return 200;
 }
 
-/** Device counts and descriptions must use the current user's Cacti ACLs. */
+/**
+ * Device counts and descriptions must use the current user's Cacti ACLs.
+ *
+ * @return array<string,mixed>
+ */
 function doctor_visible_devices() {
 	if (!function_exists('get_allowed_devices')) {
 		return doctor_result('devices.health', 'Devices', 'warn', __('Device availability', 'doctor'), __('Device permissions could not be evaluated.', 'doctor'), '', 'not_assessed');
@@ -85,7 +110,12 @@ function doctor_visible_devices() {
 	return doctor_evaluate_devices($counts, $offenders);
 }
 
-/** Remove fields a web report does not need and redact before caching or rendering. */
+/**
+ * Remove fields a web report does not need and redact before caching or rendering.
+ *
+ * @param array<int,array<string,mixed>> $results
+ * @return array<int,array<string,mixed>>
+ */
 function doctor_web_results($results) {
 	$visible = [];
 	foreach ($results as $result) {
@@ -129,7 +159,11 @@ function doctor_web_results($results) {
 	return doctor_apply_acceptances($visible);
 }
 
-/** Reuse the existing supervised CLI; never accept a command or arguments from a request. */
+/**
+ * Reuse the existing supervised CLI; never accept a command or arguments from a request.
+ *
+ * @return array<string,mixed>
+ */
 function doctor_run_web_checks() {
 	$php = (string) read_config_option('path_php_binary');
 	$refusal = doctor_binary_execution_refusal('path_php_binary', $php, doctor_running_as_root());
@@ -144,7 +178,12 @@ function doctor_run_web_checks() {
 	return ['results' => doctor_web_results($report['checks']), 'time' => time(), 'user' => (int) $_SESSION['sess_user_id']];
 }
 
-/** Viewers read compact scheduled state, never raw diagnostic details or global device totals. */
+/**
+ * Viewers read compact scheduled state, never raw diagnostic details or global device totals.
+ *
+ * @param int $now
+ * @return array{results:array<int,array<string,mixed>>,time:int,fresh:bool}
+ */
 function doctor_viewer_results($now) {
 	$completed = (int) read_config_option('doctor_last_completed', true);
 	$state = doctor_state_decode(read_config_option('doctor_state', true));
@@ -159,12 +198,24 @@ function doctor_viewer_results($now) {
 	return ['results' => $results, 'time' => $completed, 'fresh' => $fresh];
 }
 
-/** Checks whose detail changes every second supply stable evidence instead. */
+/**
+ * Checks whose detail changes every second supply stable evidence instead.
+ *
+ * @param array<string,mixed> $result
+ * @return string
+ */
 function doctor_finding_fingerprint($result) {
 	return hash('sha256', json_encode([$result['id'], $result['status'], isset($result['evidence']) ? $result['evidence'] : $result['detail']]));
 }
 
-/** Acknowledgments are personal, expire when evidence changes, and never alter health or alerts. */
+/**
+ * Acknowledgments are personal, expire when evidence changes, and never alter health or alerts.
+ *
+ * @param array<int,array<string,mixed>> $results
+ * @param string $id
+ * @param string $fingerprint
+ * @return bool
+ */
 function doctor_acknowledge($results, $id, $fingerprint) {
 	foreach ($results as $result) {
 		if ($result['id'] === $id && in_array($result['status'], ['warn', 'fail'], true) && doctor_finding_fingerprint($result) === $fingerprint) {

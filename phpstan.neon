@@ -15,6 +15,7 @@ parameters:
 		- doctor_rrd.php
 		- doctor_diagnosis.php
 		- doctor_plugins.php
+		- doctor_dependencies.php
 		- doctor_abilities.php
 		- doctor_web.php
 		- cli/doctor.php
@@ -39,25 +40,3 @@ parameters:
 		-
 			message: '#^Parameter \#2 \$callback of function array_filter expects#'
 			path: doctor_functions.php
-		-
-			identifier: missingType.parameter
-			paths:
-				- setup.php
-				- doctor_functions.php
-				- doctor_scheduling.php
-				- doctor_access.php
-				- doctor_workflows.php
-				- doctor_rrd.php
-				- doctor_diagnosis.php
-				- doctor_web.php
-		-
-			identifier: missingType.return
-			paths:
-				- setup.php
-				- doctor_functions.php
-				- doctor_scheduling.php
-				- doctor_access.php
-				- doctor_workflows.php
-				- doctor_rrd.php
-				- doctor_diagnosis.php
-				- doctor_web.php

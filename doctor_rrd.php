@@ -21,6 +21,10 @@
  * ORDER BY fragment for a bounded sample that rotates hourly. An affine hash
  * modulo a prime spreads IDs evenly, so successive runs cover different
  * sources instead of always the oldest ones. Portable integer arithmetic only.
+ *
+ * @param string $column
+ * @param int $now
+ * @return string
  */
 function doctor_sample_order($column, $now) {
 	$prime = 4294967311;
@@ -28,7 +32,13 @@ function doctor_sample_order($column, $now) {
 	return '(' . $column . ' * 2654435761 + ' . $salt . ') % ' . $prime . ', ' . $column;
 }
 
-/** Inspect a bounded sample without flushing Boost or contacting an RRD daemon. */
+/**
+ * Inspect a bounded sample without flushing Boost or contacting an RRD daemon.
+ *
+ * @param array<int,int>|null $allowedDevices
+ * @param int|null $now
+ * @return array<string,mixed>
+ */
 function doctor_check_rrd_stale($allowedDevices = null, $now = null) {
 	$now = $now === null ? time() : $now;
 	$cap = 500;
@@ -78,7 +88,17 @@ function doctor_check_rrd_stale($allowedDevices = null, $now = null) {
 	return doctor_evaluate_rrd_stale($sources, $now, doctor_poller_interval(), $intervals, max($deferred, $boost ? (int) $boostMinutes * 120 : 0), $limited);
 }
 
-/** Modification age is evidence of stale disk writes, not proof of a collection failure. */
+/**
+ * Modification age is evidence of stale disk writes, not proof of a collection failure.
+ *
+ * @param array<int,array<string,mixed>> $sources
+ * @param int $now
+ * @param int $pollInterval
+ * @param int $intervals
+ * @param int $deferred
+ * @param bool $limited
+ * @return array<string,mixed>
+ */
 function doctor_evaluate_rrd_stale($sources, $now, $pollInterval, $intervals, $deferred, $limited) {
 	$stale = [];
 	$unknown = 0;
