@@ -320,9 +320,11 @@ function doctor_casc_describe_schema() {
 /**
  * Export declarative Doctor configuration settings without runtime state.
  *
+ * @param array<string,mixed> $options
  * @return array{schemaVersion:string,config:array<string,string>}
  */
-function doctor_casc_export() {
+function doctor_casc_export($options = []) {
+	unset($options);
 	$schema = doctor_casc_describe_schema();
 	$config = [];
 
@@ -348,16 +350,16 @@ function doctor_casc_export() {
  * threshold values.
  *
  * @param mixed $payload
- * @return array{valid:bool,errors:array<int,string>}
+ * @return array<int,string>
  */
 function doctor_casc_validate($payload) {
 	if (!is_array($payload)) {
-		return ['valid' => false, 'errors' => ['Payload must be an array.']];
+		return ['Payload must be an array.'];
 	}
 
 	$values = array_key_exists('config', $payload) ? $payload['config'] : $payload;
 	if (!is_array($values)) {
-		return ['valid' => false, 'errors' => ['Config section must be an array.']];
+		return ['Config section must be an array.'];
 	}
 
 	$schema    = doctor_casc_describe_schema();
@@ -437,10 +439,7 @@ function doctor_casc_validate($payload) {
 		$errors[] = 'doctor_clock_warn_seconds must be lower than doctor_clock_fail_seconds.';
 	}
 
-	return [
-		'valid'  => $errors === [],
-		'errors' => $errors
-	];
+	return $errors;
 }
 
 /**
@@ -448,18 +447,31 @@ function doctor_casc_validate($payload) {
  * the current settings.
  *
  * @param mixed $desired
- * @return array{valid:bool,errors:array<int,string>,changes:array<int,array{key:string,from:string,to:string}>}
+ * @param array<string,mixed> $options
+ * @return array<int,array<string,mixed>>
  */
-function doctor_casc_plan($desired) {
-	$validation = doctor_casc_validate($desired);
-	if (!$validation['valid']) {
-		return ['valid' => false, 'errors' => $validation['errors'], 'changes' => []];
+function doctor_casc_plan($desired, $options = []) {
+	unset($options);
+	$errors = doctor_casc_validate($desired);
+	if ($errors !== []) {
+		$items = [];
+		foreach ($errors as $error) {
+			$items[] = [
+				'operation' => 'error',
+				'key'       => 'doctor',
+				'message'   => $error
+			];
+		}
+
+		return $items;
 	}
 
-	$values  = is_array($desired) && array_key_exists('config', $desired) && is_array($desired['config']) ? $desired['config'] : (is_array($desired) ? $desired : []);
-	$current = doctor_casc_export()['config'];
-	$schema  = doctor_casc_describe_schema()['config'];
-	$changes = [];
+	$values   = is_array($desired) && array_key_exists('config', $desired) && is_array($desired['config']) ? $desired['config'] : (is_array($desired) ? $desired : []);
+	$exported = doctor_casc_export();
+	$current  = $exported['config'];
+	$described = doctor_casc_describe_schema();
+	$schema   = $described['config'];
+	$changes  = [];
 
 	foreach ($values as $key => $value) {
 		if (!isset($schema[$key])) {
@@ -473,40 +485,45 @@ function doctor_casc_plan($desired) {
 		$existing = isset($current[$key]) ? $current[$key] : (string) $schema[$key]['default'];
 		if ($existing !== $target) {
 			$changes[] = [
-				'key'  => $key,
-				'from' => $existing,
-				'to'   => $target
+				'operation' => 'update',
+				'key'       => $key,
+				'from'      => $existing,
+				'to'        => $target,
+				'message'   => 'Update ' . $key . ' from "' . $existing . '" to "' . $target . '"'
 			];
 		}
 	}
 
-	return [
-		'valid'   => true,
-		'errors'  => [],
-		'changes' => $changes
-	];
+	return $changes;
 }
 
 /**
  * Validate and apply declarative Doctor configuration changes.
  *
  * @param mixed $desired
- * @return array{applied:bool,errors:array<int,string>,changes:array<int,array{key:string,from:string,to:string}>}
+ * @param string $planHash
+ * @param array<string,mixed> $options
+ * @return array{ok:bool,applied:bool,errors:array<int,string>,changes:array<int,array<string,mixed>>}
  */
-function doctor_casc_apply($desired) {
-	$plan = doctor_casc_plan($desired);
-	if (!$plan['valid']) {
-		return ['applied' => false, 'errors' => $plan['errors'], 'changes' => []];
+function doctor_casc_apply($desired, $planHash = '', $options = []) {
+	unset($planHash);
+	$errors = doctor_casc_validate($desired);
+	if ($errors !== []) {
+		return ['ok' => false, 'applied' => false, 'errors' => $errors, 'changes' => []];
 	}
 
-	foreach ($plan['changes'] as $change) {
-		set_config_option($change['key'], $change['to']);
+	$changes = doctor_casc_plan($desired, $options);
+	foreach ($changes as $change) {
+		if (isset($change['operation'], $change['key'], $change['to']) && $change['operation'] === 'update') {
+			set_config_option((string) $change['key'], (string) $change['to']);
+		}
 	}
 
 	return [
+		'ok'      => true,
 		'applied' => true,
 		'errors'  => [],
-		'changes' => $plan['changes']
+		'changes' => $changes
 	];
 }
 
@@ -543,6 +560,53 @@ function doctor_casc_register_providers($registrar = null) {
 }
 
 /**
+ * List read-only Doctor check descriptors for the doctorChecks API collection.
+ *
+ * @param array<string,mixed> $context
+ * @return array<int,array{id:string,name:string,plugin:string,category:string,title:string,status:string}>
+ */
+function doctor_api_list_checks($context = []) {
+	unset($context);
+	require_once __DIR__ . '/doctor_abilities.php';
+
+	$items = [];
+	foreach (doctor_core_check_catalog() as $entry) {
+		$items[] = [
+			'id'       => $entry['id'],
+			'name'     => 'doctorChecks/' . $entry['id'],
+			'plugin'   => $entry['plugin'],
+			'category' => $entry['category'],
+			'title'    => $entry['title'],
+			'status'   => 'info'
+		];
+	}
+
+	return $items;
+}
+
+/**
+ * Retrieve a single read-only Doctor check descriptor by check identifier.
+ *
+ * @param string $id
+ * @param array<string,mixed> $context
+ * @return array{id:string,name:string,plugin:string,category:string,title:string,status:string}|null
+ */
+function doctor_api_get_check($id, $context = []) {
+	$target = is_string($id) ? trim($id) : '';
+	if ($target === '') {
+		return null;
+	}
+
+	foreach (doctor_api_list_checks($context) as $item) {
+		if ($item['id'] === $target) {
+			return $item;
+		}
+	}
+
+	return null;
+}
+
+/**
  * Append read-only Doctor API resource descriptors on the
  * api_register_resources hook without importing any sibling plugin.
  *
@@ -555,30 +619,18 @@ function doctor_api_register_resources($resources = []) {
 	}
 
 	$resources[] = [
-		'path'        => 'doctor/checks',
-		'plugin'      => 'doctor',
-		'methods'     => ['GET'],
-		'readOnly'    => true,
-		'schema'      => 'schema/doctor.schema.yaml',
-		'description' => 'List registered core and plugin Doctor checks.'
-	];
-
-	$resources[] = [
-		'path'        => 'doctor/report',
-		'plugin'      => 'doctor',
-		'methods'     => ['GET'],
-		'readOnly'    => true,
-		'schema'      => 'schema/doctor.schema.yaml',
-		'description' => 'Run read-only Doctor diagnostic checks and return a structured report.'
-	];
-
-	$resources[] = [
-		'path'        => 'doctor/debug-info',
-		'plugin'      => 'doctor',
-		'methods'     => ['GET'],
-		'readOnly'    => true,
-		'schema'      => 'schema/doctor.schema.yaml',
-		'description' => 'Return redacted plugin debug information sections.'
+		'plugin'        => 'doctor',
+		'collection'    => 'doctorChecks',
+		'singleton'     => 'doctorCheck',
+		'description'   => 'List registered core Doctor diagnostic checks.',
+		'realm_read'    => 'doctor_view.php',
+		'schema'        => 'schema/doctor.schema.yaml',
+		'filter_fields' => ['id', 'plugin', 'category', 'title', 'status'],
+		'order_fields'  => ['id', 'plugin', 'category', 'title', 'status'],
+		'handlers'      => [
+			'list' => 'doctor_api_list_checks',
+			'get'  => 'doctor_api_get_check'
+		]
 	];
 
 	return $resources;

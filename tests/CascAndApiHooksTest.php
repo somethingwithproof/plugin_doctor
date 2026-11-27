@@ -111,17 +111,17 @@ test('CaSC export, validate, plan, and apply manage config settings while reject
 		->and($exported['config'])->not->toHaveKey('doctor_hooks_version');
 
 	// Reject non-arrays, unknown keys, state keys, bad types, and inconsistent thresholds.
-	expect(doctor_casc_validate('invalid')['valid'])->toBeFalse()
-		->and(doctor_casc_validate(['config' => 'not-array'])['valid'])->toBeFalse()
-		->and(doctor_casc_validate(['doctor_state' => 'x'])['valid'])->toBeFalse()
-		->and(doctor_casc_validate(['unknown_key' => '1'])['valid'])->toBeFalse()
-		->and(doctor_casc_validate(['doctor_schedule_interval' => '999'])['valid'])->toBeFalse()
-		->and(doctor_casc_validate(['doctor_schedule_enabled' => 'maybe'])['valid'])->toBeFalse()
-		->and(doctor_casc_validate(['doctor_alert_emails' => "bad\nheader"])['valid'])->toBeFalse()
-		->and(doctor_casc_validate(['doctor_poller_warn_percent' => 150])['valid'])->toBeFalse()
-		->and(doctor_casc_validate(['doctor_poller_warn_percent' => 'abc'])['valid'])->toBeFalse()
-		->and(doctor_casc_validate(['doctor_disk_warn_percent' => 5, 'doctor_disk_fail_percent' => 10])['valid'])->toBeFalse()
-		->and(doctor_casc_validate(['doctor_clock_warn_seconds' => 60, 'doctor_clock_fail_seconds' => 30])['valid'])->toBeFalse();
+	expect(doctor_casc_validate('invalid'))->not->toBe([])
+		->and(doctor_casc_validate(['config' => 'not-array']))->not->toBe([])
+		->and(doctor_casc_validate(['doctor_state' => 'x']))->not->toBe([])
+		->and(doctor_casc_validate(['unknown_key' => '1']))->not->toBe([])
+		->and(doctor_casc_validate(['doctor_schedule_interval' => '999']))->not->toBe([])
+		->and(doctor_casc_validate(['doctor_schedule_enabled' => 'maybe']))->not->toBe([])
+		->and(doctor_casc_validate(['doctor_alert_emails' => "bad\nheader"]))->not->toBe([])
+		->and(doctor_casc_validate(['doctor_poller_warn_percent' => 150]))->not->toBe([])
+		->and(doctor_casc_validate(['doctor_poller_warn_percent' => 'abc']))->not->toBe([])
+		->and(doctor_casc_validate(['doctor_disk_warn_percent' => 5, 'doctor_disk_fail_percent' => 10]))->not->toBe([])
+		->and(doctor_casc_validate(['doctor_clock_warn_seconds' => 60, 'doctor_clock_fail_seconds' => 30]))->not->toBe([]);
 
 	$desired = [
 		'config' => [
@@ -137,14 +137,21 @@ test('CaSC export, validate, plan, and apply manage config settings while reject
 		]
 	];
 
-	expect(doctor_casc_validate($desired)['valid'])->toBeTrue();
+	expect(doctor_casc_validate($desired))->toBe([]);
 
 	$plan = doctor_casc_plan($desired);
-	expect($plan['valid'])->toBeTrue()
-		->and($plan['changes'])->not->toBeEmpty();
+	expect($plan)->not->toBeEmpty()
+		->and($plan[0]['operation'])->toBe('update')
+		->and($plan[0])->toHaveKeys(['operation', 'key', 'from', 'to', 'message']);
 
-	$applied = doctor_casc_apply($desired);
-	expect($applied['applied'])->toBeTrue()
+	$badPlan = doctor_casc_plan(['doctor_state' => 'injected']);
+	expect($badPlan)->toHaveCount(1)
+		->and($badPlan[0]['operation'])->toBe('error')
+		->and($badPlan[0]['key'])->toBe('doctor');
+
+	$applied = doctor_casc_apply($desired, 'planhash', []);
+	expect($applied['ok'])->toBeTrue()
+		->and($applied['applied'])->toBeTrue()
 		->and($GLOBALS['doctor_test_settings']['doctor_schedule_enabled'])->toBe('')
 		->and($GLOBALS['doctor_test_settings']['doctor_schedule_interval'])->toBe('15')
 		->and($GLOBALS['doctor_test_settings']['doctor_alert_emails'])->toBe('ops@example.test')
@@ -152,30 +159,44 @@ test('CaSC export, validate, plan, and apply manage config settings while reject
 		->and($GLOBALS['doctor_test_settings']['doctor_poller_warn_percent'])->toBe('75');
 
 	// Re-planning after apply yields zero changes.
-	expect(doctor_casc_plan($desired)['changes'])->toBe([]);
+	expect(doctor_casc_plan($desired))->toBe([]);
 
 	// Applying invalid payload fails closed without mutating settings.
 	$failedApply = doctor_casc_apply(['doctor_state' => 'injected']);
-	expect($failedApply['applied'])->toBeFalse()
+	expect($failedApply['ok'])->toBeFalse()
+		->and($failedApply['applied'])->toBeFalse()
+		->and($failedApply['errors'])->not->toBe([])
 		->and($GLOBALS['doctor_test_settings']['doctor_state'])->toBe('database.connection=pass');
 });
 
-test('doctor_api_register_resources appends read-only descriptors referencing schema/doctor.schema.yaml', function () {
-	$existing  = [['path' => 'other/resource']];
+test('doctor_api_register_resources appends canonical read-only descriptors referencing schema/doctor.schema.yaml', function () {
+	$existing  = [['plugin' => 'other', 'collection' => 'otherItems']];
 	$resources = doctor_api_register_resources($existing);
 
-	expect($resources)->toHaveCount(4)
-		->and($resources[0]['path'])->toBe('other/resource');
+	expect($resources)->toHaveCount(2)
+		->and($resources[0]['collection'])->toBe('otherItems');
 
-	$doctorResources = array_slice($resources, 1);
-	expect(array_column($doctorResources, 'path'))->toBe(['doctor/checks', 'doctor/report', 'doctor/debug-info']);
+	$descriptor = $resources[1];
+	expect($descriptor['plugin'])->toBe('doctor')
+		->and($descriptor['collection'])->toBe('doctorChecks')
+		->and($descriptor['collection'])->toMatch('/^[a-z][A-Za-z0-9]{2,63}$/')
+		->and($descriptor['singleton'])->toBe('doctorCheck')
+		->and($descriptor['realm_read'])->toBe('doctor_view.php')
+		->and($descriptor['schema'])->toBe('schema/doctor.schema.yaml')
+		->and(is_callable($descriptor['handlers']['list']))->toBeTrue()
+		->and(is_callable($descriptor['handlers']['get']))->toBeTrue();
 
-	foreach ($doctorResources as $resource) {
-		expect($resource['plugin'])->toBe('doctor')
-			->and($resource['methods'])->toBe(['GET'])
-			->and($resource['readOnly'])->toBeTrue()
-			->and($resource['schema'])->toBe('schema/doctor.schema.yaml');
-	}
+	$listed = call_user_func($descriptor['handlers']['list'], ['user_id' => 7]);
+	expect($listed)->not->toBeEmpty()
+		->and($listed[0]['id'])->toBe('doctor.privileges')
+		->and($listed[0]['name'])->toBe('doctorChecks/doctor.privileges');
+
+	$found = call_user_func($descriptor['handlers']['get'], 'doctor.privileges', ['user_id' => 7]);
+	expect($found)->not->toBeNull()
+		->and($found['id'])->toBe('doctor.privileges');
+
+	expect(call_user_func($descriptor['handlers']['get'], 'nonexistent.check', ['user_id' => 7]))->toBeNull()
+		->and(call_user_func($descriptor['handlers']['get'], '', ['user_id' => 7]))->toBeNull();
 
 	expect(is_file(dirname(__DIR__) . '/schema/doctor.schema.yaml'))->toBeTrue();
 });
