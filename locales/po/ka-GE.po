@@ -1,0 +1,1542 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
+# SPDX-FileCopyrightText: 2026 Thomas Vincent <thomasvincent@gmail.com>
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: doctor 0.6.1\n"
+"Report-Msgid-Bugs-To: https://github.com/somethingwithproof/plugin_doctor/issues\n"
+"PO-Revision-Date: 2026-11-28 00:00+0000\n"
+"Last-Translator: Thomas Vincent <thomasvincent@gmail.com>\n"
+"Language-Team: Georgian <https://translate.cacti.net/projects/cacti/core/ka/>\n"
+"Language: ka-GE\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+
+#: cli/doctor.php
+#, php-format
+msgid "Available repairs: %s"
+msgstr "ხელმისაწვდომი შეკეთებები: %s"
+
+#: cli/doctor.php
+#, php-format
+msgid "Unknown format %s. Use text, json, nagios, or prometheus."
+msgstr "უცნობი ფორმატი %s. გამოიყენეთ text, json, nagios ან prometheus."
+
+#: cli/doctor.php
+#, php-format
+msgid "Redaction could not complete, so %s was not written."
+msgstr "სენსიტიური მონაცემების დაფარვა ვერ დასრულდა, ამიტომ %s არ ჩაიწერა."
+
+#: cli/doctor.php
+#, php-format
+msgid "Wrote %s. Review it before sharing; values after password, secret, token, and community names are masked."
+msgstr "ჩაიწერა %s. გაზიარებამდე გადახედეთ მას; პაროლის, საიდუმლოს, ტოკენისა და community სახელების შემდეგი მნიშვნელობები შენიღბულია."
+
+#: cli/doctor.php doctor_functions.php
+msgid "Unknown repair"
+msgstr "უცნობი შეკეთება"
+
+#: cli/doctor.php
+msgid "Refusing to repair without --yes."
+msgstr "შეკეთებაზე უარი ითქვა --yes პარამეტრის გარეშე."
+
+#: cli/doctor.php
+msgid "Select a supported symptom and text or JSON output."
+msgstr "აირჩიეთ მხარდაჭერილი სიმპტომი და ტექსტური ან JSON გამომავალი."
+
+#: cli/doctor.php doctor_web.php
+msgid "Accepted warning"
+msgstr "მიღებული გაფრთხილება"
+
+#: doctor_access.php doctor_functions.php
+msgid "Device availability"
+msgstr "მოწყობილობების ხელმისაწვდომობა"
+
+#: doctor_access.php
+msgid "Device permissions could not be evaluated."
+msgstr "მოწყობილობის უფლებების შეფასება ვერ მოხერხდა."
+
+#: doctor_access.php
+msgid "The configured PHP CLI cannot run Doctor checks."
+msgstr "კონფიგურირებულ PHP CLI-ს არ შეუძლია Doctor-ის შემოწმებების გაშვება."
+
+#: doctor_access.php
+msgid "Doctor checks failed or exceeded their time limit. Review the Doctor log."
+msgstr "Doctor-ის შემოწმებები ვერ შესრულდა ან დროის ლიმიტს გადააჭარბა. შეამოწმეთ Doctor-ის ჟურნალი."
+
+#: doctor_diagnosis.php
+msgid "Graphs stopped updating"
+msgstr "გრაფიკების განახლება შეჩერდა"
+
+#: doctor_diagnosis.php
+msgid "Polling is slow"
+msgstr "გამოკითხვა ნელა მიმდინარეობს"
+
+#: doctor_diagnosis.php
+msgid "Devices are missing or unavailable"
+msgstr "მოწყობილობები აკლია ან მიუწვდომელია"
+
+#: doctor_diagnosis.php
+msgid "Doctor alerts are missing"
+msgstr "Doctor-ის შეტყობინებები არ მოდის"
+
+#: doctor_diagnosis.php
+msgid "Check the poller scheduler and the affected poller log, then verify a new completed cycle."
+msgstr "შეამოწმეთ პოლერის დამგეგმავი და შესაბამისი პოლერის ჟურნალი, შემდეგ კი დაადასტურეთ ახალი დასრულებული ციკლი."
+
+#: doctor_diagnosis.php
+msgid "Collection may have stopped."
+msgstr "მონაცემთა შეგროვება შესაძლოა შეჩერდა."
+
+#: doctor_diagnosis.php
+msgid "Collected values may not be reaching disk."
+msgstr "შეგროვებული მნიშვნელობები შესაძლოა დისკამდე ვერ აღწევს."
+
+#: doctor_diagnosis.php
+msgid "Inspect the output queue and Boost flush history; verify that the queue drains and RRD timestamps advance."
+msgstr "შეამოწმეთ გამომავალი რიგი და Boost-ის ჩაწერის ისტორია; დაადასტურეთ, რომ რიგი იცლება და RRD დროის ნიშნულები წინ მიიწევს."
+
+#: doctor_diagnosis.php
+msgid "Check storage capacity, runtime-directory permissions and the last RRD update; account for deferred writes."
+msgstr "შეამოწმეთ მეხსიერების ტევადობა, სამუშაო დირექტორიების უფლებები და ბოლო RRD განახლება; გაითვალისწინეთ გადავადებული ჩაწერები."
+
+#: doctor_diagnosis.php
+msgid "RRD storage needs investigation."
+msgstr "RRD საცავს გამოკვლევა სჭირდება."
+
+#: doctor_diagnosis.php
+msgid "Collection work may be exceeding its time budget."
+msgstr "შეგროვების სამუშაო შესაძლოა თავის დროის ბიუჯეტს აჭარბებს."
+
+#: doctor_diagnosis.php
+msgid "Compare cycle duration with the polling interval and inspect device timeouts before increasing concurrency."
+msgstr "პარალელურობის გაზრდამდე შეადარეთ ციკლის ხანგრძლივობა გამოკითხვის ინტერვალს და შეამოწმეთ მოწყობილობების მოლოდინის დროის ამოწურვები."
+
+#: doctor_diagnosis.php
+msgid "Compare database counters during a slow cycle and inspect query plans before changing server limits."
+msgstr "სერვერის ლიმიტების შეცვლამდე შეადარეთ მონაცემთა ბაზის მთვლელები ნელი ციკლის დროს და შეამოწმეთ მოთხოვნის გეგმები."
+
+#: doctor_diagnosis.php
+msgid "Database pressure may be contributing to slow polling."
+msgstr "მონაცემთა ბაზის დატვირთვა შესაძლოა ნელ გამოკითხვას უწყობს ხელს."
+
+#: doctor_diagnosis.php
+msgid "Collection prerequisites or reachability may be failing."
+msgstr "შეგროვების წინაპირობები ან ქსელური ხელმისაწვდომობა შესაძლოა ირღვევა."
+
+#: doctor_diagnosis.php
+msgid "Verify the affected device permissions, reachability, credentials and assigned poller using Cacti diagnostics."
+msgstr "Cacti-ის დიაგნოსტიკის გამოყენებით შეამოწმეთ დაზიანებული მოწყობილობის უფლებები, ხელმისაწვდომობა, მონაცემები და მინიჭებული პოლერი."
+
+#: doctor_diagnosis.php
+msgid "Scheduled checks or mail delivery need attention."
+msgstr "დაგეგმილ შემოწმებებს ან ფოსტის მიწოდებას ყურადღება სჭირდება."
+
+#: doctor_diagnosis.php
+msgid "Verify scheduling and recipient settings, inspect retained delivery attempts, and send a Cacti test email."
+msgstr "შეამოწმეთ დაგეგმვისა და მიმღების პარამეტრები, დაათვალიერეთ შენახული მიწოდების მცდელობები და გაგზავნეთ Cacti-ის სატესტო წერილი."
+
+#: doctor_diagnosis.php
+msgid "Possible causes require verification; matching checks do not establish a root cause."
+msgstr "შესაძლო მიზეზები გადამოწმებას საჭიროებს; დამთხვეული შემოწმებები არ ადგენს პირველმიზეზს."
+
+#: doctor_diagnosis.php
+msgid "No cause is established by the available observations. Run fresh diagnostics and investigate the symptom directly."
+msgstr "ხელმისაწვდომი დაკვირვებებით მიზეზი არ დგინდება. გაუშვით ახალი დიაგნოსტიკა და უშუალოდ გამოიკვლიეთ სიმპტომი."
+
+#: doctor_functions.php
+msgid "At least 24 hours since server startup and FLUSH STATUS. Counters are cumulative and may have different reset histories; confirm trends during a representative workload before tuning."
+msgstr "სერვერის გაშვებიდან და FLUSH STATUS-დან სულ მცირე 24 საათი გავიდა. მთვლელები კუმულაციურია და შესაძლოა განსხვავებული განულების ისტორია ჰქონდეთ; გამართვამდე დაადასტურეთ ტენდენციები ტიპური დატვირთვის პირობებში."
+
+#: doctor_functions.php
+msgid "Cumulative tuning advice is deferred: obtain valid uptime and at least 24 hours since startup and FLUSH STATUS. Missing metrics or an inconsistent sample cannot establish database health."
+msgstr "კუმულაციური გამართვის რჩევები გადადებულია: საჭიროა ვალიდური მუშაობის დრო და სულ მცირე 24 საათი გაშვებიდან და FLUSH STATUS-დან. გამოტოვებული მეტრიკები ან არათანმიმდევრული შერჩევა მონაცემთა ბაზის მდგომარეობას ვერ ადგენს."
+
+#: doctor_functions.php
+msgid "Database observation window"
+msgstr "მონაცემთა ბაზის დაკვირვების ფანჯარა"
+
+#: doctor_functions.php
+msgid "Connection metrics are unavailable or invalid. Check access to SHOW GLOBAL STATUS and SHOW GLOBAL VARIABLES; do not treat missing metrics as an idle server."
+msgstr "კავშირის მეტრიკები მიუწვდომელია ან არავალიდურია. შეამოწმეთ წვდომა SHOW GLOBAL STATUS და SHOW GLOBAL VARIABLES ბრძანებებზე; არ ჩათვალოთ გამოტოვებული მეტრიკები უმოქმედო სერვერად."
+
+#: doctor_functions.php
+#, php-format
+msgid "Current connections: %.0f / %.0f (%s); recorded peak: %.0f (%s of the current limit)."
+msgstr "მიმდინარე კავშირები: %.0f / %.0f (%s); დაფიქსირებული პიკი: %.0f (მიმდინარე ლიმიტის %s)."
+
+#: doctor_functions.php
+msgid "Review connection pooling and poller concurrency. Check database-host memory headroom before raising max_connections; the historical peak may reflect an older limit."
+msgstr "გადახედეთ კავშირების პულსა და პოლერის პარალელურობას. max_connections-ის გაზრდამდე შეამოწმეთ მონაცემთა ბაზის ჰოსტის მეხსიერების მარაგი; ისტორიული პიკი შესაძლოა ძველ ლიმიტს ასახავდეს."
+
+#: doctor_functions.php
+msgid "Connection capacity"
+msgstr "კავშირების ტევადობა"
+
+#: doctor_functions.php
+msgid "InnoDB buffer pool reads"
+msgstr "InnoDB ბუფერის პულის წაკითხვები"
+
+#: doctor_functions.php
+msgid "Review query plans and the working set. Consider innodb_buffer_pool_size only after measuring memory available on the database host; a cumulative miss ratio alone does not prove memory pressure."
+msgstr "გადახედეთ მოთხოვნის გეგმებსა და სამუშაო ნაკრებს. innodb_buffer_pool_size განიხილეთ მხოლოდ მონაცემთა ბაზის ჰოსტზე ხელმისაწვდომი მეხსიერების გაზომვის შემდეგ; მხოლოდ კუმულაციური აცდენის კოეფიციენტი მეხსიერების დეფიციტს არ ამტკიცებს."
+
+#: doctor_functions.php
+msgid "On-disk temporary tables"
+msgstr "დისკზე განთავსებული დროებითი ცხრილები"
+
+#: doctor_functions.php
+msgid "Review query plans, sorting, grouping, and temporary-table data types before changing memory limits. Some tables must use disk; memory limits and accounting differ between MySQL and MariaDB versions."
+msgstr "მეხსიერების ლიმიტების შეცვლამდე გადახედეთ მოთხოვნის გეგმებს, დახარისხებას, დაჯგუფებასა და დროებითი ცხრილების მონაცემთა ტიპებს. ზოგიერთ ცხრილს დისკის გამოყენება უწევს; მეხსიერების ლიმიტები და აღრიცხვა განსხვავდება MySQL-ისა და MariaDB-ის ვერსიებს შორის."
+
+#: doctor_functions.php
+msgid "Connection thread creation"
+msgstr "კავშირის ნაკადების შექმნა"
+
+#: doctor_functions.php
+msgid "Review connection reuse and thread_cache_size. Check the server thread-handling mode before tuning; thread-pool implementations do not behave like one-thread-per-connection servers."
+msgstr "გადახედეთ კავშირების ხელახალ გამოყენებასა და thread_cache_size პარამეტრს. გამართვამდე შეამოწმეთ სერვერის ნაკადების მართვის რეჟიმი; ნაკადების პულის იმპლემენტაციები არ მუშაობს one-thread-per-connection სერვერების მსგავსად."
+
+#: doctor_functions.php
+msgid "Review slow-query logging, long_query_time, and query plans before changing server buffers. This counter depends on the configured slow-query threshold and does not identify individual statements."
+msgstr "სერვერის ბუფერების შეცვლამდე გადახედეთ ნელი მოთხოვნების ჟურნალირებას, long_query_time პარამეტრსა და მოთხოვნის გეგმებს. ეს მთვლელი დამოკიდებულია ნელი მოთხოვნის კონფიგურირებულ ზღვარზე და არ ახდენს ცალკეული ოპერატორების იდენტიფიცირებას."
+
+#: doctor_functions.php
+msgid "Slow statements"
+msgstr "ნელი მოთხოვნები"
+
+#: doctor_functions.php
+msgid "Cumulative advice deferred until the observation window is sufficient."
+msgstr "კუმულაციური რჩევები გადადებულია, სანამ დაკვირვების ფანჯარა საკმარისი არ გახდება."
+
+#: doctor_functions.php
+msgid "Thread-cache advice is not assessed: thread_handling is unavailable or is not one-thread-per-connection. Review the active thread-pool implementation instead."
+msgstr "ნაკადების ქეშის რჩევა არ შეფასდა: thread_handling მიუწვდომელია ან არ არის one-thread-per-connection. ამის ნაცვლად გადახედეთ ნაკადების პულის აქტიურ იმპლემენტაციას."
+
+#: doctor_functions.php
+#, php-format
+msgid "Required counters are missing or invalid: %s, %s. Check server-version support and monitoring permissions."
+msgstr "საჭირო მთვლელები აკლია ან არავალიდურია: %s, %s. შეამოწმეთ სერვერის ვერსიის მხარდაჭერა და მონიტორინგის უფლებები."
+
+#: doctor_functions.php
+msgid "A counter reset since the prior sample; collect another representative interval before tuning."
+msgstr "წინა შერჩევის შემდეგ მთვლელი განულდა; გამართვამდე შეაგროვეთ სხვა ტიპური ინტერვალი."
+
+#: doctor_functions.php
+#, php-format
+msgid "Insufficient activity: %.0f %s; at least %d observations are needed for this advisory."
+msgstr "არასაკმარისი აქტივობა: %.0f %s; ამ რეკომენდაციისთვის საჭიროა სულ მცირე %d დაკვირვება."
+
+#: doctor_functions.php
+msgid "Counters are inconsistent or were reset independently. Collect a new representative sample before tuning."
+msgstr "მთვლელები არათანმიმდევრულია ან დამოუკიდებლად განულდა. გამართვამდე შეაგროვეთ ახალი ტიპური შერჩევა."
+
+#: doctor_functions.php
+msgid "The interval sample is too small or counters reset; collect another representative interval before tuning."
+msgstr "ინტერვალის შერჩევა ძალიან მცირეა ან მთვლელები განულდა; გამართვამდე შეაგროვეთ სხვა ტიპური ინტერვალი."
+
+#: doctor_functions.php
+#, php-format
+msgid "Interval %s / %s: %.0f / %.0f (%s); investigation threshold: %s."
+msgstr "ინტერვალი %s / %s: %.0f / %.0f (%s); გამოკვლევის ზღვარი: %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "Cumulative %s / %s: %.0f / %.0f (%s); investigation threshold: %s."
+msgstr "კუმულაციური %s / %s: %.0f / %.0f (%s); გამოკვლევის ზღვარი: %s."
+
+#: doctor_functions.php
+msgid "This counter can omit memory-mapped temporary files on MySQL; a low ratio does not rule out disk use."
+msgstr "ეს მთვლელი MySQL-ზე შესაძლოა გამოტოვებდეს მეხსიერებაში ასახულ დროებით ფაილებს; დაბალი თანაფარდობა დისკის გამოყენებას არ გამორიცხავს."
+
+#: doctor_functions.php
+msgid "Redo-log advice deferred until the observation window is sufficient and Innodb_log_waits is available."
+msgstr "Redo-ჟურნალის რჩევა გადადებულია, სანამ დაკვირვების ფანჯარა საკმარისი არ გახდება და Innodb_log_waits ხელმისაწვდომი არ იქნება."
+
+#: doctor_functions.php
+#, php-format
+msgid "Cumulative Innodb_log_waits: %.0f."
+msgstr "კუმულაციური Innodb_log_waits: %.0f."
+
+#: doctor_functions.php
+msgid "Investigate transaction sizes, log-buffer pressure, and storage latency. Recheck the rate under load before considering innodb_log_buffer_size; this historical count is not evidence of a current stall."
+msgstr "გამოიკვლიეთ ტრანზაქციების ზომები, ჟურნალის ბუფერის დატვირთვა და საცავის დაყოვნება. innodb_log_buffer_size-ის განხილვამდე ხელახლა შეამოწმეთ სიხშირე დატვირთვის ქვეშ; ეს ისტორიული რაოდენობა მიმდინარე შეფერხების მტკიცებულება არ არის."
+
+#: doctor_functions.php
+msgid "InnoDB log-buffer waits"
+msgstr "InnoDB ჟურნალის ბუფერის მოლოდინები"
+
+#: doctor_functions.php
+msgid "installed Cacti composer.json"
+msgstr "დაყენებული Cacti-ის composer.json"
+
+#: doctor_functions.php
+#, php-format
+msgid "Cacti %s installer requirement"
+msgstr "Cacti %s ინსტალერის მოთხოვნა"
+
+#: doctor_functions.php
+msgid "PHP compatibility with installed Cacti"
+msgstr "PHP-ის თავსებადობა დაყენებულ Cacti-თან"
+
+#: doctor_functions.php
+#, php-format
+msgid "Running PHP %s; installed Cacti %s."
+msgstr "გაშვებულია PHP %s; დაყენებულია Cacti %s."
+
+#: doctor_functions.php
+msgid "Could not establish Cacti's PHP requirement. Check the installed Cacti composer.json or release documentation; Doctor does not assume compatibility."
+msgstr "Cacti-ის PHP მოთხოვნის დადგენა ვერ მოხერხდა. შეამოწმეთ დაყენებული Cacti-ის composer.json ან გამოშვების დოკუმენტაცია; Doctor თავსებადობას არ ვარაუდობს."
+
+#: doctor_functions.php
+#, php-format
+msgid "PHP >= %s and < %s"
+msgstr "PHP >= %s და < %s"
+
+#: doctor_functions.php
+#, php-format
+msgid "PHP >= %s"
+msgstr "PHP >= %s"
+
+#: doctor_functions.php
+#, php-format
+msgid "Requires %s (%s). Running PHP meets that requirement."
+msgstr "საჭიროებს %s (%s). გაშვებული PHP აკმაყოფილებს ამ მოთხოვნას."
+
+#: doctor_functions.php
+#, php-format
+msgid "Requires %s (%s). Running PHP does not meet that requirement."
+msgstr "საჭიროებს %s (%s). გაშვებული PHP არ აკმაყოფილებს ამ მოთხოვნას."
+
+#: doctor_functions.php
+#, php-format
+msgid "Detected %s; Doctor requires Cacti 1.2.20 or newer."
+msgstr "აღმოჩენილია %s; Doctor საჭიროებს Cacti 1.2.20-ს ან უფრო ახალ ვერსიას."
+
+#: doctor_functions.php
+msgid "Supported Cacti version"
+msgstr "მხარდაჭერილი Cacti-ის ვერსია"
+
+#: doctor_functions.php
+msgid "PHP upstream security support"
+msgstr "PHP-ის უსაფრთხოების ძირითადი მხარდაჭერა"
+
+#: doctor_functions.php
+msgid "This checks the PHP release branch, not whether this patch release is up to date or whether your OS vendor backports fixes. Cacti compatibility is checked separately."
+msgstr "ეს ამოწმებს PHP-ის გამოშვების განშტოებას და არა იმას, განახლებულია თუ არა ეს პატჩ-ვერსია ან აბრუნებს თუ არა თქვენი ოპერაციული სისტემის მომწოდებელი შესწორებებს. Cacti-თან თავსებადობა ცალკე მოწმდება."
+
+#: doctor_functions.php
+#, php-format
+msgid "Running PHP %s; upstream security-support status is unknown or this is a prerelease. Check https://www.php.net/supported-versions.php and update Doctor's support data."
+msgstr "გაშვებულია PHP %s; უსაფრთხოების ძირითადი მხარდაჭერის სტატუსი უცნობია ან ეს წინასწარი გამოშვებაა. შეამოწმეთ https://www.php.net/supported-versions.php და განაახლეთ Doctor-ის მხარდაჭერის მონაცემები."
+
+#: doctor_functions.php
+#, php-format
+msgid "Running PHP %s; PHP %s receives upstream security fixes through %s."
+msgstr "გაშვებულია PHP %s; PHP %s იღებს უსაფრთხოების ძირითად შესწორებებს %s-მდე."
+
+#: doctor_functions.php
+#, php-format
+msgid "Running PHP %s; PHP %s no longer receives upstream security fixes; support ended %s. Upgrade to a supported PHP branch compatible with your Cacti installation, or confirm security maintenance with your OS vendor."
+msgstr "გაშვებულია PHP %s; PHP %s აღარ იღებს უსაფრთხოების ძირითად შესწორებებს; მხარდაჭერა დასრულდა %s. განაახლეთ თქვენს Cacti ინსტალაციასთან თავსებად მხარდაჭერილ PHP განშტოებაზე ან დაადასტურეთ უსაფრთხოების მომსახურება თქვენი ოპერაციული სისტემის მომწოდებელთან."
+
+#: doctor_functions.php
+msgid "Required current CLI PHP extensions"
+msgstr "მიმდინარე CLI PHP-ის საჭირო გაფართოებები"
+
+#: doctor_functions.php
+msgid "Required web PHP extensions"
+msgstr "ვებ PHP-ის საჭირო გაფართოებები"
+
+#: doctor_functions.php
+#, php-format
+msgid "Missing: %s. Install them through the operating system package manager."
+msgstr "აკლია: %s. დააყენეთ ისინი ოპერაციული სისტემის პაკეტების მენეჯერით."
+
+#: doctor_functions.php
+msgid "All PHP extensions required by the Cacti installer are loaded in this PHP context."
+msgstr "Cacti ინსტალერის მიერ მოთხოვნილი ყველა PHP გაფართოება ჩატვირთულია ამ PHP კონტექსტში."
+
+#: doctor_functions.php
+msgid "Doctor does not execute configured binaries while running as root."
+msgstr "Doctor არ უშვებს კონფიგურირებულ ბინარულ ფაილებს root-ის სახელით მუშაობისას."
+
+#: doctor_functions.php
+#, php-format
+msgid "The file name %s is not expected for %s, so Doctor did not execute it."
+msgstr "ფაილის სახელი %s არ არის მოსალოდნელი %s-თვის, ამიტომ Doctor-მა ის არ გაუშვა."
+
+#: doctor_functions.php
+msgid "Doctor is running as root, so permission checks describe root rather than the web server or poller account, configured binaries are not executed, and repairs are refused. Run Doctor as the Cacti poller user."
+msgstr "Doctor გაშვებულია root-ის სახელით, ამიტომ უფლებების შემოწმება ასახავს root-ს და არა ვებ-სერვერის ან პოლერის ანგარიშს, კონფიგურირებული ბინარული ფაილები არ ეშვება და შეკეთებებზე უარი ითქმება. გაუშვით Doctor Cacti-ის პოლერის მომხმარებლით."
+
+#: doctor_functions.php
+msgid "Doctor privileges"
+msgstr "Doctor-ის პრივილეგიები"
+
+#: doctor_functions.php
+msgid "Doctor is running without root privileges."
+msgstr "Doctor გაშვებულია root პრივილეგიების გარეშე."
+
+#: doctor_functions.php
+msgid "Required CLI PHP extensions"
+msgstr "CLI PHP-ის საჭირო გაფართოებები"
+
+#: doctor_functions.php
+msgid "The configured PHP CLI executable is unavailable, so its extensions cannot be checked."
+msgstr "კონფიგურირებული PHP CLI შესრულებადი ფაილი მიუწვდომელია, ამიტომ მისი გაფართოებების შემოწმება შეუძლებელია."
+
+#: doctor_functions.php
+msgid "shell_exec() is disabled, so Doctor cannot compare the CLI PHP extensions with Cacti requirements."
+msgstr "shell_exec() გამორთულია, ამიტომ Doctor ვერ ადარებს CLI PHP გაფართოებებს Cacti-ის მოთხოვნებთან."
+
+#: doctor_functions.php
+msgid "The configured PHP CLI executable did not return a valid extension list."
+msgstr "კონფიგურირებულმა PHP CLI შესრულებადმა ფაილმა გაფართოებების ვალიდური სია არ დააბრუნა."
+
+#: doctor_functions.php
+#, php-format
+msgid "Missing from CLI PHP: %s. The web and CLI PHP configurations are separate on many systems."
+msgstr "CLI PHP-ში აკლია: %s. ბევრ სისტემაში ვებ და CLI PHP კონფიგურაციები განცალკევებულია."
+
+#: doctor_functions.php
+msgid "The configured PHP CLI has every extension required by Cacti."
+msgstr "კონფიგურირებულ PHP CLI-ს აქვს Cacti-ის მიერ მოთხოვნილი ყველა გაფართოება."
+
+#: doctor_functions.php
+msgid "GD TrueType support"
+msgstr "GD TrueType მხარდაჭერა"
+
+#: doctor_functions.php
+msgid "Recommended PHP features"
+msgstr "PHP-ის რეკომენდებული ფუნქციები"
+
+#: doctor_functions.php
+#, php-format
+msgid "Unavailable: %s. Cacti can run without these features, but related functionality may be limited."
+msgstr "მიუწვდომელია: %s. Cacti-ს შეუძლია ამ ფუნქციების გარეშე მუშაობა, მაგრამ შესაბამისი ფუნქციონალი შესაძლოა შეზღუდული იყოს."
+
+#: doctor_functions.php
+msgid "The optional gettext, SNMP, and GD TrueType features are available."
+msgstr "დამატებითი gettext, SNMP და GD TrueType ფუნქციები ხელმისაწვდომია."
+
+#: doctor_functions.php
+#, php-format
+msgid "memory_limit is %s (%dM or more is recommended)"
+msgstr "memory_limit არის %s (რეკომენდებულია %dM ან მეტი)"
+
+#: doctor_functions.php
+#, php-format
+msgid "max_execution_time is %d seconds (60 or more is recommended)"
+msgstr "max_execution_time არის %d წამი (რეკომენდებულია 60 ან მეტი)"
+
+#: doctor_functions.php
+msgid "date.timezone is not set"
+msgstr "date.timezone არ არის მითითებული"
+
+#: doctor_functions.php
+msgid "unset"
+msgstr "არ არის მითითებული"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s. Current values: %s"
+msgstr "%s. მიმდინარე მნიშვნელობები: %s"
+
+#: doctor_functions.php
+msgid "PHP runtime configuration"
+msgstr "PHP-ის სამუშაო გარემოს კონფიგურაცია"
+
+#: doctor_functions.php
+msgid "Database connection"
+msgstr "კავშირი მონაცემთა ბაზასთან"
+
+#: doctor_functions.php
+#, php-format
+msgid "Query failed: %s"
+msgstr "მოთხოვნა ვერ შესრულდა: %s"
+
+#: doctor_functions.php
+msgid "A read-only query completed successfully."
+msgstr "მხოლოდ წაკითხვის მოთხოვნა წარმატებით დასრულდა."
+
+#: doctor_functions.php
+msgid "The database returned an unexpected result."
+msgstr "მონაცემთა ბაზამ მოულოდნელი შედეგი დააბრუნა."
+
+#: doctor_functions.php
+#, php-format
+msgid "Doctor could not determine the database server version from %s."
+msgstr "Doctor-მა ვერ დაადგინა მონაცემთა ბაზის სერვერის ვერსია %s-დან."
+
+#: doctor_functions.php
+msgid "Supported database server"
+msgstr "მხარდაჭერილი მონაცემთა ბაზის სერვერი"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s %s detected; this Cacti branch recommends %s %s or newer."
+msgstr "აღმოჩენილია %s %s; Cacti-ის ეს განშტოება გვირჩევს %s %s-ს ან უფრო ახალ ვერსიას."
+
+#: doctor_functions.php
+#, php-format
+msgid "Database character set is %s and collation is %s. Cacti requires utf8mb4."
+msgstr "მონაცემთა ბაზის სიმბოლოთა ნაკრებია %s, ხოლო შედარების წესია %s. Cacti საჭიროებს utf8mb4-ს."
+
+#: doctor_functions.php
+msgid "unknown"
+msgstr "უცნობი"
+
+#: doctor_functions.php
+msgid "Database character set"
+msgstr "მონაცემთა ბაზის სიმბოლოთა ნაკრები"
+
+#: doctor_functions.php
+msgid "Database timezone support"
+msgstr "მონაცემთა ბაზის დროის სარტყლის მხარდაჭერა"
+
+#: doctor_functions.php
+msgid "The Cacti database account cannot read mysql.time_zone_name. Grant SELECT access and populate the database timezone tables."
+msgstr "Cacti-ის მონაცემთა ბაზის ანგარიშს არ შეუძლია mysql.time_zone_name ცხრილის წაკითხვა. მიანიჭეთ SELECT წვდომა და შეავსეთ მონაცემთა ბაზის დროის სარტყლის ცხრილები."
+
+#: doctor_functions.php
+#, php-format
+msgid "The database timezone table is accessible and contains %d entries."
+msgstr "მონაცემთა ბაზის დროის სარტყლის ცხრილი ხელმისაწვდომია და შეიცავს %d ჩანაწერს."
+
+#: doctor_functions.php
+msgid "The database timezone table is accessible but empty. Populate the system timezone tables."
+msgstr "მონაცემთა ბაზის დროის სარტყლის ცხრილი ხელმისაწვდომია, მაგრამ ცარიელია. შეავსეთ სისტემური დროის სარტყლის ცხრილები."
+
+#: doctor_functions.php
+msgid "Core tables used by Cacti are present."
+msgstr "Cacti-ის მიერ გამოყენებული ძირითადი ცხრილები ადგილზეა."
+
+#: doctor_functions.php
+#, php-format
+msgid "Missing core tables: %s. Restore or upgrade the database before attempting other repairs."
+msgstr "აკლია ძირითადი ცხრილები: %s. სხვა შეკეთებების მცდელობამდე აღადგინეთ ან განაახლეთ მონაცემთა ბაზა."
+
+#: doctor_functions.php
+msgid "Core database tables"
+msgstr "მონაცემთა ბაზის ძირითადი ცხრილები"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s is missing (%s)"
+msgstr "%s აკლია (%s)"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s is not writable (%s)"
+msgstr "%s არ არის ჩაწერადი (%s)"
+
+#: doctor_functions.php
+msgid "Runtime directories"
+msgstr "სამუშაო დირექტორიები"
+
+#: doctor_functions.php
+msgid "The cache, log, and RRA directories exist and are writable."
+msgstr "ქეშის, ჟურნალისა და RRA დირექტორიები არსებობს და ჩაწერადია."
+
+#: doctor_functions.php
+msgid "Cacti configuration file"
+msgstr "Cacti-ის კონფიგურაციის ფაილი"
+
+#: doctor_functions.php
+msgid "include/config.php is missing or unreadable."
+msgstr "include/config.php აკლია ან წაუკითხავია."
+
+#: doctor_functions.php
+msgid "include/config.php is readable. POSIX mode-bit checks do not apply on Windows."
+msgstr "include/config.php წაკითხვადია. POSIX რეჟიმის ბიტების შემოწმება Windows-ზე არ გამოიყენება."
+
+#: doctor_functions.php
+msgid "include/config.php is writable by other users. Remove world-write permission because this file contains database credentials."
+msgstr "include/config.php ჩაწერადია სხვა მომხმარებლებისთვის. მოხსენით საყოველთაო ჩაწერის უფლება, რადგან ეს ფაილი მონაცემთა ბაზის მონაცემებს შეიცავს."
+
+#: doctor_functions.php
+msgid "include/config.php is group-writable. Confirm that every member of the owning group is trusted."
+msgstr "include/config.php ჯგუფისთვის ჩაწერადია. დაადასტურეთ, რომ მფლობელი ჯგუფის ყველა წევრი სანდოა."
+
+#: doctor_functions.php
+msgid "include/config.php is readable by all local users and contains database credentials. Restrict it to the owner and the web server group."
+msgstr "include/config.php წაკითხვადია ყველა ლოკალური მომხმარებლისთვის და შეიცავს მონაცემთა ბაზის მონაცემებს. შეზღუდეთ წვდომა მხოლოდ მფლობელით და ვებ-სერვერის ჯგუფით."
+
+#: doctor_functions.php
+msgid "include/config.php is readable and is not world-readable, group-writable, or world-writable."
+msgstr "include/config.php წაკითხვადია და არ არის საყოველთაოდ წაკითხვადი, ჯგუფისთვის ჩაწერადი ან საყოველთაოდ ჩაწერადი."
+
+#: doctor_functions.php
+msgid "Cacti log file"
+msgstr "Cacti-ის ჟურნალის ფაილი"
+
+#: doctor_functions.php
+msgid "The log file does not exist. Its parent directory is not writable."
+msgstr "ჟურნალის ფაილი არ არსებობს. მისი მშობელი დირექტორია არ არის ჩაწერადი."
+
+#: doctor_functions.php
+msgid "The log file does not exist. Its parent directory is writable, so Cacti can create it."
+msgstr "ჟურნალის ფაილი არ არსებობს. მისი მშობელი დირექტორია ჩაწერადია, ამიტომ Cacti შეძლებს მის შექმნას."
+
+#: doctor_functions.php
+msgid "The configured log path must be a readable and writable regular file."
+msgstr "კონფიგურირებული ჟურნალის გზა უნდა იყოს წაკითხვადი და ჩაწერადი ჩვეულებრივი ფაილი."
+
+#: doctor_functions.php
+#, php-format
+msgid "The log is readable and writable and is %s MiB."
+msgstr "ჟურნალი წაკითხვადი და ჩაწერადია და მისი ზომაა %s MiB."
+
+#: doctor_functions.php
+msgid "The log is readable and writable."
+msgstr "ჟურნალი წაკითხვადი და ჩაწერადია."
+
+#: doctor_functions.php
+msgid "Verify that Cacti log rotation is enabled."
+msgstr "დაადასტურეთ, რომ Cacti-ის ჟურნალის როტაცია ჩართულია."
+
+#: doctor_functions.php
+#, php-format
+msgid "Executable found at %s."
+msgstr "შესრულებადი ფაილი ნაპოვნია მისამართზე %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "The %s setting is empty, missing, or not executable."
+msgstr "%s პარამეტრი ცარიელია, აკლია ან არ არის შესრულებადი."
+
+#: doctor_functions.php
+#, php-format
+msgid "The %s setting is empty, missing, or not executable: %s"
+msgstr "%s პარამეტრი ცარიელია, აკლია ან არ არის შესრულებადი: %s"
+
+#: doctor_functions.php
+msgid "Doctor could not determine its version."
+msgstr "Doctor-მა მისი ვერსია ვერ დაადგინა."
+
+#: doctor_functions.php
+#, php-format
+msgid "Detected version %s."
+msgstr "აღმოჩენილია ვერსია %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "Detected version %s; version %s or newer is recommended."
+msgstr "აღმოჩენილია ვერსია %s; რეკომენდებულია ვერსია %s ან უფრო ახალი."
+
+#: doctor_functions.php
+#, php-format
+msgid "Detected version %s; version %s or newer is required."
+msgstr "აღმოჩენილია ვერსია %s; საჭიროა ვერსია %s ან უფრო ახალი."
+
+#: doctor_functions.php
+#, php-format
+msgid "Detected version %s; minimum is %s."
+msgstr "აღმოჩენილია ვერსია %s; მინიმალური ვერსიაა %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "%s executable"
+msgstr "%s შესრულებადი ფაილი"
+
+#: doctor_functions.php
+msgid "poller_type is not cmd.php or Spine"
+msgstr "poller_type არ არის cmd.php ან Spine"
+
+#: doctor_functions.php
+msgid "poller_interval is not a supported value"
+msgstr "poller_interval არ არის მხარდაჭერილი მნიშვნელობა"
+
+#: doctor_functions.php
+msgid "Poller configuration"
+msgstr "პოლერის კონფიგურაცია"
+
+#: doctor_functions.php
+#, php-format
+msgid "Poller is %s with a %d-second interval."
+msgstr "პოლერია %s, %d-წამიანი ინტერვალით."
+
+#: doctor_functions.php
+msgid "Main poller freshness"
+msgstr "მთავარი პოლერის აქტუალობა"
+
+#: doctor_functions.php
+msgid "No completed main-poller run was found. This can be expected before the first poll."
+msgstr "მთავარი პოლერის დასრულებული გაშვება ვერ მოიძებნა. ეს მოსალოდნელია პირველ გამოკითხვამდე."
+
+#: doctor_functions.php
+#, php-format
+msgid "Last completed run was %d seconds ago; failure threshold is %d seconds."
+msgstr "ბოლო დასრულებული გაშვება იყო %d წამის წინ; შეცდომის ზღვარია %d წამი."
+
+#: doctor_functions.php
+msgid "Database schema version"
+msgstr "მონაცემთა ბაზის სქემის ვერსია"
+
+#: doctor_functions.php
+msgid "The version table is empty or unreadable, so the schema version is unknown."
+msgstr "ვერსიის ცხრილი ცარიელია ან წაუკითხავია, ამიტომ სქემის ვერსია უცნობია."
+
+#: doctor_functions.php
+msgid "The version table still reads new_install, so the installer never finished. Open install/ in a browser to complete it."
+msgstr "ვერსიის ცხრილში კვლავ წერია new_install, რაც ნიშნავს, რომ ინსტალერი არ დასრულებულა. დასასრულებლად გახსენით install/ ბრაუზერში."
+
+#: doctor_functions.php
+#, php-format
+msgid "The database schema is at %s but the installed code is %s. Open install/ in a browser to finish the upgrade."
+msgstr "მონაცემთა ბაზის სქემა არის %s, ხოლო დაყენებული კოდია %s. განახლების დასასრულებლად გახსენით install/ ბრაუზერში."
+
+#: doctor_functions.php
+#, php-format
+msgid "The database schema (%s) is newer than the installed code (%s). The code may have been rolled back."
+msgstr "მონაცემთა ბაზის სქემა (%s) უფრო ახალია, ვიდრე დაყენებული კოდი (%s). შესაძლოა კოდი ძველ ვერსიაზე დაბრუნდა."
+
+#: doctor_functions.php
+#, php-format
+msgid "The database schema (%s) matches the installed code."
+msgstr "მონაცემთა ბაზის სქემა (%s) შეესაბამება დაყენებულ კოდს."
+
+#: doctor_functions.php
+msgid "Main poller run time"
+msgstr "მთავარი პოლერის შესრულების დრო"
+
+#: doctor_functions.php
+msgid "No completed run time is recorded yet."
+msgstr "დასრულებული გაშვების დრო ჯერ არ არის დაფიქსირებული."
+
+#: doctor_functions.php
+#, php-format
+msgid "The last main-poller run took %s seconds of the %d-second interval."
+msgstr "მთავარი პოლერის ბოლო გაშვებამ დაიკავა %s წამი %d-წამიანი ინტერვალიდან."
+
+#: doctor_functions.php
+msgid "Runs that outlast the interval overlap and lose data; add poller processes or threads, or use Spine."
+msgstr "გაშვებები, რომლებიც ინტერვალს აჭარბებს, ერთმანეთს ფარავს და მონაცემებს კარგავს; დაამატეთ პოლერის პროცესები ან ნაკადები, ან გამოიყენეთ Spine."
+
+#: doctor_functions.php
+msgid "Little headroom remains before polls overlap."
+msgstr "გამოკითხვების გადაფარვამდე მცირე მარაგი რჩება."
+
+#: doctor_functions.php
+#, php-format
+msgid "%d poller_output rows are older than two polling intervals and were never written to RRD files. Check the Cacti log for \"Poller Output Table not Empty\" and confirm max_heap_table_size is large enough."
+msgstr "poller_output ცხრილის %d სტრიქონი ორ გამოკითხვის ინტერვალზე ძველია და RRD ფაილებში არ ჩაწერილა. შეამოწმეთ Cacti-ის ჟურნალი შეტყობინებაზე \"Poller Output Table not Empty\" და დარწმუნდით, რომ max_heap_table_size საკმარისად დიდია."
+
+#: doctor_functions.php
+msgid "Unprocessed poller output"
+msgstr "პოლერის დაუმუშავებელი შედეგები"
+
+#: doctor_functions.php
+msgid "No stale rows remain in poller_output."
+msgstr "poller_output ცხრილში მოძველებული სტრიქონები არ რჩება."
+
+#: doctor_functions.php
+msgid "No remote pollers are enabled."
+msgstr "დაშორებული პოლერები ჩართული არ არის."
+
+#: doctor_functions.php
+msgid "Remote pollers"
+msgstr "დაშორებული პოლერები"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s (ID %s) has never reported"
+msgstr "%s (ID %s) არასდროს გამოგზავნილა ანგარიში"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s (ID %s) last reported %d seconds ago"
+msgstr "%s (ID %s) ბოლოს ანგარიში გამოგზავნა %d წამის წინ"
+
+#: doctor_functions.php
+#, php-format
+msgid "The failure threshold is %d seconds."
+msgstr "შეცდომის ზღვარია %d წამი."
+
+#: doctor_functions.php
+#, php-format
+msgid "%d enabled remote pollers reported within %d seconds."
+msgstr "%d ჩართულმა დაშორებულმა პოლერმა ანგარიში გამოგზავნა %d წამის განმავლობაში."
+
+#: doctor_functions.php
+msgid "Enabled plugin files"
+msgstr "ჩართული პლაგინების ფაილები"
+
+#: doctor_functions.php
+#, php-format
+msgid "Enabled plugins are missing from %s: %s. Restore their files or disable them in Plugin Management."
+msgstr "ჩართული პლაგინები აკლია %s-ში: %s. აღადგინეთ მათი ფაილები ან გამორთეთ ისინი პლაგინების მართვაში."
+
+#: doctor_functions.php
+msgid "Every enabled plugin has its setup.php in place."
+msgstr "ყველა ჩართულ პლაგინს თავისი setup.php ადგილზე აქვს."
+
+#: doctor_functions.php
+msgid "Boost RRD updates"
+msgstr "Boost RRD განახლებები"
+
+#: doctor_functions.php
+msgid "Boost is disabled, so the poller writes RRD files directly."
+msgstr "Boost გამორთულია, ამიტომ პოლერი RRD ფაილებს პირდაპირ წერს."
+
+#: doctor_functions.php
+msgid "Boost is enabled but has no recorded run. This can be expected before its first flush."
+msgstr "Boost ჩართულია, მაგრამ დაფიქსირებული გაშვება არ აქვს. ეს მოსალოდნელია მის პირველ ჩაწერამდე."
+
+#: doctor_functions.php
+#, php-format
+msgid "Boost last flushed %d seconds ago, more than twice its %d-minute interval. Graphs stop updating until it runs; check the Cacti log for BOOST errors."
+msgstr "Boost-მა ბოლოს ჩაწერა %d წამის წინ, რაც მის %d-წუთიან ინტერვალზე ორჯერ მეტია. გრაფიკების განახლება შეჩერებულია მის გაშვებამდე; შეამოწმეთ Cacti-ის ჟურნალი BOOST შეცდომებზე."
+
+#: doctor_functions.php
+#, php-format
+msgid "poller_output_boost holds %d rows, above the %d-row limit that forces a flush. Boost is falling behind."
+msgstr "poller_output_boost შეიცავს %d სტრიქონს, რაც აღემატება %d-სტრიქონიან ზღვარს, რომელიც იძულებით ჩაწერას იწვევს. Boost ჩამორჩება."
+
+#: doctor_functions.php
+#, php-format
+msgid "Boost last flushed %d seconds ago with %d rows waiting."
+msgstr "Boost-მა ბოლოს ჩაწერა %d წამის წინ, მოლოდინშია %d სტრიქონი."
+
+#: doctor_functions.php doctor_rrd.php
+#, php-format
+msgid "Checked a sample of %d active data sources that rotates hourly; a pass does not cover every file."
+msgstr "შემოწმდა %d აქტიური მონაცემთა წყაროს შერჩევა, რომელიც ყოველ საათში იცვლება; წარმატებული შემოწმება ყველა ფაილს არ ფარავს."
+
+#: doctor_functions.php
+#, php-format
+msgid "%d of %d active data sources have no RRD file, for example %s. New data sources get one after their first poll; otherwise check the RRA directory and its permissions."
+msgstr "%d აქტიურ მონაცემთა წყაროს %d-დან არ აქვს RRD ფაილი, მაგალითად %s. ახალი მონაცემთა წყაროები მას პირველი გამოკითხვის შემდეგ იღებენ; წინააღმდეგ შემთხვევაში შეამოწმეთ RRA დირექტორია და მისი უფლებები."
+
+#: doctor_functions.php
+msgid "RRD files"
+msgstr "RRD ფაილები"
+
+#: doctor_functions.php
+#, php-format
+msgid "All %d active data sources have an RRD file."
+msgstr "ყველა %d აქტიურ მონაცემთა წყაროს აქვს RRD ფაილი."
+
+#: doctor_functions.php
+#, php-format
+msgid "Doctor could not measure free space for %s."
+msgstr "Doctor-მა ვერ გაზომა თავისუფალი ადგილი %s-თვის."
+
+#: doctor_functions.php
+msgid "RRA disk space"
+msgstr "RRA დისკის სივრცე"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s (%s GiB) free on the file system holding %s."
+msgstr "თავისუფალია %s (%s GiB) ფაილურ სისტემაზე, სადაც განთავსებულია %s."
+
+#: doctor_functions.php
+msgid "RRD updates fail silently when the disk fills."
+msgstr "დისკის გავსებისას RRD განახლებები შეტყობინების გარეშე ვერ სრულდება."
+
+#: doctor_functions.php
+msgid "Database clock"
+msgstr "მონაცემთა ბაზის საათი"
+
+#: doctor_functions.php
+msgid "Doctor could not read the database clock."
+msgstr "Doctor-მა მონაცემთა ბაზის საათის წაკითხვა ვერ შეძლო."
+
+#: doctor_functions.php
+#, php-format
+msgid "The database and PHP clocks differ by %d seconds."
+msgstr "მონაცემთა ბაზისა და PHP-ის საათები %d წამით განსხვავდება."
+
+#: doctor_functions.php
+msgid "Poll timestamps will be misaligned; synchronise both hosts with NTP."
+msgstr "გამოკითხვის დროის ნიშნულები აცდენილი იქნება; დაასინქრონეთ ორივე ჰოსტი NTP-ით."
+
+#: doctor_functions.php
+msgid "Synchronise both hosts with NTP."
+msgstr "დაასინქრონეთ ორივე ჰოსტი NTP-ით."
+
+#: doctor_functions.php
+msgid "Spine configuration"
+msgstr "Spine-ის კონფიგურაცია"
+
+#: doctor_functions.php
+msgid "Spine is not the configured poller."
+msgstr "Spine არ არის კონფიგურირებული პოლერი."
+
+#: doctor_functions.php
+msgid "path_spine_config is not set, so Spine uses its compiled-in search path and Doctor cannot verify which file it reads."
+msgstr "path_spine_config არ არის მითითებული, ამიტომ Spine იყენებს ჩაშენებულ ძიების გზას და Doctor ვერ ამოწმებს, რომელ ფაილს კითხულობს ის."
+
+#: doctor_functions.php
+#, php-format
+msgid "The Spine configuration file is missing or unreadable: %s."
+msgstr "Spine-ის კონფიგურაციის ფაილი აკლია ან წაუკითხავია: %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "DB_Database is %s but Cacti uses %s"
+msgstr "DB_Database არის %s, მაგრამ Cacti იყენებს %s"
+
+#: doctor_functions.php
+#, php-format
+msgid "DB_User is %s but Cacti uses %s"
+msgstr "DB_User არის %s, მაგრამ Cacti იყენებს %s"
+
+#: doctor_functions.php
+msgid "the file is world-readable and holds the database password"
+msgstr "ფაილი საყოველთაოდ წაკითხვადია და შეიცავს მონაცემთა ბაზის პაროლს"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s uses the same database and user as Cacti."
+msgstr "%s იყენებს იმავე მონაცემთა ბაზასა და მომხმარებელს, რასაც Cacti."
+
+#: doctor_functions.php
+#, php-format
+msgid "%s is %s"
+msgstr "%s არის %s"
+
+#: doctor_functions.php
+msgid "Cacti recommends ON; doublewrite may stay off only on ZFS or similar journaling storage."
+msgstr "Cacti გვირჩევს ON მნიშვნელობას; doublewrite გამორთული შეიძლება დარჩეს მხოლოდ ZFS-ზე ან მსგავს ჟურნალირებად საცავზე."
+
+#: doctor_functions.php
+msgid "InnoDB safety settings"
+msgstr "InnoDB-ის უსაფრთხოების პარამეტრები"
+
+#: doctor_functions.php
+msgid "innodb_file_per_table and innodb_doublewrite are enabled."
+msgstr "innodb_file_per_table და innodb_doublewrite ჩართულია."
+
+#: doctor_functions.php
+#, php-format
+msgid "None of the last %d log lines report an error."
+msgstr "ჟურნალის ბოლო %d სტრიქონიდან არცერთი არ იტყობინება შეცდომას."
+
+#: doctor_functions.php
+msgid "Recent log errors"
+msgstr "ჟურნალის ბოლო შეცდომები"
+
+#: doctor_functions.php
+#, php-format
+msgid "%d of the last %d log lines report an error. Most frequent (%dx): %s"
+msgstr "ჟურნალის ბოლო %d სტრიქონი %d-დან იტყობინება შეცდომას. ყველაზე ხშირი (%dx): %s"
+
+#: doctor_functions.php
+msgid "The Cacti log is not readable; see the Cacti log file check."
+msgstr "Cacti-ის ჟურნალი წაუკითხავია; იხილეთ Cacti-ის ჟურნალის ფაილის შემოწმება."
+
+#: doctor_functions.php
+msgid "No enabled devices are configured."
+msgstr "ჩართული მოწყობილობები კონფიგურირებული არ არის."
+
+#: doctor_functions.php
+#, php-format
+msgid "All %d enabled devices are up."
+msgstr "ყველა %d ჩართული მოწყობილობა მუშაობს."
+
+#: doctor_functions.php
+#, php-format
+msgid "%d of %d enabled devices are down and %d recovering."
+msgstr "%d ჩართული მოწყობილობა %d-დან მიუწვდომელია, ხოლო %d აღდგენის პროცესშია."
+
+#: doctor_functions.php
+msgid "The down devices could not be listed."
+msgstr "მიუწვდომელი მოწყობილობების სიის ჩვენება ვერ მოხერხდა."
+
+#: doctor_functions.php
+#, php-format
+msgid "%s down since %s"
+msgstr "%s მიუწვდომელია %s-დან"
+
+#: doctor_functions.php
+#, php-format
+msgid "Longest down: %s."
+msgstr "ყველაზე დიდხანს მიუწვდომელი: %s."
+
+#: doctor_functions.php
+msgid "With most devices down, check the poller host's network and SNMP settings first."
+msgstr "როდესაც მოწყობილობების უმეტესობა მიუწვდომელია, ჯერ შეამოწმეთ პოლერის ჰოსტის ქსელისა და SNMP-ის პარამეტრები."
+
+#: doctor_functions.php
+msgid "Doctor could not read device status from the host table."
+msgstr "Doctor-მა host ცხრილიდან მოწყობილობის სტატუსი ვერ წაიკითხა."
+
+#: doctor_functions.php
+#, php-format
+msgid "Cacti Doctor on %s: %d failed, %d warnings"
+msgstr "Cacti Doctor სერვერზე %s: %d შეცდომა, %d გაფრთხილება"
+
+#: doctor_functions.php
+#, php-format
+msgid "%d Cacti Doctor checks changed status on %s."
+msgstr "Cacti Doctor-ის %d შემოწმებამ სტატუსი შეიცვალა სერვერზე %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "Totals: %d passed, %d warnings, %d failed."
+msgstr "სულ: %d წარმატებული, %d გაფრთხილება, %d შეცდომა."
+
+#: doctor_functions.php
+#, php-format
+msgid "Refusing to overwrite %s."
+msgstr "უარი ითქვა %s-ის გადაწერაზე."
+
+#: doctor_functions.php
+#, php-format
+msgid "Cannot create %s."
+msgstr "%s-ის შექმნა შეუძლებელია."
+
+#: doctor_functions.php
+#, php-format
+msgid "Could not make %s private."
+msgstr "%s-ის პირადად დაყენება ვერ მოხერხდა."
+
+#: doctor_functions.php
+#, php-format
+msgid "Writing %s failed."
+msgstr "%s-ში ჩაწერა ვერ შესრულდა."
+
+#: doctor_functions.php
+msgid "Repair runtime directories"
+msgstr "სამუშაო დირექტორიების შეკეთება"
+
+#: doctor_functions.php
+msgid "Create missing cache, log, and RRA directories and add owner read/write/execute permission without removing existing permissions."
+msgstr "შექმენით დაკარგული ქეშის, ჟურნალისა და RRA დირექტორიები და დაამატეთ მფლობელის წაკითხვის/ჩაწერის/შესრულების უფლება არსებული უფლებების მოხსნის გარეშე."
+
+#: doctor_functions.php
+msgid "The requested repair is not allow-listed."
+msgstr "მოთხოვნილი შეკეთება დაშვებულთა სიაში არ არის."
+
+#: doctor_functions.php
+msgid "No repair handler is registered."
+msgstr "შეკეთების დამმუშავებელი არ არის რეგისტრირებული."
+
+#: doctor_functions.php
+msgid "Repair unavailable"
+msgstr "შეკეთება მიუწვდომელია"
+
+#: doctor_functions.php
+msgid "Repairs are refused while running as root. Run Doctor as the Cacti poller user."
+msgstr "root-ის სახელით მუშაობისას შეკეთებებზე უარი ითქმება. გაუშვით Doctor Cacti-ის პოლერის მომხმარებლით."
+
+#: doctor_functions.php
+msgid "The Cacti base directory cannot be resolved."
+msgstr "Cacti-ის საბაზისო დირექტორიის დადგენა შეუძლებელია."
+
+#: doctor_functions.php
+#, php-format
+msgid "%s: path is outside the Cacti installation"
+msgstr "%s: გზა Cacti-ის ინსტალაციის ფარგლებს გარეთაა"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s: symbolic links are not repaired"
+msgstr "%s: სიმბოლური ბმულები არ შეკეთდება"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s: directory creation failed"
+msgstr "%s: დირექტორიის შექმნა ვერ შესრულდა"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s: could not add owner permissions"
+msgstr "%s: მფლობელის უფლებების დამატება ვერ მოხერხდა"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s: still not a writable directory"
+msgstr "%s: კვლავ არ არის ჩაწერადი დირექტორია"
+
+#: doctor_functions.php
+msgid "Runtime directories now exist and are writable by the current process."
+msgstr "სამუშაო დირექტორიები უკვე არსებობს და ჩაწერადია მიმდინარე პროცესისთვის."
+
+#: doctor_functions.php
+msgid "Cacti"
+msgstr "Cacti"
+
+#: doctor_functions.php
+msgid "Database"
+msgstr "მონაცემთა ბაზა"
+
+#: doctor_functions.php
+msgid "Database health"
+msgstr "მონაცემთა ბაზის მდგომარეობა"
+
+#: doctor_functions.php
+msgid "Devices"
+msgstr "მოწყობილობები"
+
+#: doctor_functions.php setup.php
+msgid "Doctor"
+msgstr "Doctor"
+
+#: doctor_functions.php
+msgid "Filesystem"
+msgstr "ფაილური სისტემა"
+
+#: doctor_functions.php
+msgid "Logging"
+msgstr "ჟურნალირება"
+
+#: doctor_functions.php
+msgid "PHP"
+msgstr "PHP"
+
+#: doctor_functions.php
+msgid "Poller"
+msgstr "პოლერი"
+
+#: doctor_functions.php
+msgid "Prerequisites"
+msgstr "წინაპირობები"
+
+#: doctor_functions.php
+msgid "Repair"
+msgstr "შეკეთება"
+
+#: doctor_functions.php
+msgid "Security"
+msgstr "უსაფრთხოება"
+
+#: doctor_functions.php
+msgid "PASS"
+msgstr "წარმატებული"
+
+#: doctor_functions.php
+msgid "WARN"
+msgstr "გაფრთხილება"
+
+#: doctor_functions.php
+msgid "FAIL"
+msgstr "შეცდომა"
+
+#: doctor_functions.php
+msgid "UNKNOWN"
+msgstr "უცნობი"
+
+#: doctor_rrd.php
+msgid "Data source freshness could not be assessed."
+msgstr "მონაცემთა წყაროს აქტუალობის შეფასება ვერ მოხერხდა."
+
+#: doctor_rrd.php
+msgid "RRD update freshness"
+msgstr "RRD განახლების აქტუალობა"
+
+#: doctor_rrd.php
+msgid "The deferred-write interval is unknown; configure it before judging file age."
+msgstr "გადავადებული ჩაწერის ინტერვალი უცნობია; ფაილის ასაკის შეფასებამდე დააკონფიგურირეთ იგი."
+
+#: doctor_rrd.php
+#, php-format
+msgid "Checked %d files; %d stale files across %d devices; %d unavailable or future-dated files."
+msgstr "შემოწმდა %d ფაილი; %d მოძველებული ფაილი %d მოწყობილობაზე; %d მიუწვდომელი ან მომავლის თარიღიანი ფაილი."
+
+#: doctor_rrd.php
+msgid "File age includes the collection interval and configured deferred-write allowance; verify the poller and flush process before changing data."
+msgstr "ფაილის ასაკი მოიცავს შეგროვების ინტერვალსა და გადავადებული ჩაწერის კონფიგურირებულ დაშვებას; მონაცემების შეცვლამდე შეამოწმეთ პოლერი და ჩაწერის პროცესი."
+
+#: doctor_scheduling.php
+msgid "Scheduled checks are disabled. Enable them in Settings > Doctor to retain samples and alert on changes."
+msgstr "დაგეგმილი შემოწმებები გამორთულია. შერჩევების შესანახად და ცვლილებებზე შეტყობინებების მისაღებად ჩართეთ ისინი განყოფილებაში პარამეტრები > Doctor."
+
+#: doctor_scheduling.php
+msgid "Scheduled report freshness"
+msgstr "დაგეგმილი ანგარიშის აქტუალობა"
+
+#: doctor_scheduling.php
+#, php-format
+msgid "%s UTC"
+msgstr "%s UTC"
+
+#: doctor_scheduling.php
+#, php-format
+msgid "Last started: %s; last completed: %s."
+msgstr "ბოლოს დაიწყო: %s; ბოლოს დასრულდა: %s."
+
+#: doctor_scheduling.php
+msgid "never"
+msgstr "არასდროს"
+
+#: doctor_scheduling.php
+msgid "Results are missing or stale. Check the primary poller and DOCTOR log for startup, timeout, or persistence errors."
+msgstr "შედეგები აკლია ან მოძველებულია. შეამოწმეთ მთავარი პოლერი და DOCTOR ჟურნალი გაშვების, დროის ამოწურვის ან შენახვის შეცდომებზე."
+
+#: doctor_scheduling.php
+msgid "A completed diagnostic run is recent; this does not mean all checks passed."
+msgstr "დასრულებული დიაგნოსტიკური გაშვება ახალია; ეს არ ნიშნავს, რომ ყველა შემოწმება წარმატებით დასრულდა."
+
+#: doctor_scheduling.php
+msgid "Doctor alert state is invalid. Restore doctor_alert_pending from backup before retrying."
+msgstr "Doctor-ის შეტყობინების მდგომარეობა არავალიდურია. ხელახალ მცდელობამდე აღადგინეთ doctor_alert_pending სარეზერვო ასლიდან."
+
+#: doctor_scheduling.php
+msgid "Doctor alert transitions are invalid; no email was sent."
+msgstr "Doctor-ის შეტყობინების გადასვლები არავალიდურია; წერილი არ გაიგზავნა."
+
+#: doctor_scheduling.php
+msgid "Alert delivery"
+msgstr "შეტყობინებების მიწოდება"
+
+#: doctor_scheduling.php
+#, php-format
+msgid "%d check transitions await delivery; attempts: %d of 3."
+msgstr "%d შემოწმების სტატუსის ცვლილება ელოდება მიწოდებას; მცდელობა: %d 3-დან."
+
+#: doctor_scheduling.php
+msgid "Automatic retries exhausted. Correct Cacti mail settings, then run Doctor with --scheduled --retry-alerts as the poller user."
+msgstr "ავტომატური განმეორებითი მცდელობები ამოიწურა. გაასწორეთ Cacti-ის ფოსტის პარამეტრები, შემდეგ კი პოლერის მომხმარებლით გაუშვით Doctor პარამეტრებით --scheduled --retry-alerts."
+
+#: doctor_scheduling.php
+#, php-format
+msgid "Next eligible retry: %s UTC, after a primary poller cycle."
+msgstr "შემდეგი დაშვებული მცდელობა: %s UTC, მთავარი პოლერის ციკლის შემდეგ."
+
+#: doctor_scheduling.php
+msgid "No alert recipients are currently configured; pending transitions are retained."
+msgstr "შეტყობინების მიმღებები ამჟამად კონფიგურირებული არ არის; მოლოდინში მყოფი ცვლილებები შენახულია."
+
+#: doctor_scheduling.php
+msgid "No retained alert is awaiting delivery. Mail-server acceptance does not prove inbox delivery."
+msgstr "შენახული შეტყობინებები მიწოდების მოლოდინში არ არის. ფოსტის სერვერის მიერ მიღება არ ამტკიცებს საფოსტო ყუთში ჩაბარებას."
+
+#: doctor_scheduling.php
+msgid "Doctor retained status changes (UTC). Repeated changes for one check are coalesced; an out-and-back transition is retained."
+msgstr "Doctor-ის შენახული სტატუსის ცვლილებები (UTC). ერთი შემოწმების განმეორებითი ცვლილებები გაერთიანებულია; სტატუსის წასვლა-დაბრუნების გადასვლა შენახულია."
+
+#: doctor_scheduling.php
+#, php-format
+msgid "%s: %s -> %s (latest change %s)"
+msgstr "%s: %s -> %s (ბოლო ცვლილება %s)"
+
+#: doctor_scheduling.php
+#, php-format
+msgid "%d further status changes are not listed because the alert queue reached its storage limit."
+msgstr "კიდევ %d სტატუსის ცვლილება არ არის ჩამოთვლილი, რადგან შეტყობინებების რიგმა შენახვის ლიმიტს მიაღწია."
+
+#: doctor_scheduling.php
+msgid "Open Utilities > Doctor for current measurements, recommended actions, and verification steps."
+msgstr "მიმდინარე გაზომვების, რეკომენდებული მოქმედებებისა და გადამოწმების ნაბიჯებისთვის გახსენით ხელსაწყოები > Doctor."
+
+#: doctor_scheduling.php
+#, php-format
+msgid "Cacti Doctor: %d retained status changes"
+msgstr "Cacti Doctor: %d შენახული სტატუსის ცვლილება"
+
+#: doctor_scheduling.php
+msgid "Doctor schedule is already running or the database lock is unavailable."
+msgstr "Doctor-ის დაგეგმილი გაშვება უკვე მიმდინარეობს ან მონაცემთა ბაზის ბლოკირება მიუწვდომელია."
+
+#: doctor_web.php
+msgid "The finding could not be acknowledged. Run Doctor again, then acknowledge the current result."
+msgstr "მიგნების დადასტურება ვერ მოხერხდა. გაუშვით Doctor ხელახლა და შემდეგ დაადასტურეთ მიმდინარე შედეგი."
+
+#: doctor_web.php
+msgid "The warning exception could not be saved. Use a fresh assessed warning, an owner, a reason and an expiry within 90 days."
+msgstr "გაფრთხილების გამონაკლისის შენახვა ვერ მოხერხდა. გამოიყენეთ ახალი შეფასებული გაფრთხილება, პასუხისმგებელი პირი, მიზეზი და 90 დღის ფარგლებში არსებული ვადა."
+
+#: doctor_web.php
+msgid "Confirm repair"
+msgstr "შეკეთების დადასტურება"
+
+#: doctor_web.php
+msgid "Approval expires after five minutes and is invalidated by a changed filesystem. The acting account must be able to create directories or change owner permissions."
+msgstr "დამტკიცების ვადა იწურება ხუთ წუთში და უქმდება ფაილური სისტემის ცვლილებისას. მოქმედ ანგარიშს უნდა შეეძლოს დირექტორიების შექმნა ან მფლობელის უფლებების შეცვლა."
+
+#: doctor_web.php
+msgid "Repair prerequisites are not met. No changes will be made."
+msgstr "შეკეთების წინაპირობები არ არის დაკმაყოფილებული. ცვლილებები არ განხორციელდება."
+
+#: doctor_web.php
+msgid "Cancel"
+msgstr "გაუქმება"
+
+#: doctor_web.php
+#, php-format
+msgid "Last observation: %s UTC."
+msgstr "ბოლო დაკვირვება: %s UTC."
+
+#: doctor_web.php
+msgid "No completed diagnostic report is available."
+msgstr "დასრულებული დიაგნოსტიკური ანგარიში მიუწვდომელია."
+
+#: doctor_web.php
+msgid "Health is unknown: observations are missing or stale."
+msgstr "მდგომარეობა უცნობია: დაკვირვებები აკლია ან მოძველებულია."
+
+#: doctor_web.php
+msgid "Run diagnostic checks"
+msgstr "დიაგნოსტიკური შემოწმებების გაშვება"
+
+#: doctor_web.php
+msgid "Doctor settings"
+msgstr "Doctor-ის პარამეტრები"
+
+#: doctor_web.php setup.php
+msgid "Cacti Doctor"
+msgstr "Cacti Doctor"
+
+#: doctor_web.php
+#, php-format
+msgid "Installation health: %d passed, %d warnings, %d failed"
+msgstr "ინსტალაციის მდგომარეობა: %d წარმატებული, %d გაფრთხილება, %d შეცდომა"
+
+#: doctor_web.php
+msgid "Category"
+msgstr "კატეგორია"
+
+#: doctor_web.php
+msgid "Check"
+msgstr "შემოწმება"
+
+#: doctor_web.php
+msgid "Status"
+msgstr "სტატუსი"
+
+#: doctor_web.php
+msgid "Details"
+msgstr "დეტალები"
+
+#: doctor_web.php
+msgid "Action"
+msgstr "მოქმედება"
+
+#: doctor_web.php
+msgid "Acknowledged; health status unchanged."
+msgstr "დადასტურებულია; მდგომარეობის სტატუსი უცვლელია."
+
+#: doctor_web.php
+msgid "Acknowledge"
+msgstr "დადასტურება"
+
+#: doctor_web.php
+#, php-format
+msgid "Owner: %s; review by %s UTC. Reason: %s"
+msgstr "პასუხისმგებელი: %s; გადახედვა %s UTC-მდე. მიზეზი: %s"
+
+#: doctor_web.php
+msgid "Investigate a symptom"
+msgstr "სიმპტომის გამოკვლევა"
+
+#: doctor_web.php
+msgid "Investigate"
+msgstr "გამოკვლევა"
+
+#: doctor_web.php
+msgid "Recent scheduled checks"
+msgstr "ბოლო დაგეგმილი შემოწმებები"
+
+#: doctor_web.php
+msgid "Failed"
+msgstr "ჩავარდნილი"
+
+#: doctor_web.php
+msgid "Observation (UTC)"
+msgstr "დაკვირვება (UTC)"
+
+#: doctor_web.php
+msgid "Passed"
+msgstr "წარმატებული"
+
+#: doctor_web.php
+msgid "Warnings"
+msgstr "გაფრთხილებები"
+
+#: doctor_web.php
+msgid "Warning exceptions"
+msgstr "გაფრთხილების გამონაკლისები"
+
+#: doctor_web.php
+msgid "Owner"
+msgstr "პასუხისმგებელი"
+
+#: doctor_web.php
+msgid "Reason"
+msgstr "მიზეზი"
+
+#: doctor_web.php
+msgid "Review date (UTC)"
+msgstr "გადახედვის თარიღი (UTC)"
+
+#: doctor_web.php
+msgid "Accept warning"
+msgstr "გაფრთხილების მიღება"
+
+#: doctor_web.php
+msgid "Expired"
+msgstr "ვადაგასული"
+
+#: doctor_web.php
+msgid "Check not present in this report; verify its ID."
+msgstr "შემოწმება ამ ანგარიშში არ არის; გადაამოწმეთ მისი ID."
+
+#: doctor_web.php
+msgid "Remove exception"
+msgstr "გამონაკლისის წაშლა"
+
+#: doctor_web.php
+msgid "Audit history"
+msgstr "აუდიტის ისტორია"
+
+#: doctor_workflows.php
+msgid "Repair refused"
+msgstr "შეკეთებაზე უარი ითქვა"
+
+#: doctor_workflows.php
+msgid "The approved plan is expired or the filesystem changed. Preview the repair again."
+msgstr "დამტკიცებული გეგმის ვადა გავიდა ან ფაილური სისტემა შეიცვალა. ხელახლა ნახეთ შეკეთების წინასწარი ხედვა."
+
+#: doctor_workflows.php
+msgid "The audit record could not be saved. No repair was attempted."
+msgstr "აუდიტის ჩანაწერის შენახვა ვერ მოხერხდა. შეკეთება არ დაწყებულა."
+
+#: doctor_workflows.php
+msgid "The completion audit failed; inspect the filesystem and the started audit record."
+msgstr "დასრულების აუდიტი ვერ შესრულდა; შეამოწმეთ ფაილური სისტემა და დაწყებული აუდიტის ჩანაწერი."
+
+#: setup.php
+msgid "Doctor Administrator"
+msgstr "Doctor ადმინისტრატორი"
+
+#: setup.php
+msgid "Doctor Operator"
+msgstr "Doctor ოპერატორი"
+
+#: setup.php
+msgid "Doctor Viewer"
+msgstr "Doctor დამთვალიერებელი"
+
+#: setup.php
+msgid "Utilities"
+msgstr "ხელსაწყოები"
+
+#: setup.php
+msgid "System Administration"
+msgstr "სისტემის ადმინისტრირება"
+
+#: setup.php
+msgid "Scheduled Checks"
+msgstr "დაგეგმილი შემოწმებები"
+
+#: setup.php
+msgid "Run Checks on a Schedule"
+msgstr "შემოწმებების გაშვება განრიგით"
+
+#: setup.php
+msgid "Run every Doctor check in the background after the poller and record each check's status."
+msgstr "გაუშვით Doctor-ის ყველა შემოწმება ფონურ რეჟიმში პოლერის შემდეგ და ჩაიწერეთ თითოეული შემოწმების სტატუსი."
+
+#: setup.php
+msgid "Check Interval"
+msgstr "შემოწმების ინტერვალი"
+
+#: setup.php
+msgid "How often the scheduled checks run."
+msgstr "რამდენად ხშირად ეშვება დაგეგმილი შემოწმებები."
+
+#: setup.php
+msgid "Every 15 Minutes"
+msgstr "ყოველ 15 წუთში"
+
+#: setup.php
+msgid "Every Hour"
+msgstr "ყოველ საათში"
+
+#: setup.php
+msgid "Every 6 Hours"
+msgstr "ყოველ 6 საათში"
+
+#: setup.php
+msgid "Every Day"
+msgstr "ყოველდღე"
+
+#: setup.php
+msgid "Alert Email Addresses"
+msgstr "შეტყობინებების ელფოსტის მისამართები"
+
+#: setup.php
+msgid "Comma-separated addresses to email when a check starts or stops failing. Leave empty to only log changes to the Cacti log."
+msgstr "მძიმით გამოყოფილი მისამართები წერილის გასაგზავნად, როდესაც შემოწმება იწყებს ან წყვეტს შეცდომით დასრულებას. დატოვეთ ცარიელი ცვლილებების მხოლოდ Cacti-ის ჟურნალში ჩასაწერად."
+
+#: setup.php
+msgid "Alert on Warnings"
+msgstr "შეტყობინება გაფრთხილებებზე"
+
+#: setup.php
+msgid "Also alert when a check moves into or out of a warning."
+msgstr "ასევე გაიგზავნოს შეტყობინება, როდესაც შემოწმება გადადის გაფრთხილების სტატუსში ან გამოდის მისგან."
+
+#: setup.php
+msgid "Thresholds"
+msgstr "ზღვრები"
+
+#: setup.php
+msgid "Poller Run Time Warning (percent)"
+msgstr "პოლერის შესრულების დროის გაფრთხილება (პროცენტი)"
+
+#: setup.php
+msgid "Warn when the last main-poller run used this share of the polling interval. Runs that take the whole interval always fail."
+msgstr "გაფრთხილება, როდესაც მთავარი პოლერის ბოლო გაშვებამ გამოკითხვის ინტერვალის ეს წილი გამოიყენა. გაშვებები, რომლებიც მთელ ინტერვალს იკავებს, ყოველთვის შეცდომად ფასდება."
+
+#: setup.php
+msgid "RRA Disk Free Warning (percent)"
+msgstr "RRA დისკის თავისუფალი ადგილის გაფრთხილება (პროცენტი)"
+
+#: setup.php
+msgid "Warn when free space on the RRA file system drops below this percentage."
+msgstr "გაფრთხილება, როდესაც RRA ფაილურ სისტემაზე თავისუფალი ადგილი ამ პროცენტზე დაბლა ეცემა."
+
+#: setup.php
+msgid "Fail when free space on the RRA file system drops below this percentage."
+msgstr "შეცდომა, როდესაც RRA ფაილურ სისტემაზე თავისუფალი ადგილი ამ პროცენტზე დაბლა ეცემა."
+
+#: setup.php
+msgid "RRA Disk Free Failure (percent)"
+msgstr "RRA დისკის თავისუფალი ადგილის შეცდომა (პროცენტი)"
+
+#: setup.php
+msgid "Clock Drift Warning (seconds)"
+msgstr "საათის აცდენის გაფრთხილება (წამი)"
+
+#: setup.php
+msgid "Warn when the database and PHP clocks differ by more than this."
+msgstr "გაფრთხილება, როდესაც მონაცემთა ბაზისა და PHP-ის საათები ამაზე მეტით განსხვავდება."
+
+#: setup.php
+msgid "Clock Drift Failure (seconds)"
+msgstr "საათის აცდენის შეცდომა (წამი)"
+
+#: setup.php
+msgid "Fail when the database and PHP clocks differ by more than this."
+msgstr "შეცდომა, როდესაც მონაცემთა ბაზისა და PHP-ის საათები ამაზე მეტით განსხვავდება."
+
+#: setup.php
+msgid "RRD Stale Intervals"
+msgstr "RRD მოძველების ინტერვალები"
+
+#: setup.php
+msgid "Warn after this many collection intervals without a file update (1 to 100)."
+msgstr "გაფრთხილება ფაილის განახლების გარეშე გასული შეგროვების ამდენი ინტერვალის შემდეგ (1-დან 100-მდე)."
+
+#: setup.php
+msgid "Additional disk-write delay for external caching (0 to 86400). Boost adds its own allowance."
+msgstr "დისკზე ჩაწერის დამატებითი დაყოვნება გარე ქეშირებისთვის (0-დან 86400-მდე). Boost თავის დაშვებას თავად ამატებს."
+
+#: setup.php
+msgid "Deferred RRD Write Allowance (seconds)"
+msgstr "გადავადებული RRD ჩაწერის დაშვება (წამი)"
+
+#: setup.php
+msgid "Cacti Log Size Warning (MB)"
+msgstr "Cacti-ის ჟურნალის ზომის გაფრთხილება (MB)"
+
+#: setup.php
+msgid "Warn when the Cacti log grows beyond this size, which usually means log rotation is not running."
+msgstr "გაფრთხილება, როდესაც Cacti-ის ჟურნალი ამ ზომას აჭარბებს, რაც ჩვეულებრივ ნიშნავს, რომ ჟურნალის როტაცია არ მუშაობს."
