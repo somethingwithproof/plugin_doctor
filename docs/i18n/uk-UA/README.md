@@ -1,4 +1,4 @@
-<!-- Source: README.md; SHA256: ee03c7ac68aca21c8155c29b5b43a1f206c2f0c379c8b07bb4113919c18aafde -->
+<!-- Source: README.md; SHA256: 490628bb7f70f4cf1a8c43b302246fd2e870725a6649c628762608b4a76db65b -->
 
 <!-- translations:start -->
 [English](../../../README.md) | [简体中文](../zh-CN/README.md) | [हिन्दी](../hi-IN/README.md) | [Español (España)](../es-ES/README.md) | [Español (Latinoamérica)](../es-419/README.md) | [العربية (السعودية)](../ar-SA/README.md) | [Afrikaans](../af-ZA/README.md) | [አማርኛ](../am-ET/README.md) | [العربية (مصر)](../ar-EG/README.md) | [العربية (المغرب)](../ar-MA/README.md) | [বাংলা](../bn-BD/README.md) | [Bosanski](../bs-BA/README.md) | [Deutsch](../de-DE/README.md) | [فارسی](../fa-IR/README.md) | [Filipino](../fil-PH/README.md) | [Français](../fr-FR/README.md) | [Français (Maroc)](../fr-MA/README.md) | [Français (Sénégal)](../fr-SN/README.md) | [Hausa](../ha-NG/README.md) | [עברית](../he-IL/README.md) | [Hrvatski](../hr-HR/README.md) | [Bahasa Indonesia](../id-ID/README.md) | [Igbo](../ig-NG/README.md) | [Italiano](../it-IT/README.md) | [日本語](../ja-JP/README.md) | [한국어](../ko-KR/README.md) | [Malagasy](../mg-MG/README.md) | [मराठी](../mr-IN/README.md) | [Bahasa Melayu](../ms-MY/README.md) | [Nederlands](../nl-NL/README.md) | [Polski](../pl-PL/README.md) | [Português (Brasil)](../pt-BR/README.md) | [Русский](../ru-RU/README.md) | [Kinyarwanda](../rw-RW/README.md) | [Soomaali](../so-SO/README.md) | [Српски](../sr-RS/README.md) | [Svenska](../sv-SE/README.md) | [Kiswahili](../sw-KE/README.md) | [தமிழ்](../ta-IN/README.md) | [తెలుగు](../te-IN/README.md) | [ไทย](../th-TH/README.md) | [Türkçe](../tr-TR/README.md) | [Українська](README.md) | [اردو](../ur-PK/README.md) | [Tiếng Việt](../vi-VN/README.md) | [isiXhosa](../xh-ZA/README.md) | [Yorùbá](../yo-NG/README.md) | [繁體中文](../zh-TW/README.md) | [isiZulu](../zu-ZA/README.md)
@@ -53,13 +53,15 @@ Cacti 1.2.31 під керуванням PHP 8.3.36, включно з пере�
 | Пристрої | Увімкнені пристрої, які недоступні або відновлюються, три пристрої, що недоступні найдовше, з їхньою останньою помилкою, а також збій, коли більшість пристроїв недоступні одночасно |
 | Опитувач | Тип та інтервал опитувача, час з моменту останнього завершення головного опитувача, тривалість роботи відносно інтервалу, вихідні дані опитувача, які не потрапили до файлу RRD, віддалені опитувачі, що припинили звітувати, зупинка Boost і конфігурація Spine, яка вказує на іншу базу даних |
 
-Кожна перевірка має стабільний ідентифікатор, наприклад `database.timezone` або `binary.rrdtool`, щоб скрипти могли орієнтуватися на окремі результати.
+Кожна перевірка має стабільний ідентифікатор, наприклад `database.timezone` або `binary.rrdtool`, щоб скрипти могли орієнтуватися на окремі результати. Увімкнені плагіни можуть додавати додаткові перевірки та вкладення пакета підтримки через хук `doctor_register_checks`, а Doctor надає `plugin_mcp` діагностичні можливості лише для читання через `abilities_register`.
 
 ## Мапа коду та тестів
 
 | Поведінка | Реалізація | Тестові підтвердження в цьому репозиторії |
 |---|---|---|
-| Діагностичні перевірки та стабільні ідентифікатори звітів | [doctor_functions.php](../../../doctor_functions.php) | [DoctorFunctionsTest.php](../../../tests/DoctorFunctionsTest.php), [AssertDoctorReport.php](../../../tests/ci/AssertDoctorReport.php) |
+| Діагностичні перевірки та стабільні ідентифікатори звітів | [doctor_functions.php](../../../doctor_functions.php) | [DoctorFunctionsTest.php](../../../tests/DoctorFunctionsTest.php), [DatabaseHealthTest.php](../../../tests/DatabaseHealthTest.php), [AssertDoctorReport.php](../../../tests/ci/AssertDoctorReport.php) |
+| Хук перевірок плагінів (`doctor_register_checks`) | [doctor_plugins.php](../../../doctor_plugins.php) | [PluginHooksTest.php](../../../tests/PluginHooksTest.php) |
+| Діагностичні можливості MCP (`abilities_register`) | [doctor_abilities.php](../../../doctor_abilities.php) | [AbilitiesTest.php](../../../tests/AbilitiesTest.php) |
 | Доступ із урахуванням ролей та вебзвіти з приховуванням конфіденційних даних | [doctor_access.php](../../../doctor_access.php), [doctor_web.php](../../../doctor_web.php) | [AccessTest.php](../../../tests/AccessTest.php), [WebAccessTest.php](../../../tests/WebAccessTest.php) |
 | Покрокове дослідження симптомів | [doctor_diagnosis.php](../../../doctor_diagnosis.php) | [DiagnosisTest.php](../../../tests/DiagnosisTest.php) |
 | Актуальність RRD та обробка відкладеного запису | [doctor_rrd.php](../../../doctor_rrd.php) | [RrdFreshnessTest.php](../../../tests/RrdFreshnessTest.php) |
@@ -200,7 +202,7 @@ php plugins/doctor/cli/doctor.php --format=prometheus > /var/lib/node_exporter/t
 php plugins/doctor/cli/doctor.php --bundle=/tmp/cacti-doctor.txt
 ```
 
-Пакет являє собою єдиний текстовий файл із версіями Doctor, Cacti, PHP, ОС і бази даних, статистикою опитувача та Boost, повним звітом та останніми 200 рядками журналу Cacti. Значення після назв паролів, секретів, токенів, community та ключів маскуються. Doctor створює файл, доступний для читання лише його власнику, та відмовляється перезаписувати наявний файл. Перегляньте його, перш ніж публікувати будь-де.
+Пакет являє собою єдиний текстовий файл із версіями Doctor, Cacti, PHP, ОС і бази даних, статистикою опитувача та Boost, повним звітом, вкладеннями пакета підтримки від плагінів у розділі `== Plugin attachments` (за наявності) та останніми 200 рядками журналу Cacti. Значення після назв паролів, секретів, токенів, community та ключів маскуються. Doctor створює файл, доступний для читання лише його власнику, та відмовляється перезаписувати наявний файл. Перегляньте його, перш ніж публікувати будь-де.
 
 ## Політика виправлень
 
@@ -246,6 +248,63 @@ Boost додає подвійний налаштований інтервал с
 
 Оновлення створює таблиці `plugin_doctor_audit` і `plugin_doctor_acceptance` без зміни даних застосунку Cacti. Експортуйте потрібну історію перед видаленням плагіна: деінсталяція видаляє обидві таблиці плагіна та його налаштування. Відкат файлів плагіна залишає таблиці доступними для аналізу, але старіші версії не враховують винятки для попереджень.
 
+## Перевірки плагінів (`doctor_register_checks`)
+
+Увімкнені плагіни Cacti можуть надавати діагностичні перевірки лише для читання та необов'язкові вкладення пакета підтримки, зареєструвавши хук `doctor_register_checks`:
+
+```php
+api_plugin_register_hook('sample', 'doctor_register_checks', 'sample_doctor_checks', 'setup.php');
+```
+
+Doctor викликає увімкнені неінтегровані плагіни, зареєстровані на `doctor_register_checks` (пропускаючи `doctor` і `cacti`), визначаючи файл хука суворо в межах власного каталогу плагіна. Функція зворотного виклику отримує `['mode' => 'run' | 'list', 'plugin' => '<slug>']` і повертає або список дескрипторів перевірок, або оболонку з ключем `checks` і необов'язковим ключем `attachments`:
+
+```php
+function sample_doctor_checks($context) {
+	return [
+		'checks' => [
+			[
+				'id'          => 'sample.queue_depth',
+				'plugin'      => 'sample',
+				'category'    => 'Sample',
+				'title'       => 'Sample queue depth',
+				'status'      => 'ok',
+				'message'     => 'Queue is healthy.',
+				'details'     => ['pending' => 0],
+				'remediation' => ''
+			]
+		],
+		'attachments' => [
+			[
+				'title'   => 'Sample diagnostics',
+				'content' => "worker=ok\n"
+			]
+		]
+	];
+}
+```
+
+Кожен дескриптор перевірки плагіна проходить валідацію перед включенням:
+
+- Обов'язкові ключі: `id`, `plugin`, `category`, `title`, `status`, `message`, `details` та `remediation`.
+- `plugin` має відповідати зареєстрованому ідентифікатору плагіна (`[a-z0-9_]{1,64}`). `id` має відповідати шаблону `[a-z0-9_.]{1,128}`, починатися з `<plugin>.` і не збігатися з наявним ідентифікатором базової або плагінної перевірки.
+- `status` має дорівнювати `ok`, `warn`, `fail` або `info`. `ok` відображається як `pass` у звітах Doctor; `info` має інформаційний характер і не викликає збоїв у CLI, Nagios, Prometheus чи запланованих сповіщеннях.
+- `category` (до 64 байтів) і `title` (до 256 байтів) повинні бути непорожніми рядками без керівних символів. `message` (непорожній, до 2048 байтів) і `remediation` (до 2048 байтів) повинні бути рядками.
+- `details` приймає рядок (до 8192 байтів) або скалярний/вкладений масив (максимальна глибина 4, у кодуванні JSON до 16384 байтів; об'єкти та ресурси відхиляються).
+- Необов'язкові вкладення пакета підтримки вимагають непорожнього поля `title` (до 128 байтів, без керівних символів) і рядка `content` розміром до 65536 байтів (64 KiB).
+
+Doctor застосовує обмеження у 32 перевірки та 8 вкладень на один плагін (загалом 64 перевірки плагінів і 32 вкладення). Кожен хук виконується у власному блоці `try`/`catch`, тож винятки або дані, що не є масивом, редагуються з приховуванням конфіденційних даних і записуються до журналу Cacti (категорія `DOCTOR`) без впливу на базові перевірки чи інші плагіни. Некоректно сформовані дескриптори відхиляються й фіксуються в журналі, тоді як коректні дескриптори з того самого плагіна продовжують виконуватися. Перевірки плагінів завжди доступні лише для читання (`repairable: false`), а рядкові значення та конфіденційні асоціативні ключі приховуються перед відображенням, експортом або формуванням пакета підтримки. Перевірки плагінів, що пройшли валідацію, відображаються у вебінтерфейсі, текстовому виводі та виводах JSON/Nagios/Prometheus у CLI, у запланованому відстеженні стану та в пакетах підтримки.
+
+## Інтеграція з MCP (`abilities_register`)
+
+Doctor реєструє хук `abilities_register` (`doctor_abilities_register` у файлі `doctor_abilities.php`), щоб `plugin_mcp` виявляв його діагностичні можливості, коли обидва плагіни ввімкнено. Doctor реєструє категорію `diagnostics` (`Diagnostics`) та дві ідемпотентні можливості лише для читання без деструктивних дій:
+
+| ID можливості | Необов'язкові аргументи | Вивід |
+|---|---|---|
+| `doctor-run-checks` | `category` (рядок, макс. 64 символи), `status` (`pass`, `ok`, `warn`, `fail`, `info`) | `summary` (`total`, `pass`, `warn`, `fail`, `info`) і до 256 знеособлених записів `findings` (`id`, `plugin`, `category`, `title`, `status`, `message`, `remediation`) |
+| `doctor-list-checks` | `category` (рядок, макс. 64 символи), `plugin` (рядок, макс. 64 символи) | До 256 записів `checks` (`id`, `plugin`, `category`, `title`), що охоплюють усі 45 вбудованих перевірок і перевірки ввімкнених плагінів |
+
+Обидві можливості працюють суворо лише для читання та ніколи не запускають виправлення. Окрім власних областей прав і засобів контролю доступу до можливостей у `plugin_mcp` (можливості плагіна спочатку приховані в MCP, доки адміністратор не відкриє їх), Doctor вимагає, щоб власник токена мав область прав **Doctor Viewer** або вищу область прав Doctor. `doctor-run-checks` обмежує `devices.health` пристроями, дозволеними власнику токена, включає `logging.recent_errors` лише тоді, коли користувач має область прав Cacti 18 або 19, виключає `filesystem.rrd_files` і включає `filesystem.rrd_stale` з урахуванням прав на пристрої лише для **Doctor Operator** або **Doctor Administrator**.
+
 ## Вимоги
 
 | Cacti | PHP | Примітки |
@@ -263,20 +322,22 @@ Boost додає подвійний налаштований інтервал с
 
 ## Розробка
 
-Набір модульних тестів використовує Pest і запускається на PHP 8.2 або новішій версії:
+Набір модульних тестів використовує Pest, а статичний аналіз використовує PHPStan (рівень 6), обидва працюють на PHP 8.2 або новішій версії:
 
 ```console
 composer install
+composer phpstan
 composer test
 ```
 
 Тести замінюють функції Cacti, які викликає Doctor, невеликими заглушками у файлі `tests/CactiStubs.php`, тому вони виконуються без інсталяції Cacti.
 
-GitHub Actions виконує чотири типи перевірок під час кожного push та pull request:
+GitHub Actions виконує п'ять типів перевірок під час кожного push та pull request:
 
-- `php -l` для кожного файлу PHP на версіях PHP 5.4, 5.6, 7.0, 7.1, 7.4 та від 8.0 до 8.4.
-- Набір модульних тестів на PHP 8.2, 8.3 і 8.4.
+- Тести контракту пакування випусків (`tests/test_release.py`) та збірка архіву (`tools/build_release.py`).
 - `locales/build_gettext.sh --check`, який завершується з помилкою у разі застарілого шаблону перекладу, неповного або нечіткого (fuzzy) каталогу чи скомпільованого каталогу, що відрізняється від вихідного.
+- `php -l` для кожного файлу PHP на версіях PHP 5.4, 5.6, 7.0, 7.1, 7.4 та від 8.0 до 8.4.
+- `composer phpstan` (PHPStan рівень 6) та `composer test` (набір модульних тестів Pest) на PHP 8.2, 8.3 і 8.4.
 - Сім інтеграційних завдань, які встановлюють Cacti 1.2.20, поточну гілку 1.2.x і `develop` із MySQL та MariaDB, а також з cmd.php і Spine. Кожне завдання встановлює та вмикає плагін, запускає повний звіт CLI і перевіряє схему звіту, підсумкові показники, очікувані статуси та точний набір збоїв. Потім воно порушує шлях до виконуваного файлу та часову позначку опитувача, підтверджує, що про обидві проблеми повідомлено, відновлює їх, перевіряє роботу виправлення та його підтвердження, а також виконує вимкнення, увімкнення, видалення й повторне встановлення. У разі збою завдання звіт у форматі JSON зберігається як артефакт.
 
 ## Участь у розробці

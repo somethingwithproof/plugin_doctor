@@ -17,6 +17,11 @@
  * more details.
  */
 
+/**
+ * Install the Doctor plugin hooks, realms, and workflow tables.
+ *
+ * @return void
+ */
 function plugin_doctor_install() {
 	doctor_setup_hooks();
 	doctor_setup_realms();
@@ -24,7 +29,11 @@ function plugin_doctor_install() {
 	doctor_setup_workflows();
 }
 
-/** Keep the original realm ID and grants as Administrator during upgrades. */
+/**
+ * Keep the original realm ID and grants as Administrator during upgrades.
+ *
+ * @return bool
+ */
 function doctor_setup_realms() {
 	api_plugin_register_realm('doctor', 'doctor.php', __('Doctor Administrator', 'doctor'), 1);
 	api_plugin_register_realm('doctor', 'doctor_operator.php', __('Doctor Operator', 'doctor'), 0);
@@ -43,6 +52,9 @@ function doctor_setup_realms() {
  * again to add hooks introduced by a newer version. Cacti 1.2.x and later
  * reject registration from a function whose name lacks install, upgrade, or
  * setup.
+ *
+ * @param bool $enable
+ * @return void
  */
 function doctor_setup_hooks($enable = false) {
 	api_plugin_register_hook('doctor', 'config_arrays', 'doctor_config_arrays', 'setup.php', $enable);
@@ -50,14 +62,27 @@ function doctor_setup_hooks($enable = false) {
 	api_plugin_register_hook('doctor', 'draw_navigation_text', 'doctor_draw_navigation_text', 'setup.php', $enable);
 	api_plugin_register_hook('doctor', 'is_console_page', 'doctor_is_console_page', 'setup.php', $enable);
 	api_plugin_register_hook('doctor', 'poller_bottom', 'doctor_poller_bottom', 'doctor_functions.php', $enable);
+	api_plugin_register_hook('doctor', 'abilities_register', 'doctor_abilities_register', 'doctor_abilities.php', $enable);
+	api_plugin_register_hook('doctor', 'casc_register_providers', 'doctor_casc_register_providers', 'setup.php', $enable);
+	api_plugin_register_hook('doctor', 'api_register_resources', 'doctor_api_register_resources', 'setup.php', $enable);
 }
 
+/**
+ * Remove plugin-owned tables and settings when uninstalling Doctor.
+ *
+ * @return void
+ */
 function plugin_doctor_uninstall() {
 	db_execute('DROP TABLE IF EXISTS plugin_doctor_acceptance');
 	db_execute('DROP TABLE IF EXISTS plugin_doctor_audit');
 	db_execute("DELETE FROM settings WHERE name LIKE 'doctor\\_%'");
 }
 
+/**
+ * Verify that Doctor hooks, realms, and workflow tables are configured.
+ *
+ * @return bool
+ */
 function plugin_doctor_check_config() {
 	doctor_setup_hooks();
 
@@ -65,11 +90,18 @@ function plugin_doctor_check_config() {
 	return doctor_setup_realms() && doctor_setup_workflows();
 }
 
+/**
+ * Report whether Doctor has pending upgrade migrations.
+ *
+ * @return bool
+ */
 function plugin_doctor_upgrade() {
 	return false;
 }
 
 /**
+ * Parse and return plugin metadata from INFO.
+ *
  * @return array<string,string>
  */
 function plugin_doctor_version() {
@@ -80,6 +112,11 @@ function plugin_doctor_version() {
 	return is_array($info) && isset($info['info']) ? $info['info'] : [];
 }
 
+/**
+ * Synchronize hooks/realms/workflows on upgrades and register Doctor navigation.
+ *
+ * @return void
+ */
 function doctor_config_arrays() {
 	global $menu;
 
@@ -111,7 +148,14 @@ function doctor_config_arrays() {
 	}
 }
 
-/** @return array<string,string> */
+/**
+ * Build a numeric threshold textbox setting descriptor for Cacti settings UI.
+ *
+ * @param string $name
+ * @param string $description
+ * @param string $default
+ * @return array<string,string>
+ */
 function doctor_threshold_setting($name, $description, $default) {
 	return [
 		'friendly_name' => $name,
@@ -123,6 +167,11 @@ function doctor_threshold_setting($name, $description, $default) {
 	];
 }
 
+/**
+ * Register Doctor's configuration tab and settings in Cacti Settings.
+ *
+ * @return void
+ */
 function doctor_config_settings() {
 	global $tabs, $settings;
 
@@ -186,6 +235,8 @@ function doctor_config_settings() {
 }
 
 /**
+ * Add breadcrumb navigation entries for Doctor's web entry pages.
+ *
  * @param array<string,array<string,mixed>> $nav
  * @return array<string,array<string,mixed>>
  */
@@ -205,6 +256,382 @@ function doctor_draw_navigation_text($nav) {
 	return $nav;
 }
 
+/**
+ * Identify whether a URL targets one of Doctor's console pages.
+ *
+ * @param string $url
+ * @return bool
+ */
 function doctor_is_console_page($url) {
 	return preg_match('/doctor(?:_view|_operator)?\.php/', $url) === 1;
+}
+
+/**
+ * Describe Doctor's static configuration schema with a strict split between
+ * declarative config settings and runtime state.
+ *
+ * @return array<string,mixed>
+ */
+function doctor_casc_describe_schema() {
+	return [
+		'plugin'        => 'doctor',
+		'schemaVersion' => '1.0',
+		'schemaFile'    => 'schema/doctor.schema.yaml',
+		'config'        => [
+			'doctor_schedule_enabled'     => ['type' => 'checkbox', 'enum' => ['', 'on'], 'default' => ''],
+			'doctor_schedule_interval'    => ['type' => 'enum', 'enum' => ['15', '60', '360', '1440'], 'default' => '60'],
+			'doctor_alert_emails'         => ['type' => 'string', 'maxLength' => 255, 'default' => ''],
+			'doctor_alert_warnings'       => ['type' => 'checkbox', 'enum' => ['', 'on'], 'default' => ''],
+			'doctor_poller_warn_percent'  => ['type' => 'integer', 'minimum' => 1, 'maximum' => 99, 'default' => '80'],
+			'doctor_disk_warn_percent'    => ['type' => 'integer', 'minimum' => 1, 'maximum' => 99, 'default' => '10'],
+			'doctor_disk_fail_percent'    => ['type' => 'integer', 'minimum' => 1, 'maximum' => 99, 'default' => '2'],
+			'doctor_clock_warn_seconds'   => ['type' => 'integer', 'minimum' => 1, 'maximum' => 86400, 'default' => '5'],
+			'doctor_clock_fail_seconds'   => ['type' => 'integer', 'minimum' => 1, 'maximum' => 86400, 'default' => '60'],
+			'doctor_rrd_stale_intervals'  => ['type' => 'integer', 'minimum' => 1, 'maximum' => 100, 'default' => '3'],
+			'doctor_rrd_deferred_seconds' => ['type' => 'integer', 'minimum' => 0, 'maximum' => 86400, 'default' => '0'],
+			'doctor_log_warn_mb'          => ['type' => 'integer', 'minimum' => 1, 'maximum' => 1048576, 'default' => '100']
+		],
+		'state' => [
+			'settings' => [
+				'doctor_state',
+				'doctor_alert_state',
+				'doctor_alert_pending',
+				'doctor_alert_last_success',
+				'doctor_report_history',
+				'doctor_database_sample',
+				'doctor_last_started',
+				'doctor_last_completed',
+				'doctor_last_launch',
+				'doctor_last_alert_launch',
+				'doctor_last_run',
+				'doctor_schedule_failures',
+				'doctor_hooks_version',
+				'doctor_access_version',
+				'doctor_workflows_version'
+			],
+			'tables' => [
+				'plugin_doctor_acceptance',
+				'plugin_doctor_audit'
+			]
+		]
+	];
+}
+
+/**
+ * Export declarative Doctor configuration settings without runtime state.
+ *
+ * @param array<string,mixed> $options
+ * @return array{schemaVersion:string,config:array<string,string>}
+ */
+function doctor_casc_export($options = []) {
+	unset($options);
+	$schema = doctor_casc_describe_schema();
+	$config = [];
+
+	foreach ($schema['config'] as $key => $spec) {
+		$raw = read_config_option($key, true);
+		if ($raw === false || $raw === null || ($raw === '' && $spec['type'] !== 'checkbox' && $spec['type'] !== 'string')) {
+			$config[$key] = (string) $spec['default'];
+		} else {
+			$config[$key] = (string) $raw;
+		}
+	}
+
+	return [
+		'schemaVersion' => '1.0',
+		'config'        => $config
+	];
+}
+
+/**
+ * Validate a desired Doctor configuration payload against the static schema.
+ *
+ * Rejects unknown keys, runtime state keys, invalid types, and out-of-range
+ * threshold values.
+ *
+ * @param mixed $payload
+ * @return array<int,string>
+ */
+function doctor_casc_validate($payload) {
+	if (!is_array($payload)) {
+		return ['Payload must be an array.'];
+	}
+
+	$values = array_key_exists('config', $payload) ? $payload['config'] : $payload;
+	if (!is_array($values)) {
+		return ['Config section must be an array.'];
+	}
+
+	$schema    = doctor_casc_describe_schema();
+	$allowed   = $schema['config'];
+	$stateKeys = $schema['state']['settings'];
+	$errors    = [];
+	$resolved  = [];
+
+	foreach ($values as $key => $value) {
+		if (!is_string($key)) {
+			$errors[] = 'Configuration keys must be strings.';
+			continue;
+		}
+
+		if (in_array($key, $stateKeys, true)) {
+			$errors[] = 'Runtime state key cannot be managed as config: ' . $key;
+			continue;
+		}
+
+		if (!isset($allowed[$key])) {
+			$errors[] = 'Unknown configuration key: ' . $key;
+			continue;
+		}
+
+		$spec = $allowed[$key];
+		if ($spec['type'] === 'checkbox') {
+			if (is_bool($value)) {
+				$normalized = $value ? 'on' : '';
+			} elseif (is_string($value) && in_array($value, ['', 'on'], true)) {
+				$normalized = $value;
+			} else {
+				$errors[] = 'Invalid checkbox value for ' . $key . '; expected "", "on", or boolean.';
+				continue;
+			}
+			$resolved[$key] = $normalized;
+		} elseif ($spec['type'] === 'enum') {
+			$str = is_int($value) || is_string($value) ? (string) $value : null;
+			if ($str === null || !in_array($str, $spec['enum'], true)) {
+				$errors[] = 'Invalid value for ' . $key . '; allowed: ' . implode(', ', $spec['enum']) . '.';
+				continue;
+			}
+			$resolved[$key] = $str;
+		} elseif ($spec['type'] === 'string') {
+			if (!is_string($value)) {
+				$errors[] = 'Expected string value for ' . $key . '.';
+				continue;
+			}
+			if (strlen($value) > $spec['maxLength'] || preg_match('/[\x00-\x1f\x7f]/', $value)) {
+				$errors[] = 'Value for ' . $key . ' exceeds length limit or contains control characters.';
+				continue;
+			}
+			$resolved[$key] = $value;
+		} elseif ($spec['type'] === 'integer') {
+			if (is_int($value)) {
+				$intVal = $value;
+			} elseif (is_string($value) && preg_match('/\A[0-9]+\z/', $value)) {
+				$intVal = (int) $value;
+			} else {
+				$errors[] = 'Expected integer value for ' . $key . '.';
+				continue;
+			}
+			if ($intVal < $spec['minimum'] || $intVal > $spec['maximum']) {
+				$errors[] = 'Value for ' . $key . ' must be between ' . $spec['minimum'] . ' and ' . $spec['maximum'] . '.';
+				continue;
+			}
+			$resolved[$key] = (string) $intVal;
+		}
+	}
+
+	if (isset($resolved['doctor_disk_fail_percent'], $resolved['doctor_disk_warn_percent'])
+		&& (int) $resolved['doctor_disk_fail_percent'] >= (int) $resolved['doctor_disk_warn_percent']) {
+		$errors[] = 'doctor_disk_fail_percent must be lower than doctor_disk_warn_percent.';
+	}
+
+	if (isset($resolved['doctor_clock_warn_seconds'], $resolved['doctor_clock_fail_seconds'])
+		&& (int) $resolved['doctor_clock_warn_seconds'] >= (int) $resolved['doctor_clock_fail_seconds']) {
+		$errors[] = 'doctor_clock_warn_seconds must be lower than doctor_clock_fail_seconds.';
+	}
+
+	return $errors;
+}
+
+/**
+ * Compute a dry-run change plan comparing desired Doctor configuration against
+ * the current settings.
+ *
+ * @param mixed $desired
+ * @param array<string,mixed> $options
+ * @return array<int,array<string,mixed>>
+ */
+function doctor_casc_plan($desired, $options = []) {
+	unset($options);
+	$errors = doctor_casc_validate($desired);
+	if ($errors !== []) {
+		$items = [];
+		foreach ($errors as $error) {
+			$items[] = [
+				'operation' => 'error',
+				'key'       => 'doctor',
+				'message'   => $error
+			];
+		}
+
+		return $items;
+	}
+
+	$values   = is_array($desired) && array_key_exists('config', $desired) && is_array($desired['config']) ? $desired['config'] : (is_array($desired) ? $desired : []);
+	$exported = doctor_casc_export();
+	$current  = $exported['config'];
+	$described = doctor_casc_describe_schema();
+	$schema   = $described['config'];
+	$changes  = [];
+
+	foreach ($values as $key => $value) {
+		if (!isset($schema[$key])) {
+			continue;
+		}
+		if ($schema[$key]['type'] === 'checkbox' && is_bool($value)) {
+			$target = $value ? 'on' : '';
+		} else {
+			$target = (string) $value;
+		}
+		$existing = isset($current[$key]) ? $current[$key] : (string) $schema[$key]['default'];
+		if ($existing !== $target) {
+			$changes[] = [
+				'operation' => 'update',
+				'key'       => $key,
+				'from'      => $existing,
+				'to'        => $target,
+				'message'   => 'Update ' . $key . ' from "' . $existing . '" to "' . $target . '"'
+			];
+		}
+	}
+
+	return $changes;
+}
+
+/**
+ * Validate and apply declarative Doctor configuration changes.
+ *
+ * @param mixed $desired
+ * @param string $planHash
+ * @param array<string,mixed> $options
+ * @return array{ok:bool,applied:bool,errors:array<int,string>,changes:array<int,array<string,mixed>>}
+ */
+function doctor_casc_apply($desired, $planHash = '', $options = []) {
+	unset($planHash);
+	$errors = doctor_casc_validate($desired);
+	if ($errors !== []) {
+		return ['ok' => false, 'applied' => false, 'errors' => $errors, 'changes' => []];
+	}
+
+	$changes = doctor_casc_plan($desired, $options);
+	foreach ($changes as $change) {
+		if (isset($change['operation'], $change['key'], $change['to']) && $change['operation'] === 'update') {
+			set_config_option((string) $change['key'], (string) $change['to']);
+		}
+	}
+
+	return [
+		'ok'      => true,
+		'applied' => true,
+		'errors'  => [],
+		'changes' => $changes
+	];
+}
+
+/**
+ * Register Doctor's plain-array configuration-as-code provider descriptor on
+ * the casc_register_providers hook without importing any sibling plugin.
+ *
+ * @param mixed $registrar
+ * @return array<string,mixed>
+ */
+function doctor_casc_register_providers($registrar = null) {
+	$provider = [
+		'slug'           => 'doctor',
+		'schemaVersion'  => '1.0',
+		'schema'         => doctor_casc_describe_schema(),
+		'export'         => 'doctor_casc_export',
+		'validate'       => 'doctor_casc_validate',
+		'plan'           => 'doctor_casc_plan',
+		'apply'          => 'doctor_casc_apply',
+		'describeSchema' => 'doctor_casc_describe_schema'
+	];
+
+	if (is_object($registrar) && method_exists($registrar, 'register')) {
+		$registrar->register($provider);
+		return $provider;
+	}
+
+	if (is_array($registrar)) {
+		$registrar['doctor'] = $provider;
+		return $registrar;
+	}
+
+	return $provider;
+}
+
+/**
+ * List read-only Doctor check descriptors for the doctorChecks API collection.
+ *
+ * @param array<string,mixed> $context
+ * @return array<int,array{id:string,name:string,plugin:string,category:string,title:string,status:string}>
+ */
+function doctor_api_list_checks($context = []) {
+	unset($context);
+	require_once __DIR__ . '/doctor_abilities.php';
+
+	$items = [];
+	foreach (doctor_core_check_catalog() as $entry) {
+		$items[] = [
+			'id'       => $entry['id'],
+			'name'     => 'doctorChecks/' . $entry['id'],
+			'plugin'   => $entry['plugin'],
+			'category' => $entry['category'],
+			'title'    => $entry['title'],
+			'status'   => 'info'
+		];
+	}
+
+	return $items;
+}
+
+/**
+ * Retrieve a single read-only Doctor check descriptor by check identifier.
+ *
+ * @param string $id
+ * @param array<string,mixed> $context
+ * @return array{id:string,name:string,plugin:string,category:string,title:string,status:string}|null
+ */
+function doctor_api_get_check($id, $context = []) {
+	$target = is_string($id) ? trim($id) : '';
+	if ($target === '') {
+		return null;
+	}
+
+	foreach (doctor_api_list_checks($context) as $item) {
+		if ($item['id'] === $target) {
+			return $item;
+		}
+	}
+
+	return null;
+}
+
+/**
+ * Append read-only Doctor API resource descriptors on the
+ * api_register_resources hook without importing any sibling plugin.
+ *
+ * @param array<int|string,mixed> $resources
+ * @return array<int|string,mixed>
+ */
+function doctor_api_register_resources($resources = []) {
+	if (!is_array($resources)) {
+		$resources = [];
+	}
+
+	$resources[] = [
+		'plugin'        => 'doctor',
+		'collection'    => 'doctorChecks',
+		'singleton'     => 'doctorCheck',
+		'description'   => 'List registered core Doctor diagnostic checks.',
+		'realm_read'    => 'doctor_view.php',
+		'schema'        => 'schema/doctor.schema.yaml',
+		'filter_fields' => ['id', 'plugin', 'category', 'title', 'status'],
+		'order_fields'  => ['id', 'plugin', 'category', 'title', 'status'],
+		'handlers'      => [
+			'list' => 'doctor_api_list_checks',
+			'get'  => 'doctor_api_get_check'
+		]
+	];
+
+	return $resources;
 }

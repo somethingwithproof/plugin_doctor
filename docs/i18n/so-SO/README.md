@@ -1,4 +1,4 @@
-<!-- Source: README.md; SHA256: ee03c7ac68aca21c8155c29b5b43a1f206c2f0c379c8b07bb4113919c18aafde -->
+<!-- Source: README.md; SHA256: 490628bb7f70f4cf1a8c43b302246fd2e870725a6649c628762608b4a76db65b -->
 
 <!-- translations:start -->
 [English](../../../README.md) | [简体中文](../zh-CN/README.md) | [हिन्दी](../hi-IN/README.md) | [Español (España)](../es-ES/README.md) | [Español (Latinoamérica)](../es-419/README.md) | [العربية (السعودية)](../ar-SA/README.md) | [Afrikaans](../af-ZA/README.md) | [አማርኛ](../am-ET/README.md) | [العربية (مصر)](../ar-EG/README.md) | [العربية (المغرب)](../ar-MA/README.md) | [বাংলা](../bn-BD/README.md) | [Bosanski](../bs-BA/README.md) | [Deutsch](../de-DE/README.md) | [فارسی](../fa-IR/README.md) | [Filipino](../fil-PH/README.md) | [Français](../fr-FR/README.md) | [Français (Maroc)](../fr-MA/README.md) | [Français (Sénégal)](../fr-SN/README.md) | [Hausa](../ha-NG/README.md) | [עברית](../he-IL/README.md) | [Hrvatski](../hr-HR/README.md) | [Bahasa Indonesia](../id-ID/README.md) | [Igbo](../ig-NG/README.md) | [Italiano](../it-IT/README.md) | [日本語](../ja-JP/README.md) | [한국어](../ko-KR/README.md) | [Malagasy](../mg-MG/README.md) | [मराठी](../mr-IN/README.md) | [Bahasa Melayu](../ms-MY/README.md) | [Nederlands](../nl-NL/README.md) | [Polski](../pl-PL/README.md) | [Português (Brasil)](../pt-BR/README.md) | [Русский](../ru-RU/README.md) | [Kinyarwanda](../rw-RW/README.md) | [Soomaali](README.md) | [Српски](../sr-RS/README.md) | [Svenska](../sv-SE/README.md) | [Kiswahili](../sw-KE/README.md) | [தமிழ்](../ta-IN/README.md) | [తెలుగు](../te-IN/README.md) | [ไทย](../th-TH/README.md) | [Türkçe](../tr-TR/README.md) | [Українська](../uk-UA/README.md) | [اردو](../ur-PK/README.md) | [Tiếng Việt](../vi-VN/README.md) | [isiXhosa](../xh-ZA/README.md) | [Yorùbá](../yo-NG/README.md) | [繁體中文](../zh-TW/README.md) | [isiZulu](../zu-ZA/README.md)
@@ -50,13 +50,15 @@ Dhibaatooyinka Cacti badanaa waxay u muuqdaan calaamado: garaafyo madhan, poller
 | Aaladaha | Aaladaha shidan ee maqan (down) ama soo kabanaya, saddexda ugu muddada dheer ee maqan iyo khaladkoodii ugu dambeeyay, iyo guuldarro marka inta badan aaladuhu isku mar maqan yihiin |
 | Poller | Nooca iyo xilliga soo noqnoqoshada poller-ka, waqtiga ka soo wareegay markii ugu dambaysay ee poller-ka weyni dhammaystay, waqtiga shaqada marka loo eego xilliga soo noqnoqoshada, wax-soo-saarka poller-ka ee aan weligii gaarin fayl RRD, poller-rada fogfog ee joojiyay warbixinta, Boost taagan, iyo dejin Spine ah oo tilmaamaysa kayd xog oo ka duwan |
 
-Hubin kasta waxay leedahay aqoonsi (ID) joogto ah, sida `database.timezone` ama `binary.rrdtool`, si qoraallada otomaatiga ah (scripts) ay u adeegsan karaan natiijooyinka gaarka ah.
+Hubin kasta waxay leedahay aqoonsi (ID) joogto ah, sida `database.timezone` ama `binary.rrdtool`, si qoraallada otomaatiga ah (scripts) ay u adeegsan karaan natiijooyinka gaarka ah. Ku-darrada shidan waxay ku biirin karaan hubin dheeraad ah iyo lifaaqyada xirmada taageerada iyagoo adeegsanaya qabsatada `doctor_register_checks`, Doctor-na wuxuu u soo bandhigaa awoodaha ogaanshaha ee akhris-kaliya ah `plugin_mcp` iyadoo loo marayo `abilities_register`.
 
 ## Khariidadda koodhka iyo tijaabada
 
 | Dabeecadda | Hirgelinta | Caddaynta tijaabada ee kaydkan (repository) |
 |---|---|---|
-| Hubinta baaritaanka iyo aqoonsiyada warbixinta ee joogtada ah | [doctor_functions.php](../../../doctor_functions.php) | [DoctorFunctionsTest.php](../../../tests/DoctorFunctionsTest.php), [AssertDoctorReport.php](../../../tests/ci/AssertDoctorReport.php) |
+| Hubinta baaritaanka iyo aqoonsiyada warbixinta ee joogtada ah | [doctor_functions.php](../../../doctor_functions.php) | [DoctorFunctionsTest.php](../../../tests/DoctorFunctionsTest.php), [DatabaseHealthTest.php](../../../tests/DatabaseHealthTest.php), [AssertDoctorReport.php](../../../tests/ci/AssertDoctorReport.php) |
+| Qabsatada hubinta ku-darka (`doctor_register_checks`) | [doctor_plugins.php](../../../doctor_plugins.php) | [PluginHooksTest.php](../../../tests/PluginHooksTest.php) |
+| Awoodaha ogaanshaha ee MCP (`abilities_register`) | [doctor_abilities.php](../../../doctor_abilities.php) | [AbilitiesTest.php](../../../tests/AbilitiesTest.php) |
 | Gelitaanka ku salaysan doorka iyo warbixinnada webka ee xogta laga qariyay | [doctor_access.php](../../../doctor_access.php), [doctor_web.php](../../../doctor_web.php) | [AccessTest.php](../../../tests/AccessTest.php), [WebAccessTest.php](../../../tests/WebAccessTest.php) |
 | Baaritaannada calaamadaha ee la hago | [doctor_diagnosis.php](../../../doctor_diagnosis.php) | [DiagnosisTest.php](../../../tests/DiagnosisTest.php) |
 | Cusboonaanta RRD iyo maaraynta qorista dib loo dhigay | [doctor_rrd.php](../../../doctor_rrd.php) | [RrdFreshnessTest.php](../../../tests/RrdFreshnessTest.php) |
@@ -194,7 +196,7 @@ php plugins/doctor/cli/doctor.php --format=prometheus > /var/lib/node_exporter/t
 php plugins/doctor/cli/doctor.php --bundle=/tmp/cacti-doctor.txt
 ```
 
-Xirmadu waa hal fayl oo qoraal ah oo ay ku jiraan noocyada Doctor, Cacti, PHP, OS, iyo xog-kaydiyaha, tirakoobka poller-ka iyo Boost, warbixinta oo dhammaystiran, iyo 200-kii sadar ee ugu dambeeyay ee diiwaanka Cacti. Qiimayaasha raaca magacyada password, secret, token, community, iyo key waa la qariyaa. Doctor wuxuu faylka u abuuraa qaab uu akhrisan karo mulkiilihiisa oo keliya wuuna diidaa inuu dul-qoro fayl hore u jiray. Dib u eeg ka hor intaadan meelna ku daabicin.
+Xirmadu waa hal fayl oo qoraal ah oo ay ku jiraan noocyada Doctor, Cacti, PHP, OS, iyo xog-kaydiyaha, tirakoobka poller-ka iyo Boost, warbixinta oo dhammaystiran, wixii lifaaqyo xirmada taageerada ee ku-darrada ah ee ku hoos jira `== Plugin attachments`, iyo 200-kii sadar ee ugu dambeeyay ee diiwaanka Cacti. Qiimayaasha raaca magacyada password, secret, token, community, iyo key waa la qariyaa. Doctor wuxuu faylka u abuuraa qaab uu akhrisan karo mulkiilihiisa oo keliya wuuna diidaa inuu dul-qoro fayl hore u jiray. Dib u eeg ka hor intaadan meelna ku daabicin.
 
 ## Siyaasadda dayactirka
 
@@ -240,6 +242,63 @@ Ogeysiisyada digniinta ee jadwalsan waa la joojiyaa inta ka-reebitaanku shaqeyna
 
 Cusboonaysiintu waxay abuurtaa `plugin_doctor_audit` iyo `plugin_doctor_acceptance` iyada oo aan la beddelin xogta barnaamijka Cacti. Dhoofi taariikh kasta oo aad u baahan tahay ka hor intaadan ka saarin rakibaadda: ka saaristu waxay tirtirtaa labada miis ee plugin-ka iyo goobaha dejintiisa. Ku noqoshada faylasha plugin-ka waxay ka tagtaa miisaska kuwo diyaar u ah baaritaanka, laakiin noocyadii hore ma ixtiraamaan ka-reebitaanka digniinta.
 
+## Hubinta ku-darrada (`doctor_register_checks`)
+
+Ku-darrada Cacti ee shidan waxay ku biirin karaan hubinta ogaanshaha ee akhris-kaliya ah iyo lifaaqyada xirmada taageerada ee ikhtiyaariga ah iyagoo diiwaangelinaya qabsatada `doctor_register_checks`:
+
+```php
+api_plugin_register_hook('sample', 'doctor_register_checks', 'sample_doctor_checks', 'setup.php');
+```
+
+Doctor wuxuu wacaa ku-darrada shidan ee aan ku dhex jirin nidaamka ee ka diiwaangashan `doctor_register_checks` (isagoo ka boodaya `doctor` iyo `cacti`), wuxuuna si adag uga dhex raadiyaa faylka qabsatada galka ku-darka laftiisa. Wicitaanka dib-u-celinta wuxuu helaa `['mode' => 'run' | 'list', 'plugin' => '<slug>']` wuxuuna soo celiyaa liis qeexayaal hubin ah ama baqshad leh `checks` iyo `attachments` ikhtiyaari ah:
+
+```php
+function sample_doctor_checks($context) {
+	return [
+		'checks' => [
+			[
+				'id'          => 'sample.queue_depth',
+				'plugin'      => 'sample',
+				'category'    => 'Sample',
+				'title'       => 'Sample queue depth',
+				'status'      => 'ok',
+				'message'     => 'Queue is healthy.',
+				'details'     => ['pending' => 0],
+				'remediation' => ''
+			]
+		],
+		'attachments' => [
+			[
+				'title'   => 'Sample diagnostics',
+				'content' => "worker=ok\n"
+			]
+		]
+	];
+}
+```
+
+Qeexaha hubinta ku-darka kasta waa la xaqiijiyaa ka hor inta aan lagu darin:
+
+- Furayaasha loo baahan yahay: `id`, `plugin`, `category`, `title`, `status`, `message`, `details`, iyo `remediation`.
+- `plugin` waa inuu la mid noqdaa magaca kooban ee ku-darka diiwaangashan (`[a-z0-9_]{1,64}`). `id` waa inuu waafaqaa `[a-z0-9_.]{1,128}`, ku bilaabmaa `<plugin>.`, mana isku dhici karo aqoonsi hubin oo aasaasi ah ama ku-dar horay u jiray.
+- `status` waa inuu noqdaa `ok`, `warn`, `fail`, ama `info`. `ok` wuxuu u beddelmaa `pass` warbixinnada Doctor; `info` waa warbixin xogeed oo keliya mana keeno guuldarrooyinka CLI, Nagios, Prometheus, ama ogeysiisyada jadwalsan.
+- `category` (ilaa 64 bytes) iyo `title` (ilaa 256 bytes) waa inay noqdaan qoraallo aan madhnayn oo aan lahayn xarfaha koontaroolka. `message` (aan madhnayn, ilaa 2048 bytes) iyo `remediation` (ilaa 2048 bytes) waa inay noqdaan qoraallo.
+- `details` waxay aqbashaa qoraal (ilaa 8192 bytes) ama taxane scalar/gudaha isku jira (qoto dheer ugu badnaan 4, JSON-loo-codeeyay ilaa 16384 bytes; walxaha iyo ilaha waa la diidaa).
+- Lifaaqyada xirmada taageerada ee ikhtiyaariga ah waxay u baahan yihiin `title` aan madhnayn (ilaa 128 bytes, oo aan lahayn xarfo koontarool) iyo qoraal `content` ah oo gaaraya ilaa 65536 bytes (64 KiB).
+
+Doctor wuxuu dhaqan geliyaa xaddidaad ah 32 hubin iyo 8 lifaaq ku-dar kasta (wadarta 64 hubin ku-dar iyo 32 lifaaq). Qabsato kasta waxay ku dhex shaqeysaa xuduudkeeda `try`/`catch` si marka khaladaad ama xog aan taxane ahayn dhacaan loo qariyo looguna qoro diiwaanka Cacti (qaybta `DOCTOR`) iyadoon la saamayn hubinta aasaasiga ah ama ku-darrada kale. Qeexayaasha qaab-xun waa la diidaa waana la diiwaangeliyaa halka kuwa saxda ah ee isla ku-darka ka yimid ay sii shaqeeyaan. Hubinta ku-darrada had iyo jeer waa akhris-kaliya (`repairable: false`), qiimayaasha qoraalka ah iyo furayaasha xasaasiga ahna waa la qariyaa ka hor intaan la soo bandhigin, la dhoofin, ama la xirmoobin. Hubinta ku-darrada la xaqiijiyay waxay ka soo muuqataa UI-ga webka, natiijada CLI ee text/JSON/Nagios/Prometheus, la socoshada xaaladda jadwalsan, iyo xirmooyinka taageerada.
+
+## Isdhexgalka MCP (`abilities_register`)
+
+Doctor wuxuu diiwaangeliyaa qabsatada `abilities_register` (`doctor_abilities_register` oo ku jirta `doctor_abilities.php`) si `plugin_mcp` u helo awoodihiisa ogaanshaha marka labada ku-darba shidan yihiin. Doctor wuxuu diiwaangeliyaa qaybta `diagnostics` (`Diagnostics`) iyo laba awoodood oo akhris-kaliya ah, aan waxba burburin, isla markaana natiijo isku mid ah soo saara:
+
+| Aqoonsiga awoodda | Qiyaasaha ikhtiyaariga ah | Natiijada |
+|---|---|---|
+| `doctor-run-checks` | `category` (qoraal, ugu badnaan 64 xaraf), `status` (`pass`, `ok`, `warn`, `fail`, `info`) | `summary` (`total`, `pass`, `warn`, `fail`, `info`) iyo ilaa 256 `findings` oo la qariyay (`id`, `plugin`, `category`, `title`, `status`, `message`, `remediation`) |
+| `doctor-list-checks` | `category` (qoraal, ugu badnaan 64 xaraf), `plugin` (qoraal, ugu badnaan 64 xaraf) | Ilaa 256 `checks` (`id`, `plugin`, `category`, `title`) oo daboolaya dhammaan 45 hubin ee ku dhex dhisan oo lagu daray hubinta ku-darrada shidan |
+
+Labada awoodoodba si adag waa akhris-kaliya weligoodna ma fuliyaan dayactir. Marka lagu daro koontaroolka qaybta oggolaanshaha iyo soo-bandhigista awoodda ee `plugin_mcp` lafteeda (awoodaha ku-darku waxay ku bilowdaan kuwo ku qarsoon MCP ilaa maamule uu soo bandhigo), Doctor wuxuu u baahan yahay in milkiilaha calaamadda (token) uu haysto **Doctor Viewer** ama qayb oggolaansho oo Doctor ah oo ka sarraysa. `doctor-run-checks` waxay ku koobtaa `devices.health` aaladaha loo oggol yahay milkiilaha calaamadda, waxay ku dartaa `logging.recent_errors` oo keliya marka isticmaaluhu haysto qaybta oggolaanshaha Cacti 18 ama 19, way ka tagtaa `filesystem.rrd_files`, waxayna ku dartaa `filesystem.rrd_stale` ee ku xaddidan aaladaha kaliya **Doctor Operator** ama **Doctor Administrator**.
+
 ## Shuruudaha
 
 | Cacti | PHP | Qoraallo |
@@ -257,20 +316,22 @@ Taariikhaha taageerada waxaa lagu soo daray Doctor iyada oo laga soo qaatay [jad
 
 ## Horumarinta
 
-Xirmada cutubka waxay adeegsataa Pest waxayna ku shaqeysaa PHP 8.2 ama ka cusub:
+Xirmada cutubka waxay adeegsataa Pest falanqaynta taaganna waxay adeegsataa PHPStan (heerka 6), labadubana waxay ku shaqeeyaan PHP 8.2 ama ka cusub:
 
 ```console
 composer install
+composer phpstan
 composer test
 ```
 
 Tijaabooyinku waxay ku beddelaan hawlaha Cacti ee Doctor uu waco kuwo yaryar oo beddel ah oo ku jira `tests/CactiStubs.php`, sidaa darteed waxay shaqeeyaan iyada oo aan lahayn rakibaadda Cacti.
 
-GitHub Actions wuxuu fuliyaa afar nooc oo hubin ah riix kasta iyo codsi soo-jiidasho kasta:
+GitHub Actions wuxuu fuliyaa shan nooc oo hubin ah riix kasta iyo codsi soo-jiidasho kasta:
 
-- `php -l` fayl kasta oo PHP ah oo hoos yimaada PHP 5.4, 5.6, 7.0, 7.1, 7.4, iyo 8.0 ilaa 8.4.
-- Xirmada cutubka ee PHP 8.2, 8.3, iyo 8.4.
+- Tijaabooyinka heshiiska baakaynta sii-deynta (`tests/test_release.py`) iyo dhisidda kaydka (`tools/build_release.py`).
 - `locales/build_gettext.sh --check`, kaas oo ku fashilma qaab-dhismeed turjumaad oo duugowday, buug-yaraha aan dhammaystirnayn ama aan caddeyn, ama buug-yaraha la soo ururiyay oo ka duwan ishiisa.
+- `php -l` fayl kasta oo PHP ah oo hoos yimaada PHP 5.4, 5.6, 7.0, 7.1, 7.4, iyo 8.0 ilaa 8.4.
+- `composer phpstan` (PHPStan heerka 6) iyo `composer test` (xirmada cutubka ee Pest) ee PHP 8.2, 8.3, iyo 8.4.
 - Toddoba shaqo oo isku-dhafan oo ku rakiba Cacti 1.2.20, laanta 1.2.x ee hadda jirta, iyo `develop` iyaga oo ka soo horjeeda MySQL iyo MariaDB, iyada oo lala adeegsanayo labadaba cmd.php iyo Spine. Shaqo kasta waxay rakibtaa oo awood siisaa plugin-ka, waxay fulisaa warbixinta CLI oo dhammaystiran, waxayna hubisaa qaab-dhismeedka warbixinta, wadarta guud ee kooban, xaaladaha la filayo, iyo kooxda saxda ah ee fashilada. Ka dib waxay jebisaa waddo binary ah iyo waqtiga poller-ka, waxay xaqiijisaa in labadaba la soo sheegay, way soo celisaa, waxay tijaabisaa dayactirka iyo xaqiijintiisa, waxayna fulisaa joojin, awood-siin, ka-saaris rakibaad, iyo dib-u-rakibid. Warbixinta JSON waxaa loo hayaa sidii shay marka shaqadu fashilanto.
 
 ## Ka Qaybqaadashada

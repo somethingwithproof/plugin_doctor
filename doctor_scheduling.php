@@ -21,6 +21,10 @@
  * Only fixed Doctor CLI modes or validated binary probes call this helper.
  * exec replaces the POSIX shell so termination targets the actual worker.
  * PHP 5.4 cannot pass an argument array to proc_open().
+ *
+ * @param array<int,string> $arguments
+ * @param int|float $seconds
+ * @param int $limit
  * @return array{code:int,stdout:string,stderr:string,error:string}
  */
 function doctor_process($arguments, $seconds, $limit = 1048576) {
@@ -94,18 +98,33 @@ function doctor_process($arguments, $seconds, $limit = 1048576) {
 	return $result;
 }
 
+/**
+ * Return the SQL expression computing the database-scoped schedule lock name.
+ *
+ * @return string
+ */
 function doctor_schedule_lock_sql() {
 	// Database-scoped, under MySQL's 64-byte named-lock limit; shared by collectors.
 	return "CONCAT('doctor:', LEFT(SHA2(DATABASE(), 256), 56))";
 }
 
-/** Cacti 1.2.26 widened settings.value from 2048 to 4096 characters; unknown versions get the smaller limit. */
+/**
+ * Cacti 1.2.26 widened settings.value from 2048 to 4096 characters; unknown versions get the smaller limit.
+ *
+ * @return int
+ */
 function doctor_setting_value_limit() {
 	$version = defined('CACTI_VERSION') ? (string) CACTI_VERSION : '';
 	return $version !== '' && version_compare(doctor_short_version($version), '1.2.26', '>=') ? 4096 : 2048;
 }
 
-/** Fail closed if a reconnect lost the session lock, including inside a write. */
+/**
+ * Fail closed if a reconnect lost the session lock, including inside a write.
+ *
+ * @param string $name
+ * @param string $value
+ * @return void
+ */
 function doctor_store_setting($name, $value) {
 	if (!is_string($value) || strlen($value) > doctor_setting_value_limit()) {
 		throw new RuntimeException('Doctor state exceeds the supported settings size.');
@@ -121,7 +140,12 @@ function doctor_store_setting($name, $value) {
 	}
 }
 
-/** @return array<string,mixed> */
+/**
+ * Read and decode a bounded JSON-encoded setting value.
+ *
+ * @param string $name
+ * @return array<string,mixed>
+ */
 function doctor_read_json_setting($name) {
 	$text = read_config_option($name, true);
 	if (!is_string($text) || strlen($text) > 4096) {
@@ -131,6 +155,11 @@ function doctor_read_json_setting($name) {
 	return is_array($value) ? $value : [];
 }
 
+/**
+ * Return the configured scheduled check interval in seconds.
+ *
+ * @return int
+ */
 function doctor_schedule_interval() {
 	$minutes = (string) read_config_option('doctor_schedule_interval', true);
 	return in_array($minutes, ['15', '60', '360', '1440'], true) ? (int) $minutes * 60 : 3600;
@@ -140,18 +169,29 @@ function doctor_schedule_interval() {
  * Seconds after a run starts before the next one is due. Runs start from the
  * poller hook, so waiting a full interval from the previous start or finish
  * would always slip one polling cycle; half a cycle of slack keeps the cadence.
+ *
+ * @return int
  */
 function doctor_schedule_due_after() {
 	$interval = doctor_schedule_interval();
 	return $interval - (int) floor(min(doctor_poller_interval(), $interval) / 2);
 }
 
-/** A report stays current for one interval, one polling cycle, and the worker limit with margin. */
+/**
+ * A report stays current for one interval, one polling cycle, and the worker limit with margin.
+ *
+ * @return int
+ */
 function doctor_report_max_age() {
 	return doctor_schedule_interval() + doctor_poller_interval() + 180;
 }
 
-/** @return array<string,mixed> */
+/**
+ * Verify that scheduled diagnostic reports are completing within their cadence.
+ *
+ * @param int $now
+ * @return array<string,mixed>
+ */
 function doctor_check_schedule($now) {
 	if ((string) read_config_option('doctor_schedule_enabled', true) !== 'on') {
 		return doctor_result('doctor.schedule', 'Doctor', 'pass', __('Scheduled report freshness', 'doctor'), __('Scheduled checks are disabled. Enable them in Settings > Doctor to retain samples and alert on changes.', 'doctor'), '', 'not_applicable');
@@ -169,6 +209,9 @@ function doctor_check_schedule($now) {
 /**
  * The alert-state errors are thrown in English for the log; the report shows
  * them translated. Any other error text is shown as it is.
+ *
+ * @param string $message
+ * @return string
  */
 function doctor_alert_error_text($message) {
 	$known = [
@@ -179,7 +222,11 @@ function doctor_alert_error_text($message) {
 	return in_array($message, $known, true) ? __($message, 'doctor') : $message;
 }
 
-/** Only compact transitions are retained, never logs, recipients, or credentials. */
+/**
+ * Only compact transitions are retained, never logs, recipients, or credentials.
+ *
+ * @return array<string,mixed>
+ */
 function doctor_alert_pending() {
 	$pending = doctor_read_json_setting('doctor_alert_pending');
 	if ($pending === []) {
@@ -192,15 +239,20 @@ function doctor_alert_pending() {
 	}
 	foreach ($pending['events'] as $id => $event) {
 		if (!is_string($id) || !preg_match('/\A[a-z0-9_.]+\z/', $id) || !is_array($event) || count($event) !== 3
-			|| !isset($event[0], $event[1], $event[2]) || !in_array($event[0], ['new', 'pass', 'warn', 'fail', 'accepted'], true)
-			|| !in_array($event[1], ['pass', 'warn', 'fail', 'accepted'], true) || !is_int($event[2])) {
+			|| !isset($event[0], $event[1], $event[2]) || !in_array($event[0], ['new', 'pass', 'info', 'warn', 'fail', 'accepted'], true)
+			|| !in_array($event[1], ['pass', 'info', 'warn', 'fail', 'accepted'], true) || !is_int($event[2])) {
 			throw new RuntimeException(doctor_n_('Doctor alert transitions are invalid; no email was sent.'));
 		}
 	}
 	return $pending;
 }
 
-/** Transitions that could not be stored individually, still counted for delivery. */
+/**
+ * Transitions that could not be stored individually, still counted for delivery.
+ *
+ * @param array<string,mixed> $pending
+ * @return int
+ */
 function doctor_alert_omitted($pending) {
 	return isset($pending['omitted']) ? (int) $pending['omitted'] : 0;
 }
@@ -209,9 +261,12 @@ function doctor_alert_omitted($pending) {
  * Store the outbox within the settings column. When too many checks change at
  * once, the least severe and oldest transitions are summarized as a count, so
  * the run still completes and the email still reports every change.
+ *
+ * @param array<string,mixed> $pending
+ * @return void
  */
 function doctor_store_alert_pending($pending) {
-	$rank = ['pass' => 0, 'accepted' => 0, 'warn' => 1, 'fail' => 2];
+	$rank = ['pass' => 0, 'info' => 0, 'accepted' => 0, 'warn' => 1, 'fail' => 2];
 	$json = json_encode($pending);
 	while (strlen($json) > doctor_setting_value_limit() && $pending['events'] !== []) {
 		$drop = null;
@@ -228,6 +283,12 @@ function doctor_store_alert_pending($pending) {
 	doctor_store_setting('doctor_alert_pending', $json);
 }
 
+/**
+ * Check whether retained alert transitions are waiting for retry or stalled.
+ *
+ * @param int $now
+ * @return array<string,mixed>
+ */
 function doctor_check_alert_delivery($now) {
 	try {
 		$pending = doctor_alert_pending();
@@ -245,6 +306,13 @@ function doctor_check_alert_delivery($now) {
 	return doctor_result('doctor.alert_delivery', 'Doctor', 'pass', __('Alert delivery', 'doctor'), __('No retained alert is awaiting delivery. Mail-server acceptance does not prove inbox delivery.', 'doctor'));
 }
 
+/**
+ * Attempt delivery of retained alert transitions within the bounded retry budget.
+ *
+ * @param int $now
+ * @param bool $retry
+ * @return void
+ */
 function doctor_retry_alerts($now, $retry = false) {
 	$pending = doctor_alert_pending();
 	$recipients = trim((string) read_config_option('doctor_alert_emails', true));
@@ -294,7 +362,13 @@ function doctor_retry_alerts($now, $retry = false) {
 	}
 }
 
-/** Caller holds the schedule lock. Persist the outbox before acknowledging state. */
+/**
+ * Caller holds the schedule lock. Persist the outbox before acknowledging state.
+ *
+ * @param array<int,array<string,mixed>> $results
+ * @param int $now
+ * @return array<int,array<string,string>>
+ */
 function doctor_run_scheduled($results, $now) {
 	if (empty($GLOBALS['doctor_schedule_lock_held'])) {
 		throw new RuntimeException('Doctor scheduled state can only be updated while holding its database lock.');
@@ -351,7 +425,14 @@ function doctor_run_scheduled($results, $now) {
 	return $changes;
 }
 
-/** @return int CLI exit code; the supervisor bounds bootstrap, checks and mail. */
+/**
+ * Execute the locked scheduled diagnostic and alert delivery worker.
+ *
+ * @param bool $dueOnly
+ * @param bool $retry
+ * @param bool $alertsOnly
+ * @return int CLI exit code; the supervisor bounds bootstrap, checks and mail.
+ */
 function doctor_scheduled_worker($dueOnly = false, $retry = false, $alertsOnly = false) {
 	global $config;
 	if (isset($config['poller_id']) && (int) $config['poller_id'] > 1) {
@@ -400,6 +481,11 @@ function doctor_scheduled_worker($dueOnly = false, $retry = false, $alertsOnly =
 	return $exit;
 }
 
+/**
+ * Launch the supervised background worker from Cacti's poller_bottom hook when due.
+ *
+ * @return void
+ */
 function doctor_poller_bottom() {
 	global $config;
 	if ((isset($config['poller_id']) && (int) $config['poller_id'] > 1) || (string) read_config_option('doctor_schedule_enabled', true) !== 'on') {

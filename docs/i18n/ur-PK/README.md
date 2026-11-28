@@ -1,4 +1,4 @@
-<!-- Source: README.md; SHA256: ee03c7ac68aca21c8155c29b5b43a1f206c2f0c379c8b07bb4113919c18aafde -->
+<!-- Source: README.md; SHA256: 490628bb7f70f4cf1a8c43b302246fd2e870725a6649c628762608b4a76db65b -->
 
 <!-- translations:start -->
 [English](../../../README.md) | [简体中文](../zh-CN/README.md) | [हिन्दी](../hi-IN/README.md) | [Español (España)](../es-ES/README.md) | [Español (Latinoamérica)](../es-419/README.md) | [العربية (السعودية)](../ar-SA/README.md) | [Afrikaans](../af-ZA/README.md) | [አማርኛ](../am-ET/README.md) | [العربية (مصر)](../ar-EG/README.md) | [العربية (المغرب)](../ar-MA/README.md) | [বাংলা](../bn-BD/README.md) | [Bosanski](../bs-BA/README.md) | [Deutsch](../de-DE/README.md) | [فارسی](../fa-IR/README.md) | [Filipino](../fil-PH/README.md) | [Français](../fr-FR/README.md) | [Français (Maroc)](../fr-MA/README.md) | [Français (Sénégal)](../fr-SN/README.md) | [Hausa](../ha-NG/README.md) | [עברית](../he-IL/README.md) | [Hrvatski](../hr-HR/README.md) | [Bahasa Indonesia](../id-ID/README.md) | [Igbo](../ig-NG/README.md) | [Italiano](../it-IT/README.md) | [日本語](../ja-JP/README.md) | [한국어](../ko-KR/README.md) | [Malagasy](../mg-MG/README.md) | [मराठी](../mr-IN/README.md) | [Bahasa Melayu](../ms-MY/README.md) | [Nederlands](../nl-NL/README.md) | [Polski](../pl-PL/README.md) | [Português (Brasil)](../pt-BR/README.md) | [Русский](../ru-RU/README.md) | [Kinyarwanda](../rw-RW/README.md) | [Soomaali](../so-SO/README.md) | [Српски](../sr-RS/README.md) | [Svenska](../sv-SE/README.md) | [Kiswahili](../sw-KE/README.md) | [தமிழ்](../ta-IN/README.md) | [తెలుగు](../te-IN/README.md) | [ไทย](../th-TH/README.md) | [Türkçe](../tr-TR/README.md) | [Українська](../uk-UA/README.md) | [اردو](README.md) | [Tiếng Việt](../vi-VN/README.md) | [isiXhosa](../xh-ZA/README.md) | [Yorùbá](../yo-NG/README.md) | [繁體中文](../zh-TW/README.md) | [isiZulu](../zu-ZA/README.md)
@@ -50,13 +50,15 @@ Cacti کے مسائل عام طور پر علامات کی صورت میں سا�
 | آلات | فعال آلات جو بند ہیں یا بحال ہو رہے ہیں، سب سے زیادہ دیر سے بند رہنے والے تین آلات ان کی آخری خرابی کے ساتھ، اور جب زیادہ تر آلات ایک ساتھ بند ہوں تو ناکامی کی اطلاع |
 | پولر | پولر کی قسم اور وقفہ، مرکزی پولر کے آخری بار مکمل ہونے کے بعد کا وقت، وقفے کے مقابلے میں چلنے کا وقت، پولر کا وہ آؤٹ پٹ جو کبھی RRD فائل تک نہ پہنچا ہو، ریموٹ پولرز جنہوں نے رپورٹ کرنا بند کر دیا ہو، رکا ہوا Boost، اور ایسی Spine کنفیگریشن جو کسی مختلف ڈیٹا بیس کی طرف اشارہ کرتی ہو |
 
-ہر جانچ کا ایک مستحکم ID ہوتا ہے، جیسے `database.timezone` یا `binary.rrdtool`، تاکہ اسکرپٹس انفرادی نتائج کو کلید کے طور پر استعمال کر سکیں۔
+ہر جانچ کا ایک مستحکم ID ہوتا ہے، جیسے `database.timezone` یا `binary.rrdtool`، تاکہ اسکرپٹس انفرادی نتائج کو کلید کے طور پر استعمال کر سکیں۔ فعال پلگ انز `doctor_register_checks` ہُک کے ذریعے اضافی جانچ اور سپورٹ بنڈل منسلکات فراہم کر سکتے ہیں، اور Doctor `abilities_register` کے ذریعے `plugin_mcp` کو صرف پڑھنے کی (read-only) تشخیصی صلاحیتیں فراہم کرتا ہے۔
 
 ## کوڈ اور ٹیسٹ کا نقشہ
 
 | رویہ | نفاذ | اس ریپوزٹری میں ٹیسٹ کے شواہد |
 |---|---|---|
-| تشخیصی جانچ اور مستحکم رپورٹ IDs | [doctor_functions.php](../../../doctor_functions.php) | [DoctorFunctionsTest.php](../../../tests/DoctorFunctionsTest.php), [AssertDoctorReport.php](../../../tests/ci/AssertDoctorReport.php) |
+| تشخیصی جانچ اور مستحکم رپورٹ IDs | [doctor_functions.php](../../../doctor_functions.php) | [DoctorFunctionsTest.php](../../../tests/DoctorFunctionsTest.php), [DatabaseHealthTest.php](../../../tests/DatabaseHealthTest.php), [AssertDoctorReport.php](../../../tests/ci/AssertDoctorReport.php) |
+| پلگ ان چیک ہُک (`doctor_register_checks`) | [doctor_plugins.php](../../../doctor_plugins.php) | [PluginHooksTest.php](../../../tests/PluginHooksTest.php) |
+| MCP تشخیصی صلاحیتیں (`abilities_register`) | [doctor_abilities.php](../../../doctor_abilities.php) | [AbilitiesTest.php](../../../tests/AbilitiesTest.php) |
 | کردار پر مبنی رسائی اور حساس معلومات سے پاک ویب رپورٹس | [doctor_access.php](../../../doctor_access.php), [doctor_web.php](../../../doctor_web.php) | [AccessTest.php](../../../tests/AccessTest.php), [WebAccessTest.php](../../../tests/WebAccessTest.php) |
 | علامات کی رہنمائی شدہ تحقیقات | [doctor_diagnosis.php](../../../doctor_diagnosis.php) | [DiagnosisTest.php](../../../tests/DiagnosisTest.php) |
 | RRD تازگی اور مؤخر شدہ تحریر کی ہینڈلنگ | [doctor_rrd.php](../../../doctor_rrd.php) | [RrdFreshnessTest.php](../../../tests/RrdFreshnessTest.php) |
@@ -188,7 +190,7 @@ php plugins/doctor/cli/doctor.php --format=prometheus > /var/lib/node_exporter/t
 php plugins/doctor/cli/doctor.php --bundle=/tmp/cacti-doctor.txt
 ```
 
-یہ بنڈل ایک واحد ٹیکسٹ فائل ہے جس میں Doctor، Cacti، PHP، OS، اور ڈیٹا بیس کے ورژنز، پولر اور Boost کے اعدادوشمار، مکمل رپورٹ، اور Cacti لاگ کی آخری 200 سطریں شامل ہوتی ہیں۔ پاس ورڈ، سیکرٹ، ٹوکن، کمیونٹی، اور کلید (key) کے ناموں کے بعد آنے والی قدروں کو چھپا (mask) دیا جاتا ہے۔ Doctor فائل کو اس طرح بناتا ہے کہ اسے صرف اس کا مالک ہی پڑھ سکے اور کسی موجودہ فائل پر اوور رائٹ کرنے سے انکار کرتا ہے۔ اسے کہیں بھی پوسٹ کرنے سے پہلے اس کا جائزہ لیں۔
+یہ بنڈل ایک واحد ٹیکسٹ فائل ہے جس میں Doctor، Cacti، PHP، OS، اور ڈیٹا بیس کے ورژنز، پولر اور Boost کے اعدادوشمار، مکمل رپورٹ، `== Plugin attachments` کے تحت کوئی بھی پلگ ان سپورٹ بنڈل منسلکات، اور Cacti لاگ کی آخری 200 سطریں شامل ہوتی ہیں۔ پاس ورڈ، سیکرٹ، ٹوکن، کمیونٹی، اور کلید (key) کے ناموں کے بعد آنے والی قدروں کو چھپا (mask) دیا جاتا ہے۔ Doctor فائل کو اس طرح بناتا ہے کہ اسے صرف اس کا مالک ہی پڑھ سکے اور کسی موجودہ فائل پر اوور رائٹ کرنے سے انکار کرتا ہے۔ اسے کہیں بھی پوسٹ کرنے سے پہلے اس کا جائزہ لیں۔
 
 ## مرمت کی پالیسی
 
@@ -234,6 +236,63 @@ Cacti کی Settings/System Utilities اجازت رکھنے والے منتظمی
 
 اپ گریڈ Cacti کے ایپلیکیشن ڈیٹا کو تبدیل کیے بغیر `plugin_doctor_audit` اور `plugin_doctor_acceptance` بناتا ہے۔ اَن انسٹال کرنے سے پہلے اپنی مطلوبہ کوئی بھی تاریخ برآمد کر لیں: اَن انسٹال کرنے سے پلگ ان کی دونوں ٹیبلز اور اس کی سیٹنگز حذف ہو جاتی ہیں۔ پلگ ان کی فائلوں کو پچھلے ورژن پر واپس لانے سے ٹیبلز تفتیش کے لیے دستیاب رہتی ہیں، لیکن پرانے ورژنز انتباہی استثنیات کو تسلیم نہیں کرتے۔
 
+## پلگ ان چیکس (`doctor_register_checks`)
+
+فعال Cacti پلگ انز `doctor_register_checks` ہُک رجسٹر کر کے صرف پڑھنے کے لیے (read-only) تشخیصی چیکس اور اختیاری سپورٹ بنڈل منسلکات فراہم کر سکتے ہیں:
+
+```php
+api_plugin_register_hook('sample', 'doctor_register_checks', 'sample_doctor_checks', 'setup.php');
+```
+
+Doctor ان فعال، غیر مربوط پلگ انز کو چلاتا ہے جو `doctor_register_checks` پر رجسٹر ہوں (`doctor` اور `cacti` کو چھوڑ کر)، اور ہُک فائل کو سختی سے پلگ ان کی اپنی ڈائریکٹری کے اندر حل کرتا ہے۔ کال بیک `['mode' => 'run' | 'list', 'plugin' => '<slug>']` وصول کرتا ہے اور یا تو چیک ڈسکرپٹرز کی فہرست واپس کرتا ہے یا `checks` اور اختیاری `attachments` پر مشتمل ایک لفافہ (envelope) واپس کرتا ہے:
+
+```php
+function sample_doctor_checks($context) {
+	return [
+		'checks' => [
+			[
+				'id'          => 'sample.queue_depth',
+				'plugin'      => 'sample',
+				'category'    => 'Sample',
+				'title'       => 'Sample queue depth',
+				'status'      => 'ok',
+				'message'     => 'Queue is healthy.',
+				'details'     => ['pending' => 0],
+				'remediation' => ''
+			]
+		],
+		'attachments' => [
+			[
+				'title'   => 'Sample diagnostics',
+				'content' => "worker=ok\n"
+			]
+		]
+	];
+}
+```
+
+شامل کرنے سے پہلے ہر پلگ ان چیک ڈسکرپٹر کی توثیق کی جاتی ہے:
+
+- لازمی کلیدیں: `id`، `plugin`، `category`، `title`، `status`، `message`، `details`، اور `remediation`۔
+- `plugin` کو رجسٹرڈ پلگ ان سلگ (`[a-z0-9_]{1,64}`) سے مطابقت رکھنی چاہیے۔ `id` کو `[a-z0-9_.]{1,128}` سے مطابقت رکھنی چاہیے، `<plugin>.` سے شروع ہونا چاہیے، اور کسی موجودہ بنیادی یا پلگ ان چیک ID سے متصادم نہیں ہونا چاہیے۔
+- `status` کا `ok`، `warn`، `fail`، یا `info` ہونا ضروری ہے۔ Doctor رپورٹس میں `ok` کو `pass` میں تبدیل کیا جاتا ہے؛ `info` معلوماتی ہوتا ہے اور CLI، Nagios، Prometheus، یا شیڈول کردہ الرٹس میں ناکامی کا سبب نہیں بنتا۔
+- `category` (زیادہ سے زیادہ 64 بائٹس) اور `title` (زیادہ سے زیادہ 256 بائٹس) کنٹرول حروف کے بغیر غیر خالی اسٹرنگز ہونی چاہئیں۔ `message` (غیر خالی، زیادہ سے زیادہ 2048 بائٹس) اور `remediation` (زیادہ سے زیادہ 2048 بائٹس) اسٹرنگز ہونی چاہئیں۔
+- `details` ایک اسٹرنگ (زیادہ سے زیادہ 8192 بائٹس) یا اسکیلر/نیسٹڈ اَرے (زیادہ سے زیادہ گہرائی 4، JSON-انکوڈڈ زیادہ سے زیادہ 16384 بائٹس؛ آبجیکٹس اور ریسورسز مسترد کیے جاتے ہیں) قبول کرتا ہے۔
+- اختیاری سپورٹ بنڈل منسلکات کے لیے غیر خالی `title` (زیادہ سے زیادہ 128 بائٹس، کوئی کنٹرول حرف نہیں) اور 65536 بائٹس (64 KiB) تک کی `content` اسٹرنگ درکار ہوتی ہے۔
+
+Doctor فی پلگ ان 32 چیکس اور 8 منسلکات (مجموعی طور پر 64 پلگ ان چیکس اور 32 منسلکات) کی حد نافذ کرتا ہے۔ ہر ہُک اپنی `try`/`catch` حد کے اندر چلتا ہے تاکہ استثنائیں یا غیر اَرے پے لوڈز کو بنیادی چیکس یا دیگر پلگ انز کو متاثر کیے بغیر خفیہ معلومات سے پاک کر کے Cacti لاگ (`DOCTOR` سہولت) میں درج کیا جا سکے۔ غلط ساخت والے ڈسکرپٹرز کو مسترد کر کے لاگ کیا جاتا ہے جبکہ اسی پلگ ان کے درست ڈسکرپٹرز بدستور چلتے رہتے ہیں۔ پلگ ان چیکس ہمیشہ صرف پڑھنے کے لیے ہوتے ہیں (`repairable: false`)، اور رینڈرنگ، برآمدگی، یا بنڈل بنانے سے پہلے اسٹرنگ اقدار اور حساس ایسوسی ایٹو کیز کو چھپا دیا جاتا ہے۔ توثیق شدہ پلگ ان چیکس ویب UI، CLI ٹیکسٹ/JSON/Nagios/Prometheus آؤٹ پٹ، شیڈول کردہ اسٹیٹس ٹریکنگ، اور سپورٹ بنڈلز میں ظاہر ہوتے ہیں۔
+
+## MCP انٹیگریشن (`abilities_register`)
+
+Doctor `abilities_register` ہُک (`doctor_abilities.php` میں `doctor_abilities_register`) رجسٹر کرتا ہے تاکہ جب دونوں پلگ انز فعال ہوں تو `plugin_mcp` اس کی تشخیصی صلاحیتیں دریافت کر سکے۔ Doctor `diagnostics` زمرہ (`Diagnostics`) اور دو صرف پڑھنے کے لیے، غیر تخریبی، اور idempotent صلاحیتیں رجسٹر کرتا ہے:
+
+| صلاحیت ID | اختیاری دلائل | آؤٹ پٹ |
+|---|---|---|
+| `doctor-run-checks` | `category` (اسٹرنگ، زیادہ سے زیادہ 64 حروف)، `status` (`pass`، `ok`، `warn`، `fail`، `info`) | `summary` (`total`، `pass`، `warn`، `fail`، `info`) اور 256 تک چھپائے گئے `findings` (`id`، `plugin`، `category`، `title`، `status`، `message`، `remediation`) |
+| `doctor-list-checks` | `category` (اسٹرنگ، زیادہ سے زیادہ 64 حروف)، `plugin` (اسٹرنگ، زیادہ سے زیادہ 64 حروف) | تمام 45 بلٹ اِن چیکس اور فعال پلگ ان چیکس پر مشتمل 256 تک `checks` (`id`، `plugin`، `category`، `title`) |
+
+دونوں صلاحیتیں سختی سے صرف پڑھنے کے لیے ہیں اور کبھی کوئی مرمت نہیں چلاتیں۔ `plugin_mcp` کے اپنے دائرہ اختیار اور صلاحیت ظاہر کرنے کے کنٹرولز کے علاوہ (پلگ ان کی صلاحیتیں MCP میں اس وقت تک پوشیدہ رہتی ہیں جب تک کوئی منتظم انہیں ظاہر نہ کرے)، Doctor کا تقاضا ہے کہ ٹوکن کے مالک کے پاس **Doctor Viewer** یا اس سے اعلیٰ Doctor دائرہ اختیار ہو۔ `doctor-run-checks` `devices.health` کو ٹوکن کے مالک کے مجاز آلات تک محدود رکھتا ہے، `logging.recent_errors` کو صرف اس وقت شامل کرتا ہے جب صارف کے پاس Cacti دائرہ اختیار 18 یا 19 ہو، `filesystem.rrd_files` کو خارج کرتا ہے، اور آلات تک محدود `filesystem.rrd_stale` کو صرف **Doctor Operator** یا **Doctor Administrator** کے لیے شامل کرتا ہے۔
+
 ## تقاضے
 
 | Cacti | PHP | نوٹس |
@@ -251,20 +310,22 @@ Cacti کی Settings/System Utilities اجازت رکھنے والے منتظمی
 
 ## ڈیولپمنٹ
 
-یونٹ سویٹ Pest استعمال کرتا ہے اور PHP 8.2 یا اس سے نئے ورژن پر چلتا ہے:
+یونٹ سویٹ Pest استعمال کرتا ہے اور جامد تجزیہ PHPStan (لیول 6) استعمال کرتا ہے، دونوں PHP 8.2 یا اس سے نئے ورژن پر چلتے ہیں:
 
 ```console
 composer install
+composer phpstan
 composer test
 ```
 
 ٹیسٹ ان Cacti فنکشنز کو جنہیں Doctor کال کرتا ہے `tests/CactiStubs.php` میں چھوٹے متبادلات سے بدل دیتے ہیں، چنانچہ وہ Cacti تنصیب کے بغیر چلتے ہیں۔
 
-GitHub Actions ہر پُش اور پُل ریکوئسٹ پر چار اقسام کی جانچ چلاتا ہے:
+GitHub Actions ہر پُش اور پُل ریکوئسٹ پر پانچ اقسام کی جانچ چلاتا ہے:
 
-- PHP 5.4، 5.6، 7.0، 7.1، 7.4، اور 8.0 تا 8.4 کے تحت ہر PHP فائل پر `php -l`۔
-- PHP 8.2، 8.3، اور 8.4 پر یونٹ سویٹ۔
+- ریلیز پیکیجنگ کنٹریکٹ ٹیسٹس (`tests/test_release.py`) اور آرکائیو بلڈ (`tools/build_release.py`)۔
 - `locales/build_gettext.sh --check`، جو پرانے ترجمے کے ٹیمپلیٹ، نامکمل یا غیر واضح کیٹلاگ، یا ایسے مرتب شدہ کیٹلاگ پر ناکام ہو جاتا ہے جو اپنے ماخذ سے مختلف ہو۔
+- PHP 5.4، 5.6، 7.0، 7.1، 7.4، اور 8.0 تا 8.4 کے تحت ہر PHP فائل پر `php -l`۔
+- PHP 8.2، 8.3، اور 8.4 پر `composer phpstan` (PHPStan لیول 6) اور `composer test` (Pest یونٹ سویٹ)۔
 - سات انٹیگریشن جابز جو MySQL اور MariaDB کے ساتھ cmd.php اور Spine دونوں کے ہمراہ Cacti 1.2.20، موجودہ 1.2.x برانچ، اور `develop` کو انسٹال کرتی ہیں۔ ہر جاب پلگ ان کو انسٹال اور فعال کرتی ہے، مکمل CLI رپورٹ چلاتی ہے، اور رپورٹ کے اسکیما، خلاصے کے مجموعی اعداد، متوقع حیثیتوں، اور ناکامیوں کے عین مطابق سیٹ کی جانچ کرتی ہے۔ پھر یہ ایک بائنری راستے اور پولر ٹائم اسٹیمپ کو خراب کرتی ہے، تصدیق کرتی ہے کہ دونوں رپورٹ ہوئے ہیں، انہیں بحال کرتی ہے، مرمت اور اس کی تصدیق کو آزماتی ہے، اور غیر فعال، فعال، اَن انسٹال، اور دوبارہ انسٹال کرنے کے مراحل چلاتی ہے۔ جب کوئی جاب ناکام ہوتی ہے تو JSON رپورٹ کو آرٹیفیکٹ کے طور پر محفوظ رکھا جاتا ہے۔
 
 ## تعاون

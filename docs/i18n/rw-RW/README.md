@@ -1,4 +1,4 @@
-<!-- Source: README.md; SHA256: ee03c7ac68aca21c8155c29b5b43a1f206c2f0c379c8b07bb4113919c18aafde -->
+<!-- Source: README.md; SHA256: 490628bb7f70f4cf1a8c43b302246fd2e870725a6649c628762608b4a76db65b -->
 
 <!-- translations:start -->
 [English](../../../README.md) | [简体中文](../zh-CN/README.md) | [हिन्दी](../hi-IN/README.md) | [Español (España)](../es-ES/README.md) | [Español (Latinoamérica)](../es-419/README.md) | [العربية (السعودية)](../ar-SA/README.md) | [Afrikaans](../af-ZA/README.md) | [አማርኛ](../am-ET/README.md) | [العربية (مصر)](../ar-EG/README.md) | [العربية (المغرب)](../ar-MA/README.md) | [বাংলা](../bn-BD/README.md) | [Bosanski](../bs-BA/README.md) | [Deutsch](../de-DE/README.md) | [فارسی](../fa-IR/README.md) | [Filipino](../fil-PH/README.md) | [Français](../fr-FR/README.md) | [Français (Maroc)](../fr-MA/README.md) | [Français (Sénégal)](../fr-SN/README.md) | [Hausa](../ha-NG/README.md) | [עברית](../he-IL/README.md) | [Hrvatski](../hr-HR/README.md) | [Bahasa Indonesia](../id-ID/README.md) | [Igbo](../ig-NG/README.md) | [Italiano](../it-IT/README.md) | [日本語](../ja-JP/README.md) | [한국어](../ko-KR/README.md) | [Malagasy](../mg-MG/README.md) | [मराठी](../mr-IN/README.md) | [Bahasa Melayu](../ms-MY/README.md) | [Nederlands](../nl-NL/README.md) | [Polski](../pl-PL/README.md) | [Português (Brasil)](../pt-BR/README.md) | [Русский](../ru-RU/README.md) | [Kinyarwanda](README.md) | [Soomaali](../so-SO/README.md) | [Српски](../sr-RS/README.md) | [Svenska](../sv-SE/README.md) | [Kiswahili](../sw-KE/README.md) | [தமிழ்](../ta-IN/README.md) | [తెలుగు](../te-IN/README.md) | [ไทย](../th-TH/README.md) | [Türkçe](../tr-TR/README.md) | [Українська](../uk-UA/README.md) | [اردو](../ur-PK/README.md) | [Tiếng Việt](../vi-VN/README.md) | [isiXhosa](../xh-ZA/README.md) | [Yorùbá](../yo-NG/README.md) | [繁體中文](../zh-TW/README.md) | [isiZulu](../zu-ZA/README.md)
@@ -50,13 +50,15 @@ Ibibazo bya Cacti akenshi bigaragara nk'ibimenyetso: ibishushanyo birimo ubusa, 
 | Ibikoresho | Ibikoresho bifunguye byahagaze cyangwa birimo gusubira ku murongo, bitatu bimaze igihe kinini bihagaze hamwe n'ikosa ryabyo rya nyuma, n'ikosa igihe ibikoresho byinshi bihagaze icyarimwe |
 | Poller | Ubwoko n'igihe poller ikorera, igihe gishize poller nkuru irangije gukora bwa nyuma, igihe cyo gukora ugereranyije n'intera yagenwe, ibyasohowe na poller bitageze muri dosiye ya RRD, za poller za kure zahagaze gutanga raporo, Boost yahagaze, n'igenamiterere rya Spine ryerekeza ku bundi bubiko bw'amakuru |
 
-Buri genzura rigira umwirondoro udahinduka, nka `database.timezone` cyangwa `binary.rrdtool`, kugira ngo porogaramu zanditse zishobore kwibanda ku bisubizo byihariye.
+Buri genzura rigira umwirondoro udahinduka, nka `database.timezone` cyangwa `binary.rrdtool`, kugira ngo porogaramu zanditse zishobore kwibanda ku bisubizo byihariye. Imigereka ifunguye ishobora gutanga ibindi bigenzurwa n'imigereka y'umufuka w'ubufasha binyuze ku muhuza wa `doctor_register_checks`, kandi Doctor igaragaza ubushobozi bw'isuzuma bwo gusoma gusa kuri `plugin_mcp` binyuze kuri `abilities_register`.
 
 ## Ikarita ya kode n'iy'isuzuma
 
 | Imikorere | Ishyirwa mu bikorwa | Ibimenyetso by'isuzuma muri ubu bubiko |
 |---|---|---|
-| Igenzura ry'isuzuma n'ibiranga raporo bidahinduka | [doctor_functions.php](../../../doctor_functions.php) | [DoctorFunctionsTest.php](../../../tests/DoctorFunctionsTest.php), [AssertDoctorReport.php](../../../tests/ci/AssertDoctorReport.php) |
+| Igenzura ry'isuzuma n'ibiranga raporo bidahinduka | [doctor_functions.php](../../../doctor_functions.php) | [DoctorFunctionsTest.php](../../../tests/DoctorFunctionsTest.php), [DatabaseHealthTest.php](../../../tests/DatabaseHealthTest.php), [AssertDoctorReport.php](../../../tests/ci/AssertDoctorReport.php) |
+| Umuhuza w'igenzura ry'imigereka (`doctor_register_checks`) | [doctor_plugins.php](../../../doctor_plugins.php) | [PluginHooksTest.php](../../../tests/PluginHooksTest.php) |
+| Ubushobozi bw'isuzuma bwa MCP (`abilities_register`) | [doctor_abilities.php](../../../doctor_abilities.php) | [AbilitiesTest.php](../../../tests/AbilitiesTest.php) |
 | Uburenganzira bushingiye ku nshingano na raporo zo ku rubuga zihishemo amakuru y'ibanga | [doctor_access.php](../../../doctor_access.php), [doctor_web.php](../../../doctor_web.php) | [AccessTest.php](../../../tests/AccessTest.php), [WebAccessTest.php](../../../tests/WebAccessTest.php) |
 | Isuzuma riyobowe rishingiye ku bimenyetso | [doctor_diagnosis.php](../../../doctor_diagnosis.php) | [DiagnosisTest.php](../../../tests/DiagnosisTest.php) |
 | Ubushya bwa RRD n'imicungire y'iyandika ryimuriwe nyuma | [doctor_rrd.php](../../../doctor_rrd.php) | [RrdFreshnessTest.php](../../../tests/RrdFreshnessTest.php) |
@@ -193,7 +195,7 @@ php plugins/doctor/cli/doctor.php --format=prometheus > /var/lib/node_exporter/t
 php plugins/doctor/cli/doctor.php --bundle=/tmp/cacti-doctor.txt
 ```
 
-Umufuka w'ubufasha ni dosiye imwe y'inyandiko irimo verisiyo za Doctor, Cacti, PHP, OS, na database, imibare ya poller na Boost, raporo yose, n'imirongo 200 ya nyuma ya log ya Cacti. Agaciro gakurikira amazina ya password, secret, token, community, na key karahishwa. Doctor ikora dosiye isomwa na nyirayo gusa kandi yanga kwandikira hejuru ya dosiye isanzweho. Yigenzure mbere yo kuyishyira ahantu aho ari ho hose.
+Umufuka w'ubufasha ni dosiye imwe y'inyandiko irimo verisiyo za Doctor, Cacti, PHP, OS, na database, imibare ya poller na Boost, raporo yose, imigereka iyo ari yo yose y'umufuka w'ubufasha iturutse ku migereka iri munsi ya `== Plugin attachments`, n'imirongo 200 ya nyuma ya log ya Cacti. Agaciro gakurikira amazina ya password, secret, token, community, na key karahishwa. Doctor ikora dosiye isomwa na nyirayo gusa kandi yanga kwandikira hejuru ya dosiye isanzweho. Yigenzure mbere yo kuyishyira ahantu aho ari ho hose.
 
 ## Politiki yo gusana
 
@@ -239,6 +241,63 @@ Integuza z'imiburo ziteganyijwe zirahagarikwa mu gihe irengayobora rigikora; kur
 
 Kuzamura verisiyo birema `plugin_doctor_audit` na `plugin_doctor_acceptance` bitahinduye amakuru ya porogaramu ya Cacti. Ohereza hanze amateka yose ukeneye mbere yo kuvanamo umugereka: kuvanamo bisiba imbonerahamwe zombi z'umugereka n'igenamiterere ryawo. Gusubiza inyuma amadosiye y'umugereka bisiga imbonerahamwe zihari kugira ngo zigenzurwe, ariko verisiyo za kera ntizubahiriza irengayobora ry'imiburo.
 
+## Igenzura ry'imigereka (`doctor_register_checks`)
+
+Imigereka ya Cacti ifunguye ishobora gutanga igenzura ry'isuzuma ryo gusoma gusa n'imigereka y'umufuka w'ubufasha itari itegeko yiyandikishije ku muhuza wa `doctor_register_checks`:
+
+```php
+api_plugin_register_hook('sample', 'doctor_register_checks', 'sample_doctor_checks', 'setup.php');
+```
+
+Doctor ihamagara imigereka ifunguye kandi itavangiwe muri sisitemu yiyandikishije kuri `doctor_register_checks` (isimbuka `doctor` na `cacti`), igashaka dosiye y'umuhuza gusa imbere mu bubiko bw'uwo mugereka ubwawo. Umukozi uhamagarwa yakira `['mode' => 'run' | 'list', 'plugin' => '<slug>']` maze agasubiza urutonde rw'ibisobanuro by'igenzura cyangwa ibahasha irimo `checks` na `attachments` bitari itegeko:
+
+```php
+function sample_doctor_checks($context) {
+	return [
+		'checks' => [
+			[
+				'id'          => 'sample.queue_depth',
+				'plugin'      => 'sample',
+				'category'    => 'Sample',
+				'title'       => 'Sample queue depth',
+				'status'      => 'ok',
+				'message'     => 'Queue is healthy.',
+				'details'     => ['pending' => 0],
+				'remediation' => ''
+			]
+		],
+		'attachments' => [
+			[
+				'title'   => 'Sample diagnostics',
+				'content' => "worker=ok\n"
+			]
+		]
+	];
+}
+```
+
+Buri gisobanuro cy'igenzura ry'umugereka kigenzurwa mbere yo kongerwamo:
+
+- Imfunguzo zisabwa: `id`, `plugin`, `category`, `title`, `status`, `message`, `details`, na `remediation`.
+- `plugin` igomba guhura n'izina ry'umugereka ryanditswe (`[a-z0-9_]{1,64}`). `id` igomba guhura na `[a-z0-9_.]{1,128}`, igatangirana na `<plugin>.`, kandi ntiyagongana na ID y'igenzura ry'ibanze cyangwa ry'umugereka isanzweho.
+- `status` igomba kuba `ok`, `warn`, `fail`, cyangwa `info`. `ok` ihinduka `pass` muri raporo za Doctor; `info` itanga amakuru gusa kandi ntizana ugutsindwa muri CLI, Nagios, Prometheus, cyangwa mu mamenyesha ateguwe.
+- `category` (kugeza kuri bayiti 64) na `title` (kugeza kuri bayiti 256) bigomba kuba inyandiko zitarimo ubusa zidafite inyuguti zigenzura. `message` (itarimo ubusa, kugeza kuri bayiti 2048) na `remediation` (kugeza kuri bayiti 2048) bigomba kuba inyandiko.
+- `details` yemera inyandiko (kugeza kuri bayiti 8192) cyangwa urutonde rwa scalar/ruri mu rundi (ubujyakuzimu bwa 4 ntarengwa, bwanditse muri JSON kugeza kuri bayiti 16384; ibikoresho bya object n'amasoko bya resource birangwa).
+- Imigereka y'umufuka w'ubufasha itari itegeko isaba `title` itarimo ubusa (kugeza kuri bayiti 128, nta nyuguti zigenzura) n'inyandiko ya `content` kugeza kuri bayiti 65536 (64 KiB).
+
+Doctor ishyiraho imipaka y'igenzura 32 n'imigereka 8 kuri buri mugereka (igenzura 64 ry'imigereka n'imigereka 32 yose hamwe). Buri muhuza ukora mu rubibi rwawo rwa `try`/`catch` kugira ngo amakosa cyangwa ibikubiyemo bitari urutonde bihishwe amakuru y'ibanga kandi byandikwe muri log ya Cacti (igice cya `DOCTOR`) bitabangamiye igenzura ry'ibanze cyangwa indi migereka. Ibisobanuro bidatunganye birangwa kandi bikandikwa muri log mu gihe ibyemewe byo muri uwo mugereka umwe bikomeza gukora. Igenzura ry'imigereka rihora ari iryo gusoma gusa (`repairable: false`), kandi agaciro k'inyandiko n'imfunguzo z'ibanga bihishwa mbere yo kubyerekana, kubyohereza, cyangwa kubifunga mu mufuka. Igenzura ry'imigereka ryemejwe rigaragara ku rubuga, mu bisohoka bya CLI bya text/JSON/Nagios/Prometheus, mu ikurikirana ry'imiterere riteguwe, no mu mifuka y'ubufasha.
+
+## Ihuza na MCP (`abilities_register`)
+
+Doctor yiyandikisha ku muhuza wa `abilities_register` (`doctor_abilities_register` muri `doctor_abilities.php`) kugira ngo `plugin_mcp` ibone ubushobozi bwayo bw'isuzuma igihe imigereka yombi ifunguye. Doctor yandika icyiciro cya `diagnostics` (`Diagnostics`) n'ubushobozi bubiri bwo gusoma gusa, butangiza, kandi budahindura igisubizo iyo busubiwemo:
+
+| ID y'ubushobozi | Ibintu bishobora gutangwa | Ibisohoka |
+|---|---|---|
+| `doctor-run-checks` | `category` (inyandiko, ntarengwa inyuguti 64), `status` (`pass`, `ok`, `warn`, `fail`, `info`) | `summary` (`total`, `pass`, `warn`, `fail`, `info`) na `findings` zihishwe kugeza kuri 256 (`id`, `plugin`, `category`, `title`, `status`, `message`, `remediation`) |
+| `doctor-list-checks` | `category` (inyandiko, ntarengwa inyuguti 64), `plugin` (inyandiko, ntarengwa inyuguti 64) | `checks` kugeza kuri 256 (`id`, `plugin`, `category`, `title`) zikubiyemo amasuzuma yose 45 yubatswemo hamwe n'igenzura ry'imigereka ifunguye |
+
+Ubwo bushobozi bwombi ni ubwo gusoma gusa kandi ntibwigera bukora ibikorwa byo gusana. Uretse igenzura ry'urwego no kugaragaza ubushobozi bwa `plugin_mcp` ubwayo (ubushobozi bw'imigereka butangira buhishe muri MCP kugeza umuyobozi abugaragaje), Doctor isaba ko nyir'umufunguzo (token) afite **Doctor Viewer** cyangwa urwego rwa Doctor ruri hejuru. `doctor-run-checks` igenera `devices.health` ku bikoresho byemerewe nyir'umufunguzo, igashyiramo `logging.recent_errors` gusa iyo umukoresha afite urwego rwa Cacti rwa 18 cyangwa 19, ikareka `filesystem.rrd_files`, kandi igashyiramo `filesystem.rrd_stale` igendeye ku bikoresho kuri **Doctor Operator** cyangwa **Doctor Administrator** gusa.
+
 ## Ibisabwa
 
 | Cacti | PHP | Ibisobanuro |
@@ -256,20 +315,22 @@ Amatariki y'ubufasha abikwa hamwe na Doctor avuye kuri [gahunda y'ubufasha bwa P
 
 ## Iterambere
 
-Urutonde rw'amasuzuma y'ibice rukoresha Pest kandi rukora kuri PHP 8.2 cyangwa nshya kurushaho:
+Urutonde rw'amasuzuma y'ibice rukoresha Pest kandi isesengura ridahinduka rikoresha PHPStan (urwego rwa 6), byombi bikora kuri PHP 8.2 cyangwa nshya kurushaho:
 
 ```console
 composer install
+composer phpstan
 composer test
 ```
 
 Amasuzuma asimbuza imikorere ya Cacti Doctor ihamagara n'ibisimbura bito muri `tests/CactiStubs.php`, ku buryo akora nta yinjizwa rya Cacti ririho.
 
-GitHub Actions ikora ubwoko bune bw'igenzura kuri buri kohereza no kuri buri busabe bwo guhuza:
+GitHub Actions ikora ubwoko butanu bw'igenzura kuri buri kohereza no kuri buri busabe bwo guhuza:
 
-- `php -l` kuri buri dosiye ya PHP munsi ya PHP 5.4, 5.6, 7.0, 7.1, 7.4, na 8.0 kugeza kuri 8.4.
-- Urutonde rw'amasuzuma y'ibice kuri PHP 8.2, 8.3, na 8.4.
+- Amasuzuma y'amasezerano yo gupakira verisiyo (`tests/test_release.py`) n'iyubakwa ry'ububiko (`tools/build_release.py`).
 - `locales/build_gettext.sh --check`, itsindwa iyo inyandikorugero y'ubusemuzi ishaje, urutonde rw'ubusemuzi rutuzuye cyangwa rufite gushidikanya, cyangwa urutonde rwakusanyijwe rutandukanye n'isoko yarwo.
+- `php -l` kuri buri dosiye ya PHP munsi ya PHP 5.4, 5.6, 7.0, 7.1, 7.4, na 8.0 kugeza kuri 8.4.
+- `composer phpstan` (PHPStan urwego rwa 6) na `composer test` (urutonde rw'amasuzuma y'ibice rwa Pest) kuri PHP 8.2, 8.3, na 8.4.
 - Imirimo irindwi yo guhuza yinjiza Cacti 1.2.20, ishami rya 1.2.x ririho ubu, na `develop` ku bubiko bwa MySQL na MariaDB, ikoresheje cmd.php na Spine byombi. Buri murimo winjiza kandi ukemeza umugereka, ugakora raporo yuzuye ya CLI, kandi ukagenzura imiterere ya raporo, igiteranyo cy'incamake, imiterere iteganyijwe, n'urutonde nyarwo rw'ibibazo. Hanyuma wangiza inzira ya binary n'igihe cy'ikimenyetso cya poller, ukemeza ko byombi byatangajwe, ukabisubizaho, ukagerageza isana n'iyemeza ryaryo, kandi ugakora guhagarika, kwemeza, kuvanamo no kongera kwinjiza. Raporo ya JSON ibikwa nk'igihangano cy'ibyakozwe igihe umurimo utsinzwe.
 
 ## Gutanga umusanzu

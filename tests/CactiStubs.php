@@ -95,6 +95,17 @@ if (!function_exists('db_fetch_assoc')) {
 	}
 }
 
+if (!function_exists('db_fetch_assoc_prepared')) {
+	function db_fetch_assoc_prepared($sql, $params = [], $log = true, $db_conn = false) {
+		$GLOBALS['doctor_test_queries'][] = $sql;
+		if (isset($GLOBALS['doctor_test_plugin_hooks']) && strpos($sql, 'FROM plugin_hooks WHERE hook = ?') !== false) {
+			$hook = isset($params[0]) ? (string) $params[0] : '';
+			return isset($GLOBALS['doctor_test_plugin_hooks'][$hook]) ? $GLOBALS['doctor_test_plugin_hooks'][$hook] : [];
+		}
+		return isset($GLOBALS['doctor_test_rows'][$sql]) ? $GLOBALS['doctor_test_rows'][$sql] : [];
+	}
+}
+
 if (!function_exists('set_config_option')) {
 	function set_config_option($name, $value) {
 		$GLOBALS['doctor_test_settings'][$name] = $value;
@@ -148,7 +159,26 @@ function doctor_test_executable($directory, $name, $body) {
 
 
 function is_realm_allowed($realm, $check_user = false) {
+	if ($check_user !== false && isset($GLOBALS['doctor_test_user_grants']) && is_array($GLOBALS['doctor_test_user_grants'])) {
+		$grants = isset($GLOBALS['doctor_test_user_grants'][(int) $check_user]) ? $GLOBALS['doctor_test_user_grants'][(int) $check_user] : [];
+		return in_array($realm, $grants, true);
+	}
 	return in_array($realm, isset($GLOBALS['doctor_test_grants']) ? $GLOBALS['doctor_test_grants'] : [], true);
+}
+
+if (!function_exists('api_plugin_register_hook')) {
+	function api_plugin_register_hook($plugin, $hook, $function, $file, $enable = false) {
+		$GLOBALS['doctor_test_hook_registrations'][] = [$plugin, $hook, $function, $file, (bool) $enable];
+	}
+}
+
+if (!function_exists('api_plugin_is_enabled')) {
+	function api_plugin_is_enabled($plugin) {
+		if (isset($GLOBALS['doctor_test_enabled_plugins']) && is_array($GLOBALS['doctor_test_enabled_plugins'])) {
+			return in_array($plugin, $GLOBALS['doctor_test_enabled_plugins'], true);
+		}
+		return true;
+	}
 }
 
 function get_allowed_devices($sql_where = '', $sql_order = 'description', $sql_limit = '', &$total_rows = 0, $user_id = 0, $device_id = 0) {
@@ -166,6 +196,9 @@ function api_plugin_register_realm($plugin, $file, $display, $admin = true) {
 function db_execute($sql, $log = true, $db_conn = false) {
 	if (!isset($GLOBALS['doctor_test_pdo'])) {
 		return false;
+	}
+	if (strpos($sql, 'CREATE TABLE IF NOT EXISTS plugin_doctor_') === 0) {
+		return true;
 	}
 	return $GLOBALS['doctor_test_pdo']->exec($sql === 'START TRANSACTION' ? 'BEGIN' : $sql) !== false;
 }

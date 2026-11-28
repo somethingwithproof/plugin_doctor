@@ -1,4 +1,4 @@
-<!-- Source: README.md; SHA256: ee03c7ac68aca21c8155c29b5b43a1f206c2f0c379c8b07bb4113919c18aafde -->
+<!-- Source: README.md; SHA256: 490628bb7f70f4cf1a8c43b302246fd2e870725a6649c628762608b4a76db65b -->
 
 <!-- translations:start -->
 [English](../../../README.md) | [简体中文](../zh-CN/README.md) | [हिन्दी](../hi-IN/README.md) | [Español (España)](../es-ES/README.md) | [Español (Latinoamérica)](../es-419/README.md) | [العربية (السعودية)](../ar-SA/README.md) | [Afrikaans](README.md) | [አማርኛ](../am-ET/README.md) | [العربية (مصر)](../ar-EG/README.md) | [العربية (المغرب)](../ar-MA/README.md) | [বাংলা](../bn-BD/README.md) | [Bosanski](../bs-BA/README.md) | [Deutsch](../de-DE/README.md) | [فارسی](../fa-IR/README.md) | [Filipino](../fil-PH/README.md) | [Français](../fr-FR/README.md) | [Français (Maroc)](../fr-MA/README.md) | [Français (Sénégal)](../fr-SN/README.md) | [Hausa](../ha-NG/README.md) | [עברית](../he-IL/README.md) | [Hrvatski](../hr-HR/README.md) | [Bahasa Indonesia](../id-ID/README.md) | [Igbo](../ig-NG/README.md) | [Italiano](../it-IT/README.md) | [日本語](../ja-JP/README.md) | [한국어](../ko-KR/README.md) | [Malagasy](../mg-MG/README.md) | [मराठी](../mr-IN/README.md) | [Bahasa Melayu](../ms-MY/README.md) | [Nederlands](../nl-NL/README.md) | [Polski](../pl-PL/README.md) | [Português (Brasil)](../pt-BR/README.md) | [Русский](../ru-RU/README.md) | [Kinyarwanda](../rw-RW/README.md) | [Soomaali](../so-SO/README.md) | [Српски](../sr-RS/README.md) | [Svenska](../sv-SE/README.md) | [Kiswahili](../sw-KE/README.md) | [தமிழ்](../ta-IN/README.md) | [తెలుగు](../te-IN/README.md) | [ไทย](../th-TH/README.md) | [Türkçe](../tr-TR/README.md) | [Українська](../uk-UA/README.md) | [اردو](../ur-PK/README.md) | [Tiếng Việt](../vi-VN/README.md) | [isiXhosa](../xh-ZA/README.md) | [Yorùbá](../yo-NG/README.md) | [繁體中文](../zh-TW/README.md) | [isiZulu](../zu-ZA/README.md)
@@ -53,13 +53,15 @@ Cacti-probleme kom gewoonlik as simptome na vore: leë grafieke, 'n peiler wat g
 | Toestelle | Geaktiveerde toestelle wat af is of herstel, die drie wat die langste af is met hul laaste fout, en 'n mislukking wanneer die meeste toestelle gelyktydig af is |
 | Peiler | Peilertipe en -interval, tyd sedert die hoofpeiler laas voltooi het, looptyd teenoor die interval, peiler-uitvoer wat nooit 'n RRD-lêer bereik het nie, afgeleë peilers wat opgehou rapporteer het, 'n vasgevalde Boost en 'n Spine-konfigurasie wat na 'n ander databasis wys |
 
-Elke kontrole het 'n stabiele ID, soos `database.timezone` of `binary.rrdtool`, sodat skripte op individuele resultate kan sleutel.
+Elke kontrole het 'n stabiele ID, soos `database.timezone` of `binary.rrdtool`, sodat skripte op individuele resultate kan sleutel. Geaktiveerde inpropmodules kan bykomende kontroles en ondersteuningsbundel-aanhangsels bydra deur die `doctor_register_checks`-haak, en Doctor stel leesalleen diagnostiese vermoëns aan `plugin_mcp` bloot deur `abilities_register`.
 
 ## Kode- en toetskaart
 
 | Gedrag | Implementering | Toetsbewyse in hierdie bewaarplek |
 |---|---|---|
-| Diagnostiese kontroles en stabiele verslag-ID's | [doctor_functions.php](../../../doctor_functions.php) | [DoctorFunctionsTest.php](../../../tests/DoctorFunctionsTest.php), [AssertDoctorReport.php](../../../tests/ci/AssertDoctorReport.php) |
+| Diagnostiese kontroles en stabiele verslag-ID's | [doctor_functions.php](../../../doctor_functions.php) | [DoctorFunctionsTest.php](../../../tests/DoctorFunctionsTest.php), [DatabaseHealthTest.php](../../../tests/DatabaseHealthTest.php), [AssertDoctorReport.php](../../../tests/ci/AssertDoctorReport.php) |
+| Inpropkontrole-haak (`doctor_register_checks`) | [doctor_plugins.php](../../../doctor_plugins.php) | [PluginHooksTest.php](../../../tests/PluginHooksTest.php) |
+| MCP-diagnostiese vermoëns (`abilities_register`) | [doctor_abilities.php](../../../doctor_abilities.php) | [AbilitiesTest.php](../../../tests/AbilitiesTest.php) |
 | Rolbeperkte toegang en geredigeerde webverslae | [doctor_access.php](../../../doctor_access.php), [doctor_web.php](../../../doctor_web.php) | [AccessTest.php](../../../tests/AccessTest.php), [WebAccessTest.php](../../../tests/WebAccessTest.php) |
 | Begeleide simptoomondersoeke | [doctor_diagnosis.php](../../../doctor_diagnosis.php) | [DiagnosisTest.php](../../../tests/DiagnosisTest.php) |
 | RRD-varsheid en hantering van uitgestelde skryfbewerkings | [doctor_rrd.php](../../../doctor_rrd.php) | [RrdFreshnessTest.php](../../../tests/RrdFreshnessTest.php) |
@@ -200,7 +202,7 @@ php plugins/doctor/cli/doctor.php --format=prometheus > /var/lib/node_exporter/t
 php plugins/doctor/cli/doctor.php --bundle=/tmp/cacti-doctor.txt
 ```
 
-Die bundel is 'n enkele tekslêer met die Doctor-, Cacti-, PHP-, bedryfstelsel- en databasisweergawes, peiler- en Boost-statistieke, die volledige verslag en die laaste 200 reëls van die Cacti-logboek. Waardes wat op wagwoord-, geheim-, teken-, gemeenskap- en sleutelname volg, word gemaskeer. Doctor skep die lêer sodat dit slegs deur sy eienaar gelees kan word en weier om 'n bestaande lêer oor te skryf. Gaan dit na voordat jy dit êrens plaas.
+Die bundel is 'n enkele tekslêer met die Doctor-, Cacti-, PHP-, bedryfstelsel- en databasisweergawes, peiler- en Boost-statistieke, die volledige verslag, enige inprop-ondersteuningsbundel-aanhangsels onder `== Plugin attachments`, en die laaste 200 reëls van die Cacti-logboek. Waardes wat op wagwoord-, geheim-, teken-, gemeenskap- en sleutelname volg, word gemaskeer. Doctor skep die lêer sodat dit slegs deur sy eienaar gelees kan word en weier om 'n bestaande lêer oor te skryf. Gaan dit na voordat jy dit êrens plaas.
 
 ## Herstelbeleid
 
@@ -246,6 +248,63 @@ Geskeduleerde waarskuwingsalarms word onderdruk terwyl die uitsondering geld; ve
 
 Opgradering skep `plugin_doctor_audit` en `plugin_doctor_acceptance` sonder om Cacti-toepassingsdata te verander. Voer enige geskiedenis uit wat u benodig voordat u deïnstalleer: deïnstallasie verwyder beide inproptabelle en sy instellings. Die terugrol van die inproplêers laat die tabelle beskikbaar vir ondersoek, maar ouer weergawes respekteer nie waarskuwingsuitsonderings nie.
 
+## Inpropkontroles (`doctor_register_checks`)
+
+Geaktiveerde Cacti-inpropmodules kan leesalleen diagnostiese kontroles en opsionele ondersteuningsbundel-aanhangsels bydra deur 'n `doctor_register_checks`-haak te registreer:
+
+```php
+api_plugin_register_hook('sample', 'doctor_register_checks', 'sample_doctor_checks', 'setup.php');
+```
+
+Doctor roep geaktiveerde, nie-geïntegreerde inpropmodules op wat op `doctor_register_checks` geregistreer is (en slaan `doctor` en `cacti` oor), deur die haaklêer streng binne die inpropmodule se eie gids op te los. Die terugroepfunksie ontvang `['mode' => 'run' | 'list', 'plugin' => '<slug>']` en gee óf 'n lys kontrolebeskrywings óf 'n omhulsel met `checks` en opsionele `attachments` terug:
+
+```php
+function sample_doctor_checks($context) {
+	return [
+		'checks' => [
+			[
+				'id'          => 'sample.queue_depth',
+				'plugin'      => 'sample',
+				'category'    => 'Sample',
+				'title'       => 'Sample queue depth',
+				'status'      => 'ok',
+				'message'     => 'Queue is healthy.',
+				'details'     => ['pending' => 0],
+				'remediation' => ''
+			]
+		],
+		'attachments' => [
+			[
+				'title'   => 'Sample diagnostics',
+				'content' => "worker=ok\n"
+			]
+		]
+	];
+}
+```
+
+Elke inpropkontrolebeskrywing word gevalideer voordat dit ingesluit word:
+
+- Vereiste sleutels: `id`, `plugin`, `category`, `title`, `status`, `message`, `details` en `remediation`.
+- `plugin` moet ooreenstem met die geregistreerde inprop-slug (`[a-z0-9_]{1,64}`). `id` moet ooreenstem met `[a-z0-9_.]{1,128}`, begin met `<plugin>.`, en nie bots met 'n bestaande kern- of inpropkontrole-ID nie.
+- `status` moet `ok`, `warn`, `fail` of `info` wees. `ok` word afgebeeld na `pass` in Doctor-verslae; `info` is inligtinggewend en veroorsaak nie mislukkings in CLI, Nagios, Prometheus of geskeduleerde waarskuwings nie.
+- `category` (tot 64 grepe) en `title` (tot 256 grepe) moet nie-leë stringe sonder kontrolekarakters wees. `message` (nie-leeg, tot 2048 grepe) en `remediation` (tot 2048 grepe) moet stringe wees.
+- `details` aanvaar 'n string (tot 8192 grepe) of 'n skalaar-/geneste skikking (maksimum diepte 4, JSON-gekodeer tot 16384 grepe; objekte en hulpbronne word verwerp).
+- Opsionele ondersteuningsbundel-aanhangsels vereis 'n nie-leë `title` (tot 128 grepe, geen kontrolekarakters) en 'n `content`-string tot 65536 grepe (64 KiB).
+
+Doctor dwing limiete van 32 kontroles en 8 aanhangsels per inpropmodule af (64 inpropkontroles en 32 aanhangsels in totaal). Elke haak voer binne sy eie `try`/`catch`-grens uit sodat uitsonderings of nie-skikking-ladings geredigeer en na die Cacti-logboek (`DOCTOR`-fasiliteit) gelog word sonder om kernkontroles of ander inpropmodules te raak. Wanvormde beskrywings word verwerp en gelog terwyl geldige beskrywings van dieselfde inpropmodule steeds loop. Inpropkontroles is altyd leesalleen (`repairable: false`), en stringwaardes plus sensitiewe assosiatiewe sleutels word geredigeer voordat dit vertoon, uitgevoer of gebundel word. Gevalideerde inpropkontroles verskyn in die webkoppelvlak, CLI-teks-/JSON-/Nagios-/Prometheus-afvoer, geskeduleerde statusnasporing en ondersteuningsbundels.
+
+## MCP-integrasie (`abilities_register`)
+
+Doctor registreer die `abilities_register`-haak (`doctor_abilities_register` in `doctor_abilities.php`) sodat `plugin_mcp` sy diagnostiese vermoëns ontdek wanneer albei inpropmodules geaktiveer is. Doctor registreer die `diagnostics`-kategorie (`Diagnostics`) en twee leesalleen, nie-vernietigende, idempotente vermoëns:
+
+| Vermoë-ID | Opsionele argumente | Afvoer |
+|---|---|---|
+| `doctor-run-checks` | `category` (string, maks 64 karakters), `status` (`pass`, `ok`, `warn`, `fail`, `info`) | `summary` (`total`, `pass`, `warn`, `fail`, `info`) en tot 256 geredigeerde `findings` (`id`, `plugin`, `category`, `title`, `status`, `message`, `remediation`) |
+| `doctor-list-checks` | `category` (string, maks 64 karakters), `plugin` (string, maks 64 karakters) | Tot 256 `checks` (`id`, `plugin`, `category`, `title`) wat al 45 ingeboude kontroles plus geaktiveerde inpropkontroles dek |
+
+Beide vermoëns is streng leesalleen en voer nooit herstelaksies uit nie. Benewens `plugin_mcp` se eie toegangsgebied- en vermoë-blootstellingskontroles (inpropvermoëns begin versteek in MCP totdat 'n administrateur hulle blootstel), vereis Doctor dat die tekeneienaar **Doctor-kyker** of 'n hoër Doctor-toegangsgebied hou. `doctor-run-checks` beperk `devices.health` tot die tekeneienaar se toegelate toestelle, sluit `logging.recent_errors` slegs in wanneer die gebruiker Cacti-toegangsgebied 18 of 19 hou, laat `filesystem.rrd_files` weg, en sluit toestel-beperkte `filesystem.rrd_stale` slegs vir **Doctor-operateur** of **Doctor-administrateur** in.
+
 ## Vereistes
 
 | Cacti | PHP | Notas |
@@ -263,20 +322,22 @@ Ondersteuningsdatums word saam met Doctor gebundel vanaf die [PHP-ondersteunings
 
 ## Ontwikkeling
 
-Die eenheidstoetsstel gebruik Pest en loop op PHP 8.2 of nuwer:
+Die eenheidstoetsstel gebruik Pest en statiese analise gebruik PHPStan (vlak 6), albei op PHP 8.2 of nuwer:
 
 ```console
 composer install
+composer phpstan
 composer test
 ```
 
 Die toetse vervang die Cacti-funksies wat Doctor oproep met klein plaasvervangers in `tests/CactiStubs.php`, sodat hulle sonder 'n Cacti-installasie loop.
 
-GitHub Actions voer vier soorte kontroles uit op elke push en pull-versoek:
+GitHub Actions voer vyf soorte kontroles uit op elke push en pull-versoek:
 
-- `php -l` op elke PHP-lêer onder PHP 5.4, 5.6, 7.0, 7.1, 7.4, en 8.0 tot 8.4.
-- Die eenheidstoetsstel op PHP 8.2, 8.3 en 8.4.
+- Vrystelling-verpakkingskontraktoetse (`tests/test_release.py`) en 'n argiefbou (`tools/build_release.py`).
 - `locales/build_gettext.sh --check`, wat misluk op 'n verouderde vertaalsjabloon, 'n onvolledige of vae katalogus, of 'n gekompileerde katalogus wat van sy bron verskil.
+- `php -l` op elke PHP-lêer onder PHP 5.4, 5.6, 7.0, 7.1, 7.4, en 8.0 tot 8.4.
+- `composer phpstan` (PHPStan vlak 6) en `composer test` (Pest-eenheidstoetsstel) op PHP 8.2, 8.3 en 8.4.
 - Sewe integrasietake wat Cacti 1.2.20, die huidige 1.2.x-tak en `develop` teen MySQL en MariaDB installeer, met beide cmd.php en Spine. Elke taak installeer en aktiveer die inprop, voer die volledige CLI-verslag uit en kontroleer die verslagskema, opsommingstotale, verwagte statusse en die presiese stel mislukkings. Dit breek daarna 'n binêre pad en die poller-tydstempel, bevestig dat beide gerapporteer word, herstel hulle, oefen die herstelaksie en sy bevestiging uit, en voer deaktivering, aktivering, deïnstallasie en herinstallasie uit. Die JSON-verslag word as 'n artefak behou wanneer 'n taak misluk.
 
 ## Bydraes

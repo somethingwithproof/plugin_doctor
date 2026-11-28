@@ -17,7 +17,30 @@
  * more details.
  */
 
-/** Higher levels include lower capabilities; Cacti resolves user and group grants. */
+/**
+ * Resolve an explicit user ID's Doctor access level for non-session callers such as MCP.
+ *
+ * @param int $userId
+ * @return int
+ */
+function doctor_user_access_level($userId) {
+	if ((int) $userId <= 0 || !function_exists('is_realm_allowed')) {
+		return 0;
+	}
+	foreach ([3 => 'doctor.php', 2 => 'doctor_operator.php', 1 => 'doctor_view.php'] as $level => $file) {
+		$id = db_fetch_cell_prepared('SELECT id FROM plugin_realms WHERE plugin = ? AND file = ?', ['doctor', $file]);
+		if ($id && is_realm_allowed((int) $id + 100, (int) $userId)) {
+			return $level;
+		}
+	}
+	return 0;
+}
+
+/**
+ * Higher levels include lower capabilities; Cacti resolves user and group grants.
+ *
+ * @return int
+ */
 function doctor_access_level() {
 	if (empty($_SESSION['sess_user_id']) || !function_exists('is_realm_allowed')) {
 		return 0;
@@ -31,11 +54,23 @@ function doctor_access_level() {
 	return 0;
 }
 
+/**
+ * Determine whether the active session can configure Doctor settings and run repairs.
+ *
+ * @return bool
+ */
 function doctor_can_configure() {
 	return doctor_access_level() === 3 && is_realm_allowed(15);
 }
 
-/** Every state-changing request passes this guard before work or output. */
+/**
+ * Every state-changing request passes this guard before work or output.
+ *
+ * @param string $action
+ * @param string $method
+ * @param bool $csrf
+ * @return int
+ */
 function doctor_action_status($action, $method, $csrf) {
 	$level = doctor_access_level();
 	if (!in_array($action, ['run', 'acknowledge', 'repair', 'accept', 'unaccept'], true)) {
@@ -50,7 +85,11 @@ function doctor_action_status($action, $method, $csrf) {
 	return 200;
 }
 
-/** Device counts and descriptions must use the current user's Cacti ACLs. */
+/**
+ * Device counts and descriptions must use the current user's Cacti ACLs.
+ *
+ * @return array<string,mixed>
+ */
 function doctor_visible_devices() {
 	if (!function_exists('get_allowed_devices')) {
 		return doctor_result('devices.health', 'Devices', 'warn', __('Device availability', 'doctor'), __('Device permissions could not be evaluated.', 'doctor'), '', 'not_assessed');
@@ -71,13 +110,18 @@ function doctor_visible_devices() {
 	return doctor_evaluate_devices($counts, $offenders);
 }
 
-/** Remove fields a web report does not need and redact before caching or rendering. */
+/**
+ * Remove fields a web report does not need and redact before caching or rendering.
+ *
+ * @param array<int,array<string,mixed>> $results
+ * @return array<int,array<string,mixed>>
+ */
 function doctor_web_results($results) {
 	$visible = [];
 	foreach ($results as $result) {
 		if (!isset($result['id'], $result['category'], $result['status'], $result['summary'], $result['detail'])
 			|| !is_string($result['id']) || !preg_match('/\A[a-z0-9_.]+\z/', $result['id'])
-			|| !in_array($result['status'], ['pass', 'warn', 'fail'], true)) {
+			|| !in_array($result['status'], ['pass', 'warn', 'fail', 'info'], true)) {
 			continue;
 		}
 		// Replace the installation-wide device check and the CLI-only PHP settings.
@@ -87,9 +131,17 @@ function doctor_web_results($results) {
 		if ($result['id'] === 'logging.recent_errors' && !is_realm_allowed(18)) {
 			continue;
 		}
-		$repair = isset($result['repair']) && isset(doctor_available_repairs()[$result['repair']]) ? $result['repair'] : '';
-		$visible[] = doctor_result($result['id'], (string) $result['category'], $result['status'], doctor_redact((string) $result['summary']), doctor_redact((string) $result['detail']), $repair,
+		$isPlugin = isset($result['plugin']) && is_string($result['plugin']) && $result['plugin'] !== '' && $result['plugin'] !== 'doctor';
+		$repair   = !$isPlugin && isset($result['repair']) && isset(doctor_available_repairs()[$result['repair']]) ? $result['repair'] : '';
+		$entry    = doctor_result($result['id'], (string) $result['category'], $result['status'], doctor_redact((string) $result['summary']), doctor_redact((string) $result['detail']), $repair,
 			isset($result['assessment']) ? $result['assessment'] : 'assessed');
+		if ($isPlugin) {
+			$entry['plugin'] = $result['plugin'];
+			if (isset($result['remediation']) && is_string($result['remediation'])) {
+				$entry['remediation'] = doctor_redact($result['remediation']);
+			}
+		}
+		$visible[] = $entry;
 	}
 	$visible[] = doctor_visible_devices();
 	if (function_exists('get_allowed_devices')) {
@@ -107,7 +159,11 @@ function doctor_web_results($results) {
 	return doctor_apply_acceptances($visible);
 }
 
-/** Reuse the existing supervised CLI; never accept a command or arguments from a request. */
+/**
+ * Reuse the existing supervised CLI; never accept a command or arguments from a request.
+ *
+ * @return array<string,mixed>
+ */
 function doctor_run_web_checks() {
 	$php = (string) read_config_option('path_php_binary');
 	$refusal = doctor_binary_execution_refusal('path_php_binary', $php, doctor_running_as_root());
@@ -122,14 +178,19 @@ function doctor_run_web_checks() {
 	return ['results' => doctor_web_results($report['checks']), 'time' => time(), 'user' => (int) $_SESSION['sess_user_id']];
 }
 
-/** Viewers read compact scheduled state, never raw diagnostic details or global device totals. */
+/**
+ * Viewers read compact scheduled state, never raw diagnostic details or global device totals.
+ *
+ * @param int $now
+ * @return array{results:array<int,array<string,mixed>>,time:int,fresh:bool}
+ */
 function doctor_viewer_results($now) {
 	$completed = (int) read_config_option('doctor_last_completed', true);
 	$state = doctor_state_decode(read_config_option('doctor_state', true));
 	$fresh = read_config_option('doctor_schedule_enabled', true) === 'on' && $completed > 0 && $now >= $completed && $now - $completed <= doctor_report_max_age();
 	$results = [];
 	foreach ($state as $id => $status) {
-		if (in_array($id, ['devices.health', 'filesystem.rrd_files', 'filesystem.rrd_stale'], true) || !preg_match('/\A[a-z0-9_.]+\z/', $id) || !in_array($status, ['pass', 'warn', 'fail'], true)) {
+		if (in_array($id, ['devices.health', 'filesystem.rrd_files', 'filesystem.rrd_stale'], true) || !preg_match('/\A[a-z0-9_.]+\z/', $id) || !in_array($status, ['pass', 'warn', 'fail', 'info'], true)) {
 			continue;
 		}
 		$results[] = doctor_result($id, doctor_check_category($id), $fresh ? $status : 'unknown', $id, '', '', $fresh ? 'assessed' : 'not_assessed');
@@ -137,12 +198,24 @@ function doctor_viewer_results($now) {
 	return ['results' => $results, 'time' => $completed, 'fresh' => $fresh];
 }
 
-/** Checks whose detail changes every second supply stable evidence instead. */
+/**
+ * Checks whose detail changes every second supply stable evidence instead.
+ *
+ * @param array<string,mixed> $result
+ * @return string
+ */
 function doctor_finding_fingerprint($result) {
 	return hash('sha256', json_encode([$result['id'], $result['status'], isset($result['evidence']) ? $result['evidence'] : $result['detail']]));
 }
 
-/** Acknowledgments are personal, expire when evidence changes, and never alter health or alerts. */
+/**
+ * Acknowledgments are personal, expire when evidence changes, and never alter health or alerts.
+ *
+ * @param array<int,array<string,mixed>> $results
+ * @param string $id
+ * @param string $fingerprint
+ * @return bool
+ */
 function doctor_acknowledge($results, $id, $fingerprint) {
 	foreach ($results as $result) {
 		if ($result['id'] === $id && in_array($result['status'], ['warn', 'fail'], true) && doctor_finding_fingerprint($result) === $fingerprint) {

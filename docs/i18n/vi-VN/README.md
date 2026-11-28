@@ -1,4 +1,4 @@
-<!-- Source: README.md; SHA256: ee03c7ac68aca21c8155c29b5b43a1f206c2f0c379c8b07bb4113919c18aafde -->
+<!-- Source: README.md; SHA256: 490628bb7f70f4cf1a8c43b302246fd2e870725a6649c628762608b4a76db65b -->
 
 <!-- translations:start -->
 [English](../../../README.md) | [简体中文](../zh-CN/README.md) | [हिन्दी](../hi-IN/README.md) | [Español (España)](../es-ES/README.md) | [Español (Latinoamérica)](../es-419/README.md) | [العربية (السعودية)](../ar-SA/README.md) | [Afrikaans](../af-ZA/README.md) | [አማርኛ](../am-ET/README.md) | [العربية (مصر)](../ar-EG/README.md) | [العربية (المغرب)](../ar-MA/README.md) | [বাংলা](../bn-BD/README.md) | [Bosanski](../bs-BA/README.md) | [Deutsch](../de-DE/README.md) | [فارسی](../fa-IR/README.md) | [Filipino](../fil-PH/README.md) | [Français](../fr-FR/README.md) | [Français (Maroc)](../fr-MA/README.md) | [Français (Sénégal)](../fr-SN/README.md) | [Hausa](../ha-NG/README.md) | [עברית](../he-IL/README.md) | [Hrvatski](../hr-HR/README.md) | [Bahasa Indonesia](../id-ID/README.md) | [Igbo](../ig-NG/README.md) | [Italiano](../it-IT/README.md) | [日本語](../ja-JP/README.md) | [한국어](../ko-KR/README.md) | [Malagasy](../mg-MG/README.md) | [मराठी](../mr-IN/README.md) | [Bahasa Melayu](../ms-MY/README.md) | [Nederlands](../nl-NL/README.md) | [Polski](../pl-PL/README.md) | [Português (Brasil)](../pt-BR/README.md) | [Русский](../ru-RU/README.md) | [Kinyarwanda](../rw-RW/README.md) | [Soomaali](../so-SO/README.md) | [Српски](../sr-RS/README.md) | [Svenska](../sv-SE/README.md) | [Kiswahili](../sw-KE/README.md) | [தமிழ்](../ta-IN/README.md) | [తెలుగు](../te-IN/README.md) | [ไทย](../th-TH/README.md) | [Türkçe](../tr-TR/README.md) | [Українська](../uk-UA/README.md) | [اردو](../ur-PK/README.md) | [Tiếng Việt](README.md) | [isiXhosa](../xh-ZA/README.md) | [Yorùbá](../yo-NG/README.md) | [繁體中文](../zh-TW/README.md) | [isiZulu](../zu-ZA/README.md)
@@ -50,13 +50,15 @@ Các sự cố Cacti thường biểu hiện qua các triệu chứng như: đ�
 | Thiết bị | Các thiết bị đang bật nhưng bị sập hoặc đang khôi phục, ba thiết bị sập lâu nhất kèm lỗi gần nhất của chúng, và cảnh báo lỗi khi phần lớn thiết bị sập cùng lúc |
 | Poller | Loại poller và chu kỳ, thời gian kể từ lần poller chính hoàn tất gần nhất, thời gian chạy so với chu kỳ, đầu ra của poller chưa từng ghi vào tệp RRD, các poller từ xa ngừng báo cáo, Boost bị đình trệ, và cấu hình Spine trỏ tới một cơ sở dữ liệu khác |
 
-Mỗi kiểm tra đều có một ID ổn định, chẳng hạn như `database.timezone` hoặc `binary.rrdtool`, giúp các kịch bản có thể tra cứu theo từng kết quả riêng lẻ.
+Mỗi kiểm tra đều có một ID ổn định, chẳng hạn như `database.timezone` hoặc `binary.rrdtool`, giúp các kịch bản có thể tra cứu theo từng kết quả riêng lẻ. Các plugin đã bật có thể đóng góp thêm mục kiểm tra và tệp đính kèm gói hỗ trợ thông qua hook `doctor_register_checks`, và Doctor cung cấp các năng lực chẩn đoán chỉ đọc cho `plugin_mcp` thông qua `abilities_register`.
 
 ## Sơ đồ mã nguồn và kiểm thử
 
 | Hành vi | Triển khai | Bằng chứng kiểm thử trong kho lưu trữ này |
 |---|---|---|
-| Các kiểm tra chẩn đoán và ID báo cáo ổn định | [doctor_functions.php](../../../doctor_functions.php) | [DoctorFunctionsTest.php](../../../tests/DoctorFunctionsTest.php), [AssertDoctorReport.php](../../../tests/ci/AssertDoctorReport.php) |
+| Các kiểm tra chẩn đoán và ID báo cáo ổn định | [doctor_functions.php](../../../doctor_functions.php) | [DoctorFunctionsTest.php](../../../tests/DoctorFunctionsTest.php), [DatabaseHealthTest.php](../../../tests/DatabaseHealthTest.php), [AssertDoctorReport.php](../../../tests/ci/AssertDoctorReport.php) |
+| Hook kiểm tra của plugin (`doctor_register_checks`) | [doctor_plugins.php](../../../doctor_plugins.php) | [PluginHooksTest.php](../../../tests/PluginHooksTest.php) |
+| Năng lực chẩn đoán MCP (`abilities_register`) | [doctor_abilities.php](../../../doctor_abilities.php) | [AbilitiesTest.php](../../../tests/AbilitiesTest.php) |
 | Quyền truy cập theo phạm vi vai trò và báo cáo web đã ẩn thông tin nhạy cảm | [doctor_access.php](../../../doctor_access.php), [doctor_web.php](../../../doctor_web.php) | [AccessTest.php](../../../tests/AccessTest.php), [WebAccessTest.php](../../../tests/WebAccessTest.php) |
 | Điều tra triệu chứng có hướng dẫn | [doctor_diagnosis.php](../../../doctor_diagnosis.php) | [DiagnosisTest.php](../../../tests/DiagnosisTest.php) |
 | Kiểm tra độ mới của RRD và xử lý ghi trì hoãn | [doctor_rrd.php](../../../doctor_rrd.php) | [RrdFreshnessTest.php](../../../tests/RrdFreshnessTest.php) |
@@ -195,7 +197,7 @@ php plugins/doctor/cli/doctor.php --format=prometheus > /var/lib/node_exporter/t
 php plugins/doctor/cli/doctor.php --bundle=/tmp/cacti-doctor.txt
 ```
 
-Gói hỗ trợ là một tệp văn bản duy nhất chứa phiên bản Doctor, Cacti, PHP, hệ điều hành và cơ sở dữ liệu, số liệu thống kê poller và Boost, báo cáo đầy đủ và 200 dòng cuối cùng của nhật ký Cacti. Các giá trị đứng sau tên password, secret, token, community và key đều được che lại. Doctor tạo tệp với quyền chỉ cho phép chủ sở hữu đọc và từ chối ghi đè tệp đã tồn tại. Hãy kiểm tra lại nội dung tệp trước khi đăng lên bất kỳ đâu.
+Gói hỗ trợ là một tệp văn bản duy nhất chứa phiên bản Doctor, Cacti, PHP, hệ điều hành và cơ sở dữ liệu, số liệu thống kê poller và Boost, báo cáo đầy đủ, các tệp đính kèm gói hỗ trợ từ plugin dưới mục `== Plugin attachments` (nếu có) và 200 dòng cuối cùng của nhật ký Cacti. Các giá trị đứng sau tên password, secret, token, community và key đều được che lại. Doctor tạo tệp với quyền chỉ cho phép chủ sở hữu đọc và từ chối ghi đè tệp đã tồn tại. Hãy kiểm tra lại nội dung tệp trước khi đăng lên bất kỳ đâu.
 
 ## Chính sách sửa chữa
 
@@ -241,6 +243,63 @@ Các thông báo cảnh báo theo lịch bị tạm ẩn trong thời gian ngo�
 
 Quá trình nâng cấp tạo `plugin_doctor_audit` và `plugin_doctor_acceptance` mà không làm thay đổi dữ liệu ứng dụng Cacti. Hãy xuất mọi lịch sử bạn cần trước khi gỡ cài đặt: quá trình gỡ cài đặt sẽ xóa cả hai bảng của plugin và các thiết lập của nó. Việc hoàn nguyên các tệp plugin sẽ giữ lại các bảng để phục vụ điều tra, nhưng các phiên bản cũ hơn sẽ không áp dụng các ngoại lệ cảnh báo.
 
+## Kiểm tra của plugin (`doctor_register_checks`)
+
+Các plugin Cacti đã bật có thể đóng góp các kiểm tra chẩn đoán chỉ đọc và tệp đính kèm tùy chọn cho gói hỗ trợ bằng cách đăng ký hook `doctor_register_checks`:
+
+```php
+api_plugin_register_hook('sample', 'doctor_register_checks', 'sample_doctor_checks', 'setup.php');
+```
+
+Doctor gọi các plugin đã bật, không tích hợp sẵn đã đăng ký trên `doctor_register_checks` (bỏ qua `doctor` và `cacti`), phân giải tệp hook hoàn toàn bên trong thư mục riêng của plugin đó. Hàm callback nhận `['mode' => 'run' | 'list', 'plugin' => '<slug>']` và trả về một danh sách các bộ mô tả kiểm tra hoặc một cấu trúc bao gồm `checks` và tùy chọn `attachments`:
+
+```php
+function sample_doctor_checks($context) {
+	return [
+		'checks' => [
+			[
+				'id'          => 'sample.queue_depth',
+				'plugin'      => 'sample',
+				'category'    => 'Sample',
+				'title'       => 'Sample queue depth',
+				'status'      => 'ok',
+				'message'     => 'Queue is healthy.',
+				'details'     => ['pending' => 0],
+				'remediation' => ''
+			]
+		],
+		'attachments' => [
+			[
+				'title'   => 'Sample diagnostics',
+				'content' => "worker=ok\n"
+			]
+		]
+	];
+}
+```
+
+Mỗi bộ mô tả kiểm tra của plugin đều được xác thực trước khi đưa vào:
+
+- Các khóa bắt buộc: `id`, `plugin`, `category`, `title`, `status`, `message`, `details` và `remediation`.
+- `plugin` phải khớp với slug plugin đã đăng ký (`[a-z0-9_]{1,64}`). `id` phải khớp với `[a-z0-9_.]{1,128}`, bắt đầu bằng `<plugin>.`, và không trùng với một ID kiểm tra lõi hoặc plugin đã có.
+- `status` phải là `ok`, `warn`, `fail` hoặc `info`. `ok` ánh xạ sang `pass` trong báo cáo Doctor; `info` mang tính thông tin và không kích hoạt lỗi trong CLI, Nagios, Prometheus hoặc cảnh báo theo lịch.
+- `category` (tối đa 64 byte) và `title` (tối đa 256 byte) phải là chuỗi không rỗng và không chứa ký tự điều khiển. `message` (không rỗng, tối đa 2048 byte) và `remediation` (tối đa 2048 byte) phải là chuỗi.
+- `details` chấp nhận một chuỗi (tối đa 8192 byte) hoặc một mảng vô hướng/lồng nhau (độ sâu tối đa 4, sau khi mã hóa JSON tối đa 16384 byte; đối tượng và tài nguyên bị từ chối).
+- Các tệp đính kèm gói hỗ trợ tùy chọn yêu cầu `title` không rỗng (tối đa 128 byte, không có ký tự điều khiển) và chuỗi `content` tối đa 65536 byte (64 KiB).
+
+Doctor áp dụng giới hạn 32 kiểm tra và 8 tệp đính kèm cho mỗi plugin (tổng cộng 64 kiểm tra plugin và 32 tệp đính kèm). Mỗi hook thực thi trong phạm vi `try`/`catch` riêng để các ngoại lệ hoặc dữ liệu không phải mảng được che thông tin nhạy cảm và ghi vào nhật ký Cacti (nhóm `DOCTOR`) mà không ảnh hưởng đến các kiểm tra lõi hay các plugin khác. Các bộ mô tả sai định dạng bị từ chối và ghi nhật ký trong khi các bộ mô tả hợp lệ từ cùng plugin vẫn chạy. Các kiểm tra của plugin luôn ở chế độ chỉ đọc (`repairable: false`), và các giá trị chuỗi cùng các khóa kết hợp nhạy cảm đều được che lại trước khi hiển thị, xuất hoặc đóng gói. Các kiểm tra plugin đã được xác thực sẽ xuất hiện trên giao diện web, đầu ra CLI dạng văn bản/JSON/Nagios/Prometheus, tính năng theo dõi trạng thái theo lịch và các gói hỗ trợ.
+
+## Tích hợp MCP (`abilities_register`)
+
+Doctor đăng ký hook `abilities_register` (`doctor_abilities_register` trong `doctor_abilities.php`) để `plugin_mcp` khám phá các năng lực chẩn đoán của nó khi cả hai plugin đều được bật. Doctor đăng ký danh mục `diagnostics` (`Diagnostics`) và hai năng lực chỉ đọc, không phá hủy, có tính lũy đẳng (idempotent):
+
+| ID năng lực | Đối số tùy chọn | Đầu ra |
+|---|---|---|
+| `doctor-run-checks` | `category` (chuỗi, tối đa 64 ký tự), `status` (`pass`, `ok`, `warn`, `fail`, `info`) | `summary` (`total`, `pass`, `warn`, `fail`, `info`) và tối đa 256 mục `findings` đã che thông tin nhạy cảm (`id`, `plugin`, `category`, `title`, `status`, `message`, `remediation`) |
+| `doctor-list-checks` | `category` (chuỗi, tối đa 64 ký tự), `plugin` (chuỗi, tối đa 64 ký tự) | Tối đa 256 mục `checks` (`id`, `plugin`, `category`, `title`) bao gồm toàn bộ 45 kiểm tra tích hợp sẵn cùng các kiểm tra của plugin đã bật |
+
+Cả hai năng lực đều hoàn toàn chỉ đọc và không bao giờ chạy sửa chữa. Ngoài các kiểm soát quyền hạn và phơi bày năng lực của riêng `plugin_mcp` (năng lực của plugin bắt đầu ở trạng thái ẩn trong MCP cho đến khi quản trị viên cho phép hiển thị), Doctor yêu cầu chủ sở hữu token phải có quyền **Doctor Viewer** hoặc quyền Doctor cao hơn. `doctor-run-checks` giới hạn `devices.health` trong các thiết bị được phép của chủ sở hữu token, chỉ bao gồm `logging.recent_errors` khi người dùng có quyền Cacti realm 18 hoặc 19, bỏ qua `filesystem.rrd_files`, và chỉ bao gồm `filesystem.rrd_stale` theo phạm vi thiết bị đối với **Doctor Operator** hoặc **Doctor Administrator**.
+
 ## Yêu cầu
 
 | Cacti | PHP | Ghi chú |
@@ -258,20 +317,22 @@ Các ngày hỗ trợ được đóng gói sẵn cùng Doctor từ [lịch hỗ 
 
 ## Phát triển
 
-Bộ kiểm thử đơn vị sử dụng Pest và chạy trên PHP 8.2 trở lên:
+Bộ kiểm thử đơn vị sử dụng Pest và phân tích tĩnh sử dụng PHPStan (mức 6), cả hai chạy trên PHP 8.2 trở lên:
 
 ```console
 composer install
+composer phpstan
 composer test
 ```
 
 Các bài kiểm thử thay thế các hàm Cacti mà Doctor gọi bằng các hàm giả lập nhỏ trong `tests/CactiStubs.php`, vì vậy chúng chạy mà không cần một bản cài đặt Cacti.
 
-GitHub Actions chạy bốn loại kiểm tra trên mỗi lần đẩy mã và yêu cầu kéo:
+GitHub Actions chạy năm loại kiểm tra trên mỗi lần đẩy mã và yêu cầu kéo:
 
-- `php -l` trên mọi tệp PHP với PHP 5.4, 5.6, 7.0, 7.1, 7.4 và từ 8.0 đến 8.4.
-- Bộ kiểm thử đơn vị trên PHP 8.2, 8.3 và 8.4.
+- Kiểm thử hợp đồng đóng gói bản phát hành (`tests/test_release.py`) và bản dựng gói lưu trữ (`tools/build_release.py`).
 - `locales/build_gettext.sh --check`, lệnh này sẽ thất bại nếu mẫu dịch bị cũ, danh mục chưa đầy đủ hoặc còn đánh dấu fuzzy, hoặc danh mục đã biên dịch khác với mã nguồn của nó.
+- `php -l` trên mọi tệp PHP với PHP 5.4, 5.6, 7.0, 7.1, 7.4 và từ 8.0 đến 8.4.
+- `composer phpstan` (PHPStan mức 6) và `composer test` (bộ kiểm thử đơn vị Pest) trên PHP 8.2, 8.3 và 8.4.
 - Bảy tác vụ tích hợp cài đặt Cacti 1.2.20, nhánh 1.2.x hiện tại và `develop` trên MySQL và MariaDB, với cả cmd.php và Spine. Mỗi tác vụ cài đặt và bật plugin, chạy báo cáo CLI đầy đủ, và kiểm tra lược đồ báo cáo, tổng kết tóm tắt, các trạng thái kỳ vọng và tập hợp lỗi chính xác. Sau đó tác vụ làm hỏng một đường dẫn tệp nhị phân và dấu thời gian poller, xác nhận cả hai đều được báo cáo, khôi phục chúng, kiểm thử quy trình sửa chữa và bước xác nhận của nó, đồng thời chạy vô hiệu hóa, bật lại, gỡ cài đặt và cài đặt lại. Báo cáo JSON được lưu giữ dưới dạng artifact khi một tác vụ thất bại.
 
 ## Đóng góp

@@ -1,4 +1,4 @@
-<!-- Source: README.md; SHA256: ee03c7ac68aca21c8155c29b5b43a1f206c2f0c379c8b07bb4113919c18aafde -->
+<!-- Source: README.md; SHA256: 490628bb7f70f4cf1a8c43b302246fd2e870725a6649c628762608b4a76db65b -->
 
 <!-- translations:start -->
 [English](../../../README.md) | [简体中文](../zh-CN/README.md) | [हिन्दी](../hi-IN/README.md) | [Español (España)](../es-ES/README.md) | [Español (Latinoamérica)](../es-419/README.md) | [العربية (السعودية)](../ar-SA/README.md) | [Afrikaans](../af-ZA/README.md) | [አማርኛ](../am-ET/README.md) | [العربية (مصر)](../ar-EG/README.md) | [العربية (المغرب)](../ar-MA/README.md) | [বাংলা](../bn-BD/README.md) | [Bosanski](../bs-BA/README.md) | [Deutsch](../de-DE/README.md) | [فارسی](../fa-IR/README.md) | [Filipino](../fil-PH/README.md) | [Français](../fr-FR/README.md) | [Français (Maroc)](../fr-MA/README.md) | [Français (Sénégal)](../fr-SN/README.md) | [Hausa](../ha-NG/README.md) | [עברית](../he-IL/README.md) | [Hrvatski](../hr-HR/README.md) | [Bahasa Indonesia](../id-ID/README.md) | [Igbo](../ig-NG/README.md) | [Italiano](../it-IT/README.md) | [日本語](../ja-JP/README.md) | [한국어](../ko-KR/README.md) | [Malagasy](../mg-MG/README.md) | [मराठी](../mr-IN/README.md) | [Bahasa Melayu](../ms-MY/README.md) | [Nederlands](../nl-NL/README.md) | [Polski](../pl-PL/README.md) | [Português (Brasil)](../pt-BR/README.md) | [Русский](../ru-RU/README.md) | [Kinyarwanda](../rw-RW/README.md) | [Soomaali](../so-SO/README.md) | [Српски](../sr-RS/README.md) | [Svenska](../sv-SE/README.md) | [Kiswahili](../sw-KE/README.md) | [தமிழ்](../ta-IN/README.md) | [తెలుగు](../te-IN/README.md) | [ไทย](../th-TH/README.md) | [Türkçe](README.md) | [Українська](../uk-UA/README.md) | [اردو](../ur-PK/README.md) | [Tiếng Việt](../vi-VN/README.md) | [isiXhosa](../xh-ZA/README.md) | [Yorùbá](../yo-NG/README.md) | [繁體中文](../zh-TW/README.md) | [isiZulu](../zu-ZA/README.md)
@@ -50,13 +50,15 @@ Cacti sorunları genellikle belirtiler olarak ortaya çıkar: boş grafikler, du
 | Cihazlar | Çalışmayan veya kurtarma durumundaki etkin cihazlar, son hatalarıyla birlikte en uzun süredir çalışmayan üç cihaz ve çoğu cihaz aynı anda çalışmadığında verilen bir hata |
 | Poller | Poller türü ve aralığı, ana poller'ın en son tamamlanmasından bu yana geçen süre, aralığa göre çalışma süresi, hiçbir RRD dosyasına ulaşmayan poller çıktısı, bildirim göndermeyi durduran uzak poller'lar, duraklamış bir Boost ve farklı bir veritabanına işaret eden Spine yapılandırması |
 
-Her kontrolün `database.timezone` veya `binary.rrdtool` gibi kararlı bir kimliği vardır; böylece betikler tekil sonuçlara göre işlem yapabilir.
+Her kontrolün `database.timezone` veya `binary.rrdtool` gibi kararlı bir kimliği vardır; böylece betikler tekil sonuçlara göre işlem yapabilir. Etkinleştirilmiş eklentiler `doctor_register_checks` kancası (hook) aracılığıyla ek kontroller ve destek paketi ekleri sağlayabilir; Doctor ayrıca `abilities_register` aracılığıyla `plugin_mcp` eklentisine salt okunur tanılama yetenekleri sunar.
 
 ## Kod ve test haritası
 
 | Davranış | Uygulama | Bu depodaki test kanıtı |
 |---|---|---|
-| Tanılama kontrolleri ve kararlı rapor kimlikleri | [doctor_functions.php](../../../doctor_functions.php) | [DoctorFunctionsTest.php](../../../tests/DoctorFunctionsTest.php), [AssertDoctorReport.php](../../../tests/ci/AssertDoctorReport.php) |
+| Tanılama kontrolleri ve kararlı rapor kimlikleri | [doctor_functions.php](../../../doctor_functions.php) | [DoctorFunctionsTest.php](../../../tests/DoctorFunctionsTest.php), [DatabaseHealthTest.php](../../../tests/DatabaseHealthTest.php), [AssertDoctorReport.php](../../../tests/ci/AssertDoctorReport.php) |
+| Eklenti kontrol kancası (`doctor_register_checks`) | [doctor_plugins.php](../../../doctor_plugins.php) | [PluginHooksTest.php](../../../tests/PluginHooksTest.php) |
+| MCP tanılama yetenekleri (`abilities_register`) | [doctor_abilities.php](../../../doctor_abilities.php) | [AbilitiesTest.php](../../../tests/AbilitiesTest.php) |
 | Rol kapsamlı erişim ve sansürlenmiş web raporları | [doctor_access.php](../../../doctor_access.php), [doctor_web.php](../../../doctor_web.php) | [AccessTest.php](../../../tests/AccessTest.php), [WebAccessTest.php](../../../tests/WebAccessTest.php) |
 | Rehberli belirti incelemeleri | [doctor_diagnosis.php](../../../doctor_diagnosis.php) | [DiagnosisTest.php](../../../tests/DiagnosisTest.php) |
 | RRD güncelliği ve ertelenmiş yazma işleme | [doctor_rrd.php](../../../doctor_rrd.php) | [RrdFreshnessTest.php](../../../tests/RrdFreshnessTest.php) |
@@ -188,7 +190,7 @@ php plugins/doctor/cli/doctor.php --format=prometheus > /var/lib/node_exporter/t
 php plugins/doctor/cli/doctor.php --bundle=/tmp/cacti-doctor.txt
 ```
 
-Bu paket; Doctor, Cacti, PHP, işletim sistemi ve veritabanı sürümlerini, yoklayıcı ve Boost istatistiklerini, tam raporu ve Cacti günlüğünün son 200 satırını içeren tek bir metin dosyasıdır. Parola, gizli anahtar, belirteç (token), community ve anahtar adlarından sonra gelen değerler maskelenir. Doctor dosyayı yalnızca sahibi tarafından okunabilir şekilde oluşturur ve mevcut bir dosyanın üzerine yazmayı reddeder. Herhangi bir yerde paylaşmadan önce dosyayı gözden geçirin.
+Bu paket; Doctor, Cacti, PHP, işletim sistemi ve veritabanı sürümlerini, yoklayıcı ve Boost istatistiklerini, tam raporu, `== Plugin attachments` başlığı altındaki tüm eklenti destek paketi eklerini ve Cacti günlüğünün son 200 satırını içeren tek bir metin dosyasıdır. Parola, gizli anahtar, belirteç (token), community ve anahtar adlarından sonra gelen değerler maskelenir. Doctor dosyayı yalnızca sahibi tarafından okunabilir şekilde oluşturur ve mevcut bir dosyanın üzerine yazmayı reddeder. Herhangi bir yerde paylaşmadan önce dosyayı gözden geçirin.
 
 ## Onarım ilkesi
 
@@ -234,6 +236,63 @@ Gözlemlenen uyarı, tanılama ayrıntılarında sahibi, nedeni ve bitiş tarihi
 
 Yükseltme, Cacti uygulama verilerini değiştirmeden `plugin_doctor_audit` ve `plugin_doctor_acceptance` tablolarını oluşturur. Kaldırmadan önce ihtiyacınız olan tüm geçmişi dışa aktarın: kaldırma işlemi her iki eklenti tablosunu ve ayarlarını siler. Eklenti dosyalarının eski sürüme döndürülmesi tabloları inceleme için erişilebilir bırakır, ancak eski sürümler uyarı istisnalarını dikkate almaz.
 
+## Eklenti kontrolleri (`doctor_register_checks`)
+
+Etkinleştirilmiş Cacti eklentileri, bir `doctor_register_checks` kancası kaydederek salt okunur tanılama kontrolleri ve isteğe bağlı destek paketi ekleri sağlayabilir:
+
+```php
+api_plugin_register_hook('sample', 'doctor_register_checks', 'sample_doctor_checks', 'setup.php');
+```
+
+Doctor, `doctor_register_checks` üzerinde kayıtlı etkin ve bütünleşik olmayan eklentileri (`doctor` ve `cacti` hariç tutularak) çağırır ve kanca dosyasını kesinlikle eklentinin kendi dizini içinde çözümler. Geri çağrı (callback) `['mode' => 'run' | 'list', 'plugin' => '<slug>']` değerini alır ve bir kontrol tanımlayıcıları listesi ya da `checks` ile isteğe bağlı `attachments` içeren bir zarf döndürür:
+
+```php
+function sample_doctor_checks($context) {
+	return [
+		'checks' => [
+			[
+				'id'          => 'sample.queue_depth',
+				'plugin'      => 'sample',
+				'category'    => 'Sample',
+				'title'       => 'Sample queue depth',
+				'status'      => 'ok',
+				'message'     => 'Queue is healthy.',
+				'details'     => ['pending' => 0],
+				'remediation' => ''
+			]
+		],
+		'attachments' => [
+			[
+				'title'   => 'Sample diagnostics',
+				'content' => "worker=ok\n"
+			]
+		]
+	];
+}
+```
+
+Her eklenti kontrol tanımlayıcısı dahil edilmeden önce doğrulanır:
+
+- Gerekli anahtarlar: `id`, `plugin`, `category`, `title`, `status`, `message`, `details` ve `remediation`.
+- `plugin` kayıtlı eklenti kısa adıyla (`[a-z0-9_]{1,64}`) eşleşmelidir. `id` değeri `[a-z0-9_.]{1,128}` ile eşleşmeli, `<plugin>.` ile başlamalı ve mevcut bir çekirdek veya eklenti kontrol kimliğiyle çakışmamalıdır.
+- `status` değeri `ok`, `warn`, `fail` veya `info` olmalıdır. Doctor raporlarında `ok` değeri `pass` ile eşleşir; `info` bilgilendirme amaçlıdır ve CLI, Nagios, Prometheus veya zamanlanmış uyarılarda başarısızlık tetiklemez.
+- `category` (en fazla 64 bayt) ve `title` (en fazla 256 bayt) denetim karakterleri içermeyen boş olmayan dizeler olmalıdır. `message` (boş olmayan, en fazla 2048 bayt) ve `remediation` (en fazla 2048 bayt) dize olmalıdır.
+- `details` bir dize (en fazla 8192 bayt) veya skaler/iç içe dizi (en fazla derinlik 4, JSON kodlanmış olarak en fazla 16384 bayt; nesneler ve kaynaklar reddedilir) kabul eder.
+- İsteğe bağlı destek paketi ekleri boş olmayan bir `title` (en fazla 128 bayt, denetim karakteri yok) ve en fazla 65536 baytlık (64 KiB) bir `content` dizesi gerektirir.
+
+Doctor, eklenti başına 32 kontrol ve 8 ek sınırını (toplamda 64 eklenti kontrolü ve 32 ek) uygular. Her kanca kendi `try`/`catch` sınırı içinde çalıştırılır; böylece istisnalar veya dizi olmayan yükler, çekirdek kontrolleri veya diğer eklentileri etkilemeden gizlenir ve Cacti günlüğüne (`DOCTOR` tesisi) kaydedilir. Hatalı biçimlendirilmiş tanımlayıcılar reddedilip günlüğe yazılırken aynı eklentideki geçerli tanımlayıcılar çalışmaya devam eder. Eklenti kontrolleri her zaman salt okunurdur (`repairable: false`); dize değerleri ve hassas ilişkisel anahtarlar işleme, dışa aktarma veya paketleme öncesinde gizlenir. Doğrulanan eklenti kontrolleri web arayüzünde, CLI metin/JSON/Nagios/Prometheus çıktısında, zamanlanmış durum izlemede ve destek paketlerinde görünür.
+
+## MCP entegrasyonu (`abilities_register`)
+
+Doctor, her iki eklenti de etkinleştirildiğinde `plugin_mcp` eklentisinin tanılama yeteneklerini keşfedebilmesi için `abilities_register` kancasını (`doctor_abilities.php` içinde `doctor_abilities_register`) kaydeder. Doctor `diagnostics` kategorisini (`Diagnostics`) ve salt okunur, tahribatsız ve eşgüçlü (idempotent) iki yeteneği kaydeder:
+
+| Yetenek Kimliği | İsteğe bağlı argümanlar | Çıktı |
+|---|---|---|
+| `doctor-run-checks` | `category` (dize, en fazla 64 karakter), `status` (`pass`, `ok`, `warn`, `fail`, `info`) | `summary` (`total`, `pass`, `warn`, `fail`, `info`) ve en fazla 256 adet gizlenmiş `findings` (`id`, `plugin`, `category`, `title`, `status`, `message`, `remediation`) |
+| `doctor-list-checks` | `category` (dize, en fazla 64 karakter), `plugin` (dize, en fazla 64 karakter) | Yerleşik 45 kontrolün tamamını ve etkin eklenti kontrollerini kapsayan en fazla 256 adet `checks` (`id`, `plugin`, `category`, `title`) |
+
+Her iki yetenek de kesinlikle salt okunurdur ve hiçbir zaman onarım çalıştırmaz. `plugin_mcp` eklentisinin kendi yetki alanı ve yetenek açma denetimlerine ek olarak (eklenti yetenekleri bir yönetici tarafından açılana kadar MCP'de gizli başlar), Doctor belirteç sahibinin **Doctor Viewer** veya daha yüksek bir Doctor yetki alanına sahip olmasını gerektirir. `doctor-run-checks`, `devices.health` kontrolünü belirteç sahibinin izin verilen cihazlarıyla sınırlar, `logging.recent_errors` kontrolünü yalnızca kullanıcı Cacti yetki alanı 18 veya 19'a sahip olduğunda dahil eder, `filesystem.rrd_files` kontrolünü hariç tutar ve cihaz kapsamlı `filesystem.rrd_stale` kontrolünü yalnızca **Doctor Operator** veya **Doctor Administrator** için dahil eder.
+
 ## Gereksinimler
 
 | Cacti | PHP | Notlar |
@@ -251,20 +310,22 @@ Destek tarihleri Doctor ile birlikte [PHP destek takvimi](https://www.php.net/su
 
 ## Geliştirme
 
-Birim test paketi Pest kullanır ve PHP 8.2 veya üzeri sürümlerde çalışır:
+Birim test paketi Pest kullanır ve statik çözümleme PHPStan (düzey 6) kullanır; her ikisi de PHP 8.2 veya üzeri sürümlerde çalışır:
 
 ```console
 composer install
+composer phpstan
 composer test
 ```
 
 Testler, Doctor'ın çağırdığı Cacti işlevlerini `tests/CactiStubs.php` içindeki küçük yedeklerle değiştirir; böylece bir Cacti kurulumu olmadan çalışırlar.
 
-GitHub Actions, her push ve pull request işleminde dört tür denetim çalıştırır:
+GitHub Actions, her push ve pull request işleminde beş tür denetim çalıştırır:
 
-- PHP 5.4, 5.6, 7.0, 7.1, 7.4 ve 8.0'dan 8.4'e kadar tüm sürümler altında her PHP dosyası üzerinde `php -l`.
-- PHP 8.2, 8.3 ve 8.4 üzerinde birim test paketi.
+- Sürüm paketleme sözleşme testleri (`tests/test_release.py`) ve bir arşiv derlemesi (`tools/build_release.py`).
 - Eski bir çeviri şablonunda, eksik veya belirsiz (fuzzy) bir katalogda ya da kaynağından farklı derlenmiş bir katalogda başarısız olan `locales/build_gettext.sh --check`.
+- PHP 5.4, 5.6, 7.0, 7.1, 7.4 ve 8.0'dan 8.4'e kadar tüm sürümler altında her PHP dosyası üzerinde `php -l`.
+- PHP 8.2, 8.3 ve 8.4 üzerinde `composer phpstan` (PHPStan düzey 6) ve `composer test` (Pest birim test paketi).
 - Hem cmd.php hem de Spine ile MySQL ve MariaDB üzerinde Cacti 1.2.20, güncel 1.2.x dalı ve `develop` kuran yedi tümleştirme işi. Her iş eklentiyi kurup etkinleştirir, tam CLI raporunu çalıştırır ve rapor şemasını, özet toplamlarını, beklenen durumları ve tam hata kümesini denetler. Ardından bir ikili dosya yolunu ve yoklama zaman damgasını bozar, ikisinin de raporlandığını doğrular, bunları geri yükler, onarımı ve onayını dener ve devre dışı bırakma, etkinleştirme, kaldırma ve yeniden kurma işlemlerini çalıştırır. Bir iş başarısız olduğunda JSON raporu yapıt (artifact) olarak saklanır.
 
 ## Katkıda Bulunma

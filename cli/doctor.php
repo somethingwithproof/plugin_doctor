@@ -34,7 +34,7 @@ if (!is_file($cactiBase . '/include/cli_check.php')) {
 	exit(2);
 }
 
-$options = getopt('', ['json', 'format:', 'bundle:', 'scheduled', 'scheduled-worker', 'due', 'retry-alerts', 'alerts-only', 'repair:', 'preview', 'symptom:', 'yes', 'help']);
+$options = getopt('', ['json', 'format:', 'bundle:', 'debug-info', 'scheduled', 'scheduled-worker', 'due', 'retry-alerts', 'alerts-only', 'repair:', 'preview', 'symptom:', 'yes', 'help']);
 
 // Supervise bootstrap too: a stalled connection must not leave a worker forever.
 if (isset($options['scheduled'])) {
@@ -60,6 +60,7 @@ include_once('./plugins/doctor/doctor_functions.php');
 if (isset($options['help'])) {
 	print 'Usage: php plugins/doctor/cli/doctor.php [--json | --format=text|json|nagios|prometheus]' . PHP_EOL;
 	print '       php plugins/doctor/cli/doctor.php --symptom=graphs_stopped|slow_polling|devices_missing|alerts_missing [--json]' . PHP_EOL;
+	print '       php plugins/doctor/cli/doctor.php --debug-info [--json]' . PHP_EOL;
 	print '       php plugins/doctor/cli/doctor.php --bundle=PATH' . PHP_EOL;
 	print '       php plugins/doctor/cli/doctor.php --repair=REPAIR_ID [--preview | --yes]' . PHP_EOL;
 	print '       php plugins/doctor/cli/doctor.php --scheduled [--retry-alerts]' . PHP_EOL;
@@ -78,12 +79,29 @@ if (isset($options['scheduled-worker'])) {
 	exit(doctor_scheduled_worker(isset($options['due']), isset($options['retry-alerts']), isset($options['alerts-only'])));
 }
 
+if (isset($options['debug-info'])) {
+	$debugInfo = doctor_redact_debug_info(doctor_collect_plugin_debug_info());
+	if ($format === 'json') {
+		print json_encode(['sections' => $debugInfo], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES) . PHP_EOL;
+	} else {
+		$formatted = doctor_format_debug_info($debugInfo);
+		if ($formatted !== '') {
+			print $formatted . PHP_EOL;
+		}
+	}
+	exit(0);
+}
+
 if (isset($options['bundle'])) {
 	$logPath = (string) read_config_option('path_cactilog', true);
 	$logPath = $logPath !== '' ? $logPath : $cactiBase . '/log/cacti.log';
 	// An unreadable log returns null; the bundle is still written with an empty log section.
-	$logTail = doctor_read_log_tail($logPath, 200);
-	$bundle  = doctor_build_bundle(doctor_run_checks(), doctor_bundle_context(), $logTail === null ? [] : $logTail);
+	$logTail     = doctor_read_log_tail($logPath, 200);
+	$sample      = null;
+	$attachments = [];
+	$results     = doctor_run_checks($sample, [], $attachments);
+	$debugInfo   = doctor_collect_plugin_debug_info();
+	$bundle      = doctor_build_bundle($results, doctor_bundle_context(), $logTail === null ? [] : $logTail, is_array($attachments) ? $attachments : [], $debugInfo);
 	$error   = strpos($bundle, DOCTOR_REDACTION_FAILED) !== false
 		? __('Redaction could not complete, so %s was not written.', $options['bundle'], 'doctor')
 		: doctor_write_bundle((string) $options['bundle'], $bundle);

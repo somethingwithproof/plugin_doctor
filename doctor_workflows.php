@@ -17,7 +17,11 @@
  * more details.
  */
 
-/** Plugin-owned records; application data is never repaired through raw SQL. */
+/**
+ * Plugin-owned records; application data is never repaired through raw SQL.
+ *
+ * @return bool
+ */
 function doctor_setup_workflows() {
 	$audit = db_execute("CREATE TABLE IF NOT EXISTS plugin_doctor_audit (
 		id bigint unsigned NOT NULL AUTO_INCREMENT, created bigint NOT NULL, actor varchar(64) NOT NULL,
@@ -31,13 +35,24 @@ function doctor_setup_workflows() {
 	return $audit && $accept;
 }
 
+/**
+ * Return the normalized actor identifier for audit records.
+ *
+ * @return string
+ */
 function doctor_actor() {
 	return PHP_SAPI === 'cli' && !defined('DOCTOR_WEB_REQUEST')
 		? 'cli:' . (function_exists('posix_geteuid') ? posix_geteuid() : 'unknown')
 		: 'user:' . (int) $_SESSION['sess_user_id'];
 }
 
-/** Write before mutations; a failed audit must not silently permit an operation. */
+/**
+ * Write before mutations; a failed audit must not silently permit an operation.
+ *
+ * @param string $action
+ * @param mixed $payload
+ * @return int|false
+ */
 function doctor_audit($action, $payload) {
 	$json = json_encode($payload);
 	if ($json === false || strlen($json) > 16000) {
@@ -56,6 +71,14 @@ function doctor_audit($action, $payload) {
 	return $id;
 }
 
+/**
+ * Capture a fingerprinted pre-repair snapshot of Cacti runtime directories.
+ *
+ * @param string|null $base
+ * @param array<string,string>|null $directories
+ * @param bool|null $privileged
+ * @return array<string,mixed>
+ */
 function doctor_repair_snapshot($base = null, $directories = null, $privileged = null) {
 	$base = realpath($base === null ? doctor_base_path() : $base);
 	$directories = $directories === null ? doctor_repair_directories() : $directories;
@@ -88,7 +111,13 @@ function doctor_repair_snapshot($base = null, $directories = null, $privileged =
 	return $snapshot;
 }
 
-/** Approval binds a specific plan to an actor, expires, and is consumed by the caller. */
+/**
+ * Approval binds a specific plan to an actor, expires, and is consumed by the caller.
+ *
+ * @param array<string,mixed> $plan
+ * @param int|null $now
+ * @return array<string,mixed>
+ */
 function doctor_execute_repair_plan($plan, $now = null) {
 	$now = $now === null ? time() : $now;
 	$current = doctor_repair_snapshot();
@@ -122,6 +151,11 @@ function doctor_execute_repair_plan($plan, $now = null) {
 	return $result;
 }
 
+/**
+ * Return up to 101 stored warning-acceptance records ordered by check ID.
+ *
+ * @return array<int,array<string,mixed>>
+ */
 function doctor_acceptances() {
 	if (!function_exists('db_table_exists') || !db_table_exists('plugin_doctor_acceptance')) {
 		return [];
@@ -130,7 +164,14 @@ function doctor_acceptances() {
 	return is_array($rows) ? $rows : [];
 }
 
-/** Keep observed status unchanged. Policy is reapplied when a cached report is read. */
+/**
+ * Keep observed status unchanged. Policy is reapplied when a cached report is read.
+ *
+ * @param array<int,array<string,mixed>> $results
+ * @param int|null $now
+ * @param array<int,array<string,mixed>>|null $policies
+ * @return array<int,array<string,mixed>>
+ */
 function doctor_apply_acceptances($results, $now = null, $policies = null) {
 	$now = $now === null ? time() : $now;
 	$policies = $policies === null ? doctor_acceptances() : $policies;
@@ -156,11 +197,27 @@ function doctor_apply_acceptances($results, $now = null, $policies = null) {
 	return $results;
 }
 
+/**
+ * Return whether a check result carries an active, unexpired warning acceptance.
+ *
+ * @param array<string,mixed> $result
+ * @return bool
+ */
 function doctor_warning_accepted($result) {
 	return $result['status'] === 'warn' && !empty($result['accepted']) && isset($result['acceptance']['expires']) && $result['acceptance']['expires'] > time();
 }
 
-/** Only fresh, observed warnings may be accepted; unknown checks and failures are refused. */
+/**
+ * Only fresh, observed warnings may be accepted; unknown checks and failures are refused.
+ *
+ * @param array<int,array<string,mixed>> $results
+ * @param string $id
+ * @param string $owner
+ * @param string $reason
+ * @param int $expires
+ * @param bool $remove
+ * @return bool
+ */
 function doctor_change_acceptance($results, $id, $owner, $reason, $expires, $remove = false) {
 	$now = time();
 	if (!doctor_can_configure() || !preg_match('/\A[a-z0-9_.]{1,128}\z/', $id)) {

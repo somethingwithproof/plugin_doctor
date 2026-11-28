@@ -21,13 +21,19 @@ require_once __DIR__ . '/doctor_scheduling.php';
 require_once __DIR__ . '/doctor_rrd.php';
 require_once __DIR__ . '/doctor_diagnosis.php';
 require_once __DIR__ . '/doctor_workflows.php';
+require_once __DIR__ . '/doctor_plugins.php';
+require_once __DIR__ . '/doctor_dependencies.php';
 
 /**
  * Run the initial set of non-mutating installation checks.
  *
+ * @param array<string,mixed>|null $databaseSample
+ * @param-out array<string,mixed> $databaseSample
+ * @param array<string,mixed> $previousDatabaseSample
+ * @param array<int,array{plugin:string,title:string,content:string}> $pluginAttachments
  * @return array<int,array<string,mixed>>
  */
-function doctor_run_checks(&$databaseSample = null, $previousDatabaseSample = []) {
+function doctor_run_checks(&$databaseSample = null, $previousDatabaseSample = [], &$pluginAttachments = []) {
 	$results   = [];
 	$results[] = doctor_check_privileges(doctor_running_as_root());
 	$results[] = doctor_check_cacti_version();
@@ -66,10 +72,35 @@ function doctor_run_checks(&$databaseSample = null, $previousDatabaseSample = []
 	$results[] = doctor_check_schedule(time());
 	$results[] = doctor_check_alert_delivery(time());
 
+	$coreIds = [];
+	foreach ($results as $item) {
+		if (isset($item['id']) && is_string($item['id'])) {
+			$coreIds[] = $item['id'];
+		}
+	}
+
+	$attachments = [];
+	$pluginChecks = doctor_run_plugin_checks($coreIds, $attachments);
+	$pluginAttachments = $attachments;
+	if ($pluginChecks !== []) {
+		$results = array_merge($results, $pluginChecks);
+	}
+
+	$results = doctor_infer_root_causes($results);
+
 	return doctor_apply_acceptances($results);
 }
 
 /**
+ * Construct a normalized Doctor check result entry.
+ *
+ * @param string $id
+ * @param string $category
+ * @param string $status
+ * @param string $summary
+ * @param string $detail
+ * @param string $repair
+ * @param string $assessment
  * @return array<string,mixed>
  */
 function doctor_result($id, $category, $status, $summary, $detail, $repair = '', $assessment = 'assessed') {
@@ -89,6 +120,9 @@ function doctor_result($id, $category, $status, $summary, $detail, $repair = '',
  * Collect health counters and the thread-handling mode, never query text or accounts.
  * Two bounded reads cover the entire analysis on the existing Cacti connection.
  *
+ * @param array<string,mixed>|null $sample
+ * @param-out array<string,mixed> $sample
+ * @param array<string,mixed> $previous
  * @return array<int,array<string,mixed>>
  */
 function doctor_check_database_health(&$sample = null, $previous = []) {
@@ -103,7 +137,13 @@ function doctor_check_database_health(&$sample = null, $previous = []) {
 	return doctor_analyze_database_health($metrics, $variables, $previous);
 }
 
-/** @return array<string,float|string|null> */
+/**
+ * Normalize database status or variable rows into validated scalar counters.
+ *
+ * @param array<int,array<string,mixed>>|false $rows
+ * @param array<int,string> $allowed
+ * @return array<string,float|string|null>
+ */
 function doctor_database_metrics($rows, $allowed) {
 	$numbers = [];
 	$allowed = array_map('strtolower', $allowed);
@@ -151,8 +191,10 @@ function doctor_database_metrics($rows, $allowed) {
  * with wall time. A restart or FLUSH STATUS between samples resets them, even
  * when the counters have since grown past their old values.
  *
- * @param array<string,float|null> $current
+ * @param array<string,float|string|null> $current
  * @param array<string,mixed> $previous
+ * @param int $elapsed
+ * @return bool
  */
 function doctor_database_interval_valid($current, $previous, $elapsed) {
 	if ($elapsed <= 0 || $elapsed > 2 * 86400) {
@@ -175,8 +217,9 @@ function doctor_database_interval_valid($current, $previous, $elapsed) {
  * Advisory thresholds are investigation triggers, not configuration targets.
  * Cumulative counters cannot establish current load or available database RAM.
  *
- * @param array<string,float|null> $status
+ * @param array<string,float|string|null> $status
  * @param array<string,float|string|null> $variables
+ * @param array<string,mixed> $previous
  * @return array<int,array<string,mixed>>
  */
 function doctor_analyze_database_health($status, $variables, $previous = []) {
@@ -280,6 +323,12 @@ function doctor_analyze_database_health($status, $variables, $previous = []) {
 	return $results;
 }
 
+/**
+ * Escape a string for safe inclusion inside an HTML attribute.
+ *
+ * @param string $value
+ * @return string
+ */
 function doctor_html_escape_attr($value) {
 	if (function_exists('html_escape_attr')) {
 		return html_escape_attr($value);
@@ -288,6 +337,13 @@ function doctor_html_escape_attr($value) {
 	return htmlspecialchars($value, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 }
 
+/**
+ * Walk up a path by a fixed number of directory levels without PHP 7 dirname($path, $levels).
+ *
+ * @param string $path
+ * @param int $levels
+ * @return string
+ */
 function doctor_parent_directory($path, $levels) {
 	while ($levels > 0) {
 		$path = dirname($path);
@@ -297,6 +353,12 @@ function doctor_parent_directory($path, $levels) {
 	return $path;
 }
 
+/**
+ * Determine whether the installed Cacti version is 1.3.0 or newer.
+ *
+ * @param string|null $cactiVersion
+ * @return bool
+ */
 function doctor_is_cacti_13($cactiVersion = null) {
 	if ($cactiVersion === null) {
 		$cactiVersion = defined('CACTI_VERSION') ? (string) CACTI_VERSION : '';
@@ -308,6 +370,10 @@ function doctor_is_cacti_13($cactiVersion = null) {
 /**
  * Read the installed Cacti package, not Doctor's own PHP compatibility floor.
  * Only the constraint forms used by supported Cacti packages are interpreted.
+ *
+ * @param string|null $base
+ * @param string|null $cactiVersion
+ * @return array{cacti:string,minimum:string,maximum:string,source:string}
  */
 function doctor_php_requirement($base = null, $cactiVersion = null) {
 	$base = $base === null ? doctor_base_path() : $base;
@@ -337,6 +403,13 @@ function doctor_php_requirement($base = null, $cactiVersion = null) {
 	return $requirement;
 }
 
+/**
+ * Evaluate whether a PHP version satisfies the installed Cacti PHP requirement.
+ *
+ * @param string $phpVersion
+ * @param array{cacti:string,minimum:string,maximum:string,source:string} $requirement
+ * @return array<string,mixed>
+ */
 function doctor_evaluate_php_compatibility($phpVersion, $requirement) {
 	$summary = __('PHP compatibility with installed Cacti', 'doctor');
 	$detail = __('Running PHP %s; installed Cacti %s.', $phpVersion, $requirement['cacti'], 'doctor') . ' ';
@@ -355,7 +428,14 @@ function doctor_evaluate_php_compatibility($phpVersion, $requirement) {
 	return doctor_result('php.version', 'PHP', $compatible ? 'pass' : 'fail', $summary, $detail);
 }
 
-// Cacti only warns below these, from the version row in utilities_get_mysql_recommendations().
+/**
+ * Return the recommended minimum database server version for the active Cacti branch.
+ * Cacti only warns below these, from the version row in utilities_get_mysql_recommendations().
+ *
+ * @param string $server
+ * @param string|null $cactiVersion
+ * @return string
+ */
 function doctor_database_recommended_version($server, $cactiVersion = null) {
 	if (!doctor_is_cacti_13($cactiVersion)) {
 		return '5.6.0';
@@ -364,7 +444,13 @@ function doctor_database_recommended_version($server, $cactiVersion = null) {
 	return $server === 'MariaDB' ? '10.11.0' : '8.4.0';
 }
 
-// Cacti 1.2.20, the oldest supported release, documents no Net-SNMP version.
+/**
+ * Return the recommended Net-SNMP version for the active Cacti branch.
+ * Cacti 1.2.20, the oldest supported release, documents no Net-SNMP version.
+ *
+ * @param string|null $cactiVersion
+ * @return string
+ */
 function doctor_snmp_recommended_version($cactiVersion = null) {
 	return doctor_is_cacti_13($cactiVersion) ? '5.9.0' : '';
 }
@@ -372,6 +458,9 @@ function doctor_snmp_recommended_version($cactiVersion = null) {
 /**
  * Cacti lists every RRDtool release it can drive in $rrdtool_versions, oldest
  * first. The fallbacks match the first entry on 1.2.x and develop.
+ *
+ * @param string|null $cactiVersion
+ * @return string
  */
 function doctor_rrdtool_minimum_version($cactiVersion = null) {
 	global $rrdtool_versions;
@@ -385,7 +474,11 @@ function doctor_rrdtool_minimum_version($cactiVersion = null) {
 	return doctor_is_cacti_13($cactiVersion) ? '1.5.0' : '1.3.0';
 }
 
-/** @return array<string,mixed> */
+/**
+ * Verify that the installed Cacti version meets Doctor's minimum floor.
+ *
+ * @return array<string,mixed>
+ */
 function doctor_check_cacti_version() {
 	$version = defined('CACTI_VERSION') ? (string) CACTI_VERSION : 'unknown';
 	$status  = $version !== 'unknown' && version_compare($version, '1.2.20', '>=') ? 'pass' : 'fail';
@@ -393,11 +486,25 @@ function doctor_check_cacti_version() {
 	return doctor_result('cacti.version', 'Cacti', $status, __('Supported Cacti version', 'doctor'), __('Detected %s; Doctor requires Cacti 1.2.20 or newer.', $version, 'doctor'));
 }
 
-/** @return array<string,mixed> */
+/**
+ * Verify that the active PHP runtime satisfies the installed Cacti requirement.
+ *
+ * @param string|null $phpVersion
+ * @param string|null $base
+ * @param string|null $cactiVersion
+ * @return array<string,mixed>
+ */
 function doctor_check_php_version($phpVersion = null, $base = null, $cactiVersion = null) {
 	return doctor_evaluate_php_compatibility($phpVersion === null ? PHP_VERSION : $phpVersion, doctor_php_requirement($base, $cactiVersion));
 }
 
+/**
+ * Check whether the running PHP release branch still receives upstream security fixes.
+ *
+ * @param string|null $phpVersion
+ * @param string|null $today
+ * @return array<string,mixed>
+ */
 function doctor_check_php_security_baseline($phpVersion = null, $today = null) {
 	$phpVersion = $phpVersion === null ? PHP_VERSION : $phpVersion;
 	$today = $today === null ? gmdate('Y-m-d') : $today;
@@ -443,7 +550,12 @@ function doctor_check_php_extensions() {
 	return doctor_result('php.extensions', 'Prerequisites', 'pass', $summary, __('All PHP extensions required by the Cacti installer are loaded in this PHP context.', 'doctor'));
 }
 
-/** @return array<int,string> */
+/**
+ * Return the list of PHP extensions required by Cacti in the current or CLI context.
+ *
+ * @param bool $cli
+ * @return array<int,string>
+ */
 function doctor_required_php_extensions($cli = false) {
 	$required = [
 		'ctype', 'date', 'filter', 'gd', 'gmp', 'hash', 'json',
@@ -468,6 +580,11 @@ function doctor_required_php_extensions($cli = false) {
 	return $required;
 }
 
+/**
+ * Determine whether the current PHP process is running with root privileges.
+ *
+ * @return bool
+ */
 function doctor_running_as_root() {
 	$windows = defined('CACTI_SERVER_OS') ? CACTI_SERVER_OS === 'win32' : DIRECTORY_SEPARATOR === '\\';
 
@@ -477,6 +594,10 @@ function doctor_running_as_root() {
 /**
  * Windows has no root account. Elsewhere an undeterminable user is treated as
  * root so a missing posix extension cannot unlock binary execution or repairs.
+ *
+ * @param int|null $euid
+ * @param bool $windows
+ * @return bool
  */
 function doctor_effective_user_is_root($euid, $windows) {
 	if ($windows) {
@@ -486,6 +607,11 @@ function doctor_effective_user_is_root($euid, $windows) {
 	return $euid === null || $euid === 0;
 }
 
+/**
+ * Return whether shell_exec() is available and enabled in this PHP runtime.
+ *
+ * @return bool
+ */
 function doctor_shell_exec_available() {
 	return function_exists('shell_exec') && (!function_exists('is_function_enabled') || is_function_enabled('shell_exec'));
 }
@@ -498,6 +624,11 @@ function doctor_shell_exec_available() {
  * runs, and the CLI is often started as root. Cacti 1.2.x applies a similar
  * file-name rule to path_php_binary. php-cgi and php-fpm are excluded because
  * they do not accept -r.
+ *
+ * @param string $option
+ * @param string $path
+ * @param bool $privileged
+ * @return string
  */
 function doctor_binary_execution_refusal($option, $path, $privileged) {
 	$names = [
@@ -518,7 +649,12 @@ function doctor_binary_execution_refusal($option, $path, $privileged) {
 	return '';
 }
 
-/** @return array<string,mixed> */
+/**
+ * Report whether Doctor is running as root.
+ *
+ * @param bool $privileged
+ * @return array<string,mixed>
+ */
 function doctor_check_privileges($privileged) {
 	if ($privileged) {
 		return doctor_result('doctor.privileges', 'Doctor', 'warn', __('Doctor privileges', 'doctor'), __('Doctor is running as root, so permission checks describe root rather than the web server or poller account, configured binaries are not executed, and repairs are refused. Run Doctor as the Cacti poller user.', 'doctor'));
@@ -527,7 +663,12 @@ function doctor_check_privileges($privileged) {
 	return doctor_result('doctor.privileges', 'Doctor', 'pass', __('Doctor privileges', 'doctor'), __('Doctor is running without root privileges.', 'doctor'));
 }
 
-/** @return array<string,mixed> */
+/**
+ * Verify that the configured PHP CLI binary loads all required Cacti extensions.
+ *
+ * @param bool|null $privileged
+ * @return array<string,mixed>
+ */
 function doctor_check_cli_php_extensions($privileged = null) {
 	$privileged = $privileged === null ? doctor_running_as_root() : $privileged;
 	$path       = (string) read_config_option('path_php_binary', true);
@@ -603,6 +744,10 @@ function doctor_check_php_configuration() {
  * timezone comes from date.timezone because date_default_timezone_get()
  * silently falls back to UTC when it is unset.
  *
+ * @param string $memoryRaw
+ * @param int $execution
+ * @param string $timezone
+ * @param string $phpVersion
  * @return array<string,mixed>
  */
 function doctor_evaluate_php_configuration($memoryRaw, $execution, $timezone, $phpVersion) {
@@ -631,6 +776,12 @@ function doctor_evaluate_php_configuration($memoryRaw, $execution, $timezone, $p
 	return doctor_result('php.configuration', 'Prerequisites', 'pass', __('PHP runtime configuration', 'doctor'), $detail);
 }
 
+/**
+ * Convert a PHP ini shorthand byte string (such as 512M or 1G) into bytes.
+ *
+ * @param string $value
+ * @return int
+ */
 function doctor_ini_bytes($value) {
 	$value = trim($value);
 
@@ -668,6 +819,9 @@ function doctor_check_database() {
 }
 
 /**
+ * Parse a database server version string into server brand and numeric version.
+ *
+ * @param string $raw
  * @return array{server:string,version:string,raw:string}
  */
 function doctor_database_identity($raw) {
@@ -740,6 +894,11 @@ function doctor_check_core_tables() {
 	return doctor_result('database.core_tables', 'Database', $status, __('Core database tables', 'doctor'), $detail);
 }
 
+/**
+ * Resolve the Cacti installation base directory.
+ *
+ * @return string
+ */
 function doctor_base_path() {
 	return defined('CACTI_PATH_BASE') ? (string) CACTI_PATH_BASE : doctor_parent_directory(__DIR__, 2);
 }
@@ -749,6 +908,7 @@ function doctor_base_path() {
  * including a code directory such as include/, and the repair must only ever
  * touch Cacti's own runtime directories.
  *
+ * @param string|null $base
  * @return array<string,string>
  */
 function doctor_repair_directories($base = null) {
@@ -766,6 +926,7 @@ function doctor_repair_directories($base = null) {
  * every release lets path_cactilog move the log, so honor both before falling
  * back to the installation tree.
  *
+ * @param string|null $base
  * @return array<string,string>
  */
 function doctor_runtime_directories($base = null) {
@@ -779,7 +940,12 @@ function doctor_runtime_directories($base = null) {
 	return $directories;
 }
 
-/** @return array<string,mixed> */
+/**
+ * Check that cache, log, and RRA runtime directories exist and are writable.
+ *
+ * @param string|null $base
+ * @return array<string,mixed>
+ */
 function doctor_check_runtime_directories($base = null) {
 	$problems   = [];
 	$repairable = false;
@@ -806,7 +972,12 @@ function doctor_check_runtime_directories($base = null) {
 	return doctor_result('filesystem.runtime_directories', 'Filesystem', 'fail', __('Runtime directories', 'doctor'), implode('; ', $problems), $repairable ? 'runtime_directories' : '');
 }
 
-/** @return array<string,mixed> */
+/**
+ * Check file permissions on Cacti's include/config.php.
+ *
+ * @param string|null $path
+ * @return array<string,mixed>
+ */
 function doctor_check_config_file_security($path = null) {
 	$path = $path === null ? doctor_base_path() . '/include/config.php' : $path;
 	$mode = @fileperms($path);
@@ -861,6 +1032,11 @@ function doctor_check_cacti_log() {
 }
 
 /**
+ * Validate existence, permissions, and versions of required external binaries.
+ *
+ * @param bool|null $privileged
+ * @param string|null $base
+ * @param string|null $cactiVersion
  * @return array<int,array<string,mixed>>
  */
 function doctor_check_required_binaries($privileged = null, $base = null, $cactiVersion = null) {
@@ -921,6 +1097,14 @@ function doctor_check_required_binaries($privileged = null, $base = null, $cacti
 	return $results;
 }
 
+/**
+ * Execute an allow-listed binary with a fixed version flag and extract its version string.
+ *
+ * @param string $path
+ * @param string $argument
+ * @param string $pattern
+ * @return string|null
+ */
 function doctor_probe_binary_version($path, $argument, $pattern) {
 	if (!doctor_shell_exec_available()) {
 		return null;
@@ -999,18 +1183,36 @@ function doctor_check_poller_freshness() {
 	return doctor_result('poller.freshness', 'Poller', $status, __('Main poller freshness', 'doctor'), $detail);
 }
 
+/**
+ * Read a positive numeric threshold setting, falling back to its default.
+ *
+ * @param string $name
+ * @param int|float $default
+ * @return float
+ */
 function doctor_threshold($name, $default) {
 	$value = read_config_option($name, true);
 
 	return is_numeric($value) && $value > 0 ? (float) $value : (float) $default;
 }
 
+/**
+ * Return the configured Cacti poller interval in seconds, defaulting to 300.
+ *
+ * @return int
+ */
 function doctor_poller_interval() {
 	$interval = (int) read_config_option('poller_interval', true);
 
 	return $interval > 0 ? $interval : 300;
 }
 
+/**
+ * Return at most the first three dot-separated components of a version string.
+ *
+ * @param string $version
+ * @return string
+ */
 function doctor_short_version($version) {
 	return implode('.', array_slice(explode('.', (string) $version), 0, 3));
 }
@@ -1020,6 +1222,8 @@ function doctor_short_version($version) {
  * and Cacti then redirects every web request to install/. Only the first three
  * version parts are compared because develop builds append a build stamp.
  *
+ * @param string $databaseVersion
+ * @param string $codeVersion
  * @return array<string,mixed>
  */
 function doctor_evaluate_schema_version($databaseVersion, $codeVersion) {
@@ -1055,7 +1259,14 @@ function doctor_check_schema_version() {
 	return doctor_evaluate_schema_version($database, defined('CACTI_VERSION') ? (string) CACTI_VERSION : '');
 }
 
-/** @return array<string,mixed> */
+/**
+ * Evaluate main poller runtime against the polling interval and warning threshold.
+ *
+ * @param float|int $runtime
+ * @param int $interval
+ * @param float|int $warnPercent
+ * @return array<string,mixed>
+ */
 function doctor_evaluate_poller_runtime($runtime, $interval, $warnPercent = 80) {
 	if ($runtime <= 0) {
 		return doctor_result('poller.runtime', 'Poller', 'pass', __('Main poller run time', 'doctor'), __('No completed run time is recorded yet.', 'doctor'));
@@ -1099,7 +1310,11 @@ function doctor_check_poller_output() {
 }
 
 /**
+ * Evaluate remote poller freshness against the polling interval threshold.
+ *
  * @param array<int,array<string,string>> $pollers
+ * @param int $interval
+ * @param int $now
  * @return array<string,mixed>
  */
 function doctor_evaluate_remote_pollers($pollers, $interval, $now) {
@@ -1134,7 +1349,12 @@ function doctor_check_remote_pollers() {
 	return doctor_evaluate_remote_pollers(is_array($pollers) ? $pollers : [], doctor_poller_interval(), time());
 }
 
-/** @return array<string,mixed> */
+/**
+ * Check that every enabled plugin in plugin_config has a setup.php file on disk.
+ *
+ * @param string|null $base
+ * @return array<string,mixed>
+ */
 function doctor_check_plugin_files($base = null) {
 	if ($base !== null) {
 		$plugins = $base . '/plugins';
@@ -1161,6 +1381,12 @@ function doctor_check_plugin_files($base = null) {
 /**
  * Boost stores the last run as a timestamp or, on some releases, a date string.
  *
+ * @param bool $enabled
+ * @param int $rows
+ * @param int $maxRecords
+ * @param int|string $lastRun
+ * @param int $intervalMinutes
+ * @param int $now
  * @return array<string,mixed>
  */
 function doctor_evaluate_boost($enabled, $rows, $maxRecords, $lastRun, $intervalMinutes, $now) {
@@ -1206,6 +1432,8 @@ function doctor_check_boost() {
 /**
  * Bounded so large installations on network storage stay within the worker limit.
  *
+ * @param string|null $rra
+ * @param int|null $now
  * @return array<string,mixed>
  */
 function doctor_check_rrd_files($rra = null, $now = null) {
@@ -1234,7 +1462,16 @@ function doctor_check_rrd_files($rra = null, $now = null) {
 	return doctor_result('filesystem.rrd_files', 'Filesystem', 'pass', __('RRD files', 'doctor'), __('All %d active data sources have an RRD file.', count($sources), 'doctor') . $sampled);
 }
 
-/** @return array<string,mixed> */
+/**
+ * Evaluate free space on the RRA filesystem against warning and failure thresholds.
+ *
+ * @param float|false $free
+ * @param float|false $total
+ * @param string $path
+ * @param float|int $warnPercent
+ * @param float|int $failPercent
+ * @return array<string,mixed>
+ */
 function doctor_evaluate_disk_space($free, $total, $path, $warnPercent = 10, $failPercent = 2) {
 	if ($free === false || $total === false || $total <= 0) {
 		return doctor_result('filesystem.disk_space', 'Filesystem', 'warn', __('RRA disk space', 'doctor'), __('Doctor could not measure free space for %s.', $path, 'doctor'));
@@ -1254,7 +1491,12 @@ function doctor_evaluate_disk_space($free, $total, $path, $warnPercent = 10, $fa
 	return doctor_result('filesystem.disk_space', 'Filesystem', 'pass', __('RRA disk space', 'doctor'), $detail);
 }
 
-/** @return array<string,mixed> */
+/**
+ * Measure and evaluate free disk space on the configured RRA directory.
+ *
+ * @param string|null $directory
+ * @return array<string,mixed>
+ */
 function doctor_check_disk_space($directory = null) {
 	$directory = $directory === null ? doctor_repair_directories()['rra'] : $directory;
 
@@ -1265,6 +1507,10 @@ function doctor_check_disk_space($directory = null) {
  * UNIX_TIMESTAMP() ignores time zones, so any gap is real clock drift between
  * the database host and the poller host.
  *
+ * @param int|string|false $databaseTime
+ * @param int $phpTime
+ * @param float|int $warnSeconds
+ * @param float|int $failSeconds
  * @return array<string,mixed>
  */
 function doctor_evaluate_clock($databaseTime, $phpTime, $warnSeconds = 5, $failSeconds = 60) {
@@ -1295,6 +1541,8 @@ function doctor_check_clock() {
  * Spine reads its own spine.conf rather than Cacti's config.php, so the two
  * can silently point at different databases.
  *
+ * @param string|null $database
+ * @param string|null $user
  * @return array<string,mixed>
  */
 function doctor_check_spine_config($database = null, $user = null) {
@@ -1385,6 +1633,9 @@ function doctor_check_innodb() {
  * Reads at most $bytes from the end of the file so a multi-gigabyte log
  * cannot exhaust memory.
  *
+ * @param string $path
+ * @param int $maxLines
+ * @param int $bytes
  * @return array<int,string>|null Null when the log cannot be opened; an empty array is a readable but empty log.
  */
 function doctor_read_log_tail($path, $maxLines = 1000, $bytes = 2097152) {
@@ -1402,14 +1653,54 @@ function doctor_read_log_tail($path, $maxLines = 1000, $bytes = 2097152) {
 	$contents = stream_get_contents($handle);
 	fclose($handle);
 
-	$lines = preg_split('/\r?\n/', trim((string) $contents));
-
-	// A partial first line is likely when the read starts mid-file.
-	if ($size > $bytes) {
-		array_shift($lines);
+	$contents = trim((string) $contents);
+	if ($contents === '' || $maxLines <= 0) {
+		return array();
 	}
 
-	return array_values(array_slice(array_filter($lines, 'strlen'), -$maxLines));
+	$startOffset = 0;
+	// A partial first line is likely when the read starts mid-file.
+	if ($size > $bytes) {
+		$firstNewline = strpos($contents, "\n");
+		if ($firstNewline === false) {
+			return array();
+		}
+		$startOffset = $firstNewline + 1;
+	}
+
+	// Scan backwards from the end using strrpos negative offsets (PHP 5.0+)
+	// so we allocate at most $maxLines strings without copying $contents.
+	$collected = array();
+	$totalLen  = strlen($contents);
+	$end       = $totalLen;
+	$count     = 0;
+
+	while ($end > $startOffset && $count < $maxLines) {
+		$searchOffset = $end - $totalLen - 1;
+		$nlPos        = strrpos($contents, "\n", $searchOffset);
+
+		if ($nlPos === false || $nlPos < $startOffset) {
+			$lineStart = $startOffset;
+			$hasMore   = false;
+		} else {
+			$lineStart = $nlPos + 1;
+			$hasMore   = true;
+		}
+
+		$line = rtrim(substr($contents, $lineStart, $end - $lineStart), "\r");
+		if ($line !== '') {
+			$collected[] = $line;
+			$count++;
+		}
+
+		if (!$hasMore) {
+			break;
+		}
+
+		$end = $nlPos;
+	}
+
+	return array_reverse($collected);
 }
 
 /**
@@ -1417,17 +1708,26 @@ function doctor_read_log_tail($path, $maxLines = 1000, $bytes = 2097152) {
  * @return array<string,mixed>
  */
 function doctor_evaluate_log_lines($lines) {
-	$messages = [];
+	$messages = array();
 	$errors   = 0;
 
 	foreach ($lines as $line) {
+		if (strpos($line, 'ERROR') === false
+			&& strpos($line, 'FATAL') === false
+			&& strpos($line, 'SQL Error') === false) {
+			continue;
+		}
+
 		if (!preg_match('/\bERROR\b|\bFATAL\b|SQL Error/', $line)) {
 			continue;
 		}
 
 		$errors++;
-		$message = preg_replace('/^.*? - /', '', $line, 1);
-		$message = preg_replace('/[0-9]+/', '#', $message);
+		$sepPos  = strpos($line, ' - ');
+		$message = $sepPos !== false ? substr($line, $sepPos + 3) : $line;
+		if (strpbrk($message, '0123456789') !== false) {
+			$message = preg_replace('/[0-9]+/', '#', $message);
+		}
 		$messages[$message] = isset($messages[$message]) ? $messages[$message] + 1 : 1;
 	}
 
@@ -1533,6 +1833,7 @@ function doctor_check_devices() {
  * runs need no table of their own.
  *
  * @param array<int,array<string,mixed>> $results
+ * @return string
  */
 function doctor_state_encode($results) {
 	$pairs = [];
@@ -1544,7 +1845,12 @@ function doctor_state_encode($results) {
 	return implode(';', $pairs);
 }
 
-/** @return array<string,string> */
+/**
+ * Decode a semicolon-delimited check state string into an id => status map.
+ *
+ * @param string|mixed $text
+ * @return array<string,string>
+ */
 function doctor_state_decode($text) {
 	$state = [];
 
@@ -1565,6 +1871,7 @@ function doctor_state_decode($text) {
  *
  * @param array<string,string> $previous
  * @param array<int,array<string,mixed>> $results
+ * @param bool $includeWarnings
  * @return array<int,array<string,string>>
  */
 function doctor_state_changes($previous, $results, $includeWarnings) {
@@ -1578,7 +1885,7 @@ function doctor_state_changes($previous, $results, $includeWarnings) {
 		$to   = (string) $result['status'];
 		$from = isset($previous[$result['id']]) ? $previous[$result['id']] : 'new';
 
-		if ($from === $to || ($from === 'new' && $to === 'pass')) {
+		if ($from === $to || ($from === 'new' && in_array($to, ['pass', 'info'], true))) {
 			continue;
 		}
 
@@ -1599,8 +1906,11 @@ function doctor_state_changes($previous, $results, $includeWarnings) {
 }
 
 /**
+ * Build the alert email subject and plain-text body for status transitions.
+ *
  * @param array<int,array<string,string>> $changes
  * @param array<string,int> $counts
+ * @param string $host
  * @return array{subject:string,body:string}
  */
 function doctor_alert_message($changes, $counts, $host) {
@@ -1618,15 +1928,21 @@ function doctor_alert_message($changes, $counts, $host) {
 	return ['subject' => $subject, 'body' => implode("\n", $lines) . "\n"];
 }
 
+/**
+ * Determine whether a scheduled run is due based on last run time and interval.
+ *
+ * @param int|string $lastRun
+ * @param int|string $intervalMinutes
+ * @param int $now
+ * @return bool
+ */
 function doctor_schedule_due($lastRun, $intervalMinutes, $now) {
 	return (int) $lastRun <= 0 || $now - (int) $lastRun >= max(1, (int) $intervalMinutes) * 60;
 }
 
 /**
- * @param array<int,array<string,mixed>> $results
- * @return array<int,array<string,string>>
- */
-/**
+ * Format Doctor check results as a Nagios/Icinga plugin status line and exit code.
+ *
  * @param array<int,array<string,mixed>> $results
  * @return array{text:string,code:int}
  */
@@ -1679,6 +1995,12 @@ function doctor_format_nagios($results) {
 	return ['text' => 'DOCTOR ' . $state . ' - ' . $summary . ' | ' . $perf, 'code' => $code];
 }
 
+/**
+ * Escape a label value for Prometheus text exposition format.
+ *
+ * @param string $value
+ * @return string
+ */
 function doctor_prometheus_label($value) {
 	return str_replace(['\\', '"', "\n"], ['\\\\', '\\"', '\\n'], (string) $value);
 }
@@ -1688,9 +2010,11 @@ function doctor_prometheus_label($value) {
  * Check status is 0 for pass, 1 for warn, and 2 for fail.
  *
  * @param array<int,array<string,mixed>> $results
+ * @param int $now
+ * @return string
  */
 function doctor_format_prometheus($results, $now) {
-	$levels   = ['pass' => 0, 'warn' => 1, 'fail' => 2];
+	$levels   = ['pass' => 0, 'info' => 0, 'warn' => 1, 'fail' => 2];
 	$families = [
 		'cacti_doctor_check_status' => 'Actionable severity: 0 pass or accepted warning, 1 warn, 2 fail.',
 		'cacti_doctor_check_observed_status' => 'Observed severity, before warning exceptions: 0 pass, 1 warn, 2 fail.',
@@ -1702,10 +2026,11 @@ function doctor_format_prometheus($results, $now) {
 	// Decide each exception once, so an expiry during export cannot split a check's samples.
 	foreach ($results as $result) {
 		$accepted  = doctor_warning_accepted($result);
+		$level     = isset($levels[$result['status']]) ? $levels[$result['status']] : 0;
 		$samples[] = [
 			'labels' => '{id="' . doctor_prometheus_label($result['id']) . '",category="' . doctor_prometheus_label($result['category']) . '"} ',
-			'cacti_doctor_check_status' => $accepted ? 0 : $levels[$result['status']],
-			'cacti_doctor_check_observed_status' => $levels[$result['status']],
+			'cacti_doctor_check_status' => $accepted ? 0 : $level,
+			'cacti_doctor_check_observed_status' => $level,
 			'cacti_doctor_check_accepted' => $accepted ? 1 : 0
 		];
 	}
@@ -1742,6 +2067,9 @@ define('DOCTOR_REDACTION_FAILED', '[Doctor withheld this text because redaction 
  * key names, so a support bundle can be shared publicly. When a pattern fails,
  * such as on a PCRE resource limit, the whole text is withheld rather than
  * returned partly redacted or silently empty.
+ *
+ * @param string $text
+ * @return string
  */
 function doctor_redact($text) {
 	$text = doctor_redact_patterns((string) $text);
@@ -1749,73 +2077,198 @@ function doctor_redact($text) {
 	return $text === null ? DOCTOR_REDACTION_FAILED : $text;
 }
 
-/** @return string|null null when any pattern failed */
-function doctor_redact_patterns($text) {
-	$text = preg_replace('/(\b(?:Bearer|Basic)[ \t]+)(?:\\\\[^\r\n]|[^\s;,"\'\\\\\r\n])+/i', '$1[redacted]', $text);
-	if ($text === null) {
-		return null;
-	}
-	// A leading word boundary keeps the key search linear in long words.
-	$keys = 'authorization|password|passwd|passphrase|pass|secret|token|community|api[_-]?key|auth[_-]?key|priv(?:ate)?[_-]?key';
-
-	// Only indented or empty lines continue a YAML scalar; a new log record
-	// must retain its own key for redaction. Accept log-style escapes as well
-	// as YAML doubled quotes, since bundle text does not identify its format.
-	$continuation = '(?:\r?\n(?![ \t]*["\']?\w*(?:' . $keys . ')\b["\']?[ \t]*[=:])(?=[ \t]|\r?$))';
-	// Runs of plain characters are consumed possessively as one unit, so long
-	// values keep few backtracking points and stay within PCRE's JIT stack.
-	$doubleQuoted = '"(?>\\\\(?:[^\r\n]|' . $continuation . ')|[^"\\\\\r\n]++|' . $continuation . ')*';
-	$singleQuoted = '\'(?>\'\'|\\\\[^\r\n]|[^\'\\\\\r\n]++|' . $continuation . ')*';
-	// Prefer a complete scalar before falling back to a truncated record.
-	$quotedValue = $doubleQuoted . '"|' . $singleQuoted . '\\\\?\'|'
-		. $doubleQuoted . '\\\\?(?=\r?$)|' . $singleQuoted . '\\\\?(?=\r?$)';
-	$text = preg_replace_callback('/(\b\w*(?:' . $keys . ')\b["\']?\s*:\s*)(' . $quotedValue . ')/im', function ($matches) {
-		$quote = $matches[2][0];
-
-		return $matches[1] . $quote . '[redacted]' . $quote;
-	}, $text);
-	if ($text === null) {
-		return null;
+/**
+ * Apply the six redaction regex passes to a single line or multiline YAML chunk,
+ * optionally short-circuiting passes whose required literal tokens are absent,
+ * and failing closed on any PCRE error.
+ *
+ * @param string $text
+ * @param string $keyPresencePattern
+ * @param string $yamlPattern
+ * @param string $quotedPattern
+ * @param string $unquotedSepPattern
+ * @param string $spaceSepPattern
+ * @param bool $allowPrecheck
+ * @return string|null null when any pattern failed
+ */
+function doctor_redact_chunk($text, $keyPresencePattern, $yamlPattern, $quotedPattern, $unquotedSepPattern, $spaceSepPattern, $allowPrecheck = true) {
+	if (!$allowPrecheck || stripos($text, 'bearer') !== false || stripos($text, 'basic') !== false) {
+		$text = preg_replace('/(\b(?:Bearer|Basic)[ \t]+)(?:\\\\[^\r\n]|[^\s;,"\'\\\\\r\n])+/i', '$1[redacted]', $text);
+		if ($text === null) {
+			return null;
+		}
 	}
 
-	// Quoted value after a key (keyword, optionally prefixed by word chars so
-	// api_token / snmp_community match) + separator: JSON, YAML, and ini.
-	// Consume escaped characters together and fail closed at the line ending
-	// when a truncated log value has no closing quote.
-	$text = preg_replace('/(\b\w*(?:' . $keys . ')\b["\']?\s*[=:]\s*)(["\'])(?:\\\\[^\r\n]|(?!\2)[^\\\\\r\n])*+(?:\2|\\\\?(?=\r?$))/im', '$1$2[redacted]$2', $text);
-	if ($text === null) {
-		return null;
+	if ($allowPrecheck) {
+		$hasKeyword = preg_match($keyPresencePattern, $text);
+		if ($hasKeyword === false) {
+			return null;
+		}
+	} else {
+		$hasKeyword = 1;
 	}
 
-	// Unquoted value after a key + "=" or ":" separator.
-	$text = preg_replace('/(\b\w*(?:' . $keys . ')\b["\']?\s*[=:]\s*)(?!["\'])[^\s;,"\'\r\n]+/i', '$1[redacted]', $text);
-	if ($text === null) {
-		return null;
+	if ($hasKeyword === 1) {
+		$hasColon = !$allowPrecheck || strpos($text, ':') !== false;
+		$hasEqual = !$allowPrecheck || strpos($text, '=') !== false;
+		$hasQuote = !$allowPrecheck || strpos($text, '"') !== false || strpos($text, "'") !== false;
+
+		if ($hasColon && $hasQuote) {
+			$text = preg_replace_callback($yamlPattern, function ($matches) {
+				$quote = $matches[2][0];
+
+				return $matches[1] . $quote . '[redacted]' . $quote;
+			}, $text);
+			if ($text === null) {
+				return null;
+			}
+		}
+
+		if (($hasColon || $hasEqual) && $hasQuote) {
+			$text = preg_replace($quotedPattern, '$1$2[redacted]$2', $text);
+			if ($text === null) {
+				return null;
+			}
+		}
+
+		if ($hasColon || $hasEqual) {
+			$text = preg_replace($unquotedSepPattern, '$1[redacted]', $text);
+			if ($text === null) {
+				return null;
+			}
+		}
+
+		$text = preg_replace($spaceSepPattern, '$1[redacted]', $text);
+		if ($text === null) {
+			return null;
+		}
 	}
 
-	// Keyword followed by a space-separated value with no separator (e.g. an SNMP
-	// community, or "DB_Pass s3cret"). Fail-closed: this can also redact the word
-	// after the keyword in prose, which is acceptable for a shareable bundle.
-	$text = preg_replace('/(\b\w*(?:' . $keys . ')\b\s+)(?!["\'])[^\s;,"\'\r\n]+/i', '$1[redacted]', $text);
-	if ($text === null) {
-		return null;
-	}
-
-	// Password in a URL userinfo: scheme://user:PASSWORD@host.
-	$text = preg_replace('/(\b[a-z][a-z0-9+.\-]*:\/\/[^:\/@?#\s]+:)[^\/\s?#]+(@)/i', '$1[redacted]$2', $text);
-	if ($text === null) {
-		return null;
+	if (!$allowPrecheck || strpos($text, '://') !== false) {
+		$text = preg_replace('/(\b[a-z][a-z0-9+.\-]*:\/\/[^:\/@?#\s]+:)[^\/\s?#]+(@)/i', '$1[redacted]$2', $text);
+		if ($text === null) {
+			return null;
+		}
 	}
 
 	return $text;
 }
 
 /**
+ * Apply redaction regex patterns sequentially, failing closed on any PCRE error.
+ *
+ * Multiline inputs skip clean lines in O(1) while grouping any line matching a
+ * secret keyword together with immediately following indented or empty lines so
+ * multiline YAML quoted scalars remain fully redacted.
+ *
+ * @param string $text
+ * @return string|null null when any pattern failed
+ */
+function doctor_redact_patterns($text) {
+	static $keyPresencePattern = null;
+	static $yamlPattern        = null;
+	static $quotedPattern      = null;
+	static $unquotedSepPattern = null;
+	static $spaceSepPattern    = null;
+
+	if ($keyPresencePattern === null) {
+		// A leading word boundary keeps the key search linear in long words.
+		$keys               = 'authorization|password|passwd|passphrase|pass|secret|token|community|api[_-]?key|auth[_-]?key|priv(?:ate)?[_-]?key';
+		$keyPresencePattern = '/(?:' . $keys . ')\b/i';
+
+		// Only indented or empty lines continue a YAML scalar; a new log record
+		// must retain its own key for redaction. Accept log-style escapes as well
+		// as YAML doubled quotes, since bundle text does not identify its format.
+		$continuation = '(?:\r?\n(?![ \t]*["\']?\w*(?:' . $keys . ')\b["\']?[ \t]*[=:])(?=[ \t]|\r?$))';
+		// Runs of plain characters are consumed possessively as one unit, so long
+		// values keep few backtracking points and stay within PCRE's JIT stack.
+		$doubleQuoted = '"(?>\\\\(?:[^\r\n]|' . $continuation . ')|[^"\\\\\r\n]++|' . $continuation . ')*';
+		$singleQuoted = '\'(?>\'\'|\\\\[^\r\n]|[^\'\\\\\r\n]++|' . $continuation . ')*';
+		// Prefer a complete scalar before falling back to a truncated record.
+		$quotedValue        = $doubleQuoted . '"|' . $singleQuoted . '\\\\?\'|'
+			. $doubleQuoted . '\\\\?(?=\r?$)|' . $singleQuoted . '\\\\?(?=\r?$)';
+		$yamlPattern        = '/(\b\w*(?:' . $keys . ')\b["\']?\s*:\s*)(' . $quotedValue . ')/im';
+		$quotedPattern      = '/(\b\w*(?:' . $keys . ')\b["\']?\s*[=:]\s*)(["\'])(?:\\\\[^\r\n]|(?!\2)[^\\\\\r\n])*+(?:\2|\\\\?(?=\r?$))/im';
+		$unquotedSepPattern = '/(\b\w*(?:' . $keys . ')\b["\']?\s*[=:]\s*)(?!["\'])[^\s;,"\'\r\n]+/i';
+		$spaceSepPattern    = '/(\b\w*(?:' . $keys . ')\b\s+)(?!["\'])[^\s;,"\'\r\n]+/i';
+	}
+
+	if ($text === '') {
+		return '';
+	}
+
+	// Under artificially tiny PCRE backtrack limits, run all patterns directly
+	// so PCRE itself evaluates and fails closed rather than short-circuiting.
+	$backtrackLimit = ini_get('pcre.backtrack_limit');
+	$allowPrecheck  = $backtrackLimit === false || (int) $backtrackLimit <= 0 || (int) $backtrackLimit >= 100;
+
+	if (!$allowPrecheck || strpos($text, "\n") === false) {
+		return doctor_redact_chunk($text, $keyPresencePattern, $yamlPattern, $quotedPattern, $unquotedSepPattern, $spaceSepPattern, $allowPrecheck);
+	}
+
+	$lines     = explode("\n", $text);
+	$lineCount = count($lines);
+	$output    = array();
+	$i         = 0;
+
+	while ($i < $lineCount) {
+		$line        = $lines[$i];
+		$hasAuth     = stripos($line, 'bearer') !== false || stripos($line, 'basic') !== false;
+		$hasUrl      = strpos($line, '://') !== false;
+		$hasKeyword  = preg_match($keyPresencePattern, $line);
+
+		if ($hasKeyword === false) {
+			return null;
+		}
+
+		if (!$hasAuth && !$hasUrl && $hasKeyword === 0) {
+			$output[] = $line;
+			$i++;
+			continue;
+		}
+
+		// Group immediately following empty or indented lines when this line
+		// could start a multiline YAML quoted scalar.
+		$chunkLines = array($line);
+		$i++;
+
+		if ($hasKeyword === 1 && strpos($line, ':') !== false
+			&& (strpos($line, '"') !== false || strpos($line, "'") !== false)) {
+			while ($i < $lineCount) {
+				$next = $lines[$i];
+				if ($next === '' || $next === "\r" || $next[0] === ' ' || $next[0] === "\t") {
+					$chunkLines[] = $next;
+					$i++;
+				} else {
+					break;
+				}
+			}
+		}
+
+		$chunk    = count($chunkLines) === 1 ? $chunkLines[0] : implode("\n", $chunkLines);
+		$redacted = doctor_redact_chunk($chunk, $keyPresencePattern, $yamlPattern, $quotedPattern, $unquotedSepPattern, $spaceSepPattern);
+		if ($redacted === null) {
+			return null;
+		}
+		$output[] = $redacted;
+	}
+
+	return implode("\n", $output);
+}
+
+/**
+ * Build a redacted plain-text support bundle including environment context,
+ * check report, symptom hypotheses, plugin attachments, plugin debug info,
+ * and recent Cacti log lines.
+ *
  * @param array<int,array<string,mixed>> $results
  * @param array<string,string> $context
  * @param array<int,string> $logLines
+ * @param array<int,array{plugin:string,title:string,content:string}> $attachments
+ * @param array<int,array<string,mixed>> $debugInfo
+ * @return string
  */
-function doctor_build_bundle($results, $context, $logLines) {
+function doctor_build_bundle($results, $context, $logLines, $attachments = [], $debugInfo = []) {
 	$lines = ['Cacti Doctor support bundle', 'Generated: ' . date('Y-m-d H:i:s T'), '', '== Environment'];
 
 	foreach ($context as $name => $value) {
@@ -1837,6 +2290,28 @@ function doctor_build_bundle($results, $context, $logLines) {
 			$lines[] = $label . "\n" . doctor_diagnosis_text($diagnosis);
 		}
 	}
+
+	if (is_array($attachments) && $attachments !== []) {
+		$lines[] = '';
+		$lines[] = '== Plugin attachments';
+		foreach ($attachments as $attachment) {
+			if (!is_array($attachment) || !isset($attachment['plugin'], $attachment['title'], $attachment['content'])) {
+				continue;
+			}
+			$lines[] = '--- [' . (string) $attachment['plugin'] . '] ' . (string) $attachment['title'];
+			$lines[] = (string) $attachment['content'];
+		}
+	}
+
+	if (is_array($debugInfo) && $debugInfo !== []) {
+		$formattedDebug = doctor_format_debug_info($debugInfo);
+		if ($formattedDebug !== '') {
+			$lines[] = '';
+			$lines[] = '== Plugin debug info';
+			$lines[] = $formattedDebug;
+		}
+	}
+
 	$lines[] = '';
 	$lines[] = '== Cacti log (last ' . count($logLines) . ' lines)';
 
@@ -1851,6 +2326,8 @@ function doctor_build_bundle($results, $context, $logLines) {
  * Creates the file exclusively and readable only by its owner, so a bundle
  * never replaces an existing file or becomes readable by others.
  *
+ * @param string $path
+ * @param string $contents
  * @return string Empty on success, otherwise the reason it failed.
  */
 function doctor_write_bundle($path, $contents) {
@@ -1898,6 +2375,11 @@ function doctor_bundle_context() {
 	return $context;
 }
 
+/**
+ * Read Doctor's declared version from INFO.
+ *
+ * @return string
+ */
 function doctor_plugin_version() {
 	$info = @parse_ini_file(__DIR__ . '/INFO', true);
 
@@ -1905,6 +2387,8 @@ function doctor_plugin_version() {
 }
 
 /**
+ * Return the allow-listed Doctor repair actions and their labels.
+ *
  * @return array<string,array<string,string>>
  */
 function doctor_available_repairs() {
@@ -1917,13 +2401,11 @@ function doctor_available_repairs() {
 }
 
 /**
- * Run one allow-listed repair and return its outcome.
- *
- * @return array<string,mixed>
- */
-/**
  * Marks an English message for the translation template without translating
  * it, for text that is logged in English and translated only where shown.
+ *
+ * @param string $message
+ * @return string
  */
 function doctor_n_($message) {
 	return $message;
@@ -1933,6 +2415,7 @@ function doctor_n_($message) {
  * A repair message twice: translated for the screen and English for the
  * Cacti log, so log lines read the same in every language.
  *
+ * @param string $format
  * @return array{text: string, log: string}
  */
 function doctor_repair_message($format) {
@@ -1944,6 +2427,11 @@ function doctor_repair_message($format) {
 }
 
 /**
+ * Build a repair result containing both localized display text and English log text.
+ *
+ * @param string $id
+ * @param string $status
+ * @param string $summary
  * @param list<array{text: string, log: string}> $messages
  * @return array<string,mixed> a result whose 'log' holds the English detail
  */
@@ -1954,6 +2442,13 @@ function doctor_repair_result($id, $status, $summary, $messages) {
 	return $result;
 }
 
+/**
+ * Run one allow-listed repair and return its outcome.
+ *
+ * @param string $repair
+ * @param bool|null $privileged
+ * @return array<string,mixed>
+ */
 function doctor_run_repair($repair, $privileged = null) {
 	if (!isset(doctor_available_repairs()[$repair])) {
 		return doctor_repair_result('repair.' . $repair, 'fail', __('Unknown repair', 'doctor'), [doctor_repair_message('The requested repair is not allow-listed.')]);
@@ -1967,7 +2462,12 @@ function doctor_run_repair($repair, $privileged = null) {
 }
 
 /**
+ * Create missing Cacti runtime directories inside the installation base and
+ * ensure owner read/write/execute permissions.
+ *
+ * @param string|null $base
  * @param array<string,string>|null $directories
+ * @param bool|null $privileged
  * @return array<string,mixed>
  */
 function doctor_repair_runtime_directories($base = null, $directories = null, $privileged = null) {
@@ -2032,6 +2532,9 @@ function doctor_repair_runtime_directories($base = null, $directories = null, $p
 /**
  * Check categories stay English in reports, JSON, and metrics so scripts keep
  * working in every language; only screens translate them.
+ *
+ * @param string $category
+ * @return string
  */
 function doctor_category_label($category) {
 	$labels = [
@@ -2056,6 +2559,9 @@ function doctor_category_label($category) {
  * Viewer snapshots keep only id=status pairs, so the category comes from the
  * stable ID. Database health IDs are generated from rules, so they are the
  * database default.
+ *
+ * @param string $id
+ * @return string
  */
 function doctor_check_category($id) {
 	$exact = [
@@ -2092,6 +2598,9 @@ function doctor_check_category($id) {
 /**
  * Status keywords stay lowercase and English in machine output; screens show
  * a translated label.
+ *
+ * @param string $status
+ * @return string
  */
 function doctor_status_label($status) {
 	$labels = [

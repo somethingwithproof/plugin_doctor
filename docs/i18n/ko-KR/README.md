@@ -1,4 +1,4 @@
-<!-- Source: README.md; SHA256: ee03c7ac68aca21c8155c29b5b43a1f206c2f0c379c8b07bb4113919c18aafde -->
+<!-- Source: README.md; SHA256: 490628bb7f70f4cf1a8c43b302246fd2e870725a6649c628762608b4a76db65b -->
 
 <!-- translations:start -->
 [English](../../../README.md) | [简体中文](../zh-CN/README.md) | [हिन्दी](../hi-IN/README.md) | [Español (España)](../es-ES/README.md) | [Español (Latinoamérica)](../es-419/README.md) | [العربية (السعودية)](../ar-SA/README.md) | [Afrikaans](../af-ZA/README.md) | [አማርኛ](../am-ET/README.md) | [العربية (مصر)](../ar-EG/README.md) | [العربية (المغرب)](../ar-MA/README.md) | [বাংলা](../bn-BD/README.md) | [Bosanski](../bs-BA/README.md) | [Deutsch](../de-DE/README.md) | [فارسی](../fa-IR/README.md) | [Filipino](../fil-PH/README.md) | [Français](../fr-FR/README.md) | [Français (Maroc)](../fr-MA/README.md) | [Français (Sénégal)](../fr-SN/README.md) | [Hausa](../ha-NG/README.md) | [עברית](../he-IL/README.md) | [Hrvatski](../hr-HR/README.md) | [Bahasa Indonesia](../id-ID/README.md) | [Igbo](../ig-NG/README.md) | [Italiano](../it-IT/README.md) | [日本語](../ja-JP/README.md) | [한국어](README.md) | [Malagasy](../mg-MG/README.md) | [मराठी](../mr-IN/README.md) | [Bahasa Melayu](../ms-MY/README.md) | [Nederlands](../nl-NL/README.md) | [Polski](../pl-PL/README.md) | [Português (Brasil)](../pt-BR/README.md) | [Русский](../ru-RU/README.md) | [Kinyarwanda](../rw-RW/README.md) | [Soomaali](../so-SO/README.md) | [Српски](../sr-RS/README.md) | [Svenska](../sv-SE/README.md) | [Kiswahili](../sw-KE/README.md) | [தமிழ்](../ta-IN/README.md) | [తెలుగు](../te-IN/README.md) | [ไทย](../th-TH/README.md) | [Türkçe](../tr-TR/README.md) | [Українська](../uk-UA/README.md) | [اردو](../ur-PK/README.md) | [Tiếng Việt](../vi-VN/README.md) | [isiXhosa](../xh-ZA/README.md) | [Yorùbá](../yo-NG/README.md) | [繁體中文](../zh-TW/README.md) | [isiZulu](../zu-ZA/README.md)
@@ -50,13 +50,15 @@ Cacti 문제는 보통 빈 그래프, 중지된 폴러(poller), 설치되지 않
 | 장치 | 다운(down) 또는 복구 중(recovering)인 활성 장치, 가장 오래 다운된 상위 3개 장치와 마지막 오류, 대부분의 장치가 동시에 다운된 경우 실패 보고 |
 | 폴러 | 폴러 유형 및 간격, 메인 폴러가 마지막으로 완료된 후 경과 시간, 실행 간격 대비 소요 시간, RRD 파일에 도달하지 못한 폴러 출력, 보고가 중단된 원격 폴러, 정지된 Boost, 다른 데이터베이스를 가리키는 Spine 구성 |
 
-모든 검사에는 `database.timezone` 또는 `binary.rrdtool`과 같은 고정 ID가 부여되므로 스크립트에서 개별 결과를 키로 활용할 수 있습니다.
+모든 검사에는 `database.timezone` 또는 `binary.rrdtool`과 같은 고정 ID가 부여되므로 스크립트에서 개별 결과를 키로 활용할 수 있습니다. 활성화된 플러그인은 `doctor_register_checks` 훅을 통해 추가 검사와 지원 번들 첨부 파일을 제공할 수 있으며, Doctor는 `abilities_register`를 통해 `plugin_mcp`에 읽기 전용 진단 기능을 노출합니다.
 
 ## 코드 및 테스트 맵
 
 | 동작 | 구현 | 이 저장소의 테스트 근거 |
 |---|---|---|
-| 진단 검사 및 고정 보고서 ID | [doctor_functions.php](../../../doctor_functions.php) | [DoctorFunctionsTest.php](../../../tests/DoctorFunctionsTest.php), [AssertDoctorReport.php](../../../tests/ci/AssertDoctorReport.php) |
+| 진단 검사 및 고정 보고서 ID | [doctor_functions.php](../../../doctor_functions.php) | [DoctorFunctionsTest.php](../../../tests/DoctorFunctionsTest.php), [DatabaseHealthTest.php](../../../tests/DatabaseHealthTest.php), [AssertDoctorReport.php](../../../tests/ci/AssertDoctorReport.php) |
+| 플러그인 검사 훅 (`doctor_register_checks`) | [doctor_plugins.php](../../../doctor_plugins.php) | [PluginHooksTest.php](../../../tests/PluginHooksTest.php) |
+| MCP 진단 기능 (`abilities_register`) | [doctor_abilities.php](../../../doctor_abilities.php) | [AbilitiesTest.php](../../../tests/AbilitiesTest.php) |
 | 역할 범위별 접근 제어 및 민감 정보가 제거된 웹 보고서 | [doctor_access.php](../../../doctor_access.php), [doctor_web.php](../../../doctor_web.php) | [AccessTest.php](../../../tests/AccessTest.php), [WebAccessTest.php](../../../tests/WebAccessTest.php) |
 | 안내형 증상 조사 | [doctor_diagnosis.php](../../../doctor_diagnosis.php) | [DiagnosisTest.php](../../../tests/DiagnosisTest.php) |
 | RRD 최신성 및 지연 쓰기 처리 | [doctor_rrd.php](../../../doctor_rrd.php) | [RrdFreshnessTest.php](../../../tests/RrdFreshnessTest.php) |
@@ -188,7 +190,7 @@ php plugins/doctor/cli/doctor.php --format=prometheus > /var/lib/node_exporter/t
 php plugins/doctor/cli/doctor.php --bundle=/tmp/cacti-doctor.txt
 ```
 
-지원 번들은 Doctor, Cacti, PHP, OS 및 데이터베이스 버전, 폴러 및 Boost 통계, 전체 보고서, 그리고 Cacti 로그의 마지막 200줄을 담은 단일 텍스트 파일입니다. password, secret, token, community 및 key 이름 뒤에 오는 값들은 마스킹됩니다. Doctor는 소유자만 읽을 수 있는 권한으로 파일을 생성하며 기존 파일 덮어쓰기를 거부합니다. 외부에 게시하기 전에 내용을 검토하세요.
+지원 번들은 Doctor, Cacti, PHP, OS 및 데이터베이스 버전, 폴러 및 Boost 통계, 전체 보고서, `== Plugin attachments` 아래에 포함되는 모든 플러그인 지원 번들 첨부 파일, 그리고 Cacti 로그의 마지막 200줄을 담은 단일 텍스트 파일입니다. password, secret, token, community 및 key 이름 뒤에 오는 값들은 마스킹됩니다. Doctor는 소유자만 읽을 수 있는 권한으로 파일을 생성하며 기존 파일 덮어쓰기를 거부합니다. 외부에 게시하기 전에 내용을 검토하세요.
 
 ## 복구 정책
 
@@ -234,6 +236,63 @@ Cacti의 Settings/System Utilities 권한이 있는 관리자는 Doctor 페이�
 
 업그레이드 시 Cacti 애플리케이션 데이터를 변경하지 않고 `plugin_doctor_audit` 및 `plugin_doctor_acceptance` 테이블을 생성합니다. 제거(uninstall)하면 두 플러그인 테이블과 설정이 모두 삭제되므로 제거하기 전에 필요한 기록을 내보내세요. 플러그인 파일을 이전 버전으로 되돌리면 조사를 위해 테이블이 유지되지만, 이전 버전에서는 경고 예외가 적용되지 않습니다.
 
+## 플러그인 검사 (`doctor_register_checks`)
+
+활성화된 Cacti 플러그인은 `doctor_register_checks` 훅을 등록하여 읽기 전용 진단 검사와 선택적 지원 번들 첨부 파일을 제공할 수 있습니다:
+
+```php
+api_plugin_register_hook('sample', 'doctor_register_checks', 'sample_doctor_checks', 'setup.php');
+```
+
+Doctor는 `doctor_register_checks`에 등록된 비통합 활성 플러그인을 호출하며(`doctor` 및 `cacti`는 건너뜀), 훅 파일은 해당 플러그인 자체 디렉터리 내부로 엄격히 제한하여 확인합니다. 콜백은 `['mode' => 'run' | 'list', 'plugin' => '<slug>']`를 전달받고 검사 설명자 목록 또는 `checks`와 선택적 `attachments`를 포함한 봉투 구조를 반환합니다:
+
+```php
+function sample_doctor_checks($context) {
+	return [
+		'checks' => [
+			[
+				'id'          => 'sample.queue_depth',
+				'plugin'      => 'sample',
+				'category'    => 'Sample',
+				'title'       => 'Sample queue depth',
+				'status'      => 'ok',
+				'message'     => 'Queue is healthy.',
+				'details'     => ['pending' => 0],
+				'remediation' => ''
+			]
+		],
+		'attachments' => [
+			[
+				'title'   => 'Sample diagnostics',
+				'content' => "worker=ok\n"
+			]
+		]
+	];
+}
+```
+
+모든 플러그인 검사 설명자는 포함되기 전에 검증됩니다:
+
+- 필수 키: `id`, `plugin`, `category`, `title`, `status`, `message`, `details` 및 `remediation`.
+- `plugin`은 등록된 플러그인 슬러그(`[a-z0-9_]{1,64}`)와 일치해야 합니다. `id`는 `[a-z0-9_.]{1,128}`과 일치하고 `<plugin>.`으로 시작해야 하며, 기존 코어 또는 플러그인 검사 ID와 충돌하지 않아야 합니다.
+- `status`는 `ok`, `warn`, `fail` 또는 `info`여야 합니다. `ok`는 Doctor 보고서에서 `pass`로 매핑되며, `info`는 정보 제공용이므로 CLI, Nagios, Prometheus 또는 예약 알림에서 실패를 유발하지 않습니다.
+- `category`(최대 64바이트)와 `title`(최대 256바이트)은 제어 문자가 없는 비어 있지 않은 문자열이어야 합니다. `message`(비어 있지 않음, 최대 2048바이트)와 `remediation`(최대 2048바이트)은 문자열이어야 합니다.
+- `details`는 문자열(최대 8192바이트) 또는 스칼라/중첩 배열(최대 깊이 4, JSON 인코딩 최대 16384바이트; 객체 및 리소스는 거부됨)을 허용합니다.
+- 선택적 지원 번들 첨부 파일은 비어 있지 않은 `title`(최대 128바이트, 제어 문자 없음)과 최대 65536바이트(64 KiB)의 `content` 문자열을 필요로 합니다.
+
+Doctor는 플러그인당 검사 32개 및 첨부 파일 8개(전체 플러그인 검사 64개 및 첨부 파일 32개)의 제한을 적용합니다. 각 훅은 자체 `try`/`catch` 경계 내에서 실행되므로 예외나 배열이 아닌 페이로드는 코어 검사나 다른 플러그인에 영향을 주지 않고 마스킹되어 Cacti 로그(`DOCTOR` 기능)에 기록됩니다. 잘못 구성된 설명자는 거부되어 로그에 기록되는 반면, 동일 플러그인의 유효한 설명자는 계속 실행됩니다. 플러그인 검사는 항상 읽기 전용(`repairable: false`)이며, 문자열 값과 민감한 연관 키는 렌더링, 내보내기 또는 번들링 전에 마스킹됩니다. 검증된 플러그인 검사는 웹 UI, CLI 텍스트/JSON/Nagios/Prometheus 출력, 예약된 상태 추적 및 지원 번들에 표시됩니다.
+
+## MCP 연동 (`abilities_register`)
+
+Doctor는 두 플러그인이 모두 활성화되었을 때 `plugin_mcp`가 진단 기능을 검색할 수 있도록 `abilities_register` 훅(`doctor_abilities.php`의 `doctor_abilities_register`)을 등록합니다. Doctor는 `diagnostics` 범주(`Diagnostics`)와 두 가지 읽기 전용, 비파괴적, 멱등성 기능을 등록합니다:
+
+| 기능 ID | 선택적 인수 | 출력 |
+|---|---|---|
+| `doctor-run-checks` | `category` (문자열, 최대 64자), `status` (`pass`, `ok`, `warn`, `fail`, `info`) | `summary` (`total`, `pass`, `warn`, `fail`, `info`) 및 마스킹된 최대 256개의 `findings` (`id`, `plugin`, `category`, `title`, `status`, `message`, `remediation`) |
+| `doctor-list-checks` | `category` (문자열, 최대 64자), `plugin` (문자열, 최대 64자) | 45개의 기본 내장 검사와 활성화된 플러그인 검사를 모두 포괄하는 최대 256개의 `checks` (`id`, `plugin`, `category`, `title`) |
+
+두 기능 모두 엄격히 읽기 전용이며 복구 작업을 절대 실행하지 않습니다. `plugin_mcp` 자체의 영역(realm) 및 기능 노출 제어(플러그인 기능은 관리자가 노출하기 전까지 MCP에서 숨겨진 상태로 시작함) 외에도, Doctor는 토큰 소유자가 **Doctor Viewer** 이상에 해당하는 Doctor 영역 권한을 보유하도록 요구합니다. `doctor-run-checks`는 `devices.health`의 범위를 토큰 소유자에게 허용된 장치로 제한하고, 사용자가 Cacti 영역 18 또는 19를 보유한 경우에만 `logging.recent_errors`를 포함하며, `filesystem.rrd_files`는 제외하고, 장치 범위가 지정된 `filesystem.rrd_stale`은 **Doctor Operator** 또는 **Doctor Administrator**에게만 포함합니다.
+
 ## 요구 사항
 
 | Cacti | PHP | 비고 |
@@ -251,20 +310,22 @@ Cacti의 Settings/System Utilities 권한이 있는 관리자는 Doctor 페이�
 
 ## 개발
 
-단위 테스트 스위트는 Pest를 사용하며 PHP 8.2 이상에서 실행됩니다:
+단위 테스트 스위트는 Pest를 사용하고 정적 분석은 PHPStan(레벨 6)을 사용하며, 둘 다 PHP 8.2 이상에서 실행됩니다:
 
 ```console
 composer install
+composer phpstan
 composer test
 ```
 
 테스트는 Doctor가 호출하는 Cacti 함수를 `tests/CactiStubs.php`의 작은 대역(stand-ins)으로 대체하므로 Cacti 설치 없이도 실행됩니다.
 
-GitHub Actions는 모든 푸시와 풀 리퀘스트에서 네 가지 종류의 검사를 실행합니다:
+GitHub Actions는 모든 푸시와 풀 리퀘스트에서 다섯 가지 종류의 검사를 실행합니다:
 
-- PHP 5.4, 5.6, 7.0, 7.1, 7.4 및 8.0부터 8.4까지에서 모든 PHP 파일에 대해 `php -l` 실행.
-- PHP 8.2, 8.3 및 8.4에서 단위 테스트 스위트 실행.
+- 릴리스 패키징 계약 테스트(`tests/test_release.py`) 및 아카이브 빌드(`tools/build_release.py`).
 - `locales/build_gettext.sh --check` 실행(오래된 번역 템플릿, 불완전하거나 fuzzy 상태인 카탈로그, 또는 소스와 다른 컴파일된 카탈로그가 있으면 실패함).
+- PHP 5.4, 5.6, 7.0, 7.1, 7.4 및 8.0부터 8.4까지에서 모든 PHP 파일에 대해 `php -l` 실행.
+- PHP 8.2, 8.3 및 8.4에서 `composer phpstan`(PHPStan 레벨 6) 및 `composer test`(Pest 단위 테스트 스위트) 실행.
 - cmd.php와 Spine을 모두 사용하여 MySQL 및 MariaDB 환경에 Cacti 1.2.20, 현재 1.2.x 브랜치 및 `develop`을 설치하는 7개의 통합 작업 실행. 각 작업은 플러그인을 설치 및 활성화하고, 전체 CLI 보고서를 실행하며, 보고서 스키마, 요약 합계, 예상 상태 및 정확한 실패 집합을 확인합니다. 그런 다음 바이너리 경로와 폴러 타임스탬프를 손상시켜 둘 다 보고되는지 확인한 뒤 복원하고, 복구 및 확인 절차를 테스트하며, 비활성화, 활성화, 제거 및 재설치를 실행합니다. 작업이 실패하면 JSON 보고서가 아티팩트로 보관됩니다.
 
 ## 기여하기

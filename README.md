@@ -51,13 +51,15 @@ Cacti problems usually surface as symptoms: empty graphs, a poller that stopped,
 | Devices | Enabled devices that are down or recovering, the three down longest with their last error, and a failure when most devices are down at once |
 | Poller | Poller type and interval, time since the main poller last completed, run time against the interval, poller output that never reached an RRD file, remote pollers that stopped reporting, a stalled Boost, and a Spine configuration that points at a different database |
 
-Every check has a stable ID, such as `database.timezone` or `binary.rrdtool`, so scripts can key on individual results.
+Every check has a stable ID, such as `database.timezone` or `binary.rrdtool`, so scripts can key on individual results. Enabled plugins can contribute additional checks and support-bundle attachments through the `doctor_register_checks` hook, and Doctor exposes read-only diagnostic abilities to `plugin_mcp` through `abilities_register`.
 
 ## Code and test map
 
 | Behavior | Implementation | Test evidence in this repository |
 |---|---|---|
-| Diagnostic checks and stable report IDs | [doctor_functions.php](doctor_functions.php) | [DoctorFunctionsTest.php](tests/DoctorFunctionsTest.php), [AssertDoctorReport.php](tests/ci/AssertDoctorReport.php) |
+| Diagnostic checks and stable report IDs | [doctor_functions.php](doctor_functions.php) | [DoctorFunctionsTest.php](tests/DoctorFunctionsTest.php), [DatabaseHealthTest.php](tests/DatabaseHealthTest.php), [AssertDoctorReport.php](tests/ci/AssertDoctorReport.php) |
+| Plugin check hook (`doctor_register_checks`) | [doctor_plugins.php](doctor_plugins.php) | [PluginHooksTest.php](tests/PluginHooksTest.php) |
+| MCP diagnostic abilities (`abilities_register`) | [doctor_abilities.php](doctor_abilities.php) | [AbilitiesTest.php](tests/AbilitiesTest.php) |
 | Role-scoped access and redacted web reports | [doctor_access.php](doctor_access.php), [doctor_web.php](doctor_web.php) | [AccessTest.php](tests/AccessTest.php), [WebAccessTest.php](tests/WebAccessTest.php) |
 | Guided symptom investigations | [doctor_diagnosis.php](doctor_diagnosis.php) | [DiagnosisTest.php](tests/DiagnosisTest.php) |
 | RRD freshness and deferred-write handling | [doctor_rrd.php](doctor_rrd.php) | [RrdFreshnessTest.php](tests/RrdFreshnessTest.php) |
@@ -198,7 +200,7 @@ php plugins/doctor/cli/doctor.php --format=prometheus > /var/lib/node_exporter/t
 php plugins/doctor/cli/doctor.php --bundle=/tmp/cacti-doctor.txt
 ```
 
-The bundle is a single text file with the Doctor, Cacti, PHP, OS, and database versions, poller and Boost statistics, the full report, and the last 200 lines of the Cacti log. Values that follow password, secret, token, community, and key names are masked. Doctor creates the file readable only by its owner and refuses to overwrite an existing file. Review it before posting it anywhere.
+The bundle is a single text file with the Doctor, Cacti, PHP, OS, and database versions, poller and Boost statistics, the full report, any plugin support-bundle attachments under `== Plugin attachments`, and the last 200 lines of the Cacti log. Values that follow password, secret, token, community, and key names are masked. Doctor creates the file readable only by its owner and refuses to overwrite an existing file. Review it before posting it anywhere.
 
 ## Repair policy
 
@@ -244,6 +246,63 @@ Scheduled warning alerts are suppressed while the exception applies; expiry or r
 
 Upgrade creates `plugin_doctor_audit` and `plugin_doctor_acceptance` without changing Cacti application data. Export any history you need before uninstalling: uninstall removes both plugin tables and its settings. Reverting the plugin files leaves the tables available for investigation, but older versions do not honor warning exceptions.
 
+## Plugin checks (`doctor_register_checks`)
+
+Enabled Cacti plugins can contribute read-only diagnostic checks and optional support-bundle attachments by registering a `doctor_register_checks` hook:
+
+```php
+api_plugin_register_hook('sample', 'doctor_register_checks', 'sample_doctor_checks', 'setup.php');
+```
+
+Doctor invokes enabled, non-integrated plugins registered on `doctor_register_checks` (skipping `doctor` and `cacti`), resolving the hook file strictly inside the plugin's own directory. The callback receives `['mode' => 'run' | 'list', 'plugin' => '<slug>']` and returns either a list of check descriptors or an envelope with `checks` and optional `attachments`:
+
+```php
+function sample_doctor_checks($context) {
+	return [
+		'checks' => [
+			[
+				'id'          => 'sample.queue_depth',
+				'plugin'      => 'sample',
+				'category'    => 'Sample',
+				'title'       => 'Sample queue depth',
+				'status'      => 'ok',
+				'message'     => 'Queue is healthy.',
+				'details'     => ['pending' => 0],
+				'remediation' => ''
+			]
+		],
+		'attachments' => [
+			[
+				'title'   => 'Sample diagnostics',
+				'content' => "worker=ok\n"
+			]
+		]
+	];
+}
+```
+
+Every plugin check descriptor is validated before inclusion:
+
+- Required keys: `id`, `plugin`, `category`, `title`, `status`, `message`, `details`, and `remediation`.
+- `plugin` must match the registered plugin slug (`[a-z0-9_]{1,64}`). `id` must match `[a-z0-9_.]{1,128}`, start with `<plugin>.`, and not collide with an existing core or plugin check ID.
+- `status` must be `ok`, `warn`, `fail`, or `info`. `ok` maps to `pass` in Doctor reports; `info` is informational and does not trigger failures in CLI, Nagios, Prometheus, or scheduled alerts.
+- `category` (up to 64 bytes) and `title` (up to 256 bytes) must be non-empty strings without control characters. `message` (non-empty, up to 2048 bytes) and `remediation` (up to 2048 bytes) must be strings.
+- `details` accepts a string (up to 8192 bytes) or a scalar/nested array (max depth 4, JSON-encoded up to 16384 bytes; objects and resources are rejected).
+- Optional support-bundle attachments require a non-empty `title` (up to 128 bytes, no control characters) and a `content` string up to 65536 bytes (64 KiB).
+
+Doctor enforces limits of 32 checks and 8 attachments per plugin (64 plugin checks and 32 attachments total). Each hook executes inside its own `try`/`catch` boundary so exceptions or non-array payloads are redacted and logged to the Cacti log (`DOCTOR` facility) without affecting core checks or other plugins. Malformed descriptors are rejected and logged while valid ones from the same plugin still run. Plugin checks are always read-only (`repairable: false`), and string values plus sensitive associative keys are redacted before rendering, export, or bundling. Validated plugin checks appear in the web UI, CLI text/JSON/Nagios/Prometheus output, scheduled status tracking, and support bundles.
+
+## MCP integration (`abilities_register`)
+
+Doctor registers the `abilities_register` hook (`doctor_abilities_register` in `doctor_abilities.php`) so `plugin_mcp` discovers its diagnostic abilities when both plugins are enabled. Doctor registers the `diagnostics` category (`Diagnostics`) and two read-only, non-destructive, idempotent abilities:
+
+| Ability ID | Optional arguments | Output |
+|---|---|---|
+| `doctor-run-checks` | `category` (string, max 64 chars), `status` (`pass`, `ok`, `warn`, `fail`, `info`) | `summary` (`total`, `pass`, `warn`, `fail`, `info`) and up to 256 redacted `findings` (`id`, `plugin`, `category`, `title`, `status`, `message`, `remediation`) |
+| `doctor-list-checks` | `category` (string, max 64 chars), `plugin` (string, max 64 chars) | Up to 256 `checks` (`id`, `plugin`, `category`, `title`) covering all 45 built-in checks plus enabled plugin checks |
+
+Both abilities are strictly read-only and never run repairs. In addition to `plugin_mcp`'s own realm and ability exposure controls (plugin abilities start hidden in MCP until an administrator exposes them), Doctor requires the token owner to hold **Doctor Viewer** or a higher Doctor realm. `doctor-run-checks` scopes `devices.health` to the token owner's allowed devices, includes `logging.recent_errors` only when the user holds Cacti realm 18 or 19, omits `filesystem.rrd_files`, and includes device-scoped `filesystem.rrd_stale` only for **Doctor Operator** or **Doctor Administrator**.
+
 ## Requirements
 
 | Cacti | PHP | Notes |
@@ -261,20 +320,22 @@ Support dates are bundled with Doctor from the [PHP support schedule](https://ww
 
 ## Development
 
-The unit suite uses Pest and runs on PHP 8.2 or newer:
+The unit suite uses Pest and static analysis uses PHPStan (level 6), both on PHP 8.2 or newer:
 
 ```console
 composer install
+composer phpstan
 composer test
 ```
 
 The tests replace the Cacti functions Doctor calls with small stand-ins in `tests/CactiStubs.php`, so they run without a Cacti installation.
 
-GitHub Actions runs four kinds of checks on every push and pull request:
+GitHub Actions runs five kinds of checks on every push and pull request:
 
-- `php -l` on every PHP file under PHP 5.4, 5.6, 7.0, 7.1, 7.4, and 8.0 through 8.4.
-- The unit suite on PHP 8.2, 8.3, and 8.4.
+- Release packaging contract tests (`tests/test_release.py`) and an archive build (`tools/build_release.py`).
 - `locales/build_gettext.sh --check`, which fails on a stale translation template, an incomplete or fuzzy catalog, or a compiled catalog that differs from its source.
+- `php -l` on every PHP file under PHP 5.4, 5.6, 7.0, 7.1, 7.4, and 8.0 through 8.4.
+- `composer phpstan` (PHPStan level 6) and `composer test` (Pest unit suite) on PHP 8.2, 8.3, and 8.4.
 - Seven integration jobs that install Cacti 1.2.20, the current 1.2.x branch, and `develop` against MySQL and MariaDB, with both cmd.php and Spine. Each job installs and enables the plugin, runs the full CLI report, and checks the report schema, summary totals, expected statuses, and the exact set of failures. It then breaks a binary path and the poller timestamp, confirms both are reported, restores them, exercises the repair and its confirmation, and runs disable, enable, uninstall, and reinstall. The JSON report is kept as an artifact when a job fails.
 
 ## Contributing

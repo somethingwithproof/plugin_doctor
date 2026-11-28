@@ -1,4 +1,4 @@
-<!-- Source: README.md; SHA256: ee03c7ac68aca21c8155c29b5b43a1f206c2f0c379c8b07bb4113919c18aafde -->
+<!-- Source: README.md; SHA256: 490628bb7f70f4cf1a8c43b302246fd2e870725a6649c628762608b4a76db65b -->
 
 <!-- translations:start -->
 [English](../../../README.md) | [简体中文](../zh-CN/README.md) | [हिन्दी](../hi-IN/README.md) | [Español (España)](../es-ES/README.md) | [Español (Latinoamérica)](../es-419/README.md) | [العربية (السعودية)](../ar-SA/README.md) | [Afrikaans](../af-ZA/README.md) | [አማርኛ](../am-ET/README.md) | [العربية (مصر)](../ar-EG/README.md) | [العربية (المغرب)](../ar-MA/README.md) | [বাংলা](../bn-BD/README.md) | [Bosanski](../bs-BA/README.md) | [Deutsch](../de-DE/README.md) | [فارسی](../fa-IR/README.md) | [Filipino](README.md) | [Français](../fr-FR/README.md) | [Français (Maroc)](../fr-MA/README.md) | [Français (Sénégal)](../fr-SN/README.md) | [Hausa](../ha-NG/README.md) | [עברית](../he-IL/README.md) | [Hrvatski](../hr-HR/README.md) | [Bahasa Indonesia](../id-ID/README.md) | [Igbo](../ig-NG/README.md) | [Italiano](../it-IT/README.md) | [日本語](../ja-JP/README.md) | [한국어](../ko-KR/README.md) | [Malagasy](../mg-MG/README.md) | [मराठी](../mr-IN/README.md) | [Bahasa Melayu](../ms-MY/README.md) | [Nederlands](../nl-NL/README.md) | [Polski](../pl-PL/README.md) | [Português (Brasil)](../pt-BR/README.md) | [Русский](../ru-RU/README.md) | [Kinyarwanda](../rw-RW/README.md) | [Soomaali](../so-SO/README.md) | [Српски](../sr-RS/README.md) | [Svenska](../sv-SE/README.md) | [Kiswahili](../sw-KE/README.md) | [தமிழ்](../ta-IN/README.md) | [తెలుగు](../te-IN/README.md) | [ไทย](../th-TH/README.md) | [Türkçe](../tr-TR/README.md) | [Українська](../uk-UA/README.md) | [اردو](../ur-PK/README.md) | [Tiếng Việt](../vi-VN/README.md) | [isiXhosa](../xh-ZA/README.md) | [Yorùbá](../yo-NG/README.md) | [繁體中文](../zh-TW/README.md) | [isiZulu](../zu-ZA/README.md)
@@ -50,13 +50,15 @@ Ang mga problema sa Cacti ay karaniwang lumilitaw bilang mga sintomas: mga walan
 | Mga Device | Mga naka-enable na device na down o nagre-recover, ang tatlong pinakamatagal na down kasama ang kanilang huling error, at isang pagkabigo kapag karamihan sa mga device ay sabay-sabay na down |
 | Poller | Uri at interval ng poller, oras mula nang huling makumpleto ang pangunahing poller, tagal ng pagtakbo laban sa interval, output ng poller na hindi kailanman nakarating sa isang RRD file, mga remote poller na huminto sa pag-uulat, isang naantalang Boost, at isang konpigurasyon ng Spine na nakaturo sa ibang database |
 
-Ang bawat pagsusuri ay may matatag na ID, tulad ng `database.timezone` o `binary.rrdtool`, upang makapag-key ang mga script sa mga indibidwal na resulta.
+Ang bawat pagsusuri ay may matatag na ID, tulad ng `database.timezone` o `binary.rrdtool`, upang makapag-key ang mga script sa mga indibidwal na resulta. Maaaring mag-ambag ang mga naka-enable na plugin ng mga karagdagang pagsusuri at mga attachment ng support-bundle sa pamamagitan ng hook na `doctor_register_checks`, at inilalantad ng Doctor ang mga read-only na kakayahang diagnostic sa `plugin_mcp` sa pamamagitan ng `abilities_register`.
 
 ## Mapa ng code at pagsubok
 
 | Gawi | Implementasyon | Ebidensya ng pagsubok sa repository na ito |
 |---|---|---|
-| Mga diagnostic na pagsusuri at matatag na mga ID ng ulat | [doctor_functions.php](../../../doctor_functions.php) | [DoctorFunctionsTest.php](../../../tests/DoctorFunctionsTest.php), [AssertDoctorReport.php](../../../tests/ci/AssertDoctorReport.php) |
+| Mga diagnostic na pagsusuri at matatag na mga ID ng ulat | [doctor_functions.php](../../../doctor_functions.php) | [DoctorFunctionsTest.php](../../../tests/DoctorFunctionsTest.php), [DatabaseHealthTest.php](../../../tests/DatabaseHealthTest.php), [AssertDoctorReport.php](../../../tests/ci/AssertDoctorReport.php) |
+| Hook sa pagsusuri ng plugin (`doctor_register_checks`) | [doctor_plugins.php](../../../doctor_plugins.php) | [PluginHooksTest.php](../../../tests/PluginHooksTest.php) |
+| Mga kakayahang diagnostic ng MCP (`abilities_register`) | [doctor_abilities.php](../../../doctor_abilities.php) | [AbilitiesTest.php](../../../tests/AbilitiesTest.php) |
 | Role-scoped na access at na-redact na mga ulat sa web | [doctor_access.php](../../../doctor_access.php), [doctor_web.php](../../../doctor_web.php) | [AccessTest.php](../../../tests/AccessTest.php), [WebAccessTest.php](../../../tests/WebAccessTest.php) |
 | Mga ginabayang imbestigasyon ng sintomas | [doctor_diagnosis.php](../../../doctor_diagnosis.php) | [DiagnosisTest.php](../../../tests/DiagnosisTest.php) |
 | Pagiging bago ng RRD at pangangasiwa ng deferred-write | [doctor_rrd.php](../../../doctor_rrd.php) | [RrdFreshnessTest.php](../../../tests/RrdFreshnessTest.php) |
@@ -195,7 +197,7 @@ Nagpi-print ang `--format=nagios` ng isang linya ng status na may performance da
 php plugins/doctor/cli/doctor.php --bundle=/tmp/cacti-doctor.txt
 ```
 
-Ang bundle ay isang solong text file na may mga bersyon ng Doctor, Cacti, PHP, OS, at database, mga istatistika ng poller at Boost, ang buong ulat, at ang huling 200 linya ng Cacti log. Ang mga value na sumusunod sa mga pangalan ng password, secret, token, community, at key ay tinatakpan. Ginagawa ng Doctor ang file na mababasa lamang ng may-ari nito at tumatangging i-overwrite ang isang kasalukuyang file. Suriin ito bago ito i-post kahit saan.
+Ang bundle ay isang solong text file na may mga bersyon ng Doctor, Cacti, PHP, OS, at database, mga istatistika ng poller at Boost, ang buong ulat, anumang mga attachment ng support-bundle ng plugin sa ilalim ng `== Plugin attachments`, at ang huling 200 linya ng Cacti log. Ang mga value na sumusunod sa mga pangalan ng password, secret, token, community, at key ay tinatakpan. Ginagawa ng Doctor ang file na mababasa lamang ng may-ari nito at tumatangging i-overwrite ang isang kasalukuyang file. Suriin ito bago ito i-post kahit saan.
 
 ## Patakaran sa pagkukumpuni
 
@@ -241,6 +243,63 @@ Pinipigilan ang mga nakaiskedyul na alerto ng babala habang umiiral ang pagbubuk
 
 Lumilikha ang pag-upgrade ng `plugin_doctor_audit` at `plugin_doctor_acceptance` nang hindi binabago ang data ng application ng Cacti. I-export ang anumang kasaysayan na kailangan mo bago mag-uninstall: inaalis ng pag-uninstall ang parehong talahanayan ng plugin at ang mga setting nito. Ang pagbabalik ng mga file ng plugin sa dating bersyon ay nag-iiwan sa mga talahanayan na magagamit para sa pagsisiyasat, ngunit ang mga mas lumang bersyon ay hindi gumagalang sa mga pagbubukod sa babala.
 
+## Mga pagsusuri ng plugin (`doctor_register_checks`)
+
+Maaaring mag-ambag ang mga naka-enable na plugin ng Cacti ng mga read-only na diagnostic na pagsusuri at mga opsyonal na attachment ng support-bundle sa pamamagitan ng pagrehistro ng `doctor_register_checks` hook:
+
+```php
+api_plugin_register_hook('sample', 'doctor_register_checks', 'sample_doctor_checks', 'setup.php');
+```
+
+Tinatawag ng Doctor ang mga naka-enable at hindi pinagsamang plugin na nakarehistro sa `doctor_register_checks` (nilalaktawan ang `doctor` at `cacti`), na nireresolba ang hook file nang mahigpit sa loob ng sariling direktoryo ng plugin. Natatanggap ng callback ang `['mode' => 'run' | 'list', 'plugin' => '<slug>']` at nagbabalik ng alinman sa isang listahan ng mga check descriptor o isang envelope na may `checks` at opsyonal na `attachments`:
+
+```php
+function sample_doctor_checks($context) {
+	return [
+		'checks' => [
+			[
+				'id'          => 'sample.queue_depth',
+				'plugin'      => 'sample',
+				'category'    => 'Sample',
+				'title'       => 'Sample queue depth',
+				'status'      => 'ok',
+				'message'     => 'Queue is healthy.',
+				'details'     => ['pending' => 0],
+				'remediation' => ''
+			]
+		],
+		'attachments' => [
+			[
+				'title'   => 'Sample diagnostics',
+				'content' => "worker=ok\n"
+			]
+		]
+	];
+}
+```
+
+Bineberipika ang bawat plugin check descriptor bago isama:
+
+- Mga kinakailangang key: `id`, `plugin`, `category`, `title`, `status`, `message`, `details`, at `remediation`.
+- Dapat tumugma ang `plugin` sa nakarehistrong slug ng plugin (`[a-z0-9_]{1,64}`). Dapat tumugma ang `id` sa `[a-z0-9_.]{1,128}`, magsimula sa `<plugin>.`, at hindi magkabanggaan sa isang umiiral na core o plugin check ID.
+- Dapat na `ok`, `warn`, `fail`, o `info` ang `status`. Ang `ok` ay nakamapa sa `pass` sa mga ulat ng Doctor; ang `info` ay pang-impormasyon at hindi nagti-trigger ng mga pagkabigo sa CLI, Nagios, Prometheus, o mga naka-iskedyul na alerto.
+- Ang `category` (hanggang 64 byte) at `title` (hanggang 256 byte) ay dapat na mga hindi walang lamang string na walang mga control character. Ang `message` (hindi walang laman, hanggang 2048 byte) at `remediation` (hanggang 2048 byte) ay dapat na mga string.
+- Tumatanggap ang `details` ng isang string (hanggang 8192 byte) o isang scalar/nested array (pinakamataas na lalim na 4, naka-encode sa JSON hanggang 16384 byte; tinatanggihan ang mga object at resource).
+- Nangangailangan ang mga opsyonal na attachment ng support-bundle ng isang hindi walang lamang `title` (hanggang 128 byte, walang control character) at isang `content` string hanggang 65536 byte (64 KiB).
+
+Nagpapatupad ang Doctor ng mga limitasyon na 32 pagsusuri at 8 attachment bawat plugin (kabuuang 64 na pagsusuri ng plugin at 32 attachment). Tumatakbo ang bawat hook sa loob ng sarili nitong `try`/`catch` na hangganan upang ang mga exception o mga payload na hindi array ay ma-redact at mai-log sa Cacti log (pasilidad ng `DOCTOR`) nang hindi naaapektuhan ang mga core na pagsusuri o iba pang mga plugin. Tinatanggihan at nilo-log ang mga maling pagkakabuo na descriptor habang patuloy na tumatakbo ang mga wasto mula sa parehong plugin. Palaging read-only ang mga pagsusuri ng plugin (`repairable: false`), at nire-redact ang mga string value kasama ang mga sensitibong associative key bago i-render, i-export, o i-bundle. Lumalabas ang mga naberipikang pagsusuri ng plugin sa web UI, output ng CLI na text/JSON/Nagios/Prometheus, naka-iskedyul na pagsubaybay sa katayuan, at mga support bundle.
+
+## Pagsasama sa MCP (`abilities_register`)
+
+Inirerehistro ng Doctor ang `abilities_register` hook (`doctor_abilities_register` sa `doctor_abilities.php`) upang matuklasan ng `plugin_mcp` ang mga kakayahang diagnostic nito kapag naka-enable ang parehong plugin. Inirerehistro ng Doctor ang kategoryang `diagnostics` (`Diagnostics`) at dalawang read-only, hindi mapanira, at idempotent na kakayahan:
+
+| ID ng Kakayahan | Mga opsyonal na argumento | Output |
+|---|---|---|
+| `doctor-run-checks` | `category` (string, max 64 na character), `status` (`pass`, `ok`, `warn`, `fail`, `info`) | `summary` (`total`, `pass`, `warn`, `fail`, `info`) at hanggang 256 na na-redact na `findings` (`id`, `plugin`, `category`, `title`, `status`, `message`, `remediation`) |
+| `doctor-list-checks` | `category` (string, max 64 na character), `plugin` (string, max 64 na character) | Hanggang 256 na `checks` (`id`, `plugin`, `category`, `title`) na sumasaklaw sa lahat ng 45 built-in na pagsusuri kasama ang mga naka-enable na pagsusuri ng plugin |
+
+Ang parehong kakayahan ay mahigpit na read-only at hindi kailanman nagpapatakbo ng mga pag-aayos. Bilang karagdagan sa sariling mga kontrol ng realm at paglalantad ng kakayahan ng `plugin_mcp` (nagsisimulang nakatago ang mga kakayahan ng plugin sa MCP hanggang sa ilantad ng isang administrator), kinakailangan ng Doctor na hawak ng may-ari ng token ang **Doctor Viewer** o mas mataas na realm ng Doctor. Nililimitahan ng `doctor-run-checks` ang `devices.health` sa mga pinahihintulutang device ng may-ari ng token, isinasama ang `logging.recent_errors` kapag hawak lamang ng user ang Cacti realm 18 o 19, inaalis ang `filesystem.rrd_files`, at isinasama ang `filesystem.rrd_stale` na naka-scope sa device para lamang sa **Doctor Operator** o **Doctor Administrator**.
+
 ## Mga kinakailangan
 
 | Cacti | PHP | Mga Tala |
@@ -258,20 +317,22 @@ Ang mga petsa ng suporta ay naka-bundle sa Doctor mula sa [iskedyul ng suporta n
 
 ## Pag-develop
 
-Gumagamit ang unit suite ng Pest at tumatakbo sa PHP 8.2 o mas bago:
+Gumagamit ang unit suite ng Pest at gumagamit ang static analysis ng PHPStan (antas 6), pareho sa PHP 8.2 o mas bago:
 
 ```console
 composer install
+composer phpstan
 composer test
 ```
 
 Pinapalitan ng mga pagsusuri ang mga Cacti function na tinatawag ng Doctor ng maliliit na pamalit sa `tests/CactiStubs.php`, kaya tumatakbo ang mga ito nang walang pag-install ng Cacti.
 
-Nagpapatakbo ang GitHub Actions ng apat na uri ng pagsusuri sa bawat push at pull request:
+Nagpapatakbo ang GitHub Actions ng limang uri ng pagsusuri sa bawat push at pull request:
 
-- `php -l` sa bawat PHP file sa ilalim ng PHP 5.4, 5.6, 7.0, 7.1, 7.4, at 8.0 hanggang 8.4.
-- Ang unit suite sa PHP 8.2, 8.3, at 8.4.
+- Mga pagsusuri sa kontrata ng pag-package ng release (`tests/test_release.py`) at pagbuo ng archive (`tools/build_release.py`).
 - `locales/build_gettext.sh --check`, na nabibigo sa isang lumang translation template, isang hindi kumpleto o fuzzy na catalog, o isang compiled catalog na naiiba sa source nito.
+- `php -l` sa bawat PHP file sa ilalim ng PHP 5.4, 5.6, 7.0, 7.1, 7.4, at 8.0 hanggang 8.4.
+- `composer phpstan` (PHPStan antas 6) at `composer test` (Pest unit suite) sa PHP 8.2, 8.3, at 8.4.
 - Pitong integration job na nag-i-install ng Cacti 1.2.20, ang kasalukuyang 1.2.x branch, at `develop` laban sa MySQL at MariaDB, na may parehong cmd.php at Spine. Ang bawat job ay nag-i-install at nag-e-enable ng plugin, nagpapatakbo ng buong CLI report, at sumusuri sa schema ng ulat, kabuuan ng buod, mga inaasahang status, at ang eksaktong hanay ng mga pagkabigo. Pagkatapos ay sinisira nito ang isang binary path at ang poller timestamp, kinukumpirma na pareho ang naiulat, ibinabalik ang mga ito, isinasagawa ang pagkukumpuni at ang kumpirmasyon nito, at nagpapatakbo ng disable, enable, uninstall, at reinstall. Pinapanatili ang JSON report bilang artifact kapag nabigo ang isang job.
 
 ## Pag-aambag

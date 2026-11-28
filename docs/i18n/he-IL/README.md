@@ -1,4 +1,4 @@
-<!-- Source: README.md; SHA256: ee03c7ac68aca21c8155c29b5b43a1f206c2f0c379c8b07bb4113919c18aafde -->
+<!-- Source: README.md; SHA256: 490628bb7f70f4cf1a8c43b302246fd2e870725a6649c628762608b4a76db65b -->
 
 <!-- translations:start -->
 [English](../../../README.md) | [简体中文](../zh-CN/README.md) | [हिन्दी](../hi-IN/README.md) | [Español (España)](../es-ES/README.md) | [Español (Latinoamérica)](../es-419/README.md) | [العربية (السعودية)](../ar-SA/README.md) | [Afrikaans](../af-ZA/README.md) | [አማርኛ](../am-ET/README.md) | [العربية (مصر)](../ar-EG/README.md) | [العربية (المغرب)](../ar-MA/README.md) | [বাংলা](../bn-BD/README.md) | [Bosanski](../bs-BA/README.md) | [Deutsch](../de-DE/README.md) | [فارسی](../fa-IR/README.md) | [Filipino](../fil-PH/README.md) | [Français](../fr-FR/README.md) | [Français (Maroc)](../fr-MA/README.md) | [Français (Sénégal)](../fr-SN/README.md) | [Hausa](../ha-NG/README.md) | [עברית](README.md) | [Hrvatski](../hr-HR/README.md) | [Bahasa Indonesia](../id-ID/README.md) | [Igbo](../ig-NG/README.md) | [Italiano](../it-IT/README.md) | [日本語](../ja-JP/README.md) | [한국어](../ko-KR/README.md) | [Malagasy](../mg-MG/README.md) | [मराठी](../mr-IN/README.md) | [Bahasa Melayu](../ms-MY/README.md) | [Nederlands](../nl-NL/README.md) | [Polski](../pl-PL/README.md) | [Português (Brasil)](../pt-BR/README.md) | [Русский](../ru-RU/README.md) | [Kinyarwanda](../rw-RW/README.md) | [Soomaali](../so-SO/README.md) | [Српски](../sr-RS/README.md) | [Svenska](../sv-SE/README.md) | [Kiswahili](../sw-KE/README.md) | [தமிழ்](../ta-IN/README.md) | [తెలుగు](../te-IN/README.md) | [ไทย](../th-TH/README.md) | [Türkçe](../tr-TR/README.md) | [Українська](../uk-UA/README.md) | [اردو](../ur-PK/README.md) | [Tiếng Việt](../vi-VN/README.md) | [isiXhosa](../xh-ZA/README.md) | [Yorùbá](../yo-NG/README.md) | [繁體中文](../zh-TW/README.md) | [isiZulu](../zu-ZA/README.md)
@@ -52,13 +52,15 @@ Cacti Doctor הוא תוסף עבור Cacti המאבחן התקנה במעבר �
 | התקנים | התקנים פעילים שאינם זמינים או מתאוששים, שלושת ההתקנים שאינם זמינים הכי הרבה זמן עם השגיאה האחרונה שלהם, וכשל כאשר רוב ההתקנים אינם זמינים בו-זמנית |
 | תהליך דגימה | סוג תהליך הדגימה ומרווח הזמן שלו, הזמן שחלף מאז סיום הריצה האחרונה של תהליך הדגימה הראשי, משך הריצה ביחס למרווח, פלט דגימה שמעולם לא הגיע לקובץ RRD, תהליכי דגימה מרוחקים שהפסיקו לדווח, Boost תקוע ותצורת Spine המצביעה למסד נתונים שונה |
 
-לכל בדיקה יש מזהה יציב, כגון `database.timezone` או `binary.rrdtool`, כך שסקריפטים יכולים להתבסס על תוצאות פרטניות.
+לכל בדיקה יש מזהה יציב, כגון `database.timezone` או `binary.rrdtool`, כך שסקריפטים יכולים להתבסס על תוצאות פרטניות. תוספים פעילים יכולים להוסיף בדיקות נוספות וצרופות לחבילת התמיכה באמצעות ה-hook `doctor_register_checks`, ו-Doctor חושף יכולות אבחון לקריאה בלבד עבור `plugin_mcp` באמצעות `abilities_register`.
 
 ## מפת הקוד והבדיקות
 
 | התנהגות | מימוש | ראיות בדיקה במאגר זה |
 |---|---|---|
-| בדיקות אבחון ומזהי דוח יציבים | [doctor_functions.php](../../../doctor_functions.php) | [DoctorFunctionsTest.php](../../../tests/DoctorFunctionsTest.php), [AssertDoctorReport.php](../../../tests/ci/AssertDoctorReport.php) |
+| בדיקות אבחון ומזהי דוח יציבים | [doctor_functions.php](../../../doctor_functions.php) | [DoctorFunctionsTest.php](../../../tests/DoctorFunctionsTest.php), [DatabaseHealthTest.php](../../../tests/DatabaseHealthTest.php), [AssertDoctorReport.php](../../../tests/ci/AssertDoctorReport.php) |
+| hook לבדיקות תוספים (`doctor_register_checks`) | [doctor_plugins.php](../../../doctor_plugins.php) | [PluginHooksTest.php](../../../tests/PluginHooksTest.php) |
+| יכולות אבחון של MCP (`abilities_register`) | [doctor_abilities.php](../../../doctor_abilities.php) | [AbilitiesTest.php](../../../tests/AbilitiesTest.php) |
 | גישה מוגדרת לפי תפקיד ודוחות אינטרנט מושחרים | [doctor_access.php](../../../doctor_access.php), [doctor_web.php](../../../doctor_web.php) | [AccessTest.php](../../../tests/AccessTest.php), [WebAccessTest.php](../../../tests/WebAccessTest.php) |
 | חקירות תסמינים מונחות | [doctor_diagnosis.php](../../../doctor_diagnosis.php) | [DiagnosisTest.php](../../../tests/DiagnosisTest.php) |
 | עדכניות RRD וטיפול בכתיבה דחויה | [doctor_rrd.php](../../../doctor_rrd.php) | [RrdFreshnessTest.php](../../../tests/RrdFreshnessTest.php) |
@@ -199,7 +201,7 @@ php plugins/doctor/cli/doctor.php --format=prometheus > /var/lib/node_exporter/t
 php plugins/doctor/cli/doctor.php --bundle=/tmp/cacti-doctor.txt
 ```
 
-החבילה היא קובץ טקסט יחיד הכולל את גרסאות Doctor, Cacti, PHP, מערכת ההפעלה ומסד הנתונים, נתוני סטטיסטיקה של ה-poller ושל Boost, את הדוח המלא, ואת 200 השורות האחרונות מיומן Cacti. ערכים המופיעים אחרי שמות של סיסמה, סוד, אסימון, community ומפתח מוסווים. התוסף Doctor יוצר את הקובץ כך שיהיה קריא לבעליו בלבד ומסרב לדרוס קובץ קיים. עברו עליו לפני פרסומו בכל מקום שהוא.
+החבילה היא קובץ טקסט יחיד הכולל את גרסאות Doctor, Cacti, PHP, מערכת ההפעלה ומסד הנתונים, נתוני סטטיסטיקה של ה-poller ושל Boost, את הדוח המלא, כל צרופות חבילת התמיכה של תוספים תחת `== Plugin attachments`, ואת 200 השורות האחרונות מיומן Cacti. ערכים המופיעים אחרי שמות של סיסמה, סוד, אסימון, community ומפתח מוסווים. התוסף Doctor יוצר את הקובץ כך שיהיה קריא לבעליו בלבד ומסרב לדרוס קובץ קיים. עברו עליו לפני פרסומו בכל מקום שהוא.
 
 ## מדיניות תיקונים
 
@@ -245,6 +247,63 @@ Boost מוסיף פעמיים את מרווח ה-flush המוגדר שלו כמ�
 
 שדרוג יוצר את `plugin_doctor_audit` ו-`plugin_doctor_acceptance` מבלי לשנות נתוני יישום של Cacti. ייצאו כל היסטוריה הנדרשת לכם לפני הסרת ההתקנה: הסרת ההתקנה מוחקת את שתי טבלאות התוסף ואת הגדרותיו. החזרת קובצי התוסף לגרסה קודמת משאירה את הטבלאות זמינות לחקירה, אך גרסאות ישנות יותר אינן מכבדות חריגות אזהרה.
 
+## בדיקות תוספים (`doctor_register_checks`)
+
+תוספי Cacti פעילים יכולים לתרום בדיקות אבחון לקריאה בלבד וצרופות אופציונליות לחבילת התמיכה באמצעות רישום ה-hook `doctor_register_checks`:
+
+```php
+api_plugin_register_hook('sample', 'doctor_register_checks', 'sample_doctor_checks', 'setup.php');
+```
+
+Doctor מפעיל תוספים פעילים שאינם מובנים הרשומים אל `doctor_register_checks` (תוך דילוג על `doctor` ו-`cacti`), ומאתר את קובץ ה-hook אך ורק בתוך תיקיית התוסף עצמה. פונקציית ה-callback מקבלת `['mode' => 'run' | 'list', 'plugin' => '<slug>']` ומחזירה רשימה של מתארי בדיקות או מעטפת הכוללת `checks` וכן `attachments` אופציונלי:
+
+```php
+function sample_doctor_checks($context) {
+	return [
+		'checks' => [
+			[
+				'id'          => 'sample.queue_depth',
+				'plugin'      => 'sample',
+				'category'    => 'Sample',
+				'title'       => 'Sample queue depth',
+				'status'      => 'ok',
+				'message'     => 'Queue is healthy.',
+				'details'     => ['pending' => 0],
+				'remediation' => ''
+			]
+		],
+		'attachments' => [
+			[
+				'title'   => 'Sample diagnostics',
+				'content' => "worker=ok\n"
+			]
+		]
+	];
+}
+```
+
+כל מתאר של בדיקת תוסף מאומת לפני הכללתו:
+
+- מפתחות נדרשים: `id`, `plugin`, `category`, `title`, `status`, `message`, `details`, ו-`remediation`.
+- `plugin` חייב להתאים למזהה התוסף הרשום (`[a-z0-9_]{1,64}`). `id` חייב להתאים לתבנית `[a-z0-9_.]{1,128}`, להתחיל ב-`<plugin>.`, ולא להתנגש עם מזהה בדיקה קיים של הליבה או של תוסף אחר.
+- `status` חייב להיות `ok`, `warn`, `fail`, או `info`. `ok` ממופה אל `pass` בדוחות Doctor; `info` הוא אינפורמטיבי בלבד ואינו מפעיל כשלים ב-CLI, ב-Nagios, ב-Prometheus או בהתראות מתוזמנות.
+- `category` (עד 64 בתים) ו-`title` (עד 256 בתים) חייבים להיות מחרוזות לא ריקות ללא תווי בקרה. `message` (לא ריק, עד 2048 בתים) ו-`remediation` (עד 2048 בתים) חייבים להיות מחרוזות.
+- `details` מקבל מחרוזת (עד 8192 בתים) או מערך סקלרי/מקונן (עומק מרבי 4, מקודד כ-JSON עד 16384 בתים; אובייקטים ומשאבים נדחים).
+- צרופות אופציונליות לחבילת התמיכה דורשות `title` לא ריק (עד 128 בתים, ללא תווי בקרה) ומחרוזת `content` באורך של עד 65536 בתים (64 KiB).
+
+Doctor אוכף מגבלות של 32 בדיקות ו-8 צרופות לכל תוסף (64 בדיקות תוספים ו-32 צרופות בסך הכל). כל hook רץ בתוך גבול `try`/`catch` משלו כך שחריגות או מטענים שאינם מערכים עוברים השחרה ונרשמים ביומן Cacti (תחת קטגוריית `DOCTOR`) מבלי להשפיע על בדיקות הליבה או על תוספים אחרים. מתארים פגומים נדחים ונרשמים ביומן בעוד שמתארים תקינים מאותו תוסף ממשיכים לרוץ. בדיקות תוספים הן תמיד לקריאה בלבד (`repairable: false`), וערכי מחרוזת וכן מפתחות אסוציאטיביים רגישים עוברים השחרה לפני הצגה, ייצוא או אריזה. בדיקות תוספים מאומתות מופיעות בממשק האינטרנט, בפלט CLI טקסט/JSON/Nagios/Prometheus, במעקב המצב המתוזמן ובחבילות התמיכה.
+
+## אינטגרציית MCP (`abilities_register`)
+
+Doctor רושם את ה-hook `abilities_register` (`doctor_abilities_register` בקובץ `doctor_abilities.php`) כדי ש-`plugin_mcp` יגלה את יכולות האבחון שלו כאשר שני התוספים מופעלים. Doctor רושם את הקטגוריה `diagnostics` (`Diagnostics`) ושתי יכולות לקריאה בלבד, לא הרסניות ואידמפוטנטיות:
+
+| מזהה יכולת | ארגומנטים אופציונליים | פלט |
+|---|---|---|
+| `doctor-run-checks` | `category` (מחרוזת, עד 64 תווים), `status` (`pass`, `ok`, `warn`, `fail`, `info`) | `summary` (`total`, `pass`, `warn`, `fail`, `info`) ועד 256 ממצאי `findings` שעברו השחרה (`id`, `plugin`, `category`, `title`, `status`, `message`, `remediation`) |
+| `doctor-list-checks` | `category` (מחרוזת, עד 64 תווים), `plugin` (מחרוזת, עד 64 תווים) | עד 256 רשומות `checks` (`id`, `plugin`, `category`, `title`) המכסות את כל 45 הבדיקות המובנות וכן בדיקות של תוספים פעילים |
+
+שתי היכולות הן לקריאה בלבד באופן מוחלט ולעולם אינן מריצות תיקונים. בנוסף לבקרות תחומי ההרשאה וחשיפת היכולות של `plugin_mcp` עצמו (יכולות תוספים מתחילות מוסתרות ב-MCP עד שמנהל חושף אותן), Doctor דורש שלבעל האסימון יהיו הרשאות **Doctor Viewer** או תחום Doctor גבוה יותר. `doctor-run-checks` תוחם את `devices.health` להתקנים המורשים של בעל האסימון, כולל את `logging.recent_errors` רק כאשר למשתמש יש תחום Cacti 18 או 19, משמיט את `filesystem.rrd_files`, וכולל את `filesystem.rrd_stale` המתוחם לפי התקנים רק עבור **Doctor Operator** או **Doctor Administrator**.
+
 ## דרישות מערכת
 
 | Cacti | PHP | הערות |
@@ -262,20 +321,22 @@ Boost מוסיף פעמיים את מרווח ה-flush המוגדר שלו כמ�
 
 ## פיתוח
 
-חבילת בדיקות היחידה משתמשת ב-Pest ורצה על PHP 8.2 ומעלה:
+חבילת בדיקות היחידה משתמשת ב-Pest והניתוח הסטטי משתמש ב-PHPStan (רמה 6), שתיהן על PHP 8.2 ומעלה:
 
 ```console
 composer install
+composer phpstan
 composer test
 ```
 
 הבדיקות מחליפות את פונקציות Cacti ש-Doctor קורא להן בתחליפים קטנים ב-`tests/CactiStubs.php`, כך שהן רצות ללא התקנת Cacti.
 
-GitHub Actions מריץ ארבעה סוגים של בדיקות בכל push ובקשת מיזוג (pull request):
+GitHub Actions מריץ חמישה סוגים של בדיקות בכל push ובקשת מיזוג (pull request):
 
-- `php -l` על כל קובץ PHP תחת גרסאות PHP 5.4, 5.6, 7.0, 7.1, 7.4 ו-8.0 עד 8.4.
-- חבילת בדיקות היחידה על PHP 8.2, 8.3 ו-8.4.
+- בדיקות חוזה אריזת שחרור (`tests/test_release.py`) ובניית ארכיון (`tools/build_release.py`).
 - `locales/build_gettext.sh --check`, שנכשל במקרה של תבנית תרגום מיושנת, קטלוג חלקי או מטושטש (fuzzy), או קטלוג מהודר השונה מקובץ המקור שלו.
+- `php -l` על כל קובץ PHP תחת גרסאות PHP 5.4, 5.6, 7.0, 7.1, 7.4 ו-8.0 עד 8.4.
+- `composer phpstan` (PHPStan רמה 6) ו-`composer test` (חבילת בדיקות היחידה Pest) על PHP 8.2, 8.3 ו-8.4.
 - שבע משימות אינטגרציה המתקינות את Cacti 1.2.20, את הענף 1.2.x הנוכחי ואת `develop` מול MySQL ו-MariaDB, הן עם cmd.php והן עם Spine. כל משימה מתקינה ומפעילה את התוסף, מריצה את דוח ה-CLI המלא ובודקת את סכמת הדוח, סיכומי הסיכום, המצבים הצפויים ואת קבוצת הכשלים המדויקת. לאחר מכן היא משבשת נתיב של קובץ בינארי ואת חותמת הזמן של ה-poller, מוודאת ששניהם מדווחים, משחזרת אותם, מתרגלת את התיקון ואת אישורו, ומריצה השבתה, הפעלה, הסרת התקנה והתקנה מחדש. דוח ה-JSON נשמר כארטיפקט כאשר משימה נכשלת.
 
 ## תרומה לפרויקט

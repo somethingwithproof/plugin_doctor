@@ -1,0 +1,1542 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
+# SPDX-FileCopyrightText: 2026 Thomas Vincent <thomasvincent@gmail.com>
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: doctor 0.6.1\n"
+"Report-Msgid-Bugs-To: https://github.com/somethingwithproof/plugin_doctor/issues\n"
+"PO-Revision-Date: 2026-11-28 00:00+0000\n"
+"Last-Translator: Thomas Vincent <thomasvincent@gmail.com>\n"
+"Language-Team: Latvian <https://translate.cacti.net/projects/cacti/core/lv/>\n"
+"Language: lv-LV\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n % 10 == 0 || n % 100 >= 11 && n % 100 <= 19) ? 0 : ((n % 10 == 1 && n % 100 != 11) ? 1 : 2);\n"
+
+#: cli/doctor.php
+#, php-format
+msgid "Available repairs: %s"
+msgstr "Pieejamie labojumi: %s"
+
+#: cli/doctor.php
+#, php-format
+msgid "Unknown format %s. Use text, json, nagios, or prometheus."
+msgstr "Nezināms formāts %s. Izmantojiet text, json, nagios vai prometheus."
+
+#: cli/doctor.php
+#, php-format
+msgid "Redaction could not complete, so %s was not written."
+msgstr "Sensitīvo datu maskēšana neizdevās, tāpēc %s netika ierakstīts."
+
+#: cli/doctor.php
+#, php-format
+msgid "Wrote %s. Review it before sharing; values after password, secret, token, and community names are masked."
+msgstr "Ierakstīts %s. Pārskatiet to pirms kopīgošanas; vērtības aiz paroles, noslēpuma, marķiera un kopienas nosaukumiem ir maskētas."
+
+#: cli/doctor.php doctor_functions.php
+msgid "Unknown repair"
+msgstr "Nezināms labojums"
+
+#: cli/doctor.php
+msgid "Refusing to repair without --yes."
+msgstr "Labošana tiek atteikta bez --yes."
+
+#: cli/doctor.php
+msgid "Select a supported symptom and text or JSON output."
+msgstr "Izvēlieties atbalstītu simptomu un teksta vai JSON izvadi."
+
+#: cli/doctor.php doctor_web.php
+msgid "Accepted warning"
+msgstr "Pieņemts brīdinājums"
+
+#: doctor_access.php doctor_functions.php
+msgid "Device availability"
+msgstr "Ierīču pieejamība"
+
+#: doctor_access.php
+msgid "Device permissions could not be evaluated."
+msgstr "Ierīču atļaujas nevarēja novērtēt."
+
+#: doctor_access.php
+msgid "The configured PHP CLI cannot run Doctor checks."
+msgstr "Konfigurētais PHP CLI nevar izpildīt Doctor pārbaudes."
+
+#: doctor_access.php
+msgid "Doctor checks failed or exceeded their time limit. Review the Doctor log."
+msgstr "Doctor pārbaudes neizdevās vai pārsniedza laika ierobežojumu. Pārskatiet Doctor žurnālu."
+
+#: doctor_diagnosis.php
+msgid "Graphs stopped updating"
+msgstr "Grafiki pārstāja atjaunināties"
+
+#: doctor_diagnosis.php
+msgid "Polling is slow"
+msgstr "Aptauja ir lēna"
+
+#: doctor_diagnosis.php
+msgid "Devices are missing or unavailable"
+msgstr "Ierīces trūkst vai nav pieejamas"
+
+#: doctor_diagnosis.php
+msgid "Doctor alerts are missing"
+msgstr "Trūkst Doctor paziņojumu"
+
+#: doctor_diagnosis.php
+msgid "Check the poller scheduler and the affected poller log, then verify a new completed cycle."
+msgstr "Pārbaudiet aptaujātāja plānotāju un skartā aptaujātāja žurnālu, pēc tam pārliecinieties par jaunu pabeigtu ciklu."
+
+#: doctor_diagnosis.php
+msgid "Collection may have stopped."
+msgstr "Datu vākšana, iespējams, ir apstājusies."
+
+#: doctor_diagnosis.php
+msgid "Collected values may not be reaching disk."
+msgstr "Savāktās vērtības, iespējams, nenonāk līdz diskam."
+
+#: doctor_diagnosis.php
+msgid "Inspect the output queue and Boost flush history; verify that the queue drains and RRD timestamps advance."
+msgstr "Pārbaudiet izvades rindu un Boost ierakstīšanas vēsturi; pārliecinieties, ka rinda iztukšojas un RRD laika zīmogi virzās uz priekšu."
+
+#: doctor_diagnosis.php
+msgid "Check storage capacity, runtime-directory permissions and the last RRD update; account for deferred writes."
+msgstr "Pārbaudiet krātuves ietilpību, izpildes direktoriju atļaujas un pēdējo RRD atjauninājumu; ņemiet vērā atlikto ierakstīšanu."
+
+#: doctor_diagnosis.php
+msgid "RRD storage needs investigation."
+msgstr "RRD krātuve jāizmeklē."
+
+#: doctor_diagnosis.php
+msgid "Collection work may be exceeding its time budget."
+msgstr "Datu vākšanas darbs, iespējams, pārsniedz tam atvēlēto laiku."
+
+#: doctor_diagnosis.php
+msgid "Compare cycle duration with the polling interval and inspect device timeouts before increasing concurrency."
+msgstr "Pirms palielināt paralēlismu, salīdziniet cikla ilgumu ar aptaujas intervālu un pārbaudiet ierīču noildzes."
+
+#: doctor_diagnosis.php
+msgid "Compare database counters during a slow cycle and inspect query plans before changing server limits."
+msgstr "Pirms mainīt servera ierobežojumus, salīdziniet datubāzes skaitītājus lēna cikla laikā un pārbaudiet vaicājumu plānus."
+
+#: doctor_diagnosis.php
+msgid "Database pressure may be contributing to slow polling."
+msgstr "Datubāzes noslodze, iespējams, veicina lēnu aptauju."
+
+#: doctor_diagnosis.php
+msgid "Collection prerequisites or reachability may be failing."
+msgstr "Datu vākšanas priekšnosacījumi vai sasniedzamība, iespējams, nestrādā."
+
+#: doctor_diagnosis.php
+msgid "Verify the affected device permissions, reachability, credentials and assigned poller using Cacti diagnostics."
+msgstr "Izmantojot Cacti diagnostiku, pārbaudiet skartās ierīces atļaujas, sasniedzamību, akreditācijas datus un piešķirto aptaujātāju."
+
+#: doctor_diagnosis.php
+msgid "Scheduled checks or mail delivery need attention."
+msgstr "Ieplānotajām pārbaudēm vai pasta piegādei nepieciešama uzmanība."
+
+#: doctor_diagnosis.php
+msgid "Verify scheduling and recipient settings, inspect retained delivery attempts, and send a Cacti test email."
+msgstr "Pārbaudiet plānošanas un adresātu iestatījumus, pārskatiet saglabātos piegādes mēģinājumus un nosūtiet Cacti testa e-pastu."
+
+#: doctor_diagnosis.php
+msgid "Possible causes require verification; matching checks do not establish a root cause."
+msgstr "Iespējamie cēloņi jāpārbauda; atbilstošas pārbaudes nenosaka pamatcēloni."
+
+#: doctor_diagnosis.php
+msgid "No cause is established by the available observations. Run fresh diagnostics and investigate the symptom directly."
+msgstr "Pieejamie novērojumi nenosaka cēloni. Palaidiet svaigu diagnostiku un izmeklējiet simptomu tieši."
+
+#: doctor_functions.php
+msgid "At least 24 hours since server startup and FLUSH STATUS. Counters are cumulative and may have different reset histories; confirm trends during a representative workload before tuning."
+msgstr "Ir pagājušas vismaz 24 stundas kopš servera palaišanas un FLUSH STATUS. Skaitītāji ir kumulatīvi un var būt atiestatīti dažādos laikos; pirms pielāgošanas apstipriniet tendences tipiskas slodzes apstākļos."
+
+#: doctor_functions.php
+msgid "Cumulative tuning advice is deferred: obtain valid uptime and at least 24 hours since startup and FLUSH STATUS. Missing metrics or an inconsistent sample cannot establish database health."
+msgstr "Kumulatīvie pielāgošanas ieteikumi ir atlikti: nepieciešams derīgs darbības laiks un vismaz 24 stundas kopš palaišanas un FLUSH STATUS. Trūkstoši rādītāji vai nekonsekvents paraugs nevar noteikt datubāzes stāvokli."
+
+#: doctor_functions.php
+msgid "Database observation window"
+msgstr "Datubāzes novērošanas logs"
+
+#: doctor_functions.php
+msgid "Connection metrics are unavailable or invalid. Check access to SHOW GLOBAL STATUS and SHOW GLOBAL VARIABLES; do not treat missing metrics as an idle server."
+msgstr "Savienojumu rādītāji nav pieejami vai nav derīgi. Pārbaudiet piekļuvi SHOW GLOBAL STATUS un SHOW GLOBAL VARIABLES; neuzskatiet trūkstošus rādītājus par dīkstāvē esošu serveri."
+
+#: doctor_functions.php
+#, php-format
+msgid "Current connections: %.0f / %.0f (%s); recorded peak: %.0f (%s of the current limit)."
+msgstr "Pašreizējie savienojumi: %.0f / %.0f (%s); reģistrētais maksimums: %.0f (%s no pašreizējā limita)."
+
+#: doctor_functions.php
+msgid "Review connection pooling and poller concurrency. Check database-host memory headroom before raising max_connections; the historical peak may reflect an older limit."
+msgstr "Pārskatiet savienojumu pūlu un aptaujātāja paralēlismu. Pirms palielināt max_connections, pārbaudiet datubāzes resursdatora atmiņas rezervi; vēsturiskais maksimums var atspoguļot vecāku limitu."
+
+#: doctor_functions.php
+msgid "Connection capacity"
+msgstr "Savienojumu ietilpība"
+
+#: doctor_functions.php
+msgid "InnoDB buffer pool reads"
+msgstr "InnoDB buferpūla lasījumi"
+
+#: doctor_functions.php
+msgid "Review query plans and the working set. Consider innodb_buffer_pool_size only after measuring memory available on the database host; a cumulative miss ratio alone does not prove memory pressure."
+msgstr "Pārskatiet vaicājumu plānus un darba kopu. Apsveriet innodb_buffer_pool_size tikai pēc pieejamās atmiņas izmērīšanas datubāzes resursdatorā; kumulatīvā netrāpījumu attiecība vien nepierāda atmiņas trūkumu."
+
+#: doctor_functions.php
+msgid "On-disk temporary tables"
+msgstr "Pagaidu tabulas uz diska"
+
+#: doctor_functions.php
+msgid "Review query plans, sorting, grouping, and temporary-table data types before changing memory limits. Some tables must use disk; memory limits and accounting differ between MySQL and MariaDB versions."
+msgstr "Pirms mainīt atmiņas ierobežojumus, pārskatiet vaicājumu plānus, kārtošanu, grupēšanu un pagaidu tabulu datu tipus. Dažām tabulām jāizmanto disks; atmiņas ierobežojumi un uzskaite atšķiras starp MySQL un MariaDB versijām."
+
+#: doctor_functions.php
+msgid "Connection thread creation"
+msgstr "Savienojumu pavedienu izveide"
+
+#: doctor_functions.php
+msgid "Review connection reuse and thread_cache_size. Check the server thread-handling mode before tuning; thread-pool implementations do not behave like one-thread-per-connection servers."
+msgstr "Pārskatiet savienojumu atkārtotu izmantošanu un thread_cache_size. Pirms pielāgošanas pārbaudiet servera pavedienu apstrādes režīmu; pavedienu pūla implementācijas nedarbojas tāpat kā one-thread-per-connection serveri."
+
+#: doctor_functions.php
+msgid "Review slow-query logging, long_query_time, and query plans before changing server buffers. This counter depends on the configured slow-query threshold and does not identify individual statements."
+msgstr "Pirms mainīt servera buferus, pārskatiet lēno vaicājumu reģistrēšanu, long_query_time un vaicājumu plānus. Šis skaitītājs ir atkarīgs no konfigurētā lēno vaicājumu sliekšņa un neidentificē atsevišķus priekšrakstus."
+
+#: doctor_functions.php
+msgid "Slow statements"
+msgstr "Lēni vaicājumi"
+
+#: doctor_functions.php
+msgid "Cumulative advice deferred until the observation window is sufficient."
+msgstr "Kumulatīvie ieteikumi ir atlikti, līdz novērošanas logs būs pietiekams."
+
+#: doctor_functions.php
+msgid "Thread-cache advice is not assessed: thread_handling is unavailable or is not one-thread-per-connection. Review the active thread-pool implementation instead."
+msgstr "Pavedienu kešatmiņas ieteikums netiek novērtēts: thread_handling nav pieejams vai nav one-thread-per-connection. Tā vietā pārskatiet aktīvo pavedienu pūla implementāciju."
+
+#: doctor_functions.php
+#, php-format
+msgid "Required counters are missing or invalid: %s, %s. Check server-version support and monitoring permissions."
+msgstr "Trūkst vai nav derīgi nepieciešamie skaitītāji: %s, %s. Pārbaudiet servera versijas atbalstu un uzraudzības atļaujas."
+
+#: doctor_functions.php
+msgid "A counter reset since the prior sample; collect another representative interval before tuning."
+msgstr "Kopš iepriekšējā parauga skaitītājs tika atiestatīts; pirms pielāgošanas savāciet citu reprezentatīvu intervālu."
+
+#: doctor_functions.php
+#, php-format
+msgid "Insufficient activity: %.0f %s; at least %d observations are needed for this advisory."
+msgstr "Nepietiekama aktivitāte: %.0f %s; šim ieteikumam nepieciešami vismaz %d novērojumi."
+
+#: doctor_functions.php
+msgid "Counters are inconsistent or were reset independently. Collect a new representative sample before tuning."
+msgstr "Skaitītāji ir nekonsekventi vai tika atiestatīti neatkarīgi. Pirms pielāgošanas savāciet jaunu reprezentatīvu paraugu."
+
+#: doctor_functions.php
+msgid "The interval sample is too small or counters reset; collect another representative interval before tuning."
+msgstr "Intervāla paraugs ir pārāk mazs vai skaitītāji tika atiestatīti; pirms pielāgošanas savāciet citu reprezentatīvu intervālu."
+
+#: doctor_functions.php
+#, php-format
+msgid "Interval %s / %s: %.0f / %.0f (%s); investigation threshold: %s."
+msgstr "Intervāls %s / %s: %.0f / %.0f (%s); izmeklēšanas slieksnis: %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "Cumulative %s / %s: %.0f / %.0f (%s); investigation threshold: %s."
+msgstr "Kumulatīvais %s / %s: %.0f / %.0f (%s); izmeklēšanas slieksnis: %s."
+
+#: doctor_functions.php
+msgid "This counter can omit memory-mapped temporary files on MySQL; a low ratio does not rule out disk use."
+msgstr "Šis skaitītājs MySQL var neiekļaut atmiņā kartētus pagaidu failus; zema attiecība neizslēdz diska izmantošanu."
+
+#: doctor_functions.php
+msgid "Redo-log advice deferred until the observation window is sufficient and Innodb_log_waits is available."
+msgstr "Atkārtošanas žurnāla ieteikums ir atlikts, līdz novērošanas logs būs pietiekams un Innodb_log_waits būs pieejams."
+
+#: doctor_functions.php
+#, php-format
+msgid "Cumulative Innodb_log_waits: %.0f."
+msgstr "Kumulatīvais Innodb_log_waits: %.0f."
+
+#: doctor_functions.php
+msgid "Investigate transaction sizes, log-buffer pressure, and storage latency. Recheck the rate under load before considering innodb_log_buffer_size; this historical count is not evidence of a current stall."
+msgstr "Izmeklējiet transakciju izmērus, žurnāla bufera noslodzi un krātuves latentumu. Pirms apsverat innodb_log_buffer_size, vēlreiz pārbaudiet ātrumu slodzes apstākļos; šis vēsturiskais skaits nav pierādījums pašreizējai aizkavei."
+
+#: doctor_functions.php
+msgid "InnoDB log-buffer waits"
+msgstr "InnoDB žurnāla bufera gaidīšanas"
+
+#: doctor_functions.php
+msgid "installed Cacti composer.json"
+msgstr "instalētā Cacti composer.json"
+
+#: doctor_functions.php
+#, php-format
+msgid "Cacti %s installer requirement"
+msgstr "Cacti %s instalētāja prasība"
+
+#: doctor_functions.php
+msgid "PHP compatibility with installed Cacti"
+msgstr "PHP saderība ar instalēto Cacti"
+
+#: doctor_functions.php
+#, php-format
+msgid "Running PHP %s; installed Cacti %s."
+msgstr "Darbojas PHP %s; instalēts Cacti %s."
+
+#: doctor_functions.php
+msgid "Could not establish Cacti's PHP requirement. Check the installed Cacti composer.json or release documentation; Doctor does not assume compatibility."
+msgstr "Nevarēja noteikt Cacti PHP prasību. Pārbaudiet instalētā Cacti composer.json vai laidiena dokumentāciju; Doctor nepieņem saderību automātiski."
+
+#: doctor_functions.php
+#, php-format
+msgid "PHP >= %s and < %s"
+msgstr "PHP >= %s un < %s"
+
+#: doctor_functions.php
+#, php-format
+msgid "PHP >= %s"
+msgstr "PHP >= %s"
+
+#: doctor_functions.php
+#, php-format
+msgid "Requires %s (%s). Running PHP meets that requirement."
+msgstr "Nepieciešams %s (%s). Darbojošais PHP atbilst šai prasībai."
+
+#: doctor_functions.php
+#, php-format
+msgid "Requires %s (%s). Running PHP does not meet that requirement."
+msgstr "Nepieciešams %s (%s). Darbojošais PHP neatbilst šai prasībai."
+
+#: doctor_functions.php
+#, php-format
+msgid "Detected %s; Doctor requires Cacti 1.2.20 or newer."
+msgstr "Konstatēts %s; Doctor nepieciešams Cacti 1.2.20 vai jaunāka versija."
+
+#: doctor_functions.php
+msgid "Supported Cacti version"
+msgstr "Atbalstīta Cacti versija"
+
+#: doctor_functions.php
+msgid "PHP upstream security support"
+msgstr "PHP augšstraumes drošības atbalsts"
+
+#: doctor_functions.php
+msgid "This checks the PHP release branch, not whether this patch release is up to date or whether your OS vendor backports fixes. Cacti compatibility is checked separately."
+msgstr "Tas pārbauda PHP laidiena zaru, nevis to, vai šis ielāpa laidiens ir aktuāls vai jūsu operētājsistēmas piegādātājs pārnes labojumus. Saderība ar Cacti tiek pārbaudīta atsevišķi."
+
+#: doctor_functions.php
+#, php-format
+msgid "Running PHP %s; upstream security-support status is unknown or this is a prerelease. Check https://www.php.net/supported-versions.php and update Doctor's support data."
+msgstr "Darbojas PHP %s; augšstraumes drošības atbalsta statuss nav zināms vai tas ir priekšlaidums. Pārbaudiet https://www.php.net/supported-versions.php un atjauniniet Doctor atbalsta datus."
+
+#: doctor_functions.php
+#, php-format
+msgid "Running PHP %s; PHP %s receives upstream security fixes through %s."
+msgstr "Darbojas PHP %s; PHP %s saņem augšstraumes drošības labojumus līdz %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "Running PHP %s; PHP %s no longer receives upstream security fixes; support ended %s. Upgrade to a supported PHP branch compatible with your Cacti installation, or confirm security maintenance with your OS vendor."
+msgstr "Darbojas PHP %s; PHP %s vairs nesaņem augšstraumes drošības labojumus; atbalsts beidzās %s. Jauniniet uz atbalstītu PHP zaru, kas ir saderīgs ar jūsu Cacti instalāciju, vai apstipriniet drošības uzturēšanu pie sava operētājsistēmas piegādātāja."
+
+#: doctor_functions.php
+msgid "Required current CLI PHP extensions"
+msgstr "Nepieciešamie pašreizējā CLI PHP paplašinājumi"
+
+#: doctor_functions.php
+msgid "Required web PHP extensions"
+msgstr "Nepieciešamie tīmekļa PHP paplašinājumi"
+
+#: doctor_functions.php
+#, php-format
+msgid "Missing: %s. Install them through the operating system package manager."
+msgstr "Trūkst: %s. Instalējiet tos ar operētājsistēmas pakotņu pārvaldnieku."
+
+#: doctor_functions.php
+msgid "All PHP extensions required by the Cacti installer are loaded in this PHP context."
+msgstr "Šajā PHP kontekstā ir ielādēti visi Cacti instalētājam nepieciešamie PHP paplašinājumi."
+
+#: doctor_functions.php
+msgid "Doctor does not execute configured binaries while running as root."
+msgstr "Doctor neizpilda konfigurētos izpildāmos failus, darbojoties kā root."
+
+#: doctor_functions.php
+#, php-format
+msgid "The file name %s is not expected for %s, so Doctor did not execute it."
+msgstr "Faila nosaukums %s nav gaidīts priekš %s, tāpēc Doctor to neizpildīja."
+
+#: doctor_functions.php
+msgid "Doctor is running as root, so permission checks describe root rather than the web server or poller account, configured binaries are not executed, and repairs are refused. Run Doctor as the Cacti poller user."
+msgstr "Doctor darbojas kā root, tāpēc atļauju pārbaudes attiecas uz root, nevis uz tīmekļa servera vai aptaujātāja kontu, konfigurētie izpildāmie faili netiek palaisti un labojumi tiek atteikti. Palaidiet Doctor kā Cacti aptaujātāja lietotājs."
+
+#: doctor_functions.php
+msgid "Doctor privileges"
+msgstr "Doctor privilēģijas"
+
+#: doctor_functions.php
+msgid "Doctor is running without root privileges."
+msgstr "Doctor darbojas bez root privilēģijām."
+
+#: doctor_functions.php
+msgid "Required CLI PHP extensions"
+msgstr "Nepieciešamie CLI PHP paplašinājumi"
+
+#: doctor_functions.php
+msgid "The configured PHP CLI executable is unavailable, so its extensions cannot be checked."
+msgstr "Konfigurētais PHP CLI izpildāmais fails nav pieejams, tāpēc tā paplašinājumus nevar pārbaudīt."
+
+#: doctor_functions.php
+msgid "shell_exec() is disabled, so Doctor cannot compare the CLI PHP extensions with Cacti requirements."
+msgstr "shell_exec() ir atspējots, tāpēc Doctor nevar salīdzināt CLI PHP paplašinājumus ar Cacti prasībām."
+
+#: doctor_functions.php
+msgid "The configured PHP CLI executable did not return a valid extension list."
+msgstr "Konfigurētais PHP CLI izpildāmais fails neatgrieza derīgu paplašinājumu sarakstu."
+
+#: doctor_functions.php
+#, php-format
+msgid "Missing from CLI PHP: %s. The web and CLI PHP configurations are separate on many systems."
+msgstr "CLI PHP trūkst: %s. Daudzās sistēmās tīmekļa un CLI PHP konfigurācijas ir atsevišķas."
+
+#: doctor_functions.php
+msgid "The configured PHP CLI has every extension required by Cacti."
+msgstr "Konfigurētajam PHP CLI ir visi Cacti nepieciešamie paplašinājumi."
+
+#: doctor_functions.php
+msgid "GD TrueType support"
+msgstr "GD TrueType atbalsts"
+
+#: doctor_functions.php
+msgid "Recommended PHP features"
+msgstr "Ieteicamās PHP iespējas"
+
+#: doctor_functions.php
+#, php-format
+msgid "Unavailable: %s. Cacti can run without these features, but related functionality may be limited."
+msgstr "Nav pieejams: %s. Cacti var darboties bez šīm iespējām, taču saistītā funkcionalitāte var būt ierobežota."
+
+#: doctor_functions.php
+msgid "The optional gettext, SNMP, and GD TrueType features are available."
+msgstr "Neobligātās gettext, SNMP un GD TrueType iespējas ir pieejamas."
+
+#: doctor_functions.php
+#, php-format
+msgid "memory_limit is %s (%dM or more is recommended)"
+msgstr "memory_limit ir %s (ieteicams %dM vai vairāk)"
+
+#: doctor_functions.php
+#, php-format
+msgid "max_execution_time is %d seconds (60 or more is recommended)"
+msgstr "max_execution_time ir %d sekundes (ieteicams 60 vai vairāk)"
+
+#: doctor_functions.php
+msgid "date.timezone is not set"
+msgstr "date.timezone nav iestatīts"
+
+#: doctor_functions.php
+msgid "unset"
+msgstr "nav iestatīts"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s. Current values: %s"
+msgstr "%s. Pašreizējās vērtības: %s"
+
+#: doctor_functions.php
+msgid "PHP runtime configuration"
+msgstr "PHP izpildlaika konfigurācija"
+
+#: doctor_functions.php
+msgid "Database connection"
+msgstr "Datubāzes savienojums"
+
+#: doctor_functions.php
+#, php-format
+msgid "Query failed: %s"
+msgstr "Vaicājums neizdevās: %s"
+
+#: doctor_functions.php
+msgid "A read-only query completed successfully."
+msgstr "Tikai lasāms vaicājums tika veiksmīgi pabeigts."
+
+#: doctor_functions.php
+msgid "The database returned an unexpected result."
+msgstr "Datubāze atgrieza neparedzētu rezultātu."
+
+#: doctor_functions.php
+#, php-format
+msgid "Doctor could not determine the database server version from %s."
+msgstr "Doctor nevarēja noteikt datubāzes servera versiju no %s."
+
+#: doctor_functions.php
+msgid "Supported database server"
+msgstr "Atbalstīts datubāzes serveris"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s %s detected; this Cacti branch recommends %s %s or newer."
+msgstr "Konstatēts %s %s; šis Cacti zars iesaka %s %s vai jaunāku versiju."
+
+#: doctor_functions.php
+#, php-format
+msgid "Database character set is %s and collation is %s. Cacti requires utf8mb4."
+msgstr "Datubāzes rakstzīmju kopa ir %s un kārtošanas secība ir %s. Cacti nepieciešams utf8mb4."
+
+#: doctor_functions.php
+msgid "unknown"
+msgstr "nezināms"
+
+#: doctor_functions.php
+msgid "Database character set"
+msgstr "Datubāzes rakstzīmju kopa"
+
+#: doctor_functions.php
+msgid "Database timezone support"
+msgstr "Datubāzes laika joslu atbalsts"
+
+#: doctor_functions.php
+msgid "The Cacti database account cannot read mysql.time_zone_name. Grant SELECT access and populate the database timezone tables."
+msgstr "Cacti datubāzes konts nevar lasīt mysql.time_zone_name. Piešķiriet SELECT piekļuvi un aizpildiet datubāzes laika joslu tabulas."
+
+#: doctor_functions.php
+#, php-format
+msgid "The database timezone table is accessible and contains %d entries."
+msgstr "Datubāzes laika joslu tabula ir pieejama un satur %d ierakstus."
+
+#: doctor_functions.php
+msgid "The database timezone table is accessible but empty. Populate the system timezone tables."
+msgstr "Datubāzes laika joslu tabula ir pieejama, bet tukša. Aizpildiet sistēmas laika joslu tabulas."
+
+#: doctor_functions.php
+msgid "Core tables used by Cacti are present."
+msgstr "Cacti izmantotās pamattabulas ir pieejamas."
+
+#: doctor_functions.php
+#, php-format
+msgid "Missing core tables: %s. Restore or upgrade the database before attempting other repairs."
+msgstr "Trūkst pamattabulu: %s. Pirms citu labojumu mēģināšanas atjaunojiet vai jauniniet datubāzi."
+
+#: doctor_functions.php
+msgid "Core database tables"
+msgstr "Datubāzes pamattabulas"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s is missing (%s)"
+msgstr "%s trūkst (%s)"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s is not writable (%s)"
+msgstr "%s nav rakstāms (%s)"
+
+#: doctor_functions.php
+msgid "Runtime directories"
+msgstr "Izpildes direktoriji"
+
+#: doctor_functions.php
+msgid "The cache, log, and RRA directories exist and are writable."
+msgstr "Kešatmiņas, žurnāla un RRA direktoriji pastāv un ir rakstāmi."
+
+#: doctor_functions.php
+msgid "Cacti configuration file"
+msgstr "Cacti konfigurācijas fails"
+
+#: doctor_functions.php
+msgid "include/config.php is missing or unreadable."
+msgstr "include/config.php trūkst vai nav lasāms."
+
+#: doctor_functions.php
+msgid "include/config.php is readable. POSIX mode-bit checks do not apply on Windows."
+msgstr "include/config.php ir lasāms. POSIX režīma bitu pārbaudes neattiecas uz Windows."
+
+#: doctor_functions.php
+msgid "include/config.php is writable by other users. Remove world-write permission because this file contains database credentials."
+msgstr "include/config.php ir rakstāms citiem lietotājiem. Noņemiet vispārējo rakstīšanas atļauju, jo šis fails satur datubāzes akreditācijas datus."
+
+#: doctor_functions.php
+msgid "include/config.php is group-writable. Confirm that every member of the owning group is trusted."
+msgstr "include/config.php ir rakstāms grupai. Pārliecinieties, ka katrs īpašnieka grupas dalībnieks ir uzticams."
+
+#: doctor_functions.php
+msgid "include/config.php is readable by all local users and contains database credentials. Restrict it to the owner and the web server group."
+msgstr "include/config.php ir lasāms visiem vietējiem lietotājiem un satur datubāzes akreditācijas datus. Ierobežojiet piekļuvi līdz īpašniekam un tīmekļa servera grupai."
+
+#: doctor_functions.php
+msgid "include/config.php is readable and is not world-readable, group-writable, or world-writable."
+msgstr "include/config.php ir lasāms un nav vispārēji lasāms, grupai rakstāms vai vispārēji rakstāms."
+
+#: doctor_functions.php
+msgid "Cacti log file"
+msgstr "Cacti žurnāla fails"
+
+#: doctor_functions.php
+msgid "The log file does not exist. Its parent directory is not writable."
+msgstr "Žurnāla fails nepastāv. Tā vecākdirektorijs nav rakstāms."
+
+#: doctor_functions.php
+msgid "The log file does not exist. Its parent directory is writable, so Cacti can create it."
+msgstr "Žurnāla fails nepastāv. Tā vecākdirektorijs ir rakstāms, tāpēc Cacti var to izveidot."
+
+#: doctor_functions.php
+msgid "The configured log path must be a readable and writable regular file."
+msgstr "Konfigurētajam žurnāla ceļam jābūt lasāmam un rakstāmam parastam failam."
+
+#: doctor_functions.php
+#, php-format
+msgid "The log is readable and writable and is %s MiB."
+msgstr "Žurnāls ir lasāms un rakstāms, un tā izmērs ir %s MiB."
+
+#: doctor_functions.php
+msgid "The log is readable and writable."
+msgstr "Žurnāls ir lasāms un rakstāms."
+
+#: doctor_functions.php
+msgid "Verify that Cacti log rotation is enabled."
+msgstr "Pārliecinieties, ka ir iespējota Cacti žurnāla rotācija."
+
+#: doctor_functions.php
+#, php-format
+msgid "Executable found at %s."
+msgstr "Izpildāmais fails atrasts vietā %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "The %s setting is empty, missing, or not executable."
+msgstr "Iestatījums %s ir tukšs, trūkst vai nav izpildāms."
+
+#: doctor_functions.php
+#, php-format
+msgid "The %s setting is empty, missing, or not executable: %s"
+msgstr "Iestatījums %s ir tukšs, trūkst vai nav izpildāms: %s"
+
+#: doctor_functions.php
+msgid "Doctor could not determine its version."
+msgstr "Doctor nevarēja noteikt tā versiju."
+
+#: doctor_functions.php
+#, php-format
+msgid "Detected version %s."
+msgstr "Konstatēta versija %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "Detected version %s; version %s or newer is recommended."
+msgstr "Konstatēta versija %s; ieteicama versija %s vai jaunāka."
+
+#: doctor_functions.php
+#, php-format
+msgid "Detected version %s; version %s or newer is required."
+msgstr "Konstatēta versija %s; nepieciešama versija %s vai jaunāka."
+
+#: doctor_functions.php
+#, php-format
+msgid "Detected version %s; minimum is %s."
+msgstr "Konstatēta versija %s; minimālā versija ir %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "%s executable"
+msgstr "%s izpildāmais fails"
+
+#: doctor_functions.php
+msgid "poller_type is not cmd.php or Spine"
+msgstr "poller_type nav cmd.php vai Spine"
+
+#: doctor_functions.php
+msgid "poller_interval is not a supported value"
+msgstr "poller_interval nav atbalstīta vērtība"
+
+#: doctor_functions.php
+msgid "Poller configuration"
+msgstr "Aptaujātāja konfigurācija"
+
+#: doctor_functions.php
+#, php-format
+msgid "Poller is %s with a %d-second interval."
+msgstr "Aptaujātājs ir %s ar %d sekunžu intervālu."
+
+#: doctor_functions.php
+msgid "Main poller freshness"
+msgstr "Galvenā aptaujātāja aktualitāte"
+
+#: doctor_functions.php
+msgid "No completed main-poller run was found. This can be expected before the first poll."
+msgstr "Netika atrasta neviena pabeigta galvenā aptaujātāja izpilde. Tas var būt gaidāms pirms pirmās aptaujas."
+
+#: doctor_functions.php
+#, php-format
+msgid "Last completed run was %d seconds ago; failure threshold is %d seconds."
+msgstr "Pēdējā pabeigtā izpilde bija pirms %d sekundēm; kļūmes slieksnis ir %d sekundes."
+
+#: doctor_functions.php
+msgid "Database schema version"
+msgstr "Datubāzes shēmas versija"
+
+#: doctor_functions.php
+msgid "The version table is empty or unreadable, so the schema version is unknown."
+msgstr "Versijas tabula ir tukša vai nelasāma, tāpēc shēmas versija nav zināma."
+
+#: doctor_functions.php
+msgid "The version table still reads new_install, so the installer never finished. Open install/ in a browser to complete it."
+msgstr "Versijas tabulā joprojām ir new_install, tāpēc instalētājs nekad netika pabeigts. Atveriet install/ pārlūkprogrammā, lai to pabeigtu."
+
+#: doctor_functions.php
+#, php-format
+msgid "The database schema is at %s but the installed code is %s. Open install/ in a browser to finish the upgrade."
+msgstr "Datubāzes shēmas versija ir %s, bet instalētais kods ir %s. Atveriet install/ pārlūkprogrammā, lai pabeigtu jaunināšanu."
+
+#: doctor_functions.php
+#, php-format
+msgid "The database schema (%s) is newer than the installed code (%s). The code may have been rolled back."
+msgstr "Datubāzes shēma (%s) ir jaunāka par instalēto kodu (%s). Kods, iespējams, ir atgriezts uz iepriekšējo versiju."
+
+#: doctor_functions.php
+#, php-format
+msgid "The database schema (%s) matches the installed code."
+msgstr "Datubāzes shēma (%s) atbilst instalētajam kodam."
+
+#: doctor_functions.php
+msgid "Main poller run time"
+msgstr "Galvenā aptaujātāja darbības laiks"
+
+#: doctor_functions.php
+msgid "No completed run time is recorded yet."
+msgstr "Pabeigtas izpildes laiks vēl nav reģistrēts."
+
+#: doctor_functions.php
+#, php-format
+msgid "The last main-poller run took %s seconds of the %d-second interval."
+msgstr "Pēdējā galvenā aptaujātāja izpilde aizņēma %s sekundes no %d sekunžu intervāla."
+
+#: doctor_functions.php
+msgid "Runs that outlast the interval overlap and lose data; add poller processes or threads, or use Spine."
+msgstr "Izpildes, kas ilgst ilgāk par intervālu, pārklājas un zaudē datus; pievienojiet aptaujātāja procesus vai pavedienus, vai izmantojiet Spine."
+
+#: doctor_functions.php
+msgid "Little headroom remains before polls overlap."
+msgstr "Līdz aptauju pārklāšanās brīdim atlikusi neliela rezerve."
+
+#: doctor_functions.php
+#, php-format
+msgid "%d poller_output rows are older than two polling intervals and were never written to RRD files. Check the Cacti log for \"Poller Output Table not Empty\" and confirm max_heap_table_size is large enough."
+msgstr "%d poller_output rindas ir vecākas par diviem aptaujas intervāliem un nekad netika ierakstītas RRD failos. Pārbaudiet Cacti žurnālā ziņojumu \"Poller Output Table not Empty\" un pārliecinieties, ka max_heap_table_size ir pietiekami liels."
+
+#: doctor_functions.php
+msgid "Unprocessed poller output"
+msgstr "Neapstrādāta aptaujātāja izvade"
+
+#: doctor_functions.php
+msgid "No stale rows remain in poller_output."
+msgstr "Tabulā poller_output nav palikušas novecojušas rindas."
+
+#: doctor_functions.php
+msgid "No remote pollers are enabled."
+msgstr "Nav iespējots neviens attālais aptaujātājs."
+
+#: doctor_functions.php
+msgid "Remote pollers"
+msgstr "Attālie aptaujātāji"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s (ID %s) has never reported"
+msgstr "%s (ID %s) nekad nav ziņojis"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s (ID %s) last reported %d seconds ago"
+msgstr "%s (ID %s) pēdējo reizi ziņoja pirms %d sekundēm"
+
+#: doctor_functions.php
+#, php-format
+msgid "The failure threshold is %d seconds."
+msgstr "Kļūmes slieksnis ir %d sekundes."
+
+#: doctor_functions.php
+#, php-format
+msgid "%d enabled remote pollers reported within %d seconds."
+msgstr "%d iespējotie attālie aptaujātāji ziņoja %d sekunžu laikā."
+
+#: doctor_functions.php
+msgid "Enabled plugin files"
+msgstr "Iespējoto spraudņu faili"
+
+#: doctor_functions.php
+#, php-format
+msgid "Enabled plugins are missing from %s: %s. Restore their files or disable them in Plugin Management."
+msgstr "Iespējotie spraudņi trūkst vietā %s: %s. Atjaunojiet to failus vai atspējojiet tos spraudņu pārvaldībā."
+
+#: doctor_functions.php
+msgid "Every enabled plugin has its setup.php in place."
+msgstr "Katram iespējotajam spraudnim setup.php atrodas savā vietā."
+
+#: doctor_functions.php
+msgid "Boost RRD updates"
+msgstr "Boost RRD atjauninājumi"
+
+#: doctor_functions.php
+msgid "Boost is disabled, so the poller writes RRD files directly."
+msgstr "Boost ir atspējots, tāpēc aptaujātājs raksta RRD failus tieši."
+
+#: doctor_functions.php
+msgid "Boost is enabled but has no recorded run. This can be expected before its first flush."
+msgstr "Boost ir iespējots, bet tam nav reģistrētas izpildes. Tas var būt gaidāms pirms tā pirmās ierakstīšanas."
+
+#: doctor_functions.php
+#, php-format
+msgid "Boost last flushed %d seconds ago, more than twice its %d-minute interval. Graphs stop updating until it runs; check the Cacti log for BOOST errors."
+msgstr "Boost pēdējo reizi veica ierakstīšanu pirms %d sekundēm, kas ir vairāk nekā divas reizes ilgāk par tā %d minūšu intervālu. Grafiki pārstāj atjaunināties, līdz tas tiek palaists; pārbaudiet Cacti žurnālā BOOST kļūdas."
+
+#: doctor_functions.php
+#, php-format
+msgid "poller_output_boost holds %d rows, above the %d-row limit that forces a flush. Boost is falling behind."
+msgstr "poller_output_boost satur %d rindas, kas pārsniedz %d rindu limitu piespiedu ierakstīšanai. Boost atpaliek."
+
+#: doctor_functions.php
+#, php-format
+msgid "Boost last flushed %d seconds ago with %d rows waiting."
+msgstr "Boost pēdējo reizi veica ierakstīšanu pirms %d sekundēm, gaidot %d rindām."
+
+#: doctor_functions.php doctor_rrd.php
+#, php-format
+msgid "Checked a sample of %d active data sources that rotates hourly; a pass does not cover every file."
+msgstr "Pārbaudīta %d aktīvo datu avotu izlase, kas mainās katru stundu; sekmīga pārbaude neaptver katru failu."
+
+#: doctor_functions.php
+#, php-format
+msgid "%d of %d active data sources have no RRD file, for example %s. New data sources get one after their first poll; otherwise check the RRA directory and its permissions."
+msgstr "%d no %d aktīvajiem datu avotiem nav RRD faila, piemēram, %s. Jauni datu avoti to iegūst pēc pirmās aptaujas; pretējā gadījumā pārbaudiet RRA direktoriju un tā atļaujas."
+
+#: doctor_functions.php
+msgid "RRD files"
+msgstr "RRD faili"
+
+#: doctor_functions.php
+#, php-format
+msgid "All %d active data sources have an RRD file."
+msgstr "Visiem %d aktīvajiem datu avotiem ir RRD fails."
+
+#: doctor_functions.php
+#, php-format
+msgid "Doctor could not measure free space for %s."
+msgstr "Doctor nevarēja izmērīt brīvo vietu priekš %s."
+
+#: doctor_functions.php
+msgid "RRA disk space"
+msgstr "RRA diska vieta"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s (%s GiB) free on the file system holding %s."
+msgstr "Brīvs %s (%s GiB) failu sistēmā, kurā atrodas %s."
+
+#: doctor_functions.php
+msgid "RRD updates fail silently when the disk fills."
+msgstr "Kad disks piepildās, RRD atjauninājumi klusībā neizdodas."
+
+#: doctor_functions.php
+msgid "Database clock"
+msgstr "Datubāzes pulkstenis"
+
+#: doctor_functions.php
+msgid "Doctor could not read the database clock."
+msgstr "Doctor nevarēja nolasīt datubāzes pulksteni."
+
+#: doctor_functions.php
+#, php-format
+msgid "The database and PHP clocks differ by %d seconds."
+msgstr "Datubāzes un PHP pulksteņi atšķiras par %d sekundēm."
+
+#: doctor_functions.php
+msgid "Poll timestamps will be misaligned; synchronise both hosts with NTP."
+msgstr "Aptaujas laika zīmogi nesakritīs; sinhronizējiet abus resursdatorus ar NTP."
+
+#: doctor_functions.php
+msgid "Synchronise both hosts with NTP."
+msgstr "Sinhronizējiet abus resursdatorus ar NTP."
+
+#: doctor_functions.php
+msgid "Spine configuration"
+msgstr "Spine konfigurācija"
+
+#: doctor_functions.php
+msgid "Spine is not the configured poller."
+msgstr "Spine nav konfigurētais aptaujātājs."
+
+#: doctor_functions.php
+msgid "path_spine_config is not set, so Spine uses its compiled-in search path and Doctor cannot verify which file it reads."
+msgstr "path_spine_config nav iestatīts, tāpēc Spine izmanto iekompilēto meklēšanas ceļu un Doctor nevar pārbaudīt, kuru failu tas lasa."
+
+#: doctor_functions.php
+#, php-format
+msgid "The Spine configuration file is missing or unreadable: %s."
+msgstr "Spine konfigurācijas fails trūkst vai nav lasāms: %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "DB_Database is %s but Cacti uses %s"
+msgstr "DB_Database ir %s, bet Cacti izmanto %s"
+
+#: doctor_functions.php
+#, php-format
+msgid "DB_User is %s but Cacti uses %s"
+msgstr "DB_User ir %s, bet Cacti izmanto %s"
+
+#: doctor_functions.php
+msgid "the file is world-readable and holds the database password"
+msgstr "fails ir vispārēji lasāms un satur datubāzes paroli"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s uses the same database and user as Cacti."
+msgstr "%s izmanto to pašu datubāzi un lietotāju kā Cacti."
+
+#: doctor_functions.php
+#, php-format
+msgid "%s is %s"
+msgstr "%s ir %s"
+
+#: doctor_functions.php
+msgid "Cacti recommends ON; doublewrite may stay off only on ZFS or similar journaling storage."
+msgstr "Cacti iesaka ON; doublewrite var palikt izslēgts tikai uz ZFS vai līdzīgas žurnalēšanas krātuves."
+
+#: doctor_functions.php
+msgid "InnoDB safety settings"
+msgstr "InnoDB drošības iestatījumi"
+
+#: doctor_functions.php
+msgid "innodb_file_per_table and innodb_doublewrite are enabled."
+msgstr "innodb_file_per_table un innodb_doublewrite ir iespējoti."
+
+#: doctor_functions.php
+#, php-format
+msgid "None of the last %d log lines report an error."
+msgstr "Neviena no pēdējām %d žurnāla rindām neziņo par kļūdu."
+
+#: doctor_functions.php
+msgid "Recent log errors"
+msgstr "Nesenās žurnāla kļūdas"
+
+#: doctor_functions.php
+#, php-format
+msgid "%d of the last %d log lines report an error. Most frequent (%dx): %s"
+msgstr "%d no pēdējām %d žurnāla rindām ziņo par kļūdu. Biežākā (%dx): %s"
+
+#: doctor_functions.php
+msgid "The Cacti log is not readable; see the Cacti log file check."
+msgstr "Cacti žurnāls nav lasāms; skatiet Cacti žurnāla faila pārbaudi."
+
+#: doctor_functions.php
+msgid "No enabled devices are configured."
+msgstr "Nav konfigurēta neviena iespējota ierīce."
+
+#: doctor_functions.php
+#, php-format
+msgid "All %d enabled devices are up."
+msgstr "Visas %d iespējotās ierīces darbojas."
+
+#: doctor_functions.php
+#, php-format
+msgid "%d of %d enabled devices are down and %d recovering."
+msgstr "%d no %d iespējotajām ierīcēm nedarbojas un %d atjaunojas."
+
+#: doctor_functions.php
+msgid "The down devices could not be listed."
+msgstr "Nedarbojošās ierīces nevarēja uzskaitīt."
+
+#: doctor_functions.php
+#, php-format
+msgid "%s down since %s"
+msgstr "%s nedarbojas kopš %s"
+
+#: doctor_functions.php
+#, php-format
+msgid "Longest down: %s."
+msgstr "Visilgāk nedarbojas: %s."
+
+#: doctor_functions.php
+msgid "With most devices down, check the poller host's network and SNMP settings first."
+msgstr "Tā kā lielākā daļa ierīču nedarbojas, vispirms pārbaudiet aptaujātāja resursdatora tīkla un SNMP iestatījumus."
+
+#: doctor_functions.php
+msgid "Doctor could not read device status from the host table."
+msgstr "Doctor nevarēja nolasīt ierīču statusu no host tabulas."
+
+#: doctor_functions.php
+#, php-format
+msgid "Cacti Doctor on %s: %d failed, %d warnings"
+msgstr "Cacti Doctor uz %s: %d kļūmes, %d brīdinājumi"
+
+#: doctor_functions.php
+#, php-format
+msgid "%d Cacti Doctor checks changed status on %s."
+msgstr "%d Cacti Doctor pārbaudes mainīja statusu uz %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "Totals: %d passed, %d warnings, %d failed."
+msgstr "Kopā: %d izpildītas, %d brīdinājumi, %d kļūmes."
+
+#: doctor_functions.php
+#, php-format
+msgid "Refusing to overwrite %s."
+msgstr "Pārrakstīšana tiek atteikta failam %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "Cannot create %s."
+msgstr "Nevar izveidot %s."
+
+#: doctor_functions.php
+#, php-format
+msgid "Could not make %s private."
+msgstr "Nevarēja padarīt %s privātu."
+
+#: doctor_functions.php
+#, php-format
+msgid "Writing %s failed."
+msgstr "Ierakstīšana failā %s neizdevās."
+
+#: doctor_functions.php
+msgid "Repair runtime directories"
+msgstr "Salabot izpildes direktorijus"
+
+#: doctor_functions.php
+msgid "Create missing cache, log, and RRA directories and add owner read/write/execute permission without removing existing permissions."
+msgstr "Izveidojiet trūkstošos kešatmiņas, žurnāla un RRA direktorijus un pievienojiet īpašniekam lasīšanas/rakstīšanas/izpildes atļaujas, nenoņemot esošās atļaujas."
+
+#: doctor_functions.php
+msgid "The requested repair is not allow-listed."
+msgstr "Pieprasītais labojums nav atļauto sarakstā."
+
+#: doctor_functions.php
+msgid "No repair handler is registered."
+msgstr "Nav reģistrēts labošanas apstrādātājs."
+
+#: doctor_functions.php
+msgid "Repair unavailable"
+msgstr "Labošana nav pieejama"
+
+#: doctor_functions.php
+msgid "Repairs are refused while running as root. Run Doctor as the Cacti poller user."
+msgstr "Labojumi tiek atteikti, darbojoties kā root. Palaidiet Doctor kā Cacti aptaujātāja lietotājs."
+
+#: doctor_functions.php
+msgid "The Cacti base directory cannot be resolved."
+msgstr "Nevar noteikt Cacti bāzes direktoriju."
+
+#: doctor_functions.php
+#, php-format
+msgid "%s: path is outside the Cacti installation"
+msgstr "%s: ceļš atrodas ārpus Cacti instalācijas"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s: symbolic links are not repaired"
+msgstr "%s: simboliskās saites netiek labotas"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s: directory creation failed"
+msgstr "%s: direktorija izveide neizdevās"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s: could not add owner permissions"
+msgstr "%s: nevarēja pievienot īpašnieka atļaujas"
+
+#: doctor_functions.php
+#, php-format
+msgid "%s: still not a writable directory"
+msgstr "%s: joprojām nav rakstāms direktorijs"
+
+#: doctor_functions.php
+msgid "Runtime directories now exist and are writable by the current process."
+msgstr "Izpildes direktoriji tagad pastāv un ir rakstāmi pašreizējam procesam."
+
+#: doctor_functions.php
+msgid "Cacti"
+msgstr "Cacti"
+
+#: doctor_functions.php
+msgid "Database"
+msgstr "Datubāze"
+
+#: doctor_functions.php
+msgid "Database health"
+msgstr "Datubāzes stāvoklis"
+
+#: doctor_functions.php
+msgid "Devices"
+msgstr "Ierīces"
+
+#: doctor_functions.php setup.php
+msgid "Doctor"
+msgstr "Doctor"
+
+#: doctor_functions.php
+msgid "Filesystem"
+msgstr "Failu sistēma"
+
+#: doctor_functions.php
+msgid "Logging"
+msgstr "Žurnalēšana"
+
+#: doctor_functions.php
+msgid "PHP"
+msgstr "PHP"
+
+#: doctor_functions.php
+msgid "Poller"
+msgstr "Aptaujātājs"
+
+#: doctor_functions.php
+msgid "Prerequisites"
+msgstr "Priekšnosacījumi"
+
+#: doctor_functions.php
+msgid "Repair"
+msgstr "Labošana"
+
+#: doctor_functions.php
+msgid "Security"
+msgstr "Drošība"
+
+#: doctor_functions.php
+msgid "PASS"
+msgstr "IZPILDĪTS"
+
+#: doctor_functions.php
+msgid "WARN"
+msgstr "BRĪDINĀJUMS"
+
+#: doctor_functions.php
+msgid "FAIL"
+msgstr "KĻŪME"
+
+#: doctor_functions.php
+msgid "UNKNOWN"
+msgstr "NEZINĀMS"
+
+#: doctor_rrd.php
+msgid "Data source freshness could not be assessed."
+msgstr "Datu avotu aktualitāti nevarēja novērtēt."
+
+#: doctor_rrd.php
+msgid "RRD update freshness"
+msgstr "RRD atjauninājumu aktualitāte"
+
+#: doctor_rrd.php
+msgid "The deferred-write interval is unknown; configure it before judging file age."
+msgstr "Atliktās ierakstīšanas intervāls nav zināms; konfigurējiet to pirms failu vecuma izvērtēšanas."
+
+#: doctor_rrd.php
+#, php-format
+msgid "Checked %d files; %d stale files across %d devices; %d unavailable or future-dated files."
+msgstr "Pārbaudīti %d faili; %d novecojuši faili %d ierīcēs; %d nepieejami vai nākotnes datēti faili."
+
+#: doctor_rrd.php
+msgid "File age includes the collection interval and configured deferred-write allowance; verify the poller and flush process before changing data."
+msgstr "Faila vecums ietver vākšanas intervālu un konfigurēto atliktās ierakstīšanas pielaidi; pirms datu maiņas pārbaudiet aptaujātāju un ierakstīšanas procesu."
+
+#: doctor_scheduling.php
+msgid "Scheduled checks are disabled. Enable them in Settings > Doctor to retain samples and alert on changes."
+msgstr "Ieplānotās pārbaudes ir atspējotas. Iespējojiet tās sadaļā Iestatījumi > Doctor, lai saglabātu paraugus un saņemtu paziņojumus par izmaiņām."
+
+#: doctor_scheduling.php
+msgid "Scheduled report freshness"
+msgstr "Ieplānotā pārskata aktualitāte"
+
+#: doctor_scheduling.php
+#, php-format
+msgid "%s UTC"
+msgstr "%s UTC"
+
+#: doctor_scheduling.php
+#, php-format
+msgid "Last started: %s; last completed: %s."
+msgstr "Pēdējo reizi sākts: %s; pēdējo reizi pabeigts: %s."
+
+#: doctor_scheduling.php
+msgid "never"
+msgstr "nekad"
+
+#: doctor_scheduling.php
+msgid "Results are missing or stale. Check the primary poller and DOCTOR log for startup, timeout, or persistence errors."
+msgstr "Rezultāti trūkst vai ir novecojuši. Pārbaudiet primāro aptaujātāju un DOCTOR žurnālu, lai atrastu palaišanas, noildzes vai saglabāšanas kļūdas."
+
+#: doctor_scheduling.php
+msgid "A completed diagnostic run is recent; this does not mean all checks passed."
+msgstr "Pabeigtā diagnostikas izpilde ir nesena; tas nenozīmē, ka visas pārbaudes ir sekmīgas."
+
+#: doctor_scheduling.php
+msgid "Doctor alert state is invalid. Restore doctor_alert_pending from backup before retrying."
+msgstr "Doctor paziņojumu stāvoklis nav derīgs. Pirms atkārtošanas atjaunojiet doctor_alert_pending no dublējuma."
+
+#: doctor_scheduling.php
+msgid "Doctor alert transitions are invalid; no email was sent."
+msgstr "Doctor paziņojumu pārejas nav derīgas; e-pasts netika nosūtīts."
+
+#: doctor_scheduling.php
+msgid "Alert delivery"
+msgstr "Paziņojumu piegāde"
+
+#: doctor_scheduling.php
+#, php-format
+msgid "%d check transitions await delivery; attempts: %d of 3."
+msgstr "%d pārbaužu pārejas gaida piegādi; mēģinājumi: %d no 3."
+
+#: doctor_scheduling.php
+msgid "Automatic retries exhausted. Correct Cacti mail settings, then run Doctor with --scheduled --retry-alerts as the poller user."
+msgstr "Automātiskie atkārtotie mēģinājumi ir izsmelti. Izlabojiet Cacti pasta iestatījumus, pēc tam palaidiet Doctor ar --scheduled --retry-alerts kā aptaujātāja lietotājs."
+
+#: doctor_scheduling.php
+#, php-format
+msgid "Next eligible retry: %s UTC, after a primary poller cycle."
+msgstr "Nākamais iespējamais mēģinājums: %s UTC, pēc primārā aptaujātāja cikla."
+
+#: doctor_scheduling.php
+msgid "No alert recipients are currently configured; pending transitions are retained."
+msgstr "Pašlaik nav konfigurēti paziņojumu adresāti; gaidošās pārejas tiek saglabātas."
+
+#: doctor_scheduling.php
+msgid "No retained alert is awaiting delivery. Mail-server acceptance does not prove inbox delivery."
+msgstr "Neviens saglabāts paziņojums negaida piegādi. Pasta servera pieņemšana nepierāda piegādi iesūtnē."
+
+#: doctor_scheduling.php
+msgid "Doctor retained status changes (UTC). Repeated changes for one check are coalesced; an out-and-back transition is retained."
+msgstr "Doctor saglabātās statusa izmaiņas (UTC). Atkārtotas izmaiņas vienai pārbaudei tiek apvienotas; pāreja prom un atpakaļ tiek saglabāta."
+
+#: doctor_scheduling.php
+#, php-format
+msgid "%s: %s -> %s (latest change %s)"
+msgstr "%s: %s -> %s (pēdējā izmaiņa %s)"
+
+#: doctor_scheduling.php
+#, php-format
+msgid "%d further status changes are not listed because the alert queue reached its storage limit."
+msgstr "Vēl %d statusa izmaiņas nav uzskaitītas, jo paziņojumu rinda sasniedza glabāšanas ierobežojumu."
+
+#: doctor_scheduling.php
+msgid "Open Utilities > Doctor for current measurements, recommended actions, and verification steps."
+msgstr "Atveriet Utilītas > Doctor, lai skatītu pašreizējos mērījumus, ieteicamās darbības un pārbaudes soļus."
+
+#: doctor_scheduling.php
+#, php-format
+msgid "Cacti Doctor: %d retained status changes"
+msgstr "Cacti Doctor: %d saglabātas statusa izmaiņas"
+
+#: doctor_scheduling.php
+msgid "Doctor schedule is already running or the database lock is unavailable."
+msgstr "Doctor plānotā izpilde jau darbojas vai datubāzes bloķēšana nav pieejama."
+
+#: doctor_web.php
+msgid "The finding could not be acknowledged. Run Doctor again, then acknowledge the current result."
+msgstr "Konstatējumu nevarēja apstiprināt. Palaidiet Doctor vēlreiz un pēc tam apstipriniet pašreizējo rezultātu."
+
+#: doctor_web.php
+msgid "The warning exception could not be saved. Use a fresh assessed warning, an owner, a reason and an expiry within 90 days."
+msgstr "Brīdinājuma izņēmumu nevarēja saglabāt. Izmantojiet svaigu novērtētu brīdinājumu, atbildīgo personu, iemeslu un termiņu 90 dienu laikā."
+
+#: doctor_web.php
+msgid "Confirm repair"
+msgstr "Apstiprināt labošanu"
+
+#: doctor_web.php
+msgid "Approval expires after five minutes and is invalidated by a changed filesystem. The acting account must be able to create directories or change owner permissions."
+msgstr "Apstiprinājuma termiņš beidzas pēc piecām minūtēm, un tas kļūst nederīgs, ja mainās failu sistēma. Darbību veicošajam kontam jāspēj izveidot direktorijus vai mainīt īpašnieka atļaujas."
+
+#: doctor_web.php
+msgid "Repair prerequisites are not met. No changes will be made."
+msgstr "Labošanas priekšnosacījumi nav izpildīti. Izmaiņas netiks veiktas."
+
+#: doctor_web.php
+msgid "Cancel"
+msgstr "Atcelt"
+
+#: doctor_web.php
+#, php-format
+msgid "Last observation: %s UTC."
+msgstr "Pēdējais novērojums: %s UTC."
+
+#: doctor_web.php
+msgid "No completed diagnostic report is available."
+msgstr "Nav pieejams neviens pabeigts diagnostikas pārskats."
+
+#: doctor_web.php
+msgid "Health is unknown: observations are missing or stale."
+msgstr "Stāvoklis nav zināms: novērojumi trūkst vai ir novecojuši."
+
+#: doctor_web.php
+msgid "Run diagnostic checks"
+msgstr "Palaist diagnostikas pārbaudes"
+
+#: doctor_web.php
+msgid "Doctor settings"
+msgstr "Doctor iestatījumi"
+
+#: doctor_web.php setup.php
+msgid "Cacti Doctor"
+msgstr "Cacti Doctor"
+
+#: doctor_web.php
+#, php-format
+msgid "Installation health: %d passed, %d warnings, %d failed"
+msgstr "Instalācijas stāvoklis: %d izpildītas, %d brīdinājumi, %d kļūmes"
+
+#: doctor_web.php
+msgid "Category"
+msgstr "Kategorija"
+
+#: doctor_web.php
+msgid "Check"
+msgstr "Pārbaude"
+
+#: doctor_web.php
+msgid "Status"
+msgstr "Statuss"
+
+#: doctor_web.php
+msgid "Details"
+msgstr "Sīkāka informācija"
+
+#: doctor_web.php
+msgid "Action"
+msgstr "Darbība"
+
+#: doctor_web.php
+msgid "Acknowledged; health status unchanged."
+msgstr "Apstiprināts; stāvoklis nav mainīts."
+
+#: doctor_web.php
+msgid "Acknowledge"
+msgstr "Apstiprināt"
+
+#: doctor_web.php
+#, php-format
+msgid "Owner: %s; review by %s UTC. Reason: %s"
+msgstr "Atbildīgais: %s; pārskatīt līdz %s UTC. Iemesls: %s"
+
+#: doctor_web.php
+msgid "Investigate a symptom"
+msgstr "Izmeklēt simptomu"
+
+#: doctor_web.php
+msgid "Investigate"
+msgstr "Izmeklēt"
+
+#: doctor_web.php
+msgid "Recent scheduled checks"
+msgstr "Nesenās ieplānotās pārbaudes"
+
+#: doctor_web.php
+msgid "Failed"
+msgstr "Kļūmes"
+
+#: doctor_web.php
+msgid "Observation (UTC)"
+msgstr "Novērojums (UTC)"
+
+#: doctor_web.php
+msgid "Passed"
+msgstr "Izpildītas"
+
+#: doctor_web.php
+msgid "Warnings"
+msgstr "Brīdinājumi"
+
+#: doctor_web.php
+msgid "Warning exceptions"
+msgstr "Brīdinājumu izņēmumi"
+
+#: doctor_web.php
+msgid "Owner"
+msgstr "Atbildīgais"
+
+#: doctor_web.php
+msgid "Reason"
+msgstr "Iemesls"
+
+#: doctor_web.php
+msgid "Review date (UTC)"
+msgstr "Pārskatīšanas datums (UTC)"
+
+#: doctor_web.php
+msgid "Accept warning"
+msgstr "Pieņemt brīdinājumu"
+
+#: doctor_web.php
+msgid "Expired"
+msgstr "Beidzies termiņš"
+
+#: doctor_web.php
+msgid "Check not present in this report; verify its ID."
+msgstr "Pārbaude nav šajā pārskatā; pārbaudiet tās ID."
+
+#: doctor_web.php
+msgid "Remove exception"
+msgstr "Noņemt izņēmumu"
+
+#: doctor_web.php
+msgid "Audit history"
+msgstr "Audita vēsture"
+
+#: doctor_workflows.php
+msgid "Repair refused"
+msgstr "Labošana atteikta"
+
+#: doctor_workflows.php
+msgid "The approved plan is expired or the filesystem changed. Preview the repair again."
+msgstr "Apstiprinātā plāna termiņš ir beidzies vai failu sistēma ir mainījusies. Vēlreiz priekšskatiet labošanu."
+
+#: doctor_workflows.php
+msgid "The audit record could not be saved. No repair was attempted."
+msgstr "Audita ierakstu nevarēja saglabāt. Labošana netika mēģināta."
+
+#: doctor_workflows.php
+msgid "The completion audit failed; inspect the filesystem and the started audit record."
+msgstr "Pabeigšanas audits neizdevās; pārbaudiet failu sistēmu un sāktā audita ierakstu."
+
+#: setup.php
+msgid "Doctor Administrator"
+msgstr "Doctor administrators"
+
+#: setup.php
+msgid "Doctor Operator"
+msgstr "Doctor operators"
+
+#: setup.php
+msgid "Doctor Viewer"
+msgstr "Doctor skatītājs"
+
+#: setup.php
+msgid "Utilities"
+msgstr "Utilītas"
+
+#: setup.php
+msgid "System Administration"
+msgstr "Sistēmas administrēšana"
+
+#: setup.php
+msgid "Scheduled Checks"
+msgstr "Ieplānotās pārbaudes"
+
+#: setup.php
+msgid "Run Checks on a Schedule"
+msgstr "Palaist pārbaudes pēc grafika"
+
+#: setup.php
+msgid "Run every Doctor check in the background after the poller and record each check's status."
+msgstr "Palaidiet katru Doctor pārbaudi fonā pēc aptaujātāja un reģistrējiet katras pārbaudes statusu."
+
+#: setup.php
+msgid "Check Interval"
+msgstr "Pārbaudes intervāls"
+
+#: setup.php
+msgid "How often the scheduled checks run."
+msgstr "Cik bieži darbojas ieplānotās pārbaudes."
+
+#: setup.php
+msgid "Every 15 Minutes"
+msgstr "Ik pēc 15 minūtēm"
+
+#: setup.php
+msgid "Every Hour"
+msgstr "Katru stundu"
+
+#: setup.php
+msgid "Every 6 Hours"
+msgstr "Ik pēc 6 stundām"
+
+#: setup.php
+msgid "Every Day"
+msgstr "Katru dienu"
+
+#: setup.php
+msgid "Alert Email Addresses"
+msgstr "Paziņojumu e-pasta adreses"
+
+#: setup.php
+msgid "Comma-separated addresses to email when a check starts or stops failing. Leave empty to only log changes to the Cacti log."
+msgstr "Ar komatiem atdalītas adreses, uz kurām sūtīt e-pastu, kad pārbaude sāk vai beidz ciest neveiksmi. Atstājiet tukšu, lai izmaiņas tikai reģistrētu Cacti žurnālā."
+
+#: setup.php
+msgid "Alert on Warnings"
+msgstr "Paziņot par brīdinājumiem"
+
+#: setup.php
+msgid "Also alert when a check moves into or out of a warning."
+msgstr "Paziņot arī tad, kad pārbaude pāriet brīdinājuma statusā vai iziet no tā."
+
+#: setup.php
+msgid "Thresholds"
+msgstr "Sliekšņi"
+
+#: setup.php
+msgid "Poller Run Time Warning (percent)"
+msgstr "Aptaujātāja darbības laika brīdinājums (procenti)"
+
+#: setup.php
+msgid "Warn when the last main-poller run used this share of the polling interval. Runs that take the whole interval always fail."
+msgstr "Brīdināt, kad pēdējā galvenā aptaujātāja izpilde izmantoja šo aptaujas intervāla daļu. Izpildes, kas aizņem visu intervālu, vienmēr beidzas ar kļūmi."
+
+#: setup.php
+msgid "RRA Disk Free Warning (percent)"
+msgstr "RRA diska brīvās vietas brīdinājums (procenti)"
+
+#: setup.php
+msgid "Warn when free space on the RRA file system drops below this percentage."
+msgstr "Brīdināt, kad brīvā vieta RRA failu sistēmā nokrītas zem šī procentuālā līmeņa."
+
+#: setup.php
+msgid "Fail when free space on the RRA file system drops below this percentage."
+msgstr "Ziņot par kļūmi, kad brīvā vieta RRA failu sistēmā nokrītas zem šī procentuālā līmeņa."
+
+#: setup.php
+msgid "RRA Disk Free Failure (percent)"
+msgstr "RRA diska brīvās vietas kļūme (procenti)"
+
+#: setup.php
+msgid "Clock Drift Warning (seconds)"
+msgstr "Pulksteņa nobīdes brīdinājums (sekundes)"
+
+#: setup.php
+msgid "Warn when the database and PHP clocks differ by more than this."
+msgstr "Brīdināt, kad datubāzes un PHP pulksteņi atšķiras par vairāk nekā šo vērtību."
+
+#: setup.php
+msgid "Clock Drift Failure (seconds)"
+msgstr "Pulksteņa nobīdes kļūme (sekundes)"
+
+#: setup.php
+msgid "Fail when the database and PHP clocks differ by more than this."
+msgstr "Ziņot par kļūmi, kad datubāzes un PHP pulksteņi atšķiras par vairāk nekā šo vērtību."
+
+#: setup.php
+msgid "RRD Stale Intervals"
+msgstr "RRD novecošanās intervāli"
+
+#: setup.php
+msgid "Warn after this many collection intervals without a file update (1 to 100)."
+msgstr "Brīdināt pēc tik daudziem vākšanas intervāliem bez faila atjaunināšanas (no 1 līdz 100)."
+
+#: setup.php
+msgid "Additional disk-write delay for external caching (0 to 86400). Boost adds its own allowance."
+msgstr "Papildu diska ierakstīšanas aizkave ārējai kešošanai (no 0 līdz 86400). Boost pievieno savu pielaidi."
+
+#: setup.php
+msgid "Deferred RRD Write Allowance (seconds)"
+msgstr "Atliktās RRD ierakstīšanas pielaide (sekundes)"
+
+#: setup.php
+msgid "Cacti Log Size Warning (MB)"
+msgstr "Cacti žurnāla izmēra brīdinājums (MB)"
+
+#: setup.php
+msgid "Warn when the Cacti log grows beyond this size, which usually means log rotation is not running."
+msgstr "Brīdināt, kad Cacti žurnāls pārsniedz šo izmēru, kas parasti nozīmē, ka žurnāla rotācija nedarbojas."

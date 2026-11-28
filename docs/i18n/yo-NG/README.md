@@ -1,4 +1,4 @@
-<!-- Source: README.md; SHA256: ee03c7ac68aca21c8155c29b5b43a1f206c2f0c379c8b07bb4113919c18aafde -->
+<!-- Source: README.md; SHA256: 490628bb7f70f4cf1a8c43b302246fd2e870725a6649c628762608b4a76db65b -->
 
 <!-- translations:start -->
 [English](../../../README.md) | [简体中文](../zh-CN/README.md) | [हिन्दी](../hi-IN/README.md) | [Español (España)](../es-ES/README.md) | [Español (Latinoamérica)](../es-419/README.md) | [العربية (السعودية)](../ar-SA/README.md) | [Afrikaans](../af-ZA/README.md) | [አማርኛ](../am-ET/README.md) | [العربية (مصر)](../ar-EG/README.md) | [العربية (المغرب)](../ar-MA/README.md) | [বাংলা](../bn-BD/README.md) | [Bosanski](../bs-BA/README.md) | [Deutsch](../de-DE/README.md) | [فارسی](../fa-IR/README.md) | [Filipino](../fil-PH/README.md) | [Français](../fr-FR/README.md) | [Français (Maroc)](../fr-MA/README.md) | [Français (Sénégal)](../fr-SN/README.md) | [Hausa](../ha-NG/README.md) | [עברית](../he-IL/README.md) | [Hrvatski](../hr-HR/README.md) | [Bahasa Indonesia](../id-ID/README.md) | [Igbo](../ig-NG/README.md) | [Italiano](../it-IT/README.md) | [日本語](../ja-JP/README.md) | [한국어](../ko-KR/README.md) | [Malagasy](../mg-MG/README.md) | [मराठी](../mr-IN/README.md) | [Bahasa Melayu](../ms-MY/README.md) | [Nederlands](../nl-NL/README.md) | [Polski](../pl-PL/README.md) | [Português (Brasil)](../pt-BR/README.md) | [Русский](../ru-RU/README.md) | [Kinyarwanda](../rw-RW/README.md) | [Soomaali](../so-SO/README.md) | [Српски](../sr-RS/README.md) | [Svenska](../sv-SE/README.md) | [Kiswahili](../sw-KE/README.md) | [தமிழ்](../ta-IN/README.md) | [తెలుగు](../te-IN/README.md) | [ไทย](../th-TH/README.md) | [Türkçe](../tr-TR/README.md) | [Українська](../uk-UA/README.md) | [اردو](../ur-PK/README.md) | [Tiếng Việt](../vi-VN/README.md) | [isiXhosa](../xh-ZA/README.md) | [Yorùbá](README.md) | [繁體中文](../zh-TW/README.md) | [isiZulu](../zu-ZA/README.md)
@@ -50,13 +50,15 @@ Cacti Doctor jẹ́ àfikún Cacti tí ó ń ṣe àyẹ̀wò fífi-sórí-ẹ̀
 | Àwọn ẹ̀rọ | Àwọn ẹ̀rọ tí a ṣí sílẹ̀ tí ó wà ní ìsàlẹ̀ tàbí tí ó ń bọ̀ sípò, mẹ́ta tí ó ti wà ní ìsàlẹ̀ pẹ́ jù lọ pẹ̀lú àṣìṣe ìkẹyìn wọn, àti ìkùnà nígbà tí ọ̀pọ̀lọpọ̀ àwọn ẹ̀rọ bá wà ní ìsàlẹ̀ lẹ́ẹ̀kan náà |
 | Poller | Irú poller àti àkókò láàárín rẹ̀, àkókò láti ìgbà tí poller àkọ́kọ́ ti parí kẹ́yìn, àkókò ìṣiṣẹ́ lòdì sí àkókò láàárín rẹ̀, èsì poller tí kò dé inú fáìlì RRD rí, àwọn poller òkèèrè tí ó dẹ́kun ríròyìn, Boost tí ó dúró díẹ̀, àti ìtòlẹ́sẹẹsẹ Spine tí ó ń tọ́ka sí ibi-ìpamọ́-dátà mìíràn |
 
-Àyẹ̀wò kọ̀ọ̀kan ní ID tí kì í yí padà, bíi `database.timezone` tàbí `binary.rrdtool`, kí àwọn àkọsílẹ̀-àṣẹ lè dá lórí àwọn èsì kọ̀ọ̀kan.
+Àyẹ̀wò kọ̀ọ̀kan ní ID tí kì í yí padà, bíi `database.timezone` tàbí `binary.rrdtool`, kí àwọn àkọsílẹ̀-àṣẹ lè dá lórí àwọn èsì kọ̀ọ̀kan. Àwọn àfikún tí a ṣí sílẹ̀ lè ṣàfikún àwọn àyẹ̀wò afikún àti àwọn àsomọ́ ìdìpọ̀ ìrànlọ́wọ́ nípasẹ̀ hook `doctor_register_checks`, Doctor sì ń ṣí àwọn agbára ìṣàyẹ̀wò kíkà-nìkan sílẹ̀ fún `plugin_mcp` nípasẹ̀ `abilities_register`.
 
 ## Àwòrán kóòdù àti àyẹ̀wò
 
 | Ìhùwàsí | Ìmúlò | Ẹ̀rí àyẹ̀wò nínú ibi-ìpamọ́ kóòdù yìí |
 |---|---|---|
-| Àwọn àyẹ̀wò ìtúpalẹ̀ àti àwọn ID ìròyìn tí kì í yí padà | [doctor_functions.php](../../../doctor_functions.php) | [DoctorFunctionsTest.php](../../../tests/DoctorFunctionsTest.php), [AssertDoctorReport.php](../../../tests/ci/AssertDoctorReport.php) |
+| Àwọn àyẹ̀wò ìtúpalẹ̀ àti àwọn ID ìròyìn tí kì í yí padà | [doctor_functions.php](../../../doctor_functions.php) | [DoctorFunctionsTest.php](../../../tests/DoctorFunctionsTest.php), [DatabaseHealthTest.php](../../../tests/DatabaseHealthTest.php), [AssertDoctorReport.php](../../../tests/ci/AssertDoctorReport.php) |
+| Hook àyẹ̀wò àfikún (`doctor_register_checks`) | [doctor_plugins.php](../../../doctor_plugins.php) | [PluginHooksTest.php](../../../tests/PluginHooksTest.php) |
+| Àwọn agbára ìṣàyẹ̀wò MCP (`abilities_register`) | [doctor_abilities.php](../../../doctor_abilities.php) | [AbilitiesTest.php](../../../tests/AbilitiesTest.php) |
 | Ìráyè ní ìbámu pẹ̀lú ipa-iṣẹ́ àti àwọn ìròyìn wẹ́ẹ̀bù tí a ti yọ àwọn kókó àṣírí kúrò | [doctor_access.php](../../../doctor_access.php), [doctor_web.php](../../../doctor_web.php) | [AccessTest.php](../../../tests/AccessTest.php), [WebAccessTest.php](../../../tests/WebAccessTest.php) |
 | Àwọn ìwádìí ààmì-àìsàn pẹ̀lú ìtọ́sọ́nà | [doctor_diagnosis.php](../../../doctor_diagnosis.php) | [DiagnosisTest.php](../../../tests/DiagnosisTest.php) |
 | Ìjẹ́-tuntun RRD àti ìtọ́jú kíkọ tí a sún síwájú | [doctor_rrd.php](../../../doctor_rrd.php) | [RrdFreshnessTest.php](../../../tests/RrdFreshnessTest.php) |
@@ -195,7 +197,7 @@ php plugins/doctor/cli/doctor.php --format=prometheus > /var/lib/node_exporter/t
 php plugins/doctor/cli/doctor.php --bundle=/tmp/cacti-doctor.txt
 ```
 
-Ìdìpọ̀ náà jẹ́ fáìlì ọ̀rọ̀ kan ṣoṣo tí ó ní àwọn ẹ̀yà Doctor, Cacti, PHP, OS, àti ibùdó-dátà, àwọn ìṣirò poller àti Boost, ìròyìn kíkún, àti àwọn ìlà 200 tó kẹ́yìn nínú àkọsílẹ̀ Cacti. A máa ń bo àwọn iye tí ó tẹ̀lé àwọn orúkọ password, secret, token, community, àti key. Doctor máa ń ṣẹ̀dá fáìlì náà tí olùní rẹ̀ nìkan ló lè kà á, ó sì máa ń kọ̀ láti kọ sórí fáìlì tí ó wà tẹ́lẹ̀. Ṣàyẹ̀wò rẹ̀ kí o tó fi í síta níbikíbi.
+Ìdìpọ̀ náà jẹ́ fáìlì ọ̀rọ̀ kan ṣoṣo tí ó ní àwọn ẹ̀yà Doctor, Cacti, PHP, OS, àti ibùdó-dátà, àwọn ìṣirò poller àti Boost, ìròyìn kíkún, àwọn àsomọ́ ìdìpọ̀ ìrànlọ́wọ́ àfikún èyíkéyìí lábẹ́ `== Plugin attachments`, àti àwọn ìlà 200 tó kẹ́yìn nínú àkọsílẹ̀ Cacti. A máa ń bo àwọn iye tí ó tẹ̀lé àwọn orúkọ password, secret, token, community, àti key. Doctor máa ń ṣẹ̀dá fáìlì náà tí olùní rẹ̀ nìkan ló lè kà á, ó sì máa ń kọ̀ láti kọ sórí fáìlì tí ó wà tẹ́lẹ̀. Ṣàyẹ̀wò rẹ̀ kí o tó fi í síta níbikíbi.
 
 ## Ìlànà àtúnṣe
 
@@ -241,6 +243,63 @@ A gbọ́dọ̀ fi àkọsílẹ̀ `repair.started` tí a ṣètò pamọ́ kí 
 
 Ìgbéga sókè máa ń ṣẹ̀dá `plugin_doctor_audit` àti `plugin_doctor_acceptance` láì yí dátà ohun èlò Cacti padà. Kó ìtàn èyíkéyìí tí o bá nílò jáde kí o tó yọ ọ́ kúrò: yíyọkúrò máa ń yọ tábìlì àfikún méjèèjì àti àwọn ètò rẹ̀ kúrò. Dídá àwọn fáìlì àfikún padà sí ti tẹ́lẹ̀ máa ń fi àwọn tábìlì náà sílẹ̀ fún ìwádìí, ṣùgbọ́n àwọn ẹ̀yà àtijọ́ kì í bọ̀wọ̀ fún àwọn àyọkúrò ìkìlọ̀.
 
+## Àwọn àyẹ̀wò àfikún (`doctor_register_checks`)
+
+Àwọn àfikún Cacti tí a ṣí sílẹ̀ lè ṣàfikún àwọn àyẹ̀wò ìṣàyẹ̀wò kíkà-nìkan àti àwọn àsomọ́ ìdìpọ̀ ìrànlọ́wọ́ àṣàyàn nípa fíforúkọsílẹ̀ hook `doctor_register_checks`:
+
+```php
+api_plugin_register_hook('sample', 'doctor_register_checks', 'sample_doctor_checks', 'setup.php');
+```
+
+Doctor máa ń pe àwọn àfikún tí a ṣí sílẹ̀ tí kì í ṣe apá ìpilẹ̀ tí a forúkọsílẹ̀ lórí `doctor_register_checks` (tí ó ń fo `doctor` àti `cacti` rú), ó sì ń yanjú fáìlì hook náà ní kíkún láàárín àkójọpọ̀ fáìlì àfikún fúnra rẹ̀. Callback máa ń gba `['mode' => 'run' | 'list', 'plugin' => '<slug>']`, ó sì máa ń dá àtòjọ àwọn àpèjúwe àyẹ̀wò tàbí àpò kan tí ó ní `checks` àti àṣàyàn `attachments` padà:
+
+```php
+function sample_doctor_checks($context) {
+	return [
+		'checks' => [
+			[
+				'id'          => 'sample.queue_depth',
+				'plugin'      => 'sample',
+				'category'    => 'Sample',
+				'title'       => 'Sample queue depth',
+				'status'      => 'ok',
+				'message'     => 'Queue is healthy.',
+				'details'     => ['pending' => 0],
+				'remediation' => ''
+			]
+		],
+		'attachments' => [
+			[
+				'title'   => 'Sample diagnostics',
+				'content' => "worker=ok\n"
+			]
+		]
+	];
+}
+```
+
+A máa ń ṣàyẹ̀wò ìjẹ́-òótọ́ gbogbo àpèjúwe àyẹ̀wò àfikún ṣáájú kí a tó fi kún un:
+
+- Àwọn kọ́kọ́rọ́ dandan: `id`, `plugin`, `category`, `title`, `status`, `message`, `details`, àti `remediation`.
+- `plugin` gbọ́dọ̀ bá slug àfikún tí a forúkọsílẹ̀ mu (`[a-z0-9_]{1,64}`). `id` gbọ́dọ̀ bá `[a-z0-9_.]{1,128}` mu, bẹ̀rẹ̀ pẹ̀lú `<plugin>.`, kí ó má sì kọlu ID àyẹ̀wò ìpilẹ̀ tàbí ti àfikún tí ó wà tẹ́lẹ̀.
+- `status` gbọ́dọ̀ jẹ́ `ok`, `warn`, `fail`, tàbí `info`. `ok` máa ń tọ́ka sí `pass` nínú àwọn ìjábọ̀ Doctor; `info` jẹ́ fún ìfitónilétí lásán, kò sì fa ìkùnà nínú CLI, Nagios, Prometheus, tàbí àwọn ìtanijí tí a ṣètò àkókò wọn.
+- `category` (títí dé 64 bytes) àti `title` (títí dé 256 bytes) gbọ́dọ̀ jẹ́ okùn ọ̀rọ̀ tí kò ṣófo láìsí àmì ìdarí. `message` (tí kò ṣófo, títí dé 2048 bytes) àti `remediation` (títí dé 2048 bytes) gbọ́dọ̀ jẹ́ okùn ọ̀rọ̀.
+- `details` máa ń gba okùn ọ̀rọ̀ (títí dé 8192 bytes) tàbí àtòjọ scalar/nested (ìjìnlẹ̀ tó pọ̀ jù lọ 4, tí a yí sí JSON títí dé 16384 bytes; a máa ń kọ àwọn object àti resource).
+- Àwọn àsomọ́ ìdìpọ̀ ìrànlọ́wọ́ àṣàyàn nílò `title` tí kò ṣófo (títí dé 128 bytes, láìsí àmì ìdarí) àti okùn ọ̀rọ̀ `content` títí dé 65536 bytes (64 KiB).
+
+Doctor máa ń fi òpin àyẹ̀wò 32 àti àsomọ́ 8 fún àfikún kọ̀ọ̀kan múlẹ̀ (àpapọ̀ àyẹ̀wò àfikún 64 àti àsomọ́ 32). Hook kọ̀ọ̀kan máa ń ṣiṣẹ́ láàárín ààlà `try`/`catch` tirẹ̀ kí a lè bo àṣírí àwọn ìyọkúrò tàbí dátà tí kì í ṣe àtòjọ kí a sì kọ wọ́n sínú àkọsílẹ̀ Cacti (ẹ̀ka `DOCTOR`) láì nípa lórí àwọn àyẹ̀wò ìpilẹ̀ tàbí àwọn àfikún mìíràn. A máa ń kọ àwọn àpèjúwe tí kò dára tí a sì kọ wọ́n sínú àkọsílẹ̀ nígbà tí àwọn tí ó péye láti inú àfikún kan náà ṣì ń ṣiṣẹ́. Àwọn àyẹ̀wò àfikún máa ń wà ní kíkà-nìkan nígbà gbogbo (`repairable: false`), a sì máa ń bo àwọn iye okùn ọ̀rọ̀ pẹ̀lú àwọn kọ́kọ́rọ́ ìbáṣepọ̀ tí ó ní àṣírí ṣáájú ìfihàn, ìkójáde, tàbí dídìpọ̀. Àwọn àyẹ̀wò àfikún tí a ti fìdí wọn múlẹ̀ máa ń hàn nínú ojú-ìwé wẹ́ẹ̀bù, àbájáde CLI ọ̀rọ̀/JSON/Nagios/Prometheus, títọpa ipò tí a ṣètò àkókò rẹ̀, àti àwọn ìdìpọ̀ ìrànlọ́wọ́.
+
+## Ìsopọ̀ MCP (`abilities_register`)
+
+Doctor máa ń forúkọsílẹ̀ hook `abilities_register` (`doctor_abilities_register` nínú `doctor_abilities.php`) kí `plugin_mcp` lè ṣàwárí àwọn agbára ìṣàyẹ̀wò rẹ̀ nígbà tí àwọn àfikún méjèèjì bá wà ní ṣíṣí. Doctor máa ń forúkọsílẹ̀ ẹ̀ka `diagnostics` (`Diagnostics`) àti àwọn agbára méjì tí ó jẹ́ kíkà-nìkan, tí kì í ba nǹkan jẹ́, tí kò sì yí èsì padà ní àtúnṣe (idempotent):
+
+| ID Agbára | Àwọn àríyànjiyàn àṣàyàn | Àbájáde |
+|---|---|---|
+| `doctor-run-checks` | `category` (okùn ọ̀rọ̀, ó pọ̀ jù lẹ́tà 64), `status` (`pass`, `ok`, `warn`, `fail`, `info`) | `summary` (`total`, `pass`, `warn`, `fail`, `info`) àti títí dé 256 `findings` tí a ti bo àṣírí (`id`, `plugin`, `category`, `title`, `status`, `message`, `remediation`) |
+| `doctor-list-checks` | `category` (okùn ọ̀rọ̀, ó pọ̀ jù lẹ́tà 64), `plugin` (okùn ọ̀rọ̀, ó pọ̀ jù lẹ́tà 64) | Títí dé 256 `checks` (`id`, `plugin`, `category`, `title`) tí ó bo gbogbo àwọn àyẹ̀wò 45 tí a kọ́ sínú rẹ̀ pẹ̀lú àwọn àyẹ̀wò àfikún tí a ṣí sílẹ̀ |
+
+Àwọn agbára méjèèjì jẹ́ kíkà-nìkan ní pàtó, wọn kì í sì ṣiṣẹ́ àtúnṣe láé. Ní àfikún sí agbègbè àṣẹ `plugin_mcp` fúnra rẹ̀ àti ìṣàkóso ìfihàn agbára (àwọn agbára àfikún máa ń bẹ̀rẹ̀ ní ìpamọ́ nínú MCP títí alámòójútó fi máa ṣí wọn sílẹ̀), Doctor nílò kí olùní token ní **Olùwòran Doctor** (**Doctor Viewer**) tàbí agbègbè àṣẹ Doctor tí ó ga jù bẹ́ẹ̀ lọ. `doctor-run-checks` máa ń fi `devices.health` mọ sí àwọn ẹ̀rọ tí a fún olùní token ní àṣẹ sí, ó máa ń fi `logging.recent_errors` kún un kìkì nígbà tí olùlò bá ní agbègbè àṣẹ Cacti 18 tàbí 19, ó máa ń yọ `filesystem.rrd_files` kúrò, ó sì máa ń fi `filesystem.rrd_stale` tí a ṣẹ́ sí àwọn ẹ̀rọ kún un kìkì fún **Olùṣiṣẹ́ Doctor** (**Doctor Operator**) tàbí **Alámòójútó Doctor** (**Doctor Administrator**).
+
 ## Àwọn ohun tí a nílò
 
 | Cacti | PHP | Àwọn àkíyèsí |
@@ -258,20 +317,22 @@ A gbọ́dọ̀ fi àkọsílẹ̀ `repair.started` tí a ṣètò pamọ́ kí 
 
 ## Ìdàgbàsókè
 
-Àkójọ ìdánwò ẹyọkan máa ń lo Pest, ó sì ń ṣiṣẹ́ lórí PHP 8.2 tàbí tuntun jù bẹ́ẹ̀ lọ:
+Àkójọ ìdánwò ẹyọkan máa ń lo Pest, àyẹ̀wò ìṣàn-kóòdù aláìṣiṣẹ́ sì máa ń lo PHPStan (ìpele 6), méjèèjì lórí PHP 8.2 tàbí tuntun jù bẹ́ẹ̀ lọ:
 
 ```console
 composer install
+composer phpstan
 composer test
 ```
 
 Àwọn ìdánwò náà máa ń fi àwọn aṣojú kékeré nínú `tests/CactiStubs.php` rọ́pò àwọn iṣẹ́ Cacti tí Doctor ń pè, nítorí náà wọ́n ń ṣiṣẹ́ láìsí ìfisórí Cacti.
 
-GitHub Actions máa ń ṣe irú àyẹ̀wò mẹ́rin lórí gbogbo ìfiránṣẹ́ àti ìbéèrè ìfàkọ́:
+GitHub Actions máa ń ṣe irú àyẹ̀wò márùn-ún lórí gbogbo ìfiránṣẹ́ àti ìbéèrè ìfàkọ́:
 
-- `php -l` lórí gbogbo fáìlì PHP lábẹ́ PHP 5.4, 5.6, 7.0, 7.1, 7.4, àti 8.0 títí dé 8.4.
-- Àkójọ ìdánwò ẹyọkan lórí PHP 8.2, 8.3, àti 8.4.
+- Àwọn ìdánwò àdéhùn dídìpọ̀ ìtẹ̀jáde (`tests/test_release.py`) àti ìkọ́ àpamọ́ (`tools/build_release.py`).
 - `locales/build_gettext.sh --check`, èyí tí ó máa ń kùnà lórí àwòkọ́ ìtúmọ̀ tí ó ti gbó, àkójọ èdè tí kò pé tàbí tí kò ṣe kedere, tàbí àkójọ èdè tí a ṣàkójọpọ̀ tí ó yàtọ̀ sí orísun rẹ̀.
+- `php -l` lórí gbogbo fáìlì PHP lábẹ́ PHP 5.4, 5.6, 7.0, 7.1, 7.4, àti 8.0 títí dé 8.4.
+- `composer phpstan` (PHPStan ìpele 6) àti `composer test` (àkójọ ìdánwò ẹyọkan Pest) lórí PHP 8.2, 8.3, àti 8.4.
 - Iṣẹ́ ìṣọ̀kan méje tí ó máa ń fi Cacti 1.2.20, ẹ̀ka 1.2.x lọ́wọ́lọ́wọ́, àti `develop` sórí ẹ̀rọ lòdì sí MySQL àti MariaDB, pẹ̀lú cmd.php àti Spine méjèèjì. Iṣẹ́ kọ̀ọ̀kan máa ń fi àfikún náà sórí ẹ̀rọ, ó sì máa ń mú un ṣiṣẹ́, ó máa ń ṣe ìjábọ̀ CLI kíkún, ó sì máa ń ṣàyẹ̀wò àwòrán ìjábọ̀, àpapọ̀ àkótán, àwọn ipò tí a retí, àti àkójọ àwọn ìkùnà pàtó. Lẹ́yìn náà ó máa ń ba ipa binary àti àmì àkókò poller jẹ́, ó máa ń jẹ́rìí sí i pé a jábọ̀ méjèèjì, ó máa ń dá wọn padà, ó máa ń dán àtúnṣe àti ìjẹ́rìísí rẹ̀ wò, ó sì máa ń ṣiṣẹ́ dídádúró, mímú ṣiṣẹ́, yíyọkúrò, àti fífi sórí ẹ̀rọ lẹ́ẹ̀kan sí i. A máa ń pa ìjábọ̀ JSON mọ́ gẹ́gẹ́ bí ohun àbájáde nígbà tí iṣẹ́ kan bá kùnà.
 
 ## Ìkópa

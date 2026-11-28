@@ -1,0 +1,42 @@
+# SPDX-FileCopyrightText: 2026 Thomas Vincent <thomasvincent@gmail.com>
+# SPDX-License-Identifier: GPL-2.0-or-later
+#
+# This file is part of plugin_doctor, a plugin for Cacti.
+# https://github.com/somethingwithproof/plugin_doctor
+
+parameters:
+	level: 6
+	paths:
+		- setup.php
+		- doctor_functions.php
+		- doctor_scheduling.php
+		- doctor_access.php
+		- doctor_workflows.php
+		- doctor_rrd.php
+		- doctor_diagnosis.php
+		- doctor_plugins.php
+		- doctor_dependencies.php
+		- doctor_abilities.php
+		- doctor_web.php
+		- cli/doctor.php
+		- scripts/ss_doctor_stats.php
+	scanFiles:
+		- tests/phpstan-stubs.php
+	dynamicConstantNames:
+		- CACTI_VERSION
+		- CACTI_SERVER_OS
+		- CACTI_PATH_BASE
+		- CACTI_PATH_CACHE
+		- CACTI_PATH_LOG
+		- CACTI_PATH_RRA
+		- CACTI_PATH_PLUGINS
+	treatPhpDocTypesAsCertain: false
+	ignoreErrors:
+		-
+			identifier: includeOnce.fileNotFound
+			paths:
+				- cli/doctor.php
+				- scripts/ss_doctor_stats.php
+		-
+			message: '#^Parameter \#2 \$offenders of function doctor_evaluate_devices expects#'
+			path: doctor_access.php

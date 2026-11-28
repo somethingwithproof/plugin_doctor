@@ -1,0 +1,141 @@
+# SPDX-FileCopyrightText: 2026 Thomas Vincent <thomasvincent@gmail.com>
+# SPDX-License-Identifier: GPL-2.0-or-later
+#
+# This file is part of plugin_doctor, a plugin for Cacti.
+# https://github.com/somethingwithproof/plugin_doctor
+#
+# This program is free software; you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the Free
+# Software Foundation; either version 2 of the License, or (at your option)
+# any later version.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+# more details.
+
+plugin: doctor
+schemaVersion: "1.0"
+description: Static configuration and runtime state schema for Cacti Doctor.
+
+config:
+  doctor_schedule_enabled:
+    type: checkbox
+    enum: ["", "on"]
+    default: ""
+    description: Run every Doctor check in the background after the poller and record each check status.
+  doctor_schedule_interval:
+    type: enum
+    enum: ["15", "60", "360", "1440"]
+    default: "60"
+    description: How often scheduled checks run, in minutes.
+  doctor_alert_emails:
+    type: string
+    maxLength: 255
+    default: ""
+    description: Comma-separated addresses to email when a check changes status.
+  doctor_alert_warnings:
+    type: checkbox
+    enum: ["", "on"]
+    default: ""
+    description: Also alert when a check moves into or out of a warning.
+  doctor_poller_warn_percent:
+    type: integer
+    minimum: 1
+    maximum: 99
+    default: 80
+    description: Poller run time warning threshold as a percentage of the polling interval.
+  doctor_disk_warn_percent:
+    type: integer
+    minimum: 1
+    maximum: 99
+    default: 10
+    description: RRA disk free warning threshold percentage.
+  doctor_disk_fail_percent:
+    type: integer
+    minimum: 1
+    maximum: 99
+    default: 2
+    description: RRA disk free failure threshold percentage.
+  doctor_clock_warn_seconds:
+    type: integer
+    minimum: 1
+    maximum: 86400
+    default: 5
+    description: Clock drift warning threshold in seconds.
+  doctor_clock_fail_seconds:
+    type: integer
+    minimum: 1
+    maximum: 86400
+    default: 60
+    description: Clock drift failure threshold in seconds.
+  doctor_rrd_stale_intervals:
+    type: integer
+    minimum: 1
+    maximum: 100
+    default: 3
+    description: Collection intervals without a file update before warning on stale RRD files.
+  doctor_rrd_deferred_seconds:
+    type: integer
+    minimum: 0
+    maximum: 86400
+    default: 0
+    description: Additional disk-write delay allowance in seconds for external caching.
+  doctor_log_warn_mb:
+    type: integer
+    minimum: 1
+    maximum: 1048576
+    default: 100
+    description: Cacti log size warning threshold in MiB.
+
+state:
+  settings:
+    doctor_state:
+      description: Compact id=status pairs from the latest scheduled run.
+    doctor_alert_state:
+      description: Previous check statuses used to detect alert transitions.
+    doctor_alert_pending:
+      description: Bounded JSON outbox of retained alert transitions awaiting delivery.
+    doctor_alert_last_success:
+      description: Unix timestamp of the last successful alert email delivery.
+    doctor_report_history:
+      description: Aggregate pass/warn/fail counts from the last 20 scheduled runs.
+    doctor_database_sample:
+      description: Prior database counter sample used for interval delta calculations.
+    doctor_last_started:
+      description: Unix timestamp when the latest scheduled worker started.
+    doctor_last_completed:
+      description: Unix timestamp when the latest scheduled worker completed.
+    doctor_last_launch:
+      description: Unix timestamp when the poller hook last launched a scheduled worker.
+    doctor_last_alert_launch:
+      description: Unix timestamp when the poller hook last launched an alert-only worker.
+    doctor_last_run:
+      description: Unix timestamp of the last scheduled run.
+    doctor_schedule_failures:
+      description: Consecutive incomplete scheduled run count used for backoff.
+    doctor_hooks_version:
+      description: Plugin version whose hooks were last synchronized.
+    doctor_access_version:
+      description: Schema marker for Doctor access realm registration.
+    doctor_workflows_version:
+      description: Schema marker for Doctor workflow table creation.
+  tables:
+    plugin_doctor_acceptance:
+      description: Active time-bounded warning acceptance exceptions.
+    plugin_doctor_audit:
+      description: Bounded audit log of repair executions and warning exceptions.
+
+resources:
+  - path: doctor/checks
+    methods: ["GET"]
+    readOnly: true
+    description: List registered core and plugin Doctor checks.
+  - path: doctor/report
+    methods: ["GET"]
+    readOnly: true
+    description: Run read-only Doctor diagnostic checks and return a structured report.
+  - path: doctor/debug-info
+    methods: ["GET"]
+    readOnly: true
+    description: Return redacted plugin debug information sections.

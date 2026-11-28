@@ -1,4 +1,4 @@
-<!-- Source: README.md; SHA256: ee03c7ac68aca21c8155c29b5b43a1f206c2f0c379c8b07bb4113919c18aafde -->
+<!-- Source: README.md; SHA256: 490628bb7f70f4cf1a8c43b302246fd2e870725a6649c628762608b4a76db65b -->
 
 <!-- translations:start -->
 [English](../../../README.md) | [简体中文](../zh-CN/README.md) | [हिन्दी](../hi-IN/README.md) | [Español (España)](../es-ES/README.md) | [Español (Latinoamérica)](../es-419/README.md) | [العربية (السعودية)](../ar-SA/README.md) | [Afrikaans](../af-ZA/README.md) | [አማርኛ](../am-ET/README.md) | [العربية (مصر)](../ar-EG/README.md) | [العربية (المغرب)](../ar-MA/README.md) | [বাংলা](../bn-BD/README.md) | [Bosanski](../bs-BA/README.md) | [Deutsch](../de-DE/README.md) | [فارسی](../fa-IR/README.md) | [Filipino](../fil-PH/README.md) | [Français](../fr-FR/README.md) | [Français (Maroc)](../fr-MA/README.md) | [Français (Sénégal)](../fr-SN/README.md) | [Hausa](../ha-NG/README.md) | [עברית](../he-IL/README.md) | [Hrvatski](../hr-HR/README.md) | [Bahasa Indonesia](../id-ID/README.md) | [Igbo](../ig-NG/README.md) | [Italiano](../it-IT/README.md) | [日本語](../ja-JP/README.md) | [한국어](../ko-KR/README.md) | [Malagasy](../mg-MG/README.md) | [मराठी](../mr-IN/README.md) | [Bahasa Melayu](../ms-MY/README.md) | [Nederlands](../nl-NL/README.md) | [Polski](../pl-PL/README.md) | [Português (Brasil)](../pt-BR/README.md) | [Русский](../ru-RU/README.md) | [Kinyarwanda](../rw-RW/README.md) | [Soomaali](../so-SO/README.md) | [Српски](../sr-RS/README.md) | [Svenska](../sv-SE/README.md) | [Kiswahili](README.md) | [தமிழ்](../ta-IN/README.md) | [తెలుగు](../te-IN/README.md) | [ไทย](../th-TH/README.md) | [Türkçe](../tr-TR/README.md) | [Українська](../uk-UA/README.md) | [اردو](../ur-PK/README.md) | [Tiếng Việt](../vi-VN/README.md) | [isiXhosa](../xh-ZA/README.md) | [Yorùbá](../yo-NG/README.md) | [繁體中文](../zh-TW/README.md) | [isiZulu](../zu-ZA/README.md)
@@ -53,13 +53,15 @@ Matatizo ya Cacti kwa kawaida hujitokeza kama dalili: grafu tupu, poller iliyosi
 | Vifaa | Vifaa vilivyowashwa ambavyo vimezimika au vinavyorejea, vitatu vilivyozimika kwa muda mrefu zaidi pamoja na hitilafu yake ya mwisho, na kushindwa wakati vifaa vingi vimezimika kwa wakati mmoja |
 | Poller | Aina na muda wa marudio wa poller, muda tangu poller kuu ilipokamilika mara ya mwisho, muda wa utekelezaji ukilinganishwa na muda wa marudio, matokeo ya poller ambayo hayakuwahi kufikia faili ya RRD, poller za mbali zilizosimama kuripoti, Boost iliyokwama, na usanidi wa Spine unaoelekeza kwenye hifadhidata tofauti |
 
-Kila ukaguzi una kitambulisho thabiti, kama vile `database.timezone` au `binary.rrdtool`, ili hati ziweze kulenga matokeo mahususi.
+Kila ukaguzi una kitambulisho thabiti, kama vile `database.timezone` au `binary.rrdtool`, ili hati ziweze kulenga matokeo mahususi. Programu-jalizi zilizowashwa zinaweza kuchangia ukaguzi wa ziada na viambatisho vya kifurushi cha usaidizi kupitia ndoano ya `doctor_register_checks`, na Doctor hutoa uwezo wa uchunguzi wa kusoma tu kwa `plugin_mcp` kupitia `abilities_register`.
 
 ## Ramani ya msimbo na majaribio
 
 | Tabia | Utekelezaji | Ushahidi wa majaribio katika hazina hii |
 |---|---|---|
-| Ukaguzi wa uchunguzi na vitambulisho thabiti vya ripoti | [doctor_functions.php](../../../doctor_functions.php) | [DoctorFunctionsTest.php](../../../tests/DoctorFunctionsTest.php), [AssertDoctorReport.php](../../../tests/ci/AssertDoctorReport.php) |
+| Ukaguzi wa uchunguzi na vitambulisho thabiti vya ripoti | [doctor_functions.php](../../../doctor_functions.php) | [DoctorFunctionsTest.php](../../../tests/DoctorFunctionsTest.php), [DatabaseHealthTest.php](../../../tests/DatabaseHealthTest.php), [AssertDoctorReport.php](../../../tests/ci/AssertDoctorReport.php) |
+| Ndoano ya ukaguzi wa programu-jalizi (`doctor_register_checks`) | [doctor_plugins.php](../../../doctor_plugins.php) | [PluginHooksTest.php](../../../tests/PluginHooksTest.php) |
+| Uwezo wa uchunguzi wa MCP (`abilities_register`) | [doctor_abilities.php](../../../doctor_abilities.php) | [AbilitiesTest.php](../../../tests/AbilitiesTest.php) |
 | Ufikiaji kulingana na majukumu na ripoti za wavuti zilizofichwa taarifa nyeti | [doctor_access.php](../../../doctor_access.php), [doctor_web.php](../../../doctor_web.php) | [AccessTest.php](../../../tests/AccessTest.php), [WebAccessTest.php](../../../tests/WebAccessTest.php) |
 | Uchunguzi wa dalili uliopangwa | [doctor_diagnosis.php](../../../doctor_diagnosis.php) | [DiagnosisTest.php](../../../tests/DiagnosisTest.php) |
 | Upya wa RRD na ushughulikiaji wa uandishi ulioahirishwa | [doctor_rrd.php](../../../doctor_rrd.php) | [RrdFreshnessTest.php](../../../tests/RrdFreshnessTest.php) |
@@ -200,7 +202,7 @@ php plugins/doctor/cli/doctor.php --format=prometheus > /var/lib/node_exporter/t
 php plugins/doctor/cli/doctor.php --bundle=/tmp/cacti-doctor.txt
 ```
 
-Kifurushi hicho ni faili moja ya maandishi iliyo na matoleo ya Doctor, Cacti, PHP, OS, na hifadhidata, takwimu za poller na Boost, ripoti kamili, na mistari 200 ya mwisho ya kumbukumbu ya Cacti. Thamani zinazofuata majina ya password, secret, token, community, na key hufichwa. Doctor huunda faili hiyo ikisomeka na mmiliki wake pekee na hukataa kuandika juu ya faili iliyopo. Ikague kabla ya kuichapisha mahali popote.
+Kifurushi hicho ni faili moja ya maandishi iliyo na matoleo ya Doctor, Cacti, PHP, OS, na hifadhidata, takwimu za poller na Boost, ripoti kamili, viambatisho vyovyote vya kifurushi cha usaidizi kutoka kwa programu-jalizi chini ya `== Plugin attachments`, na mistari 200 ya mwisho ya kumbukumbu ya Cacti. Thamani zinazofuata majina ya password, secret, token, community, na key hufichwa. Doctor huunda faili hiyo ikisomeka na mmiliki wake pekee na hukataa kuandika juu ya faili iliyopo. Ikague kabla ya kuichapisha mahali popote.
 
 ## Sera ya urekebishaji
 
@@ -246,6 +248,63 @@ Arifa za maonyo zilizopangwa hukandamizwa wakati kighairi kinapotumika; kuisha k
 
 Kusasisha huunda `plugin_doctor_audit` na `plugin_doctor_acceptance` bila kubadilisha data ya programu ya Cacti. Hamisha historia yoyote unayohitaji kabla ya kuondoa usakinishaji: kuondoa usakinishaji huondoa majedwali yote mawili ya programu-jalizi na mipangilio yake. Kurudisha nyuma faili za programu-jalizi huacha majedwali yakiwa yanapatikana kwa uchunguzi, lakini matoleo ya zamani hayaheshimu vighairi vya maonyo.
 
+## Ukaguzi wa programu-jalizi (`doctor_register_checks`)
+
+Programu-jalizi za Cacti zilizowashwa zinaweza kuchangia ukaguzi wa uchunguzi wa kusoma tu na viambatisho vya hiari vya kifurushi cha usaidizi kwa kusajili ndoano ya `doctor_register_checks`:
+
+```php
+api_plugin_register_hook('sample', 'doctor_register_checks', 'sample_doctor_checks', 'setup.php');
+```
+
+Doctor huita programu-jalizi zilizowashwa na zisizojumuishwa ndani ya msingi zilizosajiliwa kwenye `doctor_register_checks` (ikiruka `doctor` na `cacti`), na hutafuta faili ya ndoano ndani ya saraka ya programu-jalizi yenyewe pekee. Kitendakazi kinachoitwa hupokea `['mode' => 'run' | 'list', 'plugin' => '<slug>']` na hurejesha ama orodha ya maelezo ya ukaguzi au bahasha yenye `checks` na `attachments` ya hiari:
+
+```php
+function sample_doctor_checks($context) {
+	return [
+		'checks' => [
+			[
+				'id'          => 'sample.queue_depth',
+				'plugin'      => 'sample',
+				'category'    => 'Sample',
+				'title'       => 'Sample queue depth',
+				'status'      => 'ok',
+				'message'     => 'Queue is healthy.',
+				'details'     => ['pending' => 0],
+				'remediation' => ''
+			]
+		],
+		'attachments' => [
+			[
+				'title'   => 'Sample diagnostics',
+				'content' => "worker=ok\n"
+			]
+		]
+	];
+}
+```
+
+Kila maelezo ya ukaguzi wa programu-jalizi huthibitishwa kabla ya kujumuishwa:
+
+- Funguo zinazohitajika: `id`, `plugin`, `category`, `title`, `status`, `message`, `details`, na `remediation`.
+- `plugin` lazima ilingane na jina fupi (slug) la programu-jalizi iliyosajiliwa (`[a-z0-9_]{1,64}`). `id` lazima ilingane na `[a-z0-9_.]{1,128}`, ianze na `<plugin>.`, na isigongane na kitambulisho kilichopo cha ukaguzi wa msingi au wa programu-jalizi.
+- `status` lazima iwe `ok`, `warn`, `fail`, au `info`. `ok` hubadilishwa kuwa `pass` katika ripoti za Doctor; `info` ni ya taarifa pekee na haisababishi kushindwa katika CLI, Nagios, Prometheus, au arifa zilizoratibiwa.
+- `category` (hadi baiti 64) na `title` (hadi baiti 256) lazima ziwe tungo zisizo tupu bila herufi za udhibiti. `message` (isiyo tupu, hadi baiti 2048) na `remediation` (hadi baiti 2048) lazima ziwe tungo.
+- `details` hukubali tungo (hadi baiti 8192) au safu ya thamani rahisi/zilizopangwa ndani kwa ndani (kina cha juu 4, iliyosimbwa kwa JSON hadi baiti 16384; vipengee vya object na rasilimali hukataliwa).
+- Viambatisho vya hiari vya kifurushi cha usaidizi vinahitaji `title` isiyo tupu (hadi baiti 128, bila herufi za udhibiti) na tungo ya `content` hadi baiti 65536 (64 KiB).
+
+Doctor hutekeleza vikomo vya ukaguzi 32 na viambatisho 8 kwa kila programu-jalizi (jumla ya ukaguzi 64 wa programu-jalizi na viambatisho 32). Kila ndoano huendeshwa ndani ya mpaka wake wa `try`/`catch` ili hitilafu za kipekee au data zisizo safu zifichwe sehemu nyeti na kurekodiwa kwenye kumbukumbu ya Cacti (sehemu ya `DOCTOR`) bila kuathiri ukaguzi wa msingi au programu-jalizi nyingine. Maelezo yaliyoundwa vibaya hukataliwa na kurekodiwa ilhali yale halali kutoka kwa programu-jalizi hiyohiyo huendelea kufanya kazi. Ukaguzi wa programu-jalizi huwa wa kusoma tu kila wakati (`repairable: false`), na thamani za tungo pamoja na funguo nyeti zenye majina hufichwa kabla ya kuonyeshwa, kusafirishwa, au kufungwa kwenye kifurushi. Ukaguzi wa programu-jalizi uliothibitishwa huonekana kwenye kiolesura cha wavuti, matokeo ya CLI ya maandishi/JSON/Nagios/Prometheus, ufuatiliaji wa hali ulioratibiwa, na vifurushi vya usaidizi.
+
+## Muunganisho wa MCP (`abilities_register`)
+
+Doctor husajili ndoano ya `abilities_register` (`doctor_abilities_register` katika `doctor_abilities.php`) ili `plugin_mcp` igundue uwezo wake wa uchunguzi wakati programu-jalizi zote mbili zimewashwa. Doctor husajili kategoria ya `diagnostics` (`Diagnostics`) na uwezo mbili wa kusoma tu, usioharibu, na unaorudia matokeo yaleyale:
+
+| Kitambulisho cha uwezo | Hoja za hiari | Towe |
+|---|---|---|
+| `doctor-run-checks` | `category` (tungo, herufi 64 zaidi), `status` (`pass`, `ok`, `warn`, `fail`, `info`) | `summary` (`total`, `pass`, `warn`, `fail`, `info`) na hadi matokeo 256 yaliyofichwa taarifa nyeti `findings` (`id`, `plugin`, `category`, `title`, `status`, `message`, `remediation`) |
+| `doctor-list-checks` | `category` (tungo, herufi 64 zaidi), `plugin` (tungo, herufi 64 zaidi) | Hadi vipengee 256 vya `checks` (`id`, `plugin`, `category`, `title`) vinavyoshughulikia ukaguzi wote 45 uliojengewa ndani pamoja na ukaguzi wa programu-jalizi zilizowashwa |
+
+Uwezo wote wawili ni wa kusoma tu kwa ukali na hauendeshi marekebisho kamwe. Mbali na udhibiti wa mamlaka na ufichuaji wa uwezo wa `plugin_mcp` yenyewe (uwezo wa programu-jalizi huanza ukiwa umefichwa katika MCP hadi msimamizi auonyeshe), Doctor huhitaji mmiliki wa tokeni awe na **Doctor Viewer** au mamlaka ya juu zaidi ya Doctor. `doctor-run-checks` huzuia `devices.health` kwa vifaa vilivyoruhusiwa kwa mmiliki wa tokeni, hujumuisha `logging.recent_errors` pale tu mtumiaji anapokuwa na mamlaka ya Cacti 18 au 19, huacha `filesystem.rrd_files`, na hujumuisha `filesystem.rrd_stale` iliyowekewa mipaka ya vifaa kwa **Doctor Operator** au **Doctor Administrator** pekee.
+
 ## Mahitaji
 
 | Cacti | PHP | Maelezo |
@@ -263,20 +322,22 @@ Tarehe za usaidizi zimejumuishwa ndani ya Doctor kutoka kwenye [ratiba ya usaidi
 
 ## Uendelezaji
 
-Mkusanyiko wa majaribio ya vitengo hutumia Pest na huendeshwa kwenye PHP 8.2 au mpya zaidi:
+Mkusanyiko wa majaribio ya vitengo hutumia Pest na uchambuzi tuli hutumia PHPStan (kiwango cha 6), vyote viwili kwenye PHP 8.2 au mpya zaidi:
 
 ```console
 composer install
+composer phpstan
 composer test
 ```
 
 Majaribio hayo hubadilisha vitendakazi vya Cacti ambavyo Doctor huita na mbadala midogo katika `tests/CactiStubs.php`, hivyo huendeshwa bila usakinishaji wa Cacti.
 
-GitHub Actions huendesha aina nne za ukaguzi kwenye kila push na pull request:
+GitHub Actions huendesha aina tano za ukaguzi kwenye kila push na pull request:
 
-- `php -l` kwenye kila faili ya PHP chini ya PHP 5.4, 5.6, 7.0, 7.1, 7.4, na 8.0 hadi 8.4.
-- Mkusanyiko wa majaribio ya vitengo kwenye PHP 8.2, 8.3, na 8.4.
+- Majaribio ya mkataba wa ufungashaji wa matoleo (`tests/test_release.py`) na ujenzi wa kumbukumbu (`tools/build_release.py`).
 - `locales/build_gettext.sh --check`, ambayo hushindwa ikiwa kiolezo cha tafsiri kimepitwa na wakati, katalogi haijakamilika au ina tafsiri zisizo na uhakika (fuzzy), au katalogi iliyokusanywa inatofautiana na chanzo chake.
+- `php -l` kwenye kila faili ya PHP chini ya PHP 5.4, 5.6, 7.0, 7.1, 7.4, na 8.0 hadi 8.4.
+- `composer phpstan` (PHPStan kiwango cha 6) na `composer test` (mkusanyiko wa majaribio ya vitengo wa Pest) kwenye PHP 8.2, 8.3, na 8.4.
 - Kazi saba za ujumuishaji zinazosakinisha Cacti 1.2.20, tawi la sasa la 1.2.x, na `develop` dhidi ya MySQL na MariaDB, zikiwa na cmd.php na Spine zote mbili. Kila kazi husakinisha na kuwezesha programu-jalizi, huendesha ripoti kamili ya CLI, na hukagua muundo wa ripoti, jumla za muhtasari, hali zinazotarajiwa, na seti kamili ya hitilafu. Kisha huharibu njia ya faili inayotekelezeka na muhuri wa muda wa poller, huthibitisha zote mbili zimeripotiwa, huzirejesha, hujaribu urekebishaji na uthibitisho wake, na huendesha kuzima, kuwezesha, kuondoa usakinishaji, na kusakinisha tena. Ripoti ya JSON huhifadhiwa kama kituo cha matokeo (artifact) kazi inaposhindwa.
 
 ## Kuchangia

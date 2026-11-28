@@ -1,4 +1,4 @@
-<!-- Source: README.md; SHA256: ee03c7ac68aca21c8155c29b5b43a1f206c2f0c379c8b07bb4113919c18aafde -->
+<!-- Source: README.md; SHA256: 490628bb7f70f4cf1a8c43b302246fd2e870725a6649c628762608b4a76db65b -->
 
 <!-- translations:start -->
 [English](../../../README.md) | [简体中文](../zh-CN/README.md) | [हिन्दी](../hi-IN/README.md) | [Español (España)](../es-ES/README.md) | [Español (Latinoamérica)](../es-419/README.md) | [العربية (السعودية)](../ar-SA/README.md) | [Afrikaans](../af-ZA/README.md) | [አማርኛ](../am-ET/README.md) | [العربية (مصر)](../ar-EG/README.md) | [العربية (المغرب)](../ar-MA/README.md) | [বাংলা](../bn-BD/README.md) | [Bosanski](../bs-BA/README.md) | [Deutsch](../de-DE/README.md) | [فارسی](../fa-IR/README.md) | [Filipino](../fil-PH/README.md) | [Français](../fr-FR/README.md) | [Français (Maroc)](../fr-MA/README.md) | [Français (Sénégal)](../fr-SN/README.md) | [Hausa](../ha-NG/README.md) | [עברית](../he-IL/README.md) | [Hrvatski](../hr-HR/README.md) | [Bahasa Indonesia](../id-ID/README.md) | [Igbo](../ig-NG/README.md) | [Italiano](../it-IT/README.md) | [日本語](../ja-JP/README.md) | [한국어](../ko-KR/README.md) | [Malagasy](../mg-MG/README.md) | [मराठी](../mr-IN/README.md) | [Bahasa Melayu](../ms-MY/README.md) | [Nederlands](../nl-NL/README.md) | [Polski](../pl-PL/README.md) | [Português (Brasil)](../pt-BR/README.md) | [Русский](../ru-RU/README.md) | [Kinyarwanda](../rw-RW/README.md) | [Soomaali](../so-SO/README.md) | [Српски](../sr-RS/README.md) | [Svenska](../sv-SE/README.md) | [Kiswahili](../sw-KE/README.md) | [தமிழ்](../ta-IN/README.md) | [తెలుగు](../te-IN/README.md) | [ไทย](../th-TH/README.md) | [Türkçe](../tr-TR/README.md) | [Українська](../uk-UA/README.md) | [اردو](../ur-PK/README.md) | [Tiếng Việt](../vi-VN/README.md) | [isiXhosa](../xh-ZA/README.md) | [Yorùbá](../yo-NG/README.md) | [繁體中文](README.md) | [isiZulu](../zu-ZA/README.md)
@@ -50,13 +50,15 @@ Cacti 的問題通常會以各種症狀呈現：圖表空白、輪詢器停止�
 | 裝置 | 處於停機或恢復中的已啟用裝置、停機時間最長的三台裝置及其最後一筆錯誤訊息，以及多數裝置同時停機時的失敗警示 |
 | 輪詢器 | 輪詢器類型與間隔、主輪詢器上次完成執行至今的時間、執行時間與間隔的比較、從未寫入 RRD 檔案的輪詢器輸出、停止回報的遠端輪詢器、停滯的 Boost，以及指向不同資料庫的 Spine 設定 |
 
-每項檢查都有一個穩定的 ID（例如 `database.timezone` 或 `binary.rrdtool`），讓指令碼能針對個別結果進行索引。
+每項檢查都有一個穩定的 ID（例如 `database.timezone` 或 `binary.rrdtool`），讓指令碼能針對個別結果進行索引。已啟用的外掛程式可透過 `doctor_register_checks` 勾點（hook）提供額外檢查項目與支援診斷包附件，且 Doctor 會透過 `abilities_register` 向 `plugin_mcp` 公開唯讀診斷能力。
 
 ## 程式碼與測試對應表
 
 | 行為 | 實作 | 本儲存庫中的測試佐證 |
 |---|---|---|
-| 診斷檢查與穩定的報告 ID | [doctor_functions.php](../../../doctor_functions.php) | [DoctorFunctionsTest.php](../../../tests/DoctorFunctionsTest.php)、[AssertDoctorReport.php](../../../tests/ci/AssertDoctorReport.php) |
+| 診斷檢查與穩定的報告 ID | [doctor_functions.php](../../../doctor_functions.php) | [DoctorFunctionsTest.php](../../../tests/DoctorFunctionsTest.php)、[DatabaseHealthTest.php](../../../tests/DatabaseHealthTest.php)、[AssertDoctorReport.php](../../../tests/ci/AssertDoctorReport.php) |
+| 外掛程式檢查勾點（`doctor_register_checks`） | [doctor_plugins.php](../../../doctor_plugins.php) | [PluginHooksTest.php](../../../tests/PluginHooksTest.php) |
+| MCP 診斷能力（`abilities_register`） | [doctor_abilities.php](../../../doctor_abilities.php) | [AbilitiesTest.php](../../../tests/AbilitiesTest.php) |
 | 角色範圍存取控制與經遮罩處理的網頁報告 | [doctor_access.php](../../../doctor_access.php)、[doctor_web.php](../../../doctor_web.php) | [AccessTest.php](../../../tests/AccessTest.php)、[WebAccessTest.php](../../../tests/WebAccessTest.php) |
 | 引導式症狀調查 | [doctor_diagnosis.php](../../../doctor_diagnosis.php) | [DiagnosisTest.php](../../../tests/DiagnosisTest.php) |
 | RRD 新鮮度與延遲寫入處理 | [doctor_rrd.php](../../../doctor_rrd.php) | [RrdFreshnessTest.php](../../../tests/RrdFreshnessTest.php) |
@@ -188,7 +190,7 @@ php plugins/doctor/cli/doctor.php --format=prometheus > /var/lib/node_exporter/t
 php plugins/doctor/cli/doctor.php --bundle=/tmp/cacti-doctor.txt
 ```
 
-支援診斷包是一個單一文字檔，包含 Doctor、Cacti、PHP、作業系統與資料庫版本、輪詢器與 Boost 統計資料、完整報告，以及 Cacti 日誌的最後 200 行。跟隨於 password、secret、token、community 與 key 名稱後方的數值皆會進行遮罩處理。Doctor 建立的檔案僅限擁有者讀取，且拒絕覆寫現有檔案。在將其發佈到任何地方之前，請先自行檢視內容。
+支援診斷包是一個單一文字檔，包含 Doctor、Cacti、PHP、作業系統與資料庫版本、輪詢器與 Boost 統計資料、完整報告、位於 `== Plugin attachments` 下的任何外掛程式支援診斷包附件，以及 Cacti 日誌的最後 200 行。跟隨於 password、secret、token、community 與 key 名稱後方的數值皆會進行遮罩處理。Doctor 建立的檔案僅限擁有者讀取，且拒絕覆寫現有檔案。在將其發佈到任何地方之前，請先自行檢視內容。
 
 ## 修復原則
 
@@ -234,6 +236,63 @@ Boost 會將其設定的排清間隔之兩倍作為磁碟寫入容許時間。�
 
 升級時會建立 `plugin_doctor_audit` 與 `plugin_doctor_acceptance` 資料表，而不會變更 Cacti 應用程式資料。解除安裝前請先匯出所需的歷史記錄：解除安裝會移除這兩個外掛程式資料表及其設定。還原外掛程式檔案會保留資料表以供調查，但舊版本不會套用警告例外。
 
+## 外掛程式檢查（`doctor_register_checks`）
+
+已啟用的 Cacti 外掛程式可以透過註冊 `doctor_register_checks` 勾點（hook），提供唯讀的診斷檢查與可選的支援診斷包附件：
+
+```php
+api_plugin_register_hook('sample', 'doctor_register_checks', 'sample_doctor_checks', 'setup.php');
+```
+
+Doctor 會呼叫已註冊於 `doctor_register_checks` 的已啟用非內建外掛程式（略過 `doctor` 與 `cacti`），並嚴格在該外掛程式自身的目錄內解析勾點檔案。回呼函式會接收 `['mode' => 'run' | 'list', 'plugin' => '<slug>']`，並傳回檢查描述元清單，或包含 `checks` 與可選 `attachments` 的封裝結構：
+
+```php
+function sample_doctor_checks($context) {
+	return [
+		'checks' => [
+			[
+				'id'          => 'sample.queue_depth',
+				'plugin'      => 'sample',
+				'category'    => 'Sample',
+				'title'       => 'Sample queue depth',
+				'status'      => 'ok',
+				'message'     => 'Queue is healthy.',
+				'details'     => ['pending' => 0],
+				'remediation' => ''
+			]
+		],
+		'attachments' => [
+			[
+				'title'   => 'Sample diagnostics',
+				'content' => "worker=ok\n"
+			]
+		]
+	];
+}
+```
+
+每個外掛程式檢查描述元在納入前都會經過驗證：
+
+- 必要鍵值：`id`、`plugin`、`category`、`title`、`status`、`message`、`details` 與 `remediation`。
+- `plugin` 必須符合已註冊的外掛程式識別碼（`[a-z0-9_]{1,64}`）。`id` 必須符合 `[a-z0-9_.]{1,128}`、以 `<plugin>.` 開頭，且不得與現有的核心或外掛程式檢查 ID 衝突。
+- `status` 必須為 `ok`、`warn`、`fail` 或 `info`。`ok` 在 Doctor 報告中會對應為 `pass`；`info` 僅屬資訊性質，不會在 CLI、Nagios、Prometheus 或排程警示中觸發失敗。
+- `category`（最多 64 位元組）與 `title`（最多 256 位元組）必須是不含控制字元的非空字串。`message`（非空，最多 2048 位元組）與 `remediation`（最多 2048 位元組）必須為字串。
+- `details` 接受字串（最多 8192 位元組）或純量／巢狀陣列（最大深度 4、JSON 編碼後最多 16384 位元組；物件與資源會遭到拒絕）。
+- 可選的支援診斷包附件需要非空的 `title`（最多 128 位元組，不可含控制字元）與最多 65536 位元組（64 KiB）的 `content` 字串。
+
+Doctor 對每個外掛程式強制實施最多 32 項檢查與 8 個附件的上限（總計最多 64 項外掛程式檢查與 32 個附件）。每個勾點都會在各自的 `try`/`catch` 邊界內執行，因此例外狀況或非陣列酬載皆會經過遮罩處理並寫入 Cacti 日誌（`DOCTOR` 類別），不會影響核心檢查或其他外掛程式。格式錯誤的描述元會遭到拒絕並記錄至日誌，而同一外掛程式中有效的描述元仍會照常執行。外掛程式檢查一律為唯讀（`repairable: false`），且字串值與敏感關聯鍵在呈現、匯出或打包前皆會進行遮罩處理。通過驗證的外掛程式檢查會顯示於網頁介面、CLI 文字／JSON／Nagios／Prometheus 輸出、排程狀態追蹤與支援診斷包中。
+
+## MCP 整合（`abilities_register`）
+
+Doctor 會註冊 `abilities_register` 勾點（位於 `doctor_abilities.php` 的 `doctor_abilities_register`），使 `plugin_mcp` 在兩個外掛程式皆已啟用時能探索其診斷能力。Doctor 會註冊 `diagnostics` 類別（`Diagnostics`）以及兩項唯讀、非破壞性且具等冪性（idempotent）的能力：
+
+| 能力 ID | 可選引數 | 輸出 |
+|---|---|---|
+| `doctor-run-checks` | `category`（字串，最多 64 個字元）、`status`（`pass`、`ok`、`warn`、`fail`、`info`） | `summary`（`total`、`pass`、`warn`、`fail`、`info`）與最多 256 筆經遮罩處理的 `findings`（`id`、`plugin`、`category`、`title`、`status`、`message`、`remediation`） |
+| `doctor-list-checks` | `category`（字串，最多 64 個字元）、`plugin`（字串，最多 64 個字元） | 最多 256 筆 `checks`（`id`、`plugin`、`category`、`title`），涵蓋全部 45 項內建檢查以及已啟用的外掛程式檢查 |
+
+這兩項能力嚴格為唯讀，絕不會執行修復操作。除了 `plugin_mcp` 本身的領域與能力開放控制（外掛程式能力在管理員開放前預設在 MCP 中處於隱藏狀態）之外，Doctor 亦要求權杖擁有者具備 **Doctor Viewer** 或更高的 Doctor 領域權限。`doctor-run-checks` 會將 `devices.health` 限制於權杖擁有者獲准存取的裝置、僅在使用者具備 Cacti 領域 18 或 19 權限時才包含 `logging.recent_errors`、省略 `filesystem.rrd_files`，並僅為 **Doctor Operator** 或 **Doctor Administrator** 提供依裝置篩選的 `filesystem.rrd_stale`。
+
 ## 系統需求
 
 | Cacti | PHP | 備註 |
@@ -251,20 +310,22 @@ Boost 會將其設定的排清間隔之兩倍作為磁碟寫入容許時間。�
 
 ## 開發
 
-單元測試套件使用 Pest，並於 PHP 8.2 或更新版本上執行：
+單元測試套件使用 Pest，靜態分析使用 PHPStan（等級 6），兩者皆於 PHP 8.2 或更新版本上執行：
 
 ```console
 composer install
+composer phpstan
 composer test
 ```
 
 這些測試會在 `tests/CactiStubs.php` 中以小型替代函式取代 Doctor 所呼叫的 Cacti 函式，因此無需安裝 Cacti 即可執行。
 
-GitHub Actions 會在每次推送與拉取請求時執行四種檢查：
+GitHub Actions 會在每次推送與拉取請求時執行五種檢查：
 
-- 在 PHP 5.4、5.6、7.0、7.1、7.4 以及 8.0 至 8.4 下對每個 PHP 檔案執行 `php -l`。
-- 在 PHP 8.2、8.3 與 8.4 上執行單元測試套件。
+- 發行打包契約測試（`tests/test_release.py`）與封存檔建置（`tools/build_release.py`）。
 - 執行 `locales/build_gettext.sh --check`，若翻譯範本過時、語系目錄不完整或標記為 fuzzy，或編譯後的語系目錄與來源檔案不一致，則會失敗。
+- 在 PHP 5.4、5.6、7.0、7.1、7.4 以及 8.0 至 8.4 下對每個 PHP 檔案執行 `php -l`。
+- 在 PHP 8.2、8.3 與 8.4 上執行 `composer phpstan`（PHPStan 等級 6）與 `composer test`（Pest 單元測試套件）。
 - 七項整合測試作業，分別針對 MySQL 與 MariaDB 安裝 Cacti 1.2.20、目前的 1.2.x 分支與 `develop`，並同時搭配 cmd.php 與 Spine。每項作業都會安裝並啟用外掛程式、執行完整的 CLI 報告，並檢查報告結構描述、摘要總計、預期狀態以及確切的失敗項目集合。接著會故意破壞一個二進位檔路徑與輪詢器時間戳記、確認兩者皆有回報、將其還原、測試修復功能與確認機制，並執行停用、啟用、解除安裝與重新安裝。當作業失敗時，JSON 報告會保留作為成品。
 
 ## 參與貢獻
